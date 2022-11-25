@@ -235,6 +235,16 @@ public class Player : MonoBehaviour
                 animatorController.SetFloat("verticalVelocity", Mathf.Abs(myRB.velocity.y));
             }*/
         //}
+
+
+        // this snaps the player to be pixel perfect and not make a super janky camera
+        Vector2 playerPos = transform.position;
+        playerPos.x = (float)(System.Math.Round((double)playerPos.x * 16.0) / 16.0);
+        playerPos.y = (float)(System.Math.Round((double)playerPos.y * 16.0) / 16.0);
+        transform.position = playerPos;
+
+
+        //CameraController.CameraUpdate();
     }
     private IEnumerator Hit(int hitBoxIndex)
     {
