@@ -724,6 +724,7 @@ MonoBehaviour:
   jumpSpeed: 5
   jumpTime: 0.35
   originalGravityScale: 3
+  DownThrustGravityModifier: 2
   rightAttackHitbox: {fileID: 698157129}
   upAttackHitbox: {fileID: 709571059}
   downAttackHitbox: {fileID: 140665638}

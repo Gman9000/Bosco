@@ -17,6 +17,7 @@ public class Player : MonoBehaviour
     private float jumpTimeCountdown;
     private bool isJumping;
     public float originalGravityScale;
+    public float DownThrustGravityModifier;
 
     //for attacking
     //[SerializeField] private GameObject leftAttackHitbox;
@@ -212,7 +213,7 @@ public class Player : MonoBehaviour
                 }
                 else if (!isGrounded && PlayerInput.HasPressedAttackKey() && PlayerInput.IsPressingDown())
                 {
-                    myRB.gravityScale = originalGravityScale * 2;
+                    myRB.gravityScale = originalGravityScale * DownThrustGravityModifier;
                     StartCoroutine(Hit(2));
                 }
             }
