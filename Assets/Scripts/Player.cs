@@ -323,6 +323,10 @@ public class Player : MonoBehaviour
         {
             this.gameObject.transform.position = checkpoint;
         }
+        if (other.CompareTag("Candle"))
+        {
+            other.GetComponent<Candle>().LightUpCandle();
+        }
     }
     /*private void OnTriggerStay2D(Collider2D other)
     {

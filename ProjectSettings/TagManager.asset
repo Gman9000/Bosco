@@ -7,6 +7,8 @@ TagManager:
   - Ground
   - Reset
   - Attack
+  - Door
+  - Candle
   layers:
   - Default
   - TransparentFX
