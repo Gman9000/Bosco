@@ -11,10 +11,11 @@ public class Player : MonoBehaviour
     private BoxCollider2D boxCollider2D;
 
     //for jumping
-    public float originalJumpSpeed;
-    private float jumpSpeed;
+    //public float originalJumpSpeed;
+    public float jumpSpeed;
     public float jumpTime;
     private float jumpTimeCountdown;
+    private bool isJumping;
     //[SerializeField] private float bouncyJumpTimeModifier;
     //[SerializeField] private float bouncyJumpSpeedModifier;
 
@@ -58,8 +59,8 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        animatorController.SetFloat("horizontalVelocity", myRB.velocity.x);
-        animatorController.SetFloat("verticalVelocity", myRB.velocity.y);
+        //animatorController.SetFloat("horizontalVelocity", myRB.velocity.x);
+        //animatorController.SetFloat("verticalVelocity", myRB.velocity.y);
         //animatorController.ResetTrigger("shoot");
         /*if (shootCooldownCounter >= 0f)
         {
@@ -83,22 +84,47 @@ public class Player : MonoBehaviour
                 this.transform.rotation = new Quaternion(0f, 0f, this.transform.rotation.z, this.transform.rotation.w);
                 animatorController.SetFloat("horizontalVelocity", myRB.velocity.x);
             }
+        
+            if (isGrounded && PlayerInput.HasPressedJumpKey())
+            {
+                isJumping = true;
+                jumpTimeCountdown = jumpTime;
+                myRB.velocity = new Vector2(myRB.velocity.x, jumpSpeed);
+            }
 
-            if (PlayerInput.HasPressedJumpKey())
+            if (isJumping && PlayerInput.HasHeldJumpKey())
+            {
+                if (jumpTimeCountdown > 0)
+                {
+                    myRB.velocity = new Vector2(myRB.velocity.x, jumpSpeed);
+                    jumpTimeCountdown -= Time.deltaTime;
+                }
+                else
+                {
+                    isJumping = false;
+                }
+            }
+            if (PlayerInput.HasReleasedJumpKey())
+            {
+               isJumping = false;
+            }
+                
+        
+            /*if (PlayerInput.HasPressedJumpKey())
             {
                 //Debug.Log("We pressed jump");
                 //Debug.Log("Grounded: " + isGrounded);
                 //Debug.Log("Bouncy Grounded: " + isOnBouncyGround);
                 if (isGrounded)
                 {
-                    //jumpSFX.Play();
-                    //myRB.AddForce(Vector2.up * jumpSpeed,ForceMode2D.Impulse);
-                    //myRB.velocity = new Vector2(myRB.velocity.x, jumpSpeed);
-                    //myRB.velocity = new Vector2(myRB.velocity.x, jumpSpeed);
+                //jumpSFX.Play();
+                //myRB.AddForce(Vector2.up * jumpSpeed,ForceMode2D.Impulse);
+                //myRB.velocity = new Vector2(myRB.velocity.x, jumpSpeed);
+                //myRB.velocity = new Vector2(myRB.velocity.x, jumpSpeed);
                     jumpSpeed = originalJumpSpeed;
                     jumpTimeCountdown = jumpTime;
                 }
-            }
+            }*/
             /*if (PlayerInput.HasPressedAttackKey())
             {
                 shotSFX.Play();
@@ -147,13 +173,13 @@ public class Player : MonoBehaviour
                 PauseMenu.Instance.ActivateMenu();
             }
 
-            if (jumpTimeCountdown > 0f)
+            /*if (jumpTimeCountdown > 0f)
             {
                 jumpTimeCountdown -= Time.deltaTime;
                 //myRB.gravityScale = 0;
                 myRB.velocity = new Vector2(myRB.velocity.x, jumpSpeed);
                 animatorController.SetFloat("verticalVelocity", Mathf.Abs(myRB.velocity.y));
-            }
+            }*/
         //}
     }
 

@@ -41,6 +41,15 @@ public class PlayerInput
     {
         return (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.O) || Input.GetKeyDown(KeyCode.Space));
     }
+    public static bool HasHeldJumpKey()
+    {
+        return (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.O) || Input.GetKey(KeyCode.Space));
+    }
+
+    public static bool HasReleasedJumpKey()
+    {
+        return (Input.GetKeyUp(KeyCode.UpArrow) || Input.GetKeyUp(KeyCode.W) || Input.GetKeyUp(KeyCode.O) || Input.GetKeyUp(KeyCode.Space));
+    }
 
     /*public static bool HasPressedDown()
     {

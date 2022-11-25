@@ -5,7 +5,7 @@ using UnityEngine;
 public class CameraController : MonoBehaviour
 {
     private Rigidbody2D theRB;
-
+    public float smoothDampTime;
     // Start is called before the first frame update
     void Start()
     {
@@ -20,7 +20,7 @@ public class CameraController : MonoBehaviour
             //Debug.Log("PLAYER EXISTS!");
 
             Vector2 currentVelocity = theRB.velocity;
-            theRB.position = Vector2.SmoothDamp(theRB.position, Player.Instance.gameObject.transform.position, ref currentVelocity, 0.015f, Mathf.Infinity, Time.deltaTime);
+            theRB.position = Vector2.SmoothDamp(theRB.position, Player.Instance.gameObject.transform.position, ref currentVelocity, smoothDampTime, Mathf.Infinity, Time.deltaTime);
             //Debug.Log("POSITION: " + theRB.position);
         }
     }
