@@ -16,6 +16,19 @@ public class Player : MonoBehaviour
     public float jumpTime;
     private float jumpTimeCountdown;
     private bool isJumping;
+    public float originalGravityScale;
+
+    //for attacking
+    //[SerializeField] private GameObject leftAttackHitbox;
+    [SerializeField] private GameObject rightAttackHitbox;
+    [SerializeField] private GameObject upAttackHitbox;
+    [SerializeField] private GameObject downAttackHitbox;
+    [SerializeField] private GameObject radialAttackHitbox;
+    private bool isHitting = false;
+    public float hitTime;
+
+
+
     //[SerializeField] private float bouncyJumpTimeModifier;
     //[SerializeField] private float bouncyJumpSpeedModifier;
 
@@ -50,6 +63,7 @@ public class Player : MonoBehaviour
         //essence = null;
         //jumpTimeCountdown = jumpTime;
         myRB = GetComponent<Rigidbody2D>();
+        myRB.gravityScale = originalGravityScale;
         boxCollider2D = GetComponent<BoxCollider2D>();
         //canPlay = true;
         checkpoint = this.gameObject.transform.position;
@@ -67,6 +81,10 @@ public class Player : MonoBehaviour
             shootCooldownCounter -= Time.deltaTime;
         }*/
         isGrounded = boxCollider2D.IsGrounded(myRB.position, this.transform.localScale.x);
+        if (isGrounded)
+        {
+            myRB.gravityScale = originalGravityScale;
+        }
         //myRB.velocity = new Vector2(0f, 0f);
         myRB.velocity = new Vector2(0f, myRB.velocity.y);
         //if (LevelManager.Instance.GetGameStartStatus() && !PauseMenu.Instance.Paused())
@@ -108,62 +126,92 @@ public class Player : MonoBehaviour
             {
                isJumping = false;
             }
-                
-        
-            /*if (PlayerInput.HasPressedJumpKey())
-            {
-                //Debug.Log("We pressed jump");
-                //Debug.Log("Grounded: " + isGrounded);
-                //Debug.Log("Bouncy Grounded: " + isOnBouncyGround);
-                if (isGrounded)
-                {
-                //jumpSFX.Play();
-                //myRB.AddForce(Vector2.up * jumpSpeed,ForceMode2D.Impulse);
-                //myRB.velocity = new Vector2(myRB.velocity.x, jumpSpeed);
-                //myRB.velocity = new Vector2(myRB.velocity.x, jumpSpeed);
-                    jumpSpeed = originalJumpSpeed;
-                    jumpTimeCountdown = jumpTime;
-                }
-            }*/
-            /*if (PlayerInput.HasPressedAttackKey())
-            {
-                shotSFX.Play();
-                lookDirection = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
-                lookAngle = Mathf.Atan2(lookDirection.y, lookDirection.x) * Mathf.Rad2Deg;
-                firePosition.rotation = Quaternion.Euler(0f, 0f, lookAngle - 90f);
-                GameObject firedBullet = Instantiate(bullet, firePosition.position, firePosition.rotation);
-                firedBullet.GetComponent<Rigidbody2D>().velocity = firePosition.up * firingSpeed;
 
-                //do something
-            }*/
 
-            /*if (PlayerInput.HasPressedAbsorbPlacementKey() && essence == null && shootCooldownCounter <= 0f)
+
+
+        /*if (PlayerInput.HasPressedJumpKey())
+        {
+            //Debug.Log("We pressed jump");
+            //Debug.Log("Grounded: " + isGrounded);
+            //Debug.Log("Bouncy Grounded: " + isOnBouncyGround);
+            if (isGrounded)
             {
-                shotSFX.Play();
-                animatorController.SetTrigger("shoot");
-                lookDirection = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
-                lookAngle = Mathf.Atan2(lookDirection.y, lookDirection.x) * Mathf.Rad2Deg;
-                firePosition.rotation = Quaternion.Euler(0f, 0f, lookAngle - 90f);
-                GameObject firedBullet = Instantiate(bullet, firePosition.position, firePosition.rotation);
-                firedBullet.GetComponent<Rigidbody2D>().velocity = firePosition.up * firingSpeed;
-                shootCooldownCounter = shootCooldown;
-                //do something
+            //jumpSFX.Play();
+            //myRB.AddForce(Vector2.up * jumpSpeed,ForceMode2D.Impulse);
+            //myRB.velocity = new Vector2(myRB.velocity.x, jumpSpeed);
+            //myRB.velocity = new Vector2(myRB.velocity.x, jumpSpeed);
+                jumpSpeed = originalJumpSpeed;
+                jumpTimeCountdown = jumpTime;
             }
+        }*/
+        /*if (PlayerInput.HasPressedAttackKey())
+        {
+            shotSFX.Play();
+            lookDirection = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
+            lookAngle = Mathf.Atan2(lookDirection.y, lookDirection.x) * Mathf.Rad2Deg;
+            firePosition.rotation = Quaternion.Euler(0f, 0f, lookAngle - 90f);
+            GameObject firedBullet = Instantiate(bullet, firePosition.position, firePosition.rotation);
+            firedBullet.GetComponent<Rigidbody2D>().velocity = firePosition.up * firingSpeed;
 
-            if (PlayerInput.HasPressedAbsorbPlacementKey() && essence != null && shootCooldownCounter <= 0f)
+            //do something
+        }*/
+
+        /*if (PlayerInput.HasPressedAbsorbPlacementKey() && essence == null && shootCooldownCounter <= 0f)
+        {
+            shotSFX.Play();
+            animatorController.SetTrigger("shoot");
+            lookDirection = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
+            lookAngle = Mathf.Atan2(lookDirection.y, lookDirection.x) * Mathf.Rad2Deg;
+            firePosition.rotation = Quaternion.Euler(0f, 0f, lookAngle - 90f);
+            GameObject firedBullet = Instantiate(bullet, firePosition.position, firePosition.rotation);
+            firedBullet.GetComponent<Rigidbody2D>().velocity = firePosition.up * firingSpeed;
+            shootCooldownCounter = shootCooldown;
+            //do something
+        }
+
+        if (PlayerInput.HasPressedAbsorbPlacementKey() && essence != null && shootCooldownCounter <= 0f)
+        {
+            shotSFX.Play();
+            animatorController.SetTrigger("shoot");
+            lookDirection = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
+            lookAngle = Mathf.Atan2(lookDirection.y, lookDirection.x) * Mathf.Rad2Deg;
+            firePosition.rotation = Quaternion.Euler(0f, 0f, lookAngle - 90f);
+            GameObject firedBullet = Instantiate(bullet, firePosition.position, firePosition.rotation);
+            firedBullet.GetComponent<Rigidbody2D>().velocity = firePosition.up * firingSpeed;
+            shootCooldownCounter = shootCooldown;
+            //do something
+        }*/
+            if(PlayerInput.HasPressedAttackKey() && isGrounded)
             {
-                shotSFX.Play();
-                animatorController.SetTrigger("shoot");
-                lookDirection = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
-                lookAngle = Mathf.Atan2(lookDirection.y, lookDirection.x) * Mathf.Rad2Deg;
-                firePosition.rotation = Quaternion.Euler(0f, 0f, lookAngle - 90f);
-                GameObject firedBullet = Instantiate(bullet, firePosition.position, firePosition.rotation);
-                firedBullet.GetComponent<Rigidbody2D>().velocity = firePosition.up * firingSpeed;
-                shootCooldownCounter = shootCooldown;
-                //do something
+                StartCoroutine(Hit(4));
+            }
+            if (PlayerInput.IsPressingUp() && PlayerInput.HasPressedAttackKey() && isGrounded)
+            {
+                StartCoroutine(Hit(1));
+            }
+            if (PlayerInput.IsPressingDown() && PlayerInput.HasPressedAttackKey() && isGrounded)
+            {
+                StartCoroutine(Hit(2));
+            }
+            /*if (PlayerInput.IsPressingLeft() && PlayerInput.HasPressedAttackKey() && isGrounded)
+            {
+                StartCoroutine(Hit(3));
             }*/
-
-            if (PlayerInput.HasPressedResetKey())
+            if ((PlayerInput.IsPressingRight() || PlayerInput.IsPressingLeft()) && PlayerInput.HasPressedAttackKey() && isGrounded)
+            {
+                StartCoroutine(Hit(4));
+            }
+            if(!isGrounded && PlayerInput.HasPressedAttackKey() && !PlayerInput.IsPressingDown())
+            {
+                StartCoroutine(Hit(5));
+            }
+            if(!isGrounded && PlayerInput.HasPressedAttackKey() && PlayerInput.IsPressingDown())
+            {
+                myRB.gravityScale = originalGravityScale * 2;
+                StartCoroutine(Hit(2));
+            }
+        if (PlayerInput.HasPressedResetKey())
             {
                 LevelManager.Instance.ResetToLastCheckPoint();
             }
@@ -181,6 +229,88 @@ public class Player : MonoBehaviour
                 animatorController.SetFloat("verticalVelocity", Mathf.Abs(myRB.velocity.y));
             }*/
         //}
+    }
+    private IEnumerator Hit(int hitBoxIndex)
+    {
+        /*if (isGrounded) //you are slashing on the ground and are not in the air and are not gliding
+        {
+            //set some animation for an attack on the ground
+        }
+        else if (!grounded && !gliding) //you are slashing while in the air and not gliding
+        {
+            DKanim.SetBool("slash", false);
+            DKanim.SetBool("glidingSlash", false);
+            DKanim.SetBool("jumpingSlash", true);
+        }
+        else if (!grounded && gliding) //you are slashing while in the air and gliding
+        {
+            DKanim.SetBool("slash", false);
+            DKanim.SetBool("glidingSlash", true);
+            DKanim.SetBool("jumpingSlash", false);
+        }*/
+        isHitting = true;       //set isHitting to true.
+        switch (hitBoxIndex)
+        {
+            case 1:
+                // Upwards attack
+                upAttackHitbox.SetActive(true);
+                break;
+            case 2:
+                //Downwards attack
+                downAttackHitbox.SetActive(true);
+                break;
+            /*case 3:
+                //Left attack
+                leftAttackHitbox.SetActive(true);
+                break;*/
+            case 4:
+                //Right attack
+                rightAttackHitbox.SetActive(true);
+                break;
+            case 5:
+                //radial attack
+                radialAttackHitbox.SetActive(true);
+                break;
+            default:
+                Debug.Log("AN ERROR HAS OCCURRED WHILE TRYING TO ATTACK");
+            // Statements to Execute if No Case Matches
+            break;
+        }
+        yield return new WaitForSeconds(hitTime);   //wait the established amount of seconds.
+
+        switch (hitBoxIndex)
+        {
+            case 1:
+                // Upwards attack
+                upAttackHitbox.SetActive(false);
+                break;
+            case 2:
+                //Downwards attack
+                downAttackHitbox.SetActive(false);
+                break;
+            /*case 3:
+                //Left attack
+                leftAttackHitbox.SetActive(false);
+                break;*/
+            case 4:
+                //Right attack
+                rightAttackHitbox.SetActive(false);
+                break;
+            case 5:
+                //radial attack
+                radialAttackHitbox.SetActive(false);
+                break;
+            default:
+                Debug.Log("AN ERROR HAS OCCURRED WHILE TRYING TO ATTACK");
+                // Statements to Execute if No Case Matches
+                break;
+        }
+        isHitting = false;                          //set isHitting to false.
+
+        /*DKanim.SetBool("slash", false);
+        DKanim.SetBool("glidingSlash", false);
+        DKanim.SetBool("jumpingSlash", false);*/
+
     }
 
     private void OnTriggerEnter2D(Collider2D other)

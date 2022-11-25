@@ -39,16 +39,21 @@ public class PlayerInput
 {
     public static bool HasPressedJumpKey()
     {
-        return (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.O) || Input.GetKeyDown(KeyCode.Space));
+        return (Input.GetKeyDown(KeyCode.Space));
     }
     public static bool HasHeldJumpKey()
     {
-        return (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.O) || Input.GetKey(KeyCode.Space));
+        return (Input.GetKey(KeyCode.Space));
     }
 
     public static bool HasReleasedJumpKey()
     {
-        return (Input.GetKeyUp(KeyCode.UpArrow) || Input.GetKeyUp(KeyCode.W) || Input.GetKeyUp(KeyCode.O) || Input.GetKeyUp(KeyCode.Space));
+        return (Input.GetKeyUp(KeyCode.Space));
+    }
+
+    public static bool HasPressedAttackKey()
+    {
+        return (Input.GetKeyUp(KeyCode.B));
     }
 
     /*public static bool HasPressedDown()
@@ -65,7 +70,14 @@ public class PlayerInput
     {
         return (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.Semicolon));
     }*/
-
+    public static bool IsPressingUp()
+    {
+        return (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.O));
+    }
+    public static bool IsPressingDown()
+    {
+        return (Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.L));
+    }
     public static bool IsPressingLeft()
     {
         return (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.K));
