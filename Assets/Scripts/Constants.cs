@@ -53,7 +53,7 @@ public class PlayerInput
 
     public static bool HasPressedAttackKey()
     {
-        return (Input.GetKeyUp(KeyCode.B));
+        return (Input.GetKeyDown(KeyCode.B));
     }
 
     /*public static bool HasPressedDown()
