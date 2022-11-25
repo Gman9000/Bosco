@@ -182,34 +182,39 @@ public class Player : MonoBehaviour
             shootCooldownCounter = shootCooldown;
             //do something
         }*/
-            if(PlayerInput.HasPressedAttackKey() && isGrounded)
+            if (!isHitting)
             {
-                StartCoroutine(Hit(4));
-            }
-            if (PlayerInput.IsPressingUp() && PlayerInput.HasPressedAttackKey() && isGrounded)
-            {
-                StartCoroutine(Hit(1));
-            }
-            if (PlayerInput.IsPressingDown() && PlayerInput.HasPressedAttackKey() && isGrounded)
-            {
-                StartCoroutine(Hit(2));
-            }
-            /*if (PlayerInput.IsPressingLeft() && PlayerInput.HasPressedAttackKey() && isGrounded)
-            {
-                StartCoroutine(Hit(3));
-            }*/
-            if ((PlayerInput.IsPressingRight() || PlayerInput.IsPressingLeft()) && PlayerInput.HasPressedAttackKey() && isGrounded)
-            {
-                StartCoroutine(Hit(4));
-            }
-            if(!isGrounded && PlayerInput.HasPressedAttackKey() && !PlayerInput.IsPressingDown())
-            {
-                StartCoroutine(Hit(5));
-            }
-            if(!isGrounded && PlayerInput.HasPressedAttackKey() && PlayerInput.IsPressingDown())
-            {
-                myRB.gravityScale = originalGravityScale * 2;
-                StartCoroutine(Hit(2));
+                if (PlayerInput.HasPressedAttackKey() && isGrounded && !PlayerInput.IsPressingUp() && !PlayerInput.IsPressingDown() && !PlayerInput.IsPressingRight())
+                {
+                    StartCoroutine(Hit(4));
+                }
+
+                if (PlayerInput.IsPressingUp() && PlayerInput.HasPressedAttackKey() && isGrounded)
+                {
+                    StartCoroutine(Hit(1));
+                }
+
+                else if (PlayerInput.IsPressingDown() && PlayerInput.HasPressedAttackKey() && isGrounded)
+                {
+                    StartCoroutine(Hit(2));
+                }
+                /*if (PlayerInput.IsPressingLeft() && PlayerInput.HasPressedAttackKey() && isGrounded)
+                {
+                    StartCoroutine(Hit(3));
+                }*/
+                else if ((PlayerInput.IsPressingRight() || PlayerInput.IsPressingLeft()) && PlayerInput.HasPressedAttackKey() && isGrounded)
+                {
+                    StartCoroutine(Hit(4));
+                }
+                if (!isGrounded && PlayerInput.HasPressedAttackKey() && !PlayerInput.IsPressingDown())
+                {
+                    StartCoroutine(Hit(5));
+                }
+                else if (!isGrounded && PlayerInput.HasPressedAttackKey() && PlayerInput.IsPressingDown())
+                {
+                    myRB.gravityScale = originalGravityScale * 2;
+                    StartCoroutine(Hit(2));
+                }
             }
         if (PlayerInput.HasPressedResetKey())
             {
