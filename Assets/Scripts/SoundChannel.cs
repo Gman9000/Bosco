@@ -4,13 +4,17 @@ using UnityEngine;
 
 public class SoundChannel : MonoBehaviour
 {
-    AudioSource src;
+    public AudioSource src;
     bool muteBgm = false;
     bool loopBgm = false;
     bool songPlaying = false;
 
     int bgmResumeSample = 0;
     int sfxSampleTime = 0;
+
+    Coroutine resumeBgm = null;
+
+    AudioClip bgm;
 
 
     void Awake()
@@ -24,13 +28,13 @@ public class SoundChannel : MonoBehaviour
         sfxSampleTime = 0;
 
         muteBgm = false;
-        src.clip = clip;
+        bgm = src.clip = clip;
         src.loop = loopBgm = loop;
         songPlaying = true;
         src.Play();
     }
 
-    public void PlaySfx(AudioClip clip)
+    public void PlaySfx(AudioClip sfxClip)
     {
         if (songPlaying)
         {
@@ -41,27 +45,40 @@ public class SoundChannel : MonoBehaviour
                 bgmResumeSample = src.timeSamples;
                 sfxSampleTime = 0;
             }
-            muteBgm = true;
-            StartCoroutine(ResumeBgm(src.clip));
-        }
 
-        src.loop = false;
-        src.clip = clip;
-        src.Play();
+            if (resumeBgm != null)
+            {
+                StopCoroutine(resumeBgm);
+            }
+
+            resumeBgm = StartCoroutine(ResumeBgm(sfxClip));
+        }
+        else
+        {
+            src.PlayOneShot(sfxClip);
+        }
     }
 
-    IEnumerator ResumeBgm(AudioClip bgm)
+    IEnumerator ResumeBgm(AudioClip sfx)
     {
-        yield return new WaitUntil(() => !src.isPlaying);
-
-        int resumeAtSamples = bgmResumeSample + sfxSampleTime + src.clip.samples;
-        src.clip = bgm;
-        src.timeSamples = resumeAtSamples;
-        src.loop = loopBgm;
-        muteBgm = false;
+        muteBgm = true;
+        src.loop = false;
+        src.clip = sfx;
+        src.timeSamples = 0;
         src.Play();
 
+        yield return new WaitUntil(() => !src.isPlaying);
+
+        int resumeAtSamples = SoundSystem.songPositionSamples;    
+        src.clip = bgm;
+        src.loop = loopBgm;
+        muteBgm = false;
+        src.timeSamples = resumeAtSamples;
         sfxSampleTime = 0;
+        src.Play();
+
+
+        resumeBgm = null;
         yield break;
     }
 }

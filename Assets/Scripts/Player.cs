@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    public AudioClip[] sfx_swordSide;
+    private int consecutiveHits = 0;
+
     public static Player Instance { get; protected set; }
     private Rigidbody2D myRB;
     public float moveSpeed;
@@ -27,6 +30,11 @@ public class Player : MonoBehaviour
     [SerializeField] private GameObject radialAttackHitbox;
     private bool isHitting = false;
     public float hitTime;
+    public float hitCooldown;   // should be less than hit time
+    public float hitComboWindow;   // should be less than hit time
+    public float comboCooldown;
+    private float hitTimeStamp = 0; // the time when the player attacked
+
 
 
 
@@ -193,49 +201,19 @@ public class Player : MonoBehaviour
             shootCooldownCounter = shootCooldown;
             //do something
         }*/
-            if (!isHitting)
-            {
-                if (PlayerInput.HasPressedAttackKey() && isGrounded && !PlayerInput.IsPressingUp() && !PlayerInput.IsPressingDown() && !PlayerInput.IsPressingRight())
-                {
-                    StartCoroutine(Hit(4));
-                }
 
-                if (PlayerInput.IsPressingUp() && PlayerInput.HasPressedAttackKey() && isGrounded)
-                {
-                    StartCoroutine(Hit(1));
-                }
+        AttackInputs();
 
-                else if (PlayerInput.IsPressingDown() && PlayerInput.HasPressedAttackKey() && isGrounded)
-                {
-                    StartCoroutine(Hit(2));
-                }
-                /*if (PlayerInput.IsPressingLeft() && PlayerInput.HasPressedAttackKey() && isGrounded)
-                {
-                    StartCoroutine(Hit(3));
-                }*/
-                else if ((PlayerInput.IsPressingRight() || PlayerInput.IsPressingLeft()) && PlayerInput.HasPressedAttackKey() && isGrounded)
-                {
-                    StartCoroutine(Hit(4));
-                }
-                if (!isGrounded && PlayerInput.HasPressedAttackKey() && !PlayerInput.IsPressingDown())
-                {
-                    StartCoroutine(Hit(5));
-                }
-                else if (!isGrounded && PlayerInput.HasPressedAttackKey() && PlayerInput.IsPressingDown())
-                {
-                    myRB.gravityScale = originalGravityScale * DownThrustGravityModifier;
-                    StartCoroutine(Hit(2));
-                }
-            }
+
         if (PlayerInput.HasPressedResetKey())
-            {
-                LevelManager.Instance.ResetToLastCheckPoint();
-            }
+        {
+            LevelManager.Instance.ResetToLastCheckPoint();
+        }
 
-            if (PlayerInput.HasPressedEscapeKey())
-            {
-                PauseMenu.Instance.ActivateMenu();
-            }
+        if (PlayerInput.HasPressedEscapeKey())
+        {
+            PauseMenu.Instance.ActivateMenu();
+        }
 
             /*if (jumpTimeCountdown > 0f)
             {
@@ -256,8 +234,74 @@ public class Player : MonoBehaviour
 
         //CameraController.CameraUpdate();
     }
+
+    private void AttackInputs()
+    {
+        if (consecutiveHits >= 3 && Time.time - hitTimeStamp >= comboCooldown)
+            {
+                consecutiveHits = 0;
+            }
+
+            
+            if (PlayerInput.HasPressedAttackKey() && Time.time - hitTimeStamp > hitCooldown)
+            {
+                if (isGrounded) // if grounded
+                {
+                    if (PlayerInput.IsPressingUp() )
+                    {
+                        StartCoroutine(Hit(1));
+                        SoundSystem.PlaySfx(sfx_swordSide[0], 4);   //play attack sfx
+                    }
+                    else
+                    {                        
+                        if (consecutiveHits < 3)
+                        {
+                            if (Time.time - hitTimeStamp < hitComboWindow)
+                                consecutiveHits++;
+                            else
+                                consecutiveHits = 1;
+                            
+                            StartCoroutine(Hit(4));
+                            SoundSystem.PlaySfx(sfx_swordSide[consecutiveHits - 1], 4);   //play attack sfx
+                        }
+                        else
+                            return;
+                        
+                    }
+                }
+                else
+                {
+                    if (PlayerInput.IsPressingDown())
+                    {
+                        myRB.gravityScale = originalGravityScale * DownThrustGravityModifier;
+                        StartCoroutine(Hit(2));
+                        SoundSystem.PlaySfx(sfx_swordSide[0], 4);   //play attack sfx
+                    }
+                    else
+                    {
+                        StartCoroutine(Hit(5));
+                        SoundSystem.PlaySfx(sfx_swordSide[0], 4);   //play attack sfx
+                    }
+                }
+
+                
+                hitTimeStamp = Time.time;
+
+                /*if (PlayerInput.IsPressingLeft() && PlayerInput.HasPressedAttackKey() && isGrounded)
+                {
+                    StartCoroutine(Hit(3));
+                }*/
+                /*else if ((PlayerInput.IsPressingRight() || PlayerInput.IsPressingLeft()) && PlayerInput.HasPressedAttackKey() && isGrounded)
+                {
+                    StartCoroutine(Hit(4));
+                }*/
+            }
+    }
+
     private IEnumerator Hit(int hitBoxIndex)
     {
+
+
         /*if (isGrounded) //you are slashing on the ground and are not in the air and are not gliding
         {
             //set some animation for an attack on the ground
@@ -274,7 +318,11 @@ public class Player : MonoBehaviour
             DKanim.SetBool("glidingSlash", true);
             DKanim.SetBool("jumpingSlash", false);
         }*/
+
+
         isHitting = true;       //set isHitting to true.
+
+            
         switch (hitBoxIndex)
         {
             case 1:
@@ -302,6 +350,9 @@ public class Player : MonoBehaviour
             // Statements to Execute if No Case Matches
             break;
         }
+
+
+
         yield return new WaitForSeconds(hitTime);   //wait the established amount of seconds.
 
         switch (hitBoxIndex)

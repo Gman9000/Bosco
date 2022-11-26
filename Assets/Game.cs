@@ -8,8 +8,7 @@ public class Game : MonoBehaviour
     public static float gameTime = 0.0F;    // the time counter used for game logic and custom movement functions
     void Update()
     {
-        gameTime += Time.deltaTime * 10.0F;
-        Debug.Log(gameTime);
+        gameTime += Time.deltaTime;
     }
 
 

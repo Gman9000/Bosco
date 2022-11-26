@@ -101,7 +101,7 @@ public class FlyingEnemy : MonoBehaviour
             Motion(directionOfTravel, speedMod);
         }
 
-        this.transform.position += Vector3.up * Game.PingPong(Game.gameTime * .6F) * Game.PIXEL / 4.0f * 1000F * Time.deltaTime;
+        this.transform.position += Vector3.up * Game.PingPong(Game.gameTime * 7F) * Game.PIXEL / 4.0f * 800F * Time.deltaTime;
         
         
 
@@ -121,7 +121,7 @@ public class FlyingEnemy : MonoBehaviour
             StartCoroutine(ShootProjectile());
         }
 
-        if (Game.gameTime - lastPlayerPosTime > 5)
+        if (Game.gameTime - lastPlayerPosTime > .5)
         {
             lastPlayerPosTime = Game.gameTime;
             directionMemory = (Vector2)(playerVector - transform.position).normalized;
