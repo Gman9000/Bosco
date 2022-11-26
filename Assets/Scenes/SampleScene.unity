@@ -427,15 +427,14 @@ MonoBehaviour:
   waypoint01: {fileID: 1798820933}
   waypoint02: {fileID: 1593101813}
   projectilePrefab: {fileID: 735789301461741650, guid: ab2c2473e0aa0594caa8fe15e70ee0f0, type: 3}
-  speed: 5
+  speed: 2.5
   followDistance: 5
-  shootDistance: 2
   enemyWidth: 1
   enemyHealth: 1
   fireRate: 2
   flyingAnim: {fileID: 454829843}
   deathTimer: 0
-  xDistanceShootingLeniency: 0.05
+  directionMemory: {x: 0, y: 0}
 --- !u!212 &454829845
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -639,6 +638,7 @@ GameObject:
   - component: {fileID: 519420030}
   - component: {fileID: 519420033}
   - component: {fileID: 519420034}
+  - component: {fileID: 519420035}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -765,6 +765,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   smoothDampTime: 0
+--- !u!114 &519420035
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 519420028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b403f06eeefbaf49b4a704e5c22f334, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &572082981
 GameObject:
   m_ObjectHideFlags: 0
@@ -1859,7 +1871,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 48e93eef0688c4a259cb0eddcd8661f7, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.5754717, g: 0.5754717, b: 0.5754717, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -2903,7 +2915,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1886422494}
   m_Layer: 0
-  m_Name: Flying Enemy
+  m_Name: Flying Zat
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
