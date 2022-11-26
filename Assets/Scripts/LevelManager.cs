@@ -30,8 +30,6 @@ public class LevelManager : MonoBehaviour
     }*/
 
 
-
-
     public void ResetToLastCheckPoint()
     {
         Player.Instance.ResetToLastCheckPoint();

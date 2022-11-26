@@ -6,8 +6,8 @@ public class FlyingEnemy : MonoBehaviour
 {
     //[SerializeField] private Rigidbody2D rigidBody;      //enemy rigidBody
     private GameObject playerTarget;    //player character
-    //[SerializeField] private GameObject waypoint01;      //first waypoint
-    //[SerializeField] private GameObject waypoint02;      //second waypoint
+    [SerializeField] private GameObject waypoint01;      //first waypoint
+    [SerializeField] private GameObject waypoint02;      //second waypoint
     //[SerializeField] private GameObject firingPosition;  //position that projectiles are created.
     [SerializeField] private GameObject projectilePrefab;      //bullet prefab
     private GameObject currentWaypoint;
@@ -24,6 +24,10 @@ public class FlyingEnemy : MonoBehaviour
     //private CircleCollider2D CircleCollider2D;
     //private Rigidbody2D myRB;
 
+    private float lastPlayerPosTime = 0;
+
+    public Vector2 directionMemory;
+    
     private void Awake()
     {
         playerTarget = GameObject.FindWithTag("Player");
@@ -33,80 +37,82 @@ public class FlyingEnemy : MonoBehaviour
 
     void Start()
     {
-        //currentWaypoint = waypoint01;   //set the first waypoint.
+        currentWaypoint = waypoint01;   //set the first waypoint.
     }
 
     void Update()
     {
         //isDetectingPlayer = CircleCollider2D.IsDetectingThePlayer(this.transform.position, this.transform.localScale.x, distance);
-        if ((Vector2.Distance(transform.position, playerTarget.transform.position) <= followDistance))
+
+        bool waypointMode = Vector2.Distance(transform.position, playerTarget.transform.position) > followDistance;
+        float speedMod = waypointMode ? speed : speed * 2; 
+
+        Vector3 playerVector = (Vector2)playerTarget.transform.position + Vector2.up * 3.0F;
+        directionMemory.y = playerVector.y - transform.position.y;
+
+
+        if (waypointMode)
         {
-            Vector3 directionOfTravel = new Vector3 (playerTarget.transform.position.x,0f,0f) - new Vector3 (transform.position.x,0f,0f);
-            directionOfTravel.Normalize();
-            Vector3 enemyDirection = transform.localScale;
-
-            if (transform.position.x < playerTarget.transform.position.x)
+            if (Vector2.Distance(transform.position, currentWaypoint.transform.position) > 1f)
             {
+                Vector3 directionOfTravel = currentWaypoint.transform.position - transform.position;
+                directionOfTravel.Normalize();
 
-                enemyDirection.x = enemyWidth;
+                Vector3 enemyDirection = transform.localScale;
+
+                if (transform.position.x < currentWaypoint.transform.position.x)
+                {
+                    enemyDirection.x = enemyWidth;
+                }
+
+                else if (transform.position.x > currentWaypoint.transform.position.x)
+                {
+                    enemyDirection.x = -enemyWidth;
+                }
+
+                transform.localScale = enemyDirection;
+                Motion(directionOfTravel, speedMod);
+                
             }
-
-            else if (transform.position.x > playerTarget.transform.position.x)
+            else
             {
-
-                enemyDirection.x = -enemyWidth;
-            }
-            transform.localScale = enemyDirection;
-
-            if (this.transform.position.x <= (0.99 * playerTarget.transform.position.x) || this.transform.position.x >= (1.01 * playerTarget.transform.position.x))
-            {
-                this.transform.Translate(
-                    directionOfTravel.x * speed * Time.deltaTime,
-                    directionOfTravel.y * speed * Time.deltaTime,
-                    directionOfTravel.z * speed * Time.deltaTime,
-                    Space.World);
+                if (currentWaypoint == waypoint01) currentWaypoint = waypoint02;
+                else currentWaypoint = waypoint01;
             }
         }
-        /*if (Vector2.Distance(transform.position, currentWaypoint.transform.position) > 1f)
+        else
         {
-            Vector3 directionOfTravel = currentWaypoint.transform.position - transform.position;
-            directionOfTravel.Normalize();
-
+            Vector3 directionOfTravel = directionMemory;
             Vector3 enemyDirection = transform.localScale;
 
-            if (transform.position.x < currentWaypoint.transform.position.x)
+            if (directionOfTravel.x > 0)
             {
-
                 enemyDirection.x = enemyWidth;
             }
 
-            else if (transform.position.x > currentWaypoint.transform.position.x)
+            else if (directionOfTravel.x < 0)
             {
-
                 enemyDirection.x = -enemyWidth;
             }
 
             transform.localScale = enemyDirection;
 
-            this.transform.Translate(
-                directionOfTravel.x * speed * Time.deltaTime,
-                directionOfTravel.y * speed * Time.deltaTime,
-                directionOfTravel.z * speed * Time.deltaTime,
-                Space.World);
-        }*/
+   
+            Motion(directionOfTravel, speedMod);
+        }
+
+        this.transform.position += Vector3.up * Game.PingPong(Game.gameTime * .6F) * Game.PIXEL / 4.0f * 1000F * Time.deltaTime;
+        
+        
 
         //otherwise, switch waypoints.
-        /*else
-        {
-            if (currentWaypoint == waypoint01) currentWaypoint = waypoint02;
-            else currentWaypoint = waypoint01;
-        }*/
+        
 
         //if the player is close enough, shoot a projectile.
         //if ((Vector2.Distance(transform.position, playerTarget.transform.position) < shootDistance) && (!isShooting))
         
         //if ( (playerTarget.transform.position.x == this.transform.position.x)
-        if ( this.transform.position.x >= (0.95 * playerTarget.transform.position.x)  && this.transform.position.x <= (1.05 * playerTarget.transform.position.x)
+        if ( this.transform.position.x >= (playerVector.x - 2)  && this.transform.position.x <= (playerVector.x + 2)
             && (!isShooting)
             )
         {
@@ -114,7 +120,25 @@ public class FlyingEnemy : MonoBehaviour
             //Debug.Log("Enemy x: " + transform.position.x);
             StartCoroutine(ShootProjectile());
         }
+
+        if (Game.gameTime - lastPlayerPosTime > 5)
+        {
+            lastPlayerPosTime = Game.gameTime;
+            directionMemory = (Vector2)(playerVector - transform.position).normalized;
+        }
+        
     }
+
+    public void Motion(Vector3 directionOfTravel, float speed)
+    {
+        this.transform.Translate(
+            directionOfTravel.x * speed * Time.deltaTime,
+            directionOfTravel.y * speed * Time.deltaTime,
+            directionOfTravel.z * speed * Time.deltaTime,
+            Space.World);
+    }
+
+
     // Update is called once per frame
     /*void FixedUpdate()
     {
