@@ -57,11 +57,15 @@ public class FlyingEnemy : MonoBehaviour
                 enemyDirection.x = -enemyWidth;
             }
             transform.localScale = enemyDirection;
-            this.transform.Translate(
-                directionOfTravel.x * speed * Time.deltaTime,
-                directionOfTravel.y * speed * Time.deltaTime,
-                directionOfTravel.z * speed * Time.deltaTime,
-                Space.World);
+
+            if (this.transform.position.x <= (0.99 * playerTarget.transform.position.x) || this.transform.position.x >= (1.01 * playerTarget.transform.position.x))
+            {
+                this.transform.Translate(
+                    directionOfTravel.x * speed * Time.deltaTime,
+                    directionOfTravel.y * speed * Time.deltaTime,
+                    directionOfTravel.z * speed * Time.deltaTime,
+                    Space.World);
+            }
         }
         /*if (Vector2.Distance(transform.position, currentWaypoint.transform.position) > 1f)
         {
