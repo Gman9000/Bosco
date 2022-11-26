@@ -57,6 +57,9 @@ public class Player : MonoBehaviour
 
     //for groundChecks
     bool isGrounded;
+    bool isHittingCeiling;
+    bool IsHittingRightWall;
+    bool IsHittingLeftWall;
     // Start is called before the first frame update
     void Awake()
     {
@@ -82,6 +85,9 @@ public class Player : MonoBehaviour
             shootCooldownCounter -= Time.deltaTime;
         }*/
         isGrounded = boxCollider2D.IsGrounded(myRB.position, this.transform.localScale.x);
+        isHittingCeiling = boxCollider2D.IsHittingCeiling(myRB.position, this.transform.localScale.x);
+        IsHittingRightWall = boxCollider2D.IsHittingRightWall(myRB.position, this.transform.localScale.x);
+        IsHittingLeftWall = boxCollider2D.IsHittingLeftWall(myRB.position, this.transform.localScale.x);
         if (isGrounded)
         {
             myRB.gravityScale = originalGravityScale;
@@ -117,6 +123,10 @@ public class Player : MonoBehaviour
                 {
                     myRB.velocity = new Vector2(myRB.velocity.x, jumpSpeed);
                     jumpTimeCountdown -= Time.deltaTime;
+                    if (isHittingCeiling)
+                    {
+                        jumpTimeCountdown = 0;
+                    }
                 }
                 else
                 {
