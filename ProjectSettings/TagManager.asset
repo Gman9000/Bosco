@@ -9,6 +9,7 @@ TagManager:
   - Attack
   - Door
   - Candle
+  - PlayerAttack
   layers:
   - Default
   - TransparentFX

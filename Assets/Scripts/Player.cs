@@ -35,6 +35,9 @@ public class Player : MonoBehaviour
     public float comboCooldown;
     private float hitTimeStamp = 0; // the time when the player attacked
 
+    //health stuff
+    public float maxhealth;
+    private float currentHealth;
 
 
 
@@ -71,6 +74,7 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
+        currentHealth = maxhealth;
         //shootCooldownCounter = 0f;
         //essence = null;
         //jumpTimeCountdown = jumpTime;
@@ -235,6 +239,16 @@ public class Player : MonoBehaviour
         //CameraController.CameraUpdate();
     }
 
+    public void TakeDamage()
+    {
+        currentHealth--;
+        if(currentHealth <= 0)
+        {
+            //for now this is death
+            ResetToLastCheckPoint();
+        }
+    }
+    
     private void AttackInputs()
     {
         if (consecutiveHits >= 3 && Time.time - hitTimeStamp >= comboCooldown)

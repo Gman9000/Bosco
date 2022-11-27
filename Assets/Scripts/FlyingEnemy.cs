@@ -39,11 +39,10 @@ public class FlyingEnemy : MonoBehaviour
     {
         currentWaypoint = waypoint01;   //set the first waypoint.
     }
-
+    
     void Update()
     {
         //isDetectingPlayer = CircleCollider2D.IsDetectingThePlayer(this.transform.position, this.transform.localScale.x, distance);
-
         bool waypointMode = Vector2.Distance(transform.position, playerTarget.transform.position) > followDistance;
         float speedMod = waypointMode ? speed : speed * 2; 
 
@@ -62,12 +61,12 @@ public class FlyingEnemy : MonoBehaviour
 
                 if (transform.position.x < currentWaypoint.transform.position.x)
                 {
-                    enemyDirection.x = enemyWidth;
+                    enemyDirection.x = -enemyWidth;
                 }
 
                 else if (transform.position.x > currentWaypoint.transform.position.x)
                 {
-                    enemyDirection.x = -enemyWidth;
+                    enemyDirection.x = enemyWidth;
                 }
 
                 transform.localScale = enemyDirection;
@@ -87,12 +86,12 @@ public class FlyingEnemy : MonoBehaviour
 
             if (directionOfTravel.x > 0)
             {
-                enemyDirection.x = enemyWidth;
+                enemyDirection.x = -enemyWidth;
             }
 
             else if (directionOfTravel.x < 0)
             {
-                enemyDirection.x = -enemyWidth;
+                enemyDirection.x = enemyWidth;
             }
 
             transform.localScale = enemyDirection;
@@ -137,54 +136,14 @@ public class FlyingEnemy : MonoBehaviour
             directionOfTravel.z * speed * Time.deltaTime,
             Space.World);
     }
-
-
-    // Update is called once per frame
-    /*void FixedUpdate()
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        //if the enemy is not at the intended waypoint, move towards it and change direction to face it if need be.
-        if (Vector2.Distance(transform.position, currentWaypoint.transform.position) > 1f)
+        if (other.CompareTag("PlayerAttack"))
         {
-            Vector3 directionOfTravel = currentWaypoint.transform.position - transform.position;
-            directionOfTravel.Normalize();
-
-            Vector3 enemyDirection = transform.localScale;
-
-            if (transform.position.x < currentWaypoint.transform.position.x)
-            {
-
-                enemyDirection.x = enemyWidth;
-            }
-
-            else if (transform.position.x > currentWaypoint.transform.position.x)
-            {
-
-                enemyDirection.x = -enemyWidth;
-            }
-
-            transform.localScale = enemyDirection;
-
-            this.transform.Translate(
-                directionOfTravel.x * speed * Time.deltaTime,
-                directionOfTravel.y * speed * Time.deltaTime,
-                directionOfTravel.z * speed * Time.deltaTime,
-                Space.World);
+            //KILL THIS ENEMY
+            gameObject.SetActive(false);
         }
-
-        //otherwise, switch waypoints.
-        else
-        {
-            if (currentWaypoint == waypoint01) currentWaypoint = waypoint02;
-            else currentWaypoint = waypoint01;
-        }
-
-        //if the player is close enough, shoot a projectile.
-        //if ((Vector2.Distance(transform.position, playerTarget.transform.position) < distance) && (!isShooting))
-        if (isDetectingPlayer && !isShooting)
-        {
-            StartCoroutine(ShootProjectile());
-        }
-    }*/
+    }
 
     private IEnumerator ShootProjectile()
     {
