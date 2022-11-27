@@ -369,9 +369,9 @@ GameObject:
   - component: {fileID: 203460454}
   - component: {fileID: 203460453}
   - component: {fileID: 203460456}
-  - component: {fileID: 203460455}
   - component: {fileID: 203460457}
-  m_Layer: 0
+  - component: {fileID: 203460458}
+  m_Layer: 8
   m_Name: HiddenEntrance
   m_TagString: Hidden
   m_Icon: {fileID: 0}
@@ -444,32 +444,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!61 &203460455
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 203460452}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
-    newSize: {x: 1, y: 1}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1}
-  m_EdgeRadius: 0
 --- !u!61 &203460456
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -508,8 +482,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2af323180f551744983006f2d65f6358, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  explosionRadius: {fileID: 1660190138}
   waitTime: 0.5
+  adjacentHiddenEntrances: []
+  delayTime: 0.5
+  canBeHitByPlayer: 0
+--- !u!50 &203460458
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 203460452}
+  m_BodyType: 2
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &228415811
 GameObject:
   m_ObjectHideFlags: 0
@@ -643,9 +640,9 @@ GameObject:
   - component: {fileID: 236557434}
   - component: {fileID: 236557433}
   - component: {fileID: 236557432}
-  - component: {fileID: 236557431}
   - component: {fileID: 236557430}
-  m_Layer: 0
+  - component: {fileID: 236557435}
+  m_Layer: 8
   m_Name: HiddenEntrance (5)
   m_TagString: Hidden
   m_Icon: {fileID: 0}
@@ -664,34 +661,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2af323180f551744983006f2d65f6358, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  explosionRadius: {fileID: 1833925481}
   waitTime: 0.5
---- !u!61 &236557431
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 236557429}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
-    newSize: {x: 1, y: 1}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1}
-  m_EdgeRadius: 0
+  adjacentHiddenEntrances: []
+  delayTime: 0.5
+  canBeHitByPlayer: 0
 --- !u!61 &236557432
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -784,6 +757,27 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 17
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!50 &236557435
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 236557429}
+  m_BodyType: 2
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &255996235
 GameObject:
   m_ObjectHideFlags: 0
@@ -794,7 +788,6 @@ GameObject:
   m_Component:
   - component: {fileID: 255996237}
   - component: {fileID: 255996236}
-  - component: {fileID: 255996238}
   m_Layer: 0
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
@@ -832,27 +825,6 @@ Transform:
   m_Father: {fileID: 1215900231}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!50 &255996238
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 255996235}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!1 &293962184
 GameObject:
   m_ObjectHideFlags: 0
@@ -864,10 +836,10 @@ GameObject:
   - component: {fileID: 293962189}
   - component: {fileID: 293962188}
   - component: {fileID: 293962187}
-  - component: {fileID: 293962186}
   - component: {fileID: 293962185}
-  m_Layer: 0
-  m_Name: HiddenEntrance (3)
+  - component: {fileID: 293962190}
+  m_Layer: 8
+  m_Name: TriggeringHiddenEntrance (3)
   m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -885,34 +857,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2af323180f551744983006f2d65f6358, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  explosionRadius: {fileID: 314567244}
   waitTime: 0.5
---- !u!61 &293962186
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 293962184}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
-    newSize: {x: 1, y: 1}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1}
-  m_EdgeRadius: 0
+  adjacentHiddenEntrances:
+  - {fileID: 203460457}
+  - {fileID: 1018177512}
+  - {fileID: 419223996}
+  - {fileID: 236557430}
+  - {fileID: 1215900227}
+  - {fileID: 1725457192}
+  - {fileID: 990872664}
+  delayTime: 0.5
+  canBeHitByPlayer: 1
 --- !u!61 &293962187
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1005,6 +960,27 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 15
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!50 &293962190
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 293962184}
+  m_BodyType: 2
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &309114489
 GameObject:
   m_ObjectHideFlags: 0
@@ -1045,7 +1021,6 @@ GameObject:
   m_Component:
   - component: {fileID: 314567246}
   - component: {fileID: 314567245}
-  - component: {fileID: 314567247}
   m_Layer: 0
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
@@ -1083,27 +1058,6 @@ Transform:
   m_Father: {fileID: 293962189}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!50 &314567247
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 314567244}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!1 &387127887
 GameObject:
   m_ObjectHideFlags: 0
@@ -1114,7 +1068,6 @@ GameObject:
   m_Component:
   - component: {fileID: 387127889}
   - component: {fileID: 387127888}
-  - component: {fileID: 387127890}
   m_Layer: 0
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
@@ -1152,27 +1105,6 @@ Transform:
   m_Father: {fileID: 990872668}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!50 &387127890
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 387127887}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!1 &397917089
 GameObject:
   m_ObjectHideFlags: 0
@@ -1183,7 +1115,6 @@ GameObject:
   m_Component:
   - component: {fileID: 397917091}
   - component: {fileID: 397917090}
-  - component: {fileID: 397917092}
   m_Layer: 0
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
@@ -1221,27 +1152,6 @@ Transform:
   m_Father: {fileID: 1018177516}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!50 &397917092
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 397917089}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!1 &416068516
 GameObject:
   m_ObjectHideFlags: 0
@@ -1310,9 +1220,9 @@ GameObject:
   - component: {fileID: 419224000}
   - component: {fileID: 419223999}
   - component: {fileID: 419223998}
-  - component: {fileID: 419223997}
   - component: {fileID: 419223996}
-  m_Layer: 0
+  - component: {fileID: 419224001}
+  m_Layer: 8
   m_Name: HiddenEntrance (1)
   m_TagString: Hidden
   m_Icon: {fileID: 0}
@@ -1331,34 +1241,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2af323180f551744983006f2d65f6358, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  explosionRadius: {fileID: 1985399131}
   waitTime: 0.5
---- !u!61 &419223997
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 419223995}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
-    newSize: {x: 1, y: 1}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1}
-  m_EdgeRadius: 0
+  adjacentHiddenEntrances: []
+  delayTime: 0.5
+  canBeHitByPlayer: 0
 --- !u!61 &419223998
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1451,6 +1337,27 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!50 &419224001
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 419223995}
+  m_BodyType: 2
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &454829841
 GameObject:
   m_ObjectHideFlags: 0
@@ -3043,7 +2950,6 @@ GameObject:
   m_Component:
   - component: {fileID: 865340219}
   - component: {fileID: 865340218}
-  - component: {fileID: 865340220}
   m_Layer: 0
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
@@ -3081,27 +2987,6 @@ Transform:
   m_Father: {fileID: 1725457196}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!50 &865340220
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 865340217}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!1 &884861523
 GameObject:
   m_ObjectHideFlags: 0
@@ -3487,9 +3372,9 @@ GameObject:
   - component: {fileID: 990872668}
   - component: {fileID: 990872667}
   - component: {fileID: 990872666}
-  - component: {fileID: 990872665}
   - component: {fileID: 990872664}
-  m_Layer: 0
+  - component: {fileID: 990872669}
+  m_Layer: 8
   m_Name: HiddenEntrance (2)
   m_TagString: Hidden
   m_Icon: {fileID: 0}
@@ -3508,34 +3393,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2af323180f551744983006f2d65f6358, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  explosionRadius: {fileID: 387127887}
   waitTime: 0.5
---- !u!61 &990872665
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 990872663}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
-    newSize: {x: 1, y: 1}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1}
-  m_EdgeRadius: 0
+  adjacentHiddenEntrances: []
+  delayTime: 0.5
+  canBeHitByPlayer: 0
 --- !u!61 &990872666
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -3628,6 +3489,27 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!50 &990872669
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 990872663}
+  m_BodyType: 2
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &1018177511
 GameObject:
   m_ObjectHideFlags: 0
@@ -3639,9 +3521,9 @@ GameObject:
   - component: {fileID: 1018177516}
   - component: {fileID: 1018177515}
   - component: {fileID: 1018177514}
-  - component: {fileID: 1018177513}
   - component: {fileID: 1018177512}
-  m_Layer: 0
+  - component: {fileID: 1018177517}
+  m_Layer: 8
   m_Name: HiddenEntrance (4)
   m_TagString: Hidden
   m_Icon: {fileID: 0}
@@ -3660,34 +3542,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2af323180f551744983006f2d65f6358, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  explosionRadius: {fileID: 397917089}
   waitTime: 0.5
---- !u!61 &1018177513
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1018177511}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
-    newSize: {x: 1, y: 1}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1}
-  m_EdgeRadius: 0
+  adjacentHiddenEntrances: []
+  delayTime: 0.5
+  canBeHitByPlayer: 0
 --- !u!61 &1018177514
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -3780,6 +3638,27 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 16
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!50 &1018177517
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1018177511}
+  m_BodyType: 2
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &1104346638
 GameObject:
   m_ObjectHideFlags: 0
@@ -4241,9 +4120,9 @@ GameObject:
   - component: {fileID: 1215900231}
   - component: {fileID: 1215900230}
   - component: {fileID: 1215900229}
-  - component: {fileID: 1215900228}
   - component: {fileID: 1215900227}
-  m_Layer: 0
+  - component: {fileID: 1215900232}
+  m_Layer: 8
   m_Name: HiddenEntrance (6)
   m_TagString: Hidden
   m_Icon: {fileID: 0}
@@ -4262,34 +4141,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2af323180f551744983006f2d65f6358, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  explosionRadius: {fileID: 255996235}
   waitTime: 0.5
---- !u!61 &1215900228
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1215900226}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
-    newSize: {x: 1, y: 1}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1}
-  m_EdgeRadius: 0
+  adjacentHiddenEntrances: []
+  delayTime: 0.5
+  canBeHitByPlayer: 0
 --- !u!61 &1215900229
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -4382,6 +4237,27 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 18
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!50 &1215900232
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1215900226}
+  m_BodyType: 2
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &1225457766
 GameObject:
   m_ObjectHideFlags: 0
@@ -5521,9 +5397,9 @@ GameObject:
   - component: {fileID: 1725457196}
   - component: {fileID: 1725457195}
   - component: {fileID: 1725457194}
-  - component: {fileID: 1725457193}
   - component: {fileID: 1725457192}
-  m_Layer: 0
+  - component: {fileID: 1725457197}
+  m_Layer: 8
   m_Name: HiddenEntrance (7)
   m_TagString: Hidden
   m_Icon: {fileID: 0}
@@ -5542,34 +5418,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2af323180f551744983006f2d65f6358, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  explosionRadius: {fileID: 865340217}
   waitTime: 0.5
---- !u!61 &1725457193
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1725457191}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
-    newSize: {x: 1, y: 1}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1}
-  m_EdgeRadius: 0
+  adjacentHiddenEntrances: []
+  delayTime: 0.5
+  canBeHitByPlayer: 0
 --- !u!61 &1725457194
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -5662,6 +5514,27 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 19
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!50 &1725457197
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1725457191}
+  m_BodyType: 2
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &1760266081
 GameObject:
   m_ObjectHideFlags: 0
@@ -5968,7 +5841,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1833925483}
   - component: {fileID: 1833925482}
-  - component: {fileID: 1833925484}
   m_Layer: 0
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
@@ -6006,27 +5878,6 @@ Transform:
   m_Father: {fileID: 236557434}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!50 &1833925484
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1833925481}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!1 &1886422493
 GameObject:
   m_ObjectHideFlags: 0
@@ -6071,7 +5922,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1985399133}
   - component: {fileID: 1985399132}
-  - component: {fileID: 1985399134}
   m_Layer: 0
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
@@ -6109,27 +5959,6 @@ Transform:
   m_Father: {fileID: 419224000}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!50 &1985399134
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1985399131}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!1 &1992123354
 GameObject:
   m_ObjectHideFlags: 0
