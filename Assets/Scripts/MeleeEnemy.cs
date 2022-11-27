@@ -25,6 +25,12 @@ public class MeleeEnemy : MonoBehaviour
     public Animator flyingAnim;
     public float deathTimer;
 
+
+    //for jumping backwards
+    public float jumpBackwardsTime;
+    private float jumpBackwardsTimeCountdown;
+    public bool jumpBackwardsMode;
+
     [SerializeField] private GameObject attackHitbox;
     //bool isDetectingPlayer;
     //private CircleCollider2D CircleCollider2D;
@@ -39,6 +45,7 @@ public class MeleeEnemy : MonoBehaviour
 
     private void Awake()
     {
+        jumpBackwardsTimeCountdown = jumpBackwardsTime;
         currentEnemyHealth = maxEnemyHealth;
         fireRateCountdown = fireRate;
         playerTarget = GameObject.FindWithTag("Player");
@@ -60,7 +67,7 @@ public class MeleeEnemy : MonoBehaviour
         //Vector3 playerVector = (Vector2)playerTarget.transform.position;
         //directionMemory.x = (playerVector.x - transform.position.x);
 
-        if (waypointMode)
+        if (waypointMode && !jumpBackwardsMode)
         {
             if (Vector2.Distance(transform.position, currentWaypoint.transform.position) > 1f)
             {
@@ -89,7 +96,7 @@ public class MeleeEnemy : MonoBehaviour
                 else currentWaypoint = waypoint01;
             }
         }
-        else
+        else if(!waypointMode && !jumpBackwardsMode)
         {
             Vector3 directionToPlayer = playerTarget.transform.position - transform.position;
             directionToPlayer.Normalize();
@@ -106,6 +113,31 @@ public class MeleeEnemy : MonoBehaviour
             Motion(directionToPlayer, speedMod);
 
 
+        }
+        else if (jumpBackwardsMode)
+        {
+            jumpBackwardsTimeCountdown -= Time.deltaTime;
+            Vector3 direction;
+            if (transform.position.x < playerTarget.transform.position.x)
+            {
+                direction = Vector3.up + Vector3.left;
+                enemyDirection.x = enemyWidth;
+                Motion(direction, speedMod);
+
+            }
+
+            else if (transform.position.x > playerTarget.transform.position.x)
+            {
+                direction = Vector3.up + Vector3.right;
+                enemyDirection.x = -enemyWidth;
+                Motion(direction, speedMod);
+
+            }
+            transform.localScale = enemyDirection;
+            if (jumpBackwardsTimeCountdown <= 0)
+            {
+                jumpBackwardsMode = false;
+            }
         }
 
         if(fireRateCountdown >= 0)

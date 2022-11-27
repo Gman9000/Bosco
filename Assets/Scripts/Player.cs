@@ -443,6 +443,12 @@ public class Player : MonoBehaviour
                 other.gameObject.GetComponent<EndLevelChecker>().HandleEndOfLevel();
             }
         }
+        if (other.gameObject.GetComponent<Collider2D>().CompareTag("EnemyMelee"))
+        {
+            other.gameObject.GetComponent<Collider2D>().transform.parent.GetComponent<MeleeEnemy>().jumpBackwardsMode = true;
+            TakeDamage();
+            //also take knockback
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D other)
@@ -452,6 +458,7 @@ public class Player : MonoBehaviour
             TakeDamage();
             //also take knockback
         }
+
     }
 
     /*private void OnTriggerStay2D(Collider2D other)
