@@ -39,21 +39,21 @@ public class PlayerInput
 {
     public static bool HasPressedJumpKey()
     {
-        return (Input.GetKeyDown(KeyCode.Space));
+        return (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Z));
     }
     public static bool HasHeldJumpKey()
     {
-        return (Input.GetKey(KeyCode.Space));
+        return (Input.GetKey(KeyCode.Space) || Input.GetKey(KeyCode.Z));
     }
 
     public static bool HasReleasedJumpKey()
     {
-        return (Input.GetKeyUp(KeyCode.Space));
+        return (Input.GetKeyUp(KeyCode.Space) || Input.GetKeyUp(KeyCode.Z));
     }
 
     public static bool HasPressedAttackKey()
     {
-        return (Input.GetKeyDown(KeyCode.B));
+        return (Input.GetKeyDown(KeyCode.LeftControl) || Input.GetKeyDown(KeyCode.RightControl) || Input.GetKeyDown(KeyCode.X));
     }
 
     /*public static bool HasPressedDown()

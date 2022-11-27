@@ -5,8 +5,9 @@ using UnityEngine;
 public class SoundSystem : MonoBehaviour
 {
     static public SoundSystem Instance;
+    static public int songPositionSamples => Instance.channels[0] != null ? Instance.channels[0].src.timeSamples : 0;
     public AudioClip[] defaultSong = new AudioClip[4];
-    private SoundChannel[] channels;
+    public SoundChannel[] channels;
     
     void Awake()
     {
@@ -30,6 +31,11 @@ public class SoundSystem : MonoBehaviour
 
     static public void PlaySfx(AudioClip sound, int channelIndex)
     {
-        Instance.channels[channelIndex].PlaySfx(sound);
+        if (channelIndex <= 1 || channelIndex > 4)
+        {
+            Debug.LogError("Channel " + channelIndex + "is either not indexed or is not permitted for sound effect usage");
+            return;
+        }
+        Instance.channels[channelIndex - 1].PlaySfx(sound);
     }
 }
