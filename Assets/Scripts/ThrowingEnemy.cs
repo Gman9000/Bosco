@@ -14,7 +14,8 @@ public class ThrowingEnemy : MonoBehaviour
     public float speed;                 //enemy speed
     public float followDistance;              //required distance between player and enemy before enemy charges
     public float enemyWidth;            //width of enemy, needed for when enemy turns around
-    public int enemyHealth;             //health of enemy unit
+    public int maxEnemyHealth;
+    private int currentEnemyHealth;             //health of enemy unit
     private bool hitState = false;      //is the enemy's invincibility frames currently active
     private bool isShooting = false;    //is the enemy currently shooting.
     public float fireRate;              //the amount of time between each of the enemy's shots.
@@ -29,8 +30,11 @@ public class ThrowingEnemy : MonoBehaviour
     public Vector2 directionMemory;
     public Transform projectileSpawnLocation;
 
+    public EnemyRespawner mySpawner;
+
     private void Awake()
     {
+        currentEnemyHealth = maxEnemyHealth;
         playerTarget = GameObject.FindWithTag("Player");
         //myRB = GetComponent<Rigidbody2D>();
         //CircleCollider2D = GetComponent<CircleCollider2D>();
@@ -99,7 +103,7 @@ public class ThrowingEnemy : MonoBehaviour
         {
             //Debug.Log("Player x: " + playerTarget.transform.position.x);
             //Debug.Log("Enemy x: " + transform.position.x);
-            Debug.Log("WE REACHED SHOOTING");
+            //Debug.Log("WE REACHED SHOOTING");
             StartCoroutine(ShootProjectile());
         }
 
@@ -158,9 +162,9 @@ public class ThrowingEnemy : MonoBehaviour
     {
         if (!hitState)
         {
-            enemyHealth--;
+            currentEnemyHealth--;
 
-            if (enemyHealth == 0) { StartCoroutine(DeathState()); } //subject to change.
+            if (currentEnemyHealth == 0) { StartCoroutine(DeathState()); } //subject to change.
             StartCoroutine(HitState());
         }
 
@@ -171,10 +175,16 @@ public class ThrowingEnemy : MonoBehaviour
         //flyingAnim.SetTrigger("Death");
         yield return new WaitForSeconds(0.5f);
         //flyingAnim.ResetTrigger("Death");
-        Destroy(this.gameObject);
+        //Destroy(this.gameObject);
+        ResetEnemyHealth();
+        mySpawner.IsReadyToSpawn(true);
+        gameObject.SetActive(false);
     }
 
-
+    public void ResetEnemyHealth()
+    {
+        currentEnemyHealth = maxEnemyHealth;
+    }
     //activate invincibilitie frames for enemy upon being hit
     private IEnumerator HitState()
     {
