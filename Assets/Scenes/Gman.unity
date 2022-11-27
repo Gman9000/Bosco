@@ -866,7 +866,7 @@ MonoBehaviour:
   - {fileID: 1215900227}
   - {fileID: 1725457192}
   - {fileID: 990872664}
-  delayTime: 0.5
+  delayTime: 0.1
   canBeHitByPlayer: 1
 --- !u!61 &293962187
 BoxCollider2D:

@@ -6,11 +6,13 @@ public class HiddenEntrance : MonoBehaviour
 {
     //public GameObject explosionRadius;
     public float waitTime;
-    public HiddenEntrance[] adjacentHiddenEntrances;
+    public List<HiddenEntrance> adjacentHiddenEntrances;
     private bool hasExploded;
     public float delayTime;
     private float delayTimeCountdown;
     public bool canBeHitByPlayer;
+
+    //randomization of list
     /*public void HandleReveal()
     {
         StartCoroutine(Explosion());
@@ -19,9 +21,19 @@ public class HiddenEntrance : MonoBehaviour
 
     private void Start()
     {
-        for (int i = 0; i < adjacentHiddenEntrances.Length; i++)
+        //adjacentHiddenEntrances
+        for (int i = 0; i < adjacentHiddenEntrances.Count; i++)
         {
-            adjacentHiddenEntrances[i].SetDelay((i + 1) * adjacentHiddenEntrances[i].delayTime);
+
+            HiddenEntrance temp = adjacentHiddenEntrances[i];
+            int randomIndex = Random.Range(i, adjacentHiddenEntrances.Count);
+            adjacentHiddenEntrances[i] = adjacentHiddenEntrances[randomIndex];
+            adjacentHiddenEntrances[randomIndex] = temp;
+        }
+
+        for (int i = 0; i < adjacentHiddenEntrances.Count; i++)
+        {
+            adjacentHiddenEntrances[i].SetDelay((i + 1) * delayTime);
         }
     }
         public void SetDelay(float delayToSet)
@@ -30,7 +42,7 @@ public class HiddenEntrance : MonoBehaviour
     }
     public void HandleExplosion()
     {
-        for (int i = 0; i < adjacentHiddenEntrances.Length; i++)
+        for (int i = 0; i < adjacentHiddenEntrances.Count; i++)
         {
             adjacentHiddenEntrances[i].HandleExplosion();
         }
