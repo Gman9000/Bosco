@@ -23,7 +23,7 @@ public class CameraController : MonoBehaviour
 
             //double pixelSize = 1.0 / 16.0;
             
-            theRB.position = Vector2.SmoothDamp(theRB.position, Player.Instance.gameObject.transform.position, ref currentVelocity, smoothDampTime, Mathf.Infinity, Time.deltaTime);
+            theRB.position = Vector2.SmoothDamp(theRB.position, Player.Instance.gameObject.transform.position + Vector3.up * 2, ref currentVelocity, smoothDampTime, Mathf.Infinity, Time.deltaTime);
 
 
             // this snaps the camera to be pixel perfect and not make a super janky camera

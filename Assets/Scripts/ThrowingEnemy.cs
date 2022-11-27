@@ -27,6 +27,8 @@ public class ThrowingEnemy : MonoBehaviour
 
     private float lastPlayerPosTime = 0;
 
+    SpriteRenderer ren;
+
     public Vector2 directionMemory;
     public Transform projectileSpawnLocation;
 
@@ -38,6 +40,7 @@ public class ThrowingEnemy : MonoBehaviour
         playerTarget = GameObject.FindWithTag("Player");
         //myRB = GetComponent<Rigidbody2D>();
         //CircleCollider2D = GetComponent<CircleCollider2D>();
+        ren = GetComponentInChildren<SpriteRenderer>();
     }
 
     void Start()
@@ -151,7 +154,7 @@ public class ThrowingEnemy : MonoBehaviour
         //Quaternion rot = Quaternion.AngleAxis(-angle + 135.0f, Vector3.forward);
         //GameObject projectileGO = Instantiate(projectilePrefab, transform.position, rot) as GameObject;
         GameObject projectileGO = Instantiate(projectilePrefab, projectileSpawnLocation.position, Quaternion.identity) as GameObject;
-        projectileGO.GetComponent<Projectile>().SetDirectionAndVelocity(vectorToTarget);
+        projectileGO.GetComponent<Projectile>().SetDirectionAndVelocity(vectorToTarget * 1.5F);
 
 
         //set is shooting to true so that the enemy doesn't shoot again, until coroutine is finished.
@@ -162,6 +165,14 @@ public class ThrowingEnemy : MonoBehaviour
 
         isShooting = false;
         //flyingAnim.ResetTrigger("FlyingAttack");
+
+    }
+
+    void FixedUpdate()
+    {
+
+        if (hitState)   ren.color = ren.color.a == 0 ? Color.white : new Color(0,0,0,0);
+        else            ren.color = Color.white;
 
     }
 

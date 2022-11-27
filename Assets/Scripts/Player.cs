@@ -264,6 +264,7 @@ public class Player : MonoBehaviour
                     if (PlayerInput.IsPressingUp() )
                     {
                         StartCoroutine(Hit(1));
+
                         SoundSystem.PlaySfx(sfx_swordSide[0], 4);   //play attack sfx
                     }
                     else
@@ -288,8 +289,16 @@ public class Player : MonoBehaviour
                     if (PlayerInput.IsPressingDown())
                     {
                         myRB.gravityScale = originalGravityScale * DownThrustGravityModifier;
+                        myRB.velocity = Vector3.down * 10;
                         StartCoroutine(Hit(2));
                         SoundSystem.PlaySfx(sfx_swordSide[0], 4);   //play attack sfx
+                    }
+                    else if (PlayerInput.IsPressingUp())
+                    {
+                        StartCoroutine(Hit(1));
+
+                        SoundSystem.PlaySfx(sfx_swordSide[0], 4);   //play attack sfx
+                        myRB.velocity = Vector3.up * 5;
                     }
                     else
                     {

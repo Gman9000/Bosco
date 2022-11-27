@@ -21,7 +21,7 @@ public class HiddenEntrance : MonoBehaviour
     {
         for (int i = 0; i < adjacentHiddenEntrances.Length; i++)
         {
-            adjacentHiddenEntrances[i].SetDelay((i + 2) * adjacentHiddenEntrances[i].delayTime);
+            adjacentHiddenEntrances[i].SetDelay((i + 1) * adjacentHiddenEntrances[i].delayTime);
         }
     }
         public void SetDelay(float delayToSet)
@@ -43,7 +43,7 @@ public class HiddenEntrance : MonoBehaviour
         if (hasExploded)
         {
             delayTimeCountdown -= Time.deltaTime;
-            if(delayTimeCountdown <= 0)
+            if(delayTimeCountdown <= 0 || canBeHitByPlayer)
             {
                 StartCoroutine(Explosion());
             }
@@ -103,5 +103,6 @@ public class HiddenEntrance : MonoBehaviour
 
         this.gameObject.SetActive(false);
 
+        yield break;
     }
 }
