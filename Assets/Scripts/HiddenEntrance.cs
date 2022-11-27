@@ -40,6 +40,8 @@ public class HiddenEntrance : MonoBehaviour
     {
         delayTime = delayToSet;
     }
+
+    
     public void HandleExplosion()
     {
         for (int i = 0; i < adjacentHiddenEntrances.Count; i++)
