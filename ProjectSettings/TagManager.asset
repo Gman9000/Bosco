@@ -13,6 +13,7 @@ TagManager:
   - Enemy
   - Hidden
   - Teleport
+  - ChainReaction
   layers:
   - Default
   - TransparentFX
@@ -22,7 +23,7 @@ TagManager:
   - UI
   - Ground
   - Player
-  - 
+  - HiddenGround
   - 
   - 
   - 
