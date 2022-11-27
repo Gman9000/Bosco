@@ -27,6 +27,11 @@ public class ThrowingEnemy : MonoBehaviour
 
     private float lastPlayerPosTime = 0;
 
+    //for bouncing back and forth
+    private bool bounceRight;
+    public float bounceRightTime;
+    private float bounceRightTimeCountdown;
+
     SpriteRenderer ren;
 
     public Vector2 directionMemory;
@@ -36,6 +41,8 @@ public class ThrowingEnemy : MonoBehaviour
 
     private void Awake()
     {
+        bounceRight = false;
+        bounceRightTimeCountdown = bounceRightTime;
         currentEnemyHealth = maxEnemyHealth;
         playerTarget = GameObject.FindWithTag("Player");
         //myRB = GetComponent<Rigidbody2D>();
@@ -88,6 +95,36 @@ public class ThrowingEnemy : MonoBehaviour
         }
         else
         {
+            bounceRightTimeCountdown -= Time.deltaTime;
+            if(bounceRightTimeCountdown <= 0)
+            {
+                bounceRight = !bounceRight;
+                bounceRightTimeCountdown = bounceRightTime;
+            }
+            Vector3 enemyDirection = transform.localScale;
+
+            if (transform.position.x < playerTarget.transform.position.x)
+            {
+                enemyDirection.x = -enemyWidth;
+            }
+
+            else if (transform.position.x > playerTarget.transform.position.x)
+            {
+                enemyDirection.x = enemyWidth;
+            }
+            transform.localScale = enemyDirection;
+
+            Vector3 direction;
+            
+            if (bounceRight)
+            {
+                direction = Vector3.up + Vector3.right;
+            }
+            else
+            {
+                direction = Vector3.up + Vector3.left;
+            }
+            Motion(direction, 0.5f * speedMod);
 
         }
 
