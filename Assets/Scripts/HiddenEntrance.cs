@@ -4,30 +4,45 @@ using UnityEngine;
 
 public class HiddenEntrance : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public GameObject explosionRadius;
+    public float waitTime;
 
-    // Update is called once per frame
-    void Update()
+    public void HandleReveal()
     {
-        
+        gameObject.SetActive(false);
     }
-
     private void OnTriggerEnter2D(Collider2D other)
     {
+        if (other.CompareTag("ChainReaction"))
+        {
+            other.gameObject.transform.parent.gameObject.GetComponent<HiddenEntrance>().HandleReveal();
+        }
         if (other.CompareTag("PlayerAttack"))
         {
-            this.gameObject.SetActive(false);
+            explosionRadius.SetActive(true);
+            StartCoroutine(Explosion());
         }
+
     }
     private void OnTriggerStay2D(Collider2D other)
     {
+        if (other.CompareTag("ChainReaction"))
+        {
+            other.gameObject.transform.parent.gameObject.GetComponent<HiddenEntrance>().HandleReveal();
+        }
         if (other.CompareTag("PlayerAttack"))
         {
-            this.gameObject.SetActive(false);
+            explosionRadius.SetActive(true);
+            StartCoroutine(Explosion());
         }
+
+    }
+
+    private IEnumerator Explosion()
+    {
+        yield return new WaitForSeconds(waitTime);   //wait the established amount of seconds.
+
+        this.gameObject.SetActive(false);
+
     }
 }
