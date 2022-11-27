@@ -11,6 +11,8 @@ TagManager:
   - Candle
   - PlayerAttack
   - Enemy
+  - Hidden
+  - Teleport
   layers:
   - Default
   - TransparentFX

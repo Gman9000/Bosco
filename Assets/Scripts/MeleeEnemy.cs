@@ -148,6 +148,13 @@ public class MeleeEnemy : MonoBehaviour
             TakeDamage();
         }
     }
+    private void OnTriggerStay2D(Collider2D other)
+    {
+        if (other.CompareTag("PlayerAttack"))
+        {
+            TakeDamage();
+        }
+    }
 
     private IEnumerator MeleeMode()
     {

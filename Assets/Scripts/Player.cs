@@ -418,7 +418,22 @@ public class Player : MonoBehaviour
         {
             other.GetComponent<Candle>().LightUpCandle();
         }
+        /*if (other.CompareTag("Teleport"))
+        {
+            other.gameObject.GetComponent<EndLevelChecker>().HandleEndOfLevel();
+        }*/
 
+    }
+
+    private void OnTriggerStay2D(Collider2D other)
+    {
+        if (other.CompareTag("Teleport"))
+        {
+            if (PlayerInput.IsPressingUp())
+            {
+                other.gameObject.GetComponent<EndLevelChecker>().HandleEndOfLevel();
+            }
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D other)

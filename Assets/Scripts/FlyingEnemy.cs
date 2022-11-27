@@ -149,6 +149,14 @@ public class FlyingEnemy : MonoBehaviour
         }
     }
 
+    private void OnTriggerStay2D(Collider2D other)
+    {
+        if (other.CompareTag("PlayerAttack"))
+        {
+            TakeDamage();
+        }
+    }
+
     private IEnumerator ShootProjectile()
     {
         //acquire the player's current position and rotate towards it, then instantiate a bullet prefab with said rotation.
