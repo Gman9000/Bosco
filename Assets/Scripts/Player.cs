@@ -418,7 +418,18 @@ public class Player : MonoBehaviour
         {
             other.GetComponent<Candle>().LightUpCandle();
         }
+
     }
+
+    private void OnCollisionEnter2D(Collision2D other)
+    {
+        if (other.gameObject.GetComponent<Collider2D>().CompareTag("Enemy"))
+        {
+            TakeDamage();
+            //also take knockback
+        }
+    }
+
     /*private void OnTriggerStay2D(Collider2D other)
     {
         if (other.CompareTag("Squit"))
@@ -430,5 +441,6 @@ public class Player : MonoBehaviour
     public void ResetToLastCheckPoint()
     {
         this.gameObject.transform.position = checkpoint;
+        currentHealth = maxhealth;
     }
 }

@@ -26,17 +26,22 @@ public class Projectile : MonoBehaviour
         //Debug.Log(dirToPlayer);
         theRB.velocity = dirToPlayer * speed;
     }
-    
-    private void OnCollisionEnter2D(Collision2D collision)
+
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        if (collision.gameObject.GetComponent<Collider2D>().CompareTag("Player"))
+        if (other.CompareTag("Player"))
         {
             Player.Instance.TakeDamage();
             Debug.Log("We have damaged the player");
+            Destroy(this.gameObject);
             //collision.gameObject.GetComponent<PlayerMovement>().DamagePlayer();
         }
+        /*if (collision.gameObject.GetComponent<Collider2D>().CompareTag("Ground"))
+        {
+            Destroy(this.gameObject);
+        }*/
 
-        Destroy(this.gameObject);
+
     }
 
     public void AssignTarget(GameObject target)

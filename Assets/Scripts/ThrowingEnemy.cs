@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FlyingEnemy : MonoBehaviour
+public class ThrowingEnemy : MonoBehaviour
 {
     //[SerializeField] private Rigidbody2D rigidBody;      //enemy rigidBody
     private GameObject playerTarget;    //player character
@@ -27,7 +27,8 @@ public class FlyingEnemy : MonoBehaviour
     private float lastPlayerPosTime = 0;
 
     public Vector2 directionMemory;
-    
+    public Transform projectileSpawnLocation;
+
     private void Awake()
     {
         playerTarget = GameObject.FindWithTag("Player");
@@ -39,16 +40,15 @@ public class FlyingEnemy : MonoBehaviour
     {
         currentWaypoint = waypoint01;   //set the first waypoint.
     }
-    
+
     void Update()
     {
         //isDetectingPlayer = CircleCollider2D.IsDetectingThePlayer(this.transform.position, this.transform.localScale.x, distance);
         bool waypointMode = Vector2.Distance(transform.position, playerTarget.transform.position) > followDistance;
-        float speedMod = waypointMode ? speed : speed * 2; 
+        float speedMod = waypointMode ? speed : speed * 2;
 
-        Vector3 playerVector = (Vector2)playerTarget.transform.position + Vector2.up * 3.0F;
-        directionMemory.y = playerVector.y - transform.position.y;
-
+        //Vector3 playerVector = (Vector2)playerTarget.transform.position;
+        //directionMemory.x = (playerVector.x - transform.position.x);
 
         if (waypointMode)
         {
@@ -71,7 +71,7 @@ public class FlyingEnemy : MonoBehaviour
 
                 transform.localScale = enemyDirection;
                 Motion(directionOfTravel, speedMod);
-                
+
             }
             else
             {
@@ -81,51 +81,28 @@ public class FlyingEnemy : MonoBehaviour
         }
         else
         {
-            Vector3 directionOfTravel = directionMemory;
-            Vector3 enemyDirection = transform.localScale;
 
-            if (directionOfTravel.x > 0)
-            {
-                enemyDirection.x = -enemyWidth;
-            }
-
-            else if (directionOfTravel.x < 0)
-            {
-                enemyDirection.x = enemyWidth;
-            }
-
-            transform.localScale = enemyDirection;
-
-   
-            Motion(directionOfTravel, speedMod);
         }
 
-        this.transform.position += Vector3.up * Game.PingPong(Game.gameTime * 7F) * Game.PIXEL / 4.0f * 800F * Time.deltaTime;
-        
-        
+        //this.transform.position += Vector3.up * Game.PingPong(Game.gameTime * 7F) * Game.PIXEL / 4.0f * 800F * Time.deltaTime;
+
+
 
         //otherwise, switch waypoints.
-        
+
 
         //if the player is close enough, shoot a projectile.
         //if ((Vector2.Distance(transform.position, playerTarget.transform.position) < shootDistance) && (!isShooting))
-        
+
         //if ( (playerTarget.transform.position.x == this.transform.position.x)
-        if ( this.transform.position.x >= (playerVector.x - 2)  && this.transform.position.x <= (playerVector.x + 2)
-            && (!isShooting)
-            )
+        if (!waypointMode && (!isShooting))
         {
             //Debug.Log("Player x: " + playerTarget.transform.position.x);
             //Debug.Log("Enemy x: " + transform.position.x);
+            Debug.Log("WE REACHED SHOOTING");
             StartCoroutine(ShootProjectile());
         }
 
-        if (Game.gameTime - lastPlayerPosTime > .5)
-        {
-            lastPlayerPosTime = Game.gameTime;
-            directionMemory = (Vector2)(playerVector - transform.position).normalized;
-        }
-        
     }
 
     public void Motion(Vector3 directionOfTravel, float speed)
@@ -140,21 +117,28 @@ public class FlyingEnemy : MonoBehaviour
     {
         if (other.CompareTag("PlayerAttack"))
         {
-            //KILL THIS ENEMY
-            //gameObject.SetActive(false);
             TakeDamage();
         }
     }
 
     private IEnumerator ShootProjectile()
     {
+        Vector3 vectorToTarget;
         //acquire the player's current position and rotate towards it, then instantiate a bullet prefab with said rotation.
         //Vector3 vectorToTarget = (playerTarget.transform.position - transform.position).normalized;
-        Vector3 vectorToTarget = Vector3.down;
+        if (playerTarget.transform.position.x > transform.position.x)
+        {
+            vectorToTarget = (2 * Vector3.up) + Vector3.right;
+        }
+        else
+        {
+            vectorToTarget = (2 * Vector3.up) + Vector3.left;
+
+        }
         //float angle = Mathf.Atan2(vectorToTarget.x, vectorToTarget.y) * Mathf.Rad2Deg;
         //Quaternion rot = Quaternion.AngleAxis(-angle + 135.0f, Vector3.forward);
         //GameObject projectileGO = Instantiate(projectilePrefab, transform.position, rot) as GameObject;
-        GameObject projectileGO = Instantiate(projectilePrefab, transform.position, Quaternion.identity) as GameObject;
+        GameObject projectileGO = Instantiate(projectilePrefab, projectileSpawnLocation.position, Quaternion.identity) as GameObject;
         projectileGO.GetComponent<Projectile>().SetDirectionAndVelocity(vectorToTarget);
 
 
