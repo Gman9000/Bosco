@@ -53,6 +53,9 @@ public class ThrowingEnemy : MonoBehaviour
     void Start()
     {
         currentWaypoint = waypoint01;   //set the first waypoint.
+        hitState = false;
+        currentEnemyHealth = maxEnemyHealth;
+        
     }
 
     void Update()
@@ -222,6 +225,8 @@ public class ThrowingEnemy : MonoBehaviour
 
             if (currentEnemyHealth == 0) { StartCoroutine(DeathState()); } //subject to change.
             StartCoroutine(HitState());
+
+            Debug.Log("the hrealth yist yhsrty xd y" + currentEnemyHealth);
         }
 
     }

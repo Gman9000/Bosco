@@ -24,18 +24,26 @@ public class EnemyRespawner : MonoBehaviour
         }
     }*/
 
-    void OnBecameInvisible()
+    /*void OnBecameInvisible()
     {
         if (isReadyToRespawnEnemy)
         {
             Debug.Log("we are ready to spawn");
             objectToSpawn.transform.position = transform.position;
             objectToSpawn.SetActive(true);
+            objectToSpawn.SendMessage("Start", SendMessageOptions.DontRequireReceiver);
         }
-    }
+    }*/
 
-    // Update is called once per frame
     void Update()
     {
+        if (isReadyToRespawnEnemy && (Mathf.Abs(Camera.main.transform.position.x - transform.position.x) > 7F
+        || Mathf.Abs(Camera.main.transform.position.y - transform.position.y) > 6F))
+        {
+            Debug.Log("we are ready to spawn");
+            objectToSpawn.transform.position = transform.position;
+            objectToSpawn.SetActive(true);
+            objectToSpawn.SendMessage("Start", SendMessageOptions.DontRequireReceiver);
+        }
     }
 }
