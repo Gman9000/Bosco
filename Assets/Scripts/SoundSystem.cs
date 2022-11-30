@@ -6,9 +6,9 @@ public class SoundSystem : MonoBehaviour
 {
     static public SoundSystem Instance;
     static public int songPositionSamples => Instance.channels[0] != null ? Instance.channels[0].src.timeSamples : 0;
-    public AudioClip[] bgmSong = new AudioClip[4];
-    public AudioClip[] introSong = new AudioClip[4];
-    public SoundChannel[] channels;
+    public AudioClip[] defaultSong = new AudioClip[4];
+    public int defaultSongLoopPoint = 0;    // in samples
+    [HideInInspector]public SoundChannel[] channels;
     
     void Awake()
     {
@@ -20,24 +20,30 @@ public class SoundSystem : MonoBehaviour
 
     void Start()
     {
-        if (introSong[0] != null)
-            PlayBgm(bgmSong, true);
+        if (defaultSong[0] != null)
+            PlayBgm(defaultSong, defaultSongLoopPoint, true);
     }
 
-    void Update()
-    {
-        if (channels[0].src.clip == introSong[0] && !channels[0].src.isPlaying)
-        {
-            foreach (SoundChannel sc in channels)
-                sc.src.Stop();
-            PlayBgm(bgmSong, true);
-        }
-    }
-
-    static public void PlayBgm(AudioClip[] song, bool loop)
+    static public void PlayBgm(AudioClip[] song, int loop, bool firstPlay)
     {
         for (int i = 0; i < 4; i++)
-            Instance.channels[i].PlayBgm(song[i], loop);
+        {
+            Instance.channels[i].PlayBgm(song[i]);
+            if (!firstPlay)
+                Instance.channels[i].src.timeSamples = loop;
+        }
+
+        if (loop > 0)
+            Instance.StartCoroutine(Instance.LoopMusicToSample(song, loop));
+    }
+
+    
+    IEnumerator LoopMusicToSample(AudioClip[] song, int loop)
+    {
+        yield return new WaitUntil(() => SoundSystem.songPositionSamples >= song[0].samples - 1000/* || !Instance.channels[0].src.isPlaying*/);
+        for (int i = 0; i < 4; i++)
+            PlayBgm(song, loop, false);
+        yield break;
     }
 
     static public void PlaySfx(AudioClip sound, int channelIndex)

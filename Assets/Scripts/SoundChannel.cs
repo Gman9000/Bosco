@@ -6,7 +6,6 @@ public class SoundChannel : MonoBehaviour
 {
     [HideInInspector]public AudioSource src;
     bool muteBgm = false;
-    bool loopBgm = false;
     bool songPlaying = false;
 
     int bgmResumeSample = 0;
@@ -22,16 +21,16 @@ public class SoundChannel : MonoBehaviour
         src = GetComponent<AudioSource>();
     }
 
-    public void PlayBgm(AudioClip clip, bool loop)
+    public void PlayBgm(AudioClip clip)
     {
-        return;
         bgmResumeSample = 0;
         sfxSampleTime = 0;
 
         muteBgm = false;
         bgm = src.clip = clip;
-        src.loop = loopBgm = loop;
+        src.loop = false;
         songPlaying = true;
+
         src.Play();
     }
 
@@ -72,7 +71,7 @@ public class SoundChannel : MonoBehaviour
 
         int resumeAtSamples = SoundSystem.songPositionSamples;    
         src.clip = bgm;
-        src.loop = loopBgm;
+        src.loop = false;
         muteBgm = false;
         src.timeSamples = resumeAtSamples;
         sfxSampleTime = 0;

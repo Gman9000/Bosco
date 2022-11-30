@@ -415,7 +415,7 @@ public class Player : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Ground"))
+        if (other.CompareTag("Ground") || other.CompareTag("Hidden"))
         {
             checkpoint = new Vector2(other.gameObject.transform.position.x, other.gameObject.transform.position.y + 1);
         }
