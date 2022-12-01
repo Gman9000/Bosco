@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
+    static public CameraController Instance;
     private Rigidbody2D theRB;
+
     public float smoothDampTime;
 
     public Vector2 followRectSize = new Vector2(11, 10);
@@ -13,7 +15,14 @@ public class CameraController : MonoBehaviour
     private Rect followRect;
     // Start is called before the first frame update
 
+
+    Coroutine shakeCoroutine = null;
     Vector2 moveTo;
+
+    void Awake()
+    {
+        Instance = this;
+    }
 
 
     void Start()
@@ -26,7 +35,8 @@ public class CameraController : MonoBehaviour
 
     void Update()
     {
-        CalcPlayerPos();
+        if (shakeCoroutine == null)
+            CalcPlayerPos();
         if (transform.position.x != moveTo.x || transform.position.y != moveTo.y)
         {
             transform.position = (Vector3)moveTo + Vector3.back * 10;
@@ -63,6 +73,36 @@ public class CameraController : MonoBehaviour
         Vector2 pos = transform.position;
 
         transform.position = playerPos;
+    }
+
+    public void HorShake(int pixels)
+    {
+        if (shakeCoroutine != null)
+            StopCoroutine(shakeCoroutine);
+        shakeCoroutine = StartCoroutine(ShakeSide(pixels));
+    }
+
+    IEnumerator ShakeSide(int pixels)
+    {
+        Vector3 playerRootPos = Player.Instance.transform.position;
+        Vector3 camRootPos = transform.position;
+
+        for (int i = pixels; i > 0; i--)
+        {
+            Vector3 rightMove = Vector3.right * i * (i % 2 == 0 ? 1 : -1) * Game.PIXEL;
+            Player.Instance.transform.position = playerRootPos;
+            Player.Instance.transform.position += rightMove;
+            moveTo = camRootPos;
+            moveTo += (Vector2) rightMove;
+
+            yield return new WaitForSeconds(.03F);
+        }
+
+        Player.Instance.transform.position = playerRootPos;
+        transform.position = camRootPos;
+
+        shakeCoroutine = null;
+        yield break;
     }
 
 

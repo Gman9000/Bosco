@@ -285,7 +285,7 @@ MonoBehaviour:
   bounceRightTime: 0.5
   directionMemory: {x: 0, y: 0}
   projectileSpawnLocation: {fileID: 4140285412478915679}
-  mySpawner: {fileID: 0}
+  mySpawner: {fileID: 4140285411251426401}
 --- !u!95 &4140285411552809945
 Animator:
   serializedVersion: 3
