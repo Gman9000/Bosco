@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SoundChannel : MonoBehaviour
 {
-    public AudioSource src;
+    [HideInInspector]public AudioSource src;
     bool muteBgm = false;
     bool loopBgm = false;
     bool songPlaying = false;
@@ -24,6 +24,7 @@ public class SoundChannel : MonoBehaviour
 
     public void PlayBgm(AudioClip clip, bool loop)
     {
+        return;
         bgmResumeSample = 0;
         sfxSampleTime = 0;
 
