@@ -7,22 +7,31 @@ public class CandleHandler : MonoBehaviour
     public Candle[] candles;
     private int numberOfLitCandles;
     // Start is called before the first frame update
-    void Start()
+
+    Animator animator;
+
+    private bool canUseDoor = false;
+
+    void Awake()
     {
-        
+        animator = GetComponentInChildren<Animator>();
+        animator.speed = 0;
     }
+
     private void CandleCheck()
     {
         foreach (Candle candle in candles)
         {
-            if (candle.HasBeenLighted())
+            if (candle.HasBeenLit())
             {
                 numberOfLitCandles++;
             }
         }
         if(numberOfLitCandles == candles.Length)
         {
-            this.gameObject.SetActive(false);
+            //this.gameObject.SetActive(false);
+            animator.speed = 1.0F;
+            canUseDoor = true;
         }
         else
         {

@@ -10,7 +10,7 @@ public class Candle : MonoBehaviour
     {
         isLit = false;
     }
-    public bool HasBeenLighted()
+    public bool HasBeenLit()
     {
         return isLit;
     }
