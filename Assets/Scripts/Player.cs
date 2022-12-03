@@ -25,6 +25,7 @@ public class Player : MonoBehaviour
     //for attacking
     //[SerializeField] private GameObject leftAttackHitbox;
     [SerializeField] private GameObject rightAttackHitbox;
+    [SerializeField] private GameObject SpinAttackHitbox;
     [SerializeField] private GameObject upAttackHitbox;
     [SerializeField] private GameObject downAttackHitbox;
     [SerializeField] private GameObject radialAttackHitbox;
@@ -40,7 +41,7 @@ public class Player : MonoBehaviour
     private float currentHealth;
 
     Coroutine pausePhysicsCoroutine = null;
-
+    public float deathTime;
 
 
     //[SerializeField] private float bouncyJumpTimeModifier;
@@ -112,11 +113,15 @@ public class Player : MonoBehaviour
 
             myRB.gravityScale = originalGravityScale;
         }
+        animatorController.SetBool("isGrounded", isGrounded);
         //myRB.velocity = new Vector2(0f, 0f);
         myRB.velocity = new Vector2(0f, myRB.velocity.y);
+        animatorController.SetFloat("horizontalVelocity", Mathf.Abs(myRB.velocity.x));
+        animatorController.SetBool("crouching", false);
         //if (LevelManager.Instance.GetGameStartStatus() && !PauseMenu.Instance.Paused())
         //{
-            if (PlayerInput.IsPressingLeft())
+        //animatorController.SetFloat("horizontalVelocity", -1f);
+        if (PlayerInput.IsPressingLeft())
             {
                 myRB.velocity = new Vector2(-moveSpeed, myRB.velocity.y);
                 this.transform.rotation = new Quaternion(0f, 180f, this.transform.rotation.z, this.transform.rotation.w);
@@ -127,7 +132,7 @@ public class Player : MonoBehaviour
             {
                 myRB.velocity = new Vector2(moveSpeed, myRB.velocity.y);
                 this.transform.rotation = new Quaternion(0f, 0f, this.transform.rotation.z, this.transform.rotation.w);
-                animatorController.SetFloat("horizontalVelocity", myRB.velocity.x);
+                animatorController.SetFloat("horizontalVelocity", Mathf.Abs(myRB.velocity.x));
             }
         
             if (isGrounded && PlayerInput.HasPressedJumpKey())
@@ -135,6 +140,7 @@ public class Player : MonoBehaviour
                 isJumping = true;
                 jumpTimeCountdown = jumpTime;
                 myRB.velocity = new Vector2(myRB.velocity.x, jumpSpeed);
+                animatorController.SetBool("isGrounded", isGrounded);
             }
 
             if (isJumping && PlayerInput.HasHeldJumpKey())
@@ -156,6 +162,10 @@ public class Player : MonoBehaviour
             if (PlayerInput.HasReleasedJumpKey())
             {
                isJumping = false;
+            }
+            if(PlayerInput.IsPressingDown() && isGrounded)
+            {
+                animatorController.SetBool("crouching", true);
             }
 
 
@@ -250,13 +260,17 @@ public class Player : MonoBehaviour
     public void TakeDamage()
     {
         currentHealth--;
+        animatorController.SetTrigger("getHurt");
         if(currentHealth <= 0)
         {
             //for now this is death
-            ResetToLastCheckPoint();
+            StartCoroutine(Die());
+
+            //ResetToLastCheckPoint();
         }
+        //animatorController.ResetTrigger("getHurt");
     }
-    
+
     private void AttackInputs()
     {
         if (consecutiveHits >= 3 && Time.time - hitTimeStamp >= comboCooldown)
@@ -290,9 +304,12 @@ public class Player : MonoBehaviour
                             SoundSystem.PlaySfx(sfx_swordSide[consecutiveHits - 1], 4);   //play attack sfx
                         }
                         else
+                        {
+                            //do spin attack here and reset the other trigger here
+                            StartCoroutine(Hit(3));
                             return;
-                        
-                    }
+                        }
+                }
                 }
                 else
                 {
@@ -365,22 +382,31 @@ public class Player : MonoBehaviour
             case 1:
                 // Upwards attack
                 upAttackHitbox.SetActive(true);
+                animatorController.SetBool("attackingUp", true);
                 break;
             case 2:
                 //Downwards attack
                 downAttackHitbox.SetActive(true);
+                animatorController.SetTrigger("downThrust");
                 break;
-            /*case 3:
-                //Left attack
-                leftAttackHitbox.SetActive(true);
-                break;*/
+            case 3:
+                //Spin attack
+                //take the leftAttackHitBox and turn that into the spin attack that hits both the left and the right of the player
+                SpinAttackHitbox.SetActive(true);
+                animatorController.SetTrigger("attackCombo3");
+                animatorController.SetBool("attackComboEnded",false);
+                break;
             case 4:
                 //Right attack
                 rightAttackHitbox.SetActive(true);
+                animatorController.SetTrigger("attackCombo1");
+                animatorController.SetBool("attackComboEnded",false);
+
                 break;
             case 5:
                 //radial attack
                 radialAttackHitbox.SetActive(true);
+                animatorController.SetTrigger("radialAttack");
                 break;
             default:
                 Debug.Log("AN ERROR HAS OCCURRED WHILE TRYING TO ATTACK");
@@ -397,22 +423,30 @@ public class Player : MonoBehaviour
             case 1:
                 // Upwards attack
                 upAttackHitbox.SetActive(false);
+                animatorController.SetBool("attackingUp", false);
                 break;
             case 2:
                 //Downwards attack
                 downAttackHitbox.SetActive(false);
+                animatorController.ResetTrigger("downThrust");
                 break;
-            /*case 3:
-                //Left attack
-                leftAttackHitbox.SetActive(false);
-                break;*/
+            case 3:
+                //Spin attack
+                //take the leftAttackHitBox and turn that into the spin attack that hits both the left and the right of the player
+                SpinAttackHitbox.SetActive(false);                
+                animatorController.ResetTrigger("attackCombo3");
+                animatorController.SetBool("attackComboEnded",true);
+                break;
             case 4:
                 //Right attack
                 rightAttackHitbox.SetActive(false);
+                animatorController.ResetTrigger("attackCombo1");
+                animatorController.SetBool("attackComboEnded",true);
                 break;
             case 5:
                 //radial attack
                 radialAttackHitbox.SetActive(false);
+                animatorController.ResetTrigger("radialAttack");
                 break;
             default:
                 Debug.Log("AN ERROR HAS OCCURRED WHILE TRYING TO ATTACK");
@@ -482,11 +516,18 @@ public class Player : MonoBehaviour
             this.gameObject.transform.position = other.GetComponent<SquitController>().topRightVertexEscape.position + escapeOffset;
         }
     }*/
+    private IEnumerator Die()
+    {
+        animatorController.SetBool("playerDed", true);
+        yield return new WaitForSeconds(deathTime);   //wait the established amount of seconds.
+        ResetToLastCheckPoint();
 
+    }
     public void ResetToLastCheckPoint()
     {
         this.gameObject.transform.position = checkpoint;
         currentHealth = maxhealth;
+        animatorController.SetBool("playerDed", false);
     }
 
     IEnumerator PausePhysics(float duration)

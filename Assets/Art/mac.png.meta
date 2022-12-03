@@ -1,0 +1,1227 @@
+fileFormatVersion: 2
+guid: 8857b3bf67770154b91baaebaa37ef6d
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -8433272103631269588
+    second: mac_0
+  - first:
+      213: 2315080413136770162
+    second: mac_1
+  - first:
+      213: 1192834033395779743
+    second: mac_2
+  - first:
+      213: -1775956216018955072
+    second: mac_3
+  - first:
+      213: -4438495746899028026
+    second: mac_4
+  - first:
+      213: -8380270776745769419
+    second: mac_5
+  - first:
+      213: -7413828892840354227
+    second: mac_6
+  - first:
+      213: -4710104737032784196
+    second: mac_7
+  - first:
+      213: 156917498056147876
+    second: mac_8
+  - first:
+      213: -1147610215581031906
+    second: mac_9
+  - first:
+      213: 3522980531504263955
+    second: mac_10
+  - first:
+      213: -8147788253561615860
+    second: mac_11
+  - first:
+      213: -9168431882408451120
+    second: mac_12
+  - first:
+      213: 24589896697458043
+    second: mac_13
+  - first:
+      213: 2796301527536079876
+    second: mac_14
+  - first:
+      213: 8105265732233206833
+    second: mac_15
+  - first:
+      213: -8518707507534686830
+    second: mac_16
+  - first:
+      213: -7722186533880545399
+    second: mac_17
+  - first:
+      213: -7162704249729231539
+    second: mac_18
+  - first:
+      213: -4098460900305331256
+    second: mac_19
+  - first:
+      213: -1524015428910141221
+    second: mac_20
+  - first:
+      213: -8044689560035172749
+    second: mac_21
+  - first:
+      213: 7058130790265152042
+    second: mac_22
+  - first:
+      213: -2835880385414668961
+    second: mac_23
+  - first:
+      213: -2909035309465156821
+    second: mac_24
+  - first:
+      213: -3059810450223787159
+    second: mac_25
+  - first:
+      213: -2938411975538294240
+    second: mac_26
+  - first:
+      213: 5199111284984870569
+    second: mac_27
+  - first:
+      213: 5149031096413894965
+    second: mac_28
+  - first:
+      213: -1123516826847357165
+    second: mac_29
+  - first:
+      213: 2173659346503788279
+    second: mac_30
+  - first:
+      213: -9032159507656006519
+    second: mac_31
+  - first:
+      213: -3981772310727171491
+    second: mac_32
+  - first:
+      213: -1978131166249701062
+    second: mac_33
+  - first:
+      213: 4176419523405353359
+    second: mac_34
+  - first:
+      213: -4563016240673006317
+    second: mac_35
+  - first:
+      213: -2241997438588718668
+    second: mac_36
+  - first:
+      213: -649691932746272232
+    second: mac_37
+  - first:
+      213: 1514241623418598821
+    second: mac_38
+  - first:
+      213: -1037539807941273506
+    second: mac_39
+  - first:
+      213: 1552710144851337567
+    second: mac_40
+  - first:
+      213: 8531709464533819038
+    second: mac_41
+  - first:
+      213: 2425759704075056103
+    second: mac_42
+  - first:
+      213: -3587060460448322296
+    second: mac_43
+  - first:
+      213: 3663003767700060034
+    second: mac_44
+  - first:
+      213: -8718259589119143348
+    second: mac_45
+  - first:
+      213: 3652453837091922050
+    second: mac_46
+  externalObjects: {}
+  serializedVersion: 11
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 16
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: mac_0
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 260
+        width: 18
+        height: 17
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c21d8d004bff6fa80800000000000000
+      internalID: -8433272103631269588
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mac_1
+      rect:
+        serializedVersion: 2
+        x: 24
+        y: 260
+        width: 18
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2745b73be51d02020800000000000000
+      internalID: 2315080413136770162
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mac_2
+      rect:
+        serializedVersion: 2
+        x: 46
+        y: 259
+        width: 18
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f984d84cb3ccd8010800000000000000
+      internalID: 1192834033395779743
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mac_3
+      rect:
+        serializedVersion: 2
+        x: 68
+        y: 259
+        width: 18
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0c41b8f1b398a57e0800000000000000
+      internalID: -1775956216018955072
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mac_4
+      rect:
+        serializedVersion: 2
+        x: 89
+        y: 259
+        width: 19
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6c7500562ab4762c0800000000000000
+      internalID: -4438495746899028026
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mac_5
+      rect:
+        serializedVersion: 2
+        x: 3
+        y: 237
+        width: 14
+        height: 17
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5364b7e012c43bb80800000000000000
+      internalID: -8380270776745769419
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mac_6
+      rect:
+        serializedVersion: 2
+        x: 21
+        y: 237
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d4e19b0f6e9cc1990800000000000000
+      internalID: -7413828892840354227
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mac_7
+      rect:
+        serializedVersion: 2
+        x: 40
+        y: 237
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cb6b64662b852aeb0800000000000000
+      internalID: -4710104737032784196
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mac_8
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 216
+        width: 19
+        height: 15
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4a30ea212ab7d2200800000000000000
+      internalID: 156917498056147876
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mac_9
+      rect:
+        serializedVersion: 2
+        x: 25
+        y: 216
+        width: 19
+        height: 17
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e12eea7d69ed210f0800000000000000
+      internalID: -1147610215581031906
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mac_10
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 216
+        width: 19
+        height: 15
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 313bdeab02424e030800000000000000
+      internalID: 3522980531504263955
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mac_11
+      rect:
+        serializedVersion: 2
+        x: 71
+        y: 216
+        width: 19
+        height: 14
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c0a0c5190cd3dee80800000000000000
+      internalID: -8147788253561615860
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mac_12
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 189
+        width: 13
+        height: 19
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0d3ada587cf23c080800000000000000
+      internalID: -9168431882408451120
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mac_13
+      rect:
+        serializedVersion: 2
+        x: 19
+        y: 189
+        width: 23
+        height: 19
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b7d27b9716c575000800000000000000
+      internalID: 24589896697458043
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mac_14
+      rect:
+        serializedVersion: 2
+        x: 46
+        y: 189
+        width: 23
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4049ba18c657ec620800000000000000
+      internalID: 2796301527536079876
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mac_15
+      rect:
+        serializedVersion: 2
+        x: 73
+        y: 189
+        width: 24
+        height: 23
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 13c18eb6d30bb7070800000000000000
+      internalID: 8105265732233206833
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mac_16
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 159
+        width: 18
+        height: 15
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 29511fbe7a877c980800000000000000
+      internalID: -8518707507534686830
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mac_17
+      rect:
+        serializedVersion: 2
+        x: 24
+        y: 159
+        width: 20
+        height: 26
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 98fbeb6e24845d490800000000000000
+      internalID: -7722186533880545399
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mac_18
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 159
+        width: 15
+        height: 25
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d4555bb3f66f89c90800000000000000
+      internalID: -7162704249729231539
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mac_19
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 139
+        width: 19
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8cb197796875f17c0800000000000000
+      internalID: -4098460900305331256
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mac_20
+      rect:
+        serializedVersion: 2
+        x: 25
+        y: 139
+        width: 19
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bd0b89fba0c99dae0800000000000000
+      internalID: -1524015428910141221
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mac_21
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 139
+        width: 19
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 37e5fcdb7758b5090800000000000000
+      internalID: -8044689560035172749
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mac_22
+      rect:
+        serializedVersion: 2
+        x: 71
+        y: 139
+        width: 19
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a226004ee8483f160800000000000000
+      internalID: 7058130790265152042
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mac_23
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 120
+        width: 19
+        height: 15
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f5d5cd980dde4a8d0800000000000000
+      internalID: -2835880385414668961
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mac_24
+      rect:
+        serializedVersion: 2
+        x: 25
+        y: 120
+        width: 19
+        height: 14
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b23c24c7cc701a7d0800000000000000
+      internalID: -2909035309465156821
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mac_25
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 120
+        width: 19
+        height: 14
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 963126a6b9e5985d0800000000000000
+      internalID: -3059810450223787159
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mac_26
+      rect:
+        serializedVersion: 2
+        x: 71
+        y: 120
+        width: 19
+        height: 14
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 022494a60e9a837d0800000000000000
+      internalID: -2938411975538294240
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mac_27
+      rect:
+        serializedVersion: 2
+        x: 93
+        y: 120
+        width: 19
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9a67f39ea24f62840800000000000000
+      internalID: 5199111284984870569
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mac_28
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 99
+        width: 15
+        height: 17
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 539b03f5088057740800000000000000
+      internalID: 5149031096413894965
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mac_29
+      rect:
+        serializedVersion: 2
+        x: 21
+        y: 99
+        width: 21
+        height: 17
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 317d69c06677860f0800000000000000
+      internalID: -1123516826847357165
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mac_30
+      rect:
+        serializedVersion: 2
+        x: 46
+        y: 99
+        width: 28
+        height: 15
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7f6e01bb8a36a2e10800000000000000
+      internalID: 2173659346503788279
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mac_31
+      rect:
+        serializedVersion: 2
+        x: 78
+        y: 99
+        width: 28
+        height: 17
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9842f7f38c257a280800000000000000
+      internalID: -9032159507656006519
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mac_32
+      rect:
+        serializedVersion: 2
+        x: 3
+        y: 79
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d52ee920e27edb8c0800000000000000
+      internalID: -3981772310727171491
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mac_33
+      rect:
+        serializedVersion: 2
+        x: 23
+        y: 79
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a31be845f244c84e0800000000000000
+      internalID: -1978131166249701062
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mac_34
+      rect:
+        serializedVersion: 2
+        x: 43
+        y: 73
+        width: 16
+        height: 21
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f81159dcd6f95f930800000000000000
+      internalID: 4176419523405353359
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mac_35
+      rect:
+        serializedVersion: 2
+        x: 63
+        y: 73
+        width: 16
+        height: 19
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 31dd85ea7e8eca0c0800000000000000
+      internalID: -4563016240673006317
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mac_36
+      rect:
+        serializedVersion: 2
+        x: 83
+        y: 73
+        width: 16
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4b1759d4533d2e0e0800000000000000
+      internalID: -2241997438588718668
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mac_37
+      rect:
+        serializedVersion: 2
+        x: 103
+        y: 73
+        width: 16
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 812b83f11a4dbf6f0800000000000000
+      internalID: -649691932746272232
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mac_38
+      rect:
+        serializedVersion: 2
+        x: 122
+        y: 73
+        width: 17
+        height: 22
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5a5f9f3dbbaa30510800000000000000
+      internalID: 1514241623418598821
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mac_39
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 44
+        width: 23
+        height: 25
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e585553ba0be991f0800000000000000
+      internalID: -1037539807941273506
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mac_40
+      rect:
+        serializedVersion: 2
+        x: 52
+        y: 2
+        width: 28
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f51620f66a55c8510800000000000000
+      internalID: 1552710144851337567
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mac_41
+      rect:
+        serializedVersion: 2
+        x: 84
+        y: 2
+        width: 27
+        height: 37
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e9e50681e88b66670800000000000000
+      internalID: 8531709464533819038
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mac_42
+      rect:
+        serializedVersion: 2
+        x: 115
+        y: 2
+        width: 30
+        height: 38
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7e3b9df39970aa120800000000000000
+      internalID: 2425759704075056103
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mac_43
+      rect:
+        serializedVersion: 2
+        x: 149
+        y: 31
+        width: 10
+        height: 7
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 80de02b2483383ec0800000000000000
+      internalID: -3587060460448322296
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mac_44
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 2
+        width: 16
+        height: 13
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 287fda0f48a95d230800000000000000
+      internalID: 3663003767700060034
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mac_45
+      rect:
+        serializedVersion: 2
+        x: 22
+        y: 2
+        width: 26
+        height: 28
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c4219e25815820780800000000000000
+      internalID: -8718259589119143348
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

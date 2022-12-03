@@ -104,7 +104,6 @@ public class CameraController : MonoBehaviour
         yield break;
     }
 
-
     /*void Update()
     {
         if (Player.Instance != null)
