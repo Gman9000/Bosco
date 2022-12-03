@@ -77,9 +77,8 @@ public class CameraController : MonoBehaviour
 
     public void HorShake(int pixels)
     {
-        if (shakeCoroutine != null)
-            StopCoroutine(shakeCoroutine);
-        shakeCoroutine = StartCoroutine(ShakeSide(pixels));
+        if (shakeCoroutine == null)
+            shakeCoroutine = StartCoroutine(ShakeSide(pixels));
     }
 
     IEnumerator ShakeSide(int pixels)

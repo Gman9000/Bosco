@@ -18,6 +18,14 @@ public class CandleHandler : MonoBehaviour
         animator.speed = 0;
     }
 
+    void Update()
+    {
+        if (animator.speed > 0 && animator.GetCurrentAnimatorStateInfo(0).IsName("DoorOpen"))
+        {
+            CameraController.Instance.HorShake(1);
+        }
+    }
+
     private void CandleCheck()
     {
         foreach (Candle candle in candles)
@@ -30,7 +38,8 @@ public class CandleHandler : MonoBehaviour
         if(numberOfLitCandles == candles.Length)
         {
             //this.gameObject.SetActive(false);
-            animator.speed = 1.0F;
+
+            animator.speed = .25F;
             canUseDoor = true;
         }
         else
@@ -45,4 +54,6 @@ public class CandleHandler : MonoBehaviour
             CandleCheck();
         }
     }
+
+
 }

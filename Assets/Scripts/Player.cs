@@ -437,10 +437,10 @@ public class Player : MonoBehaviour
         {
             this.gameObject.transform.position = checkpoint;
         }
-        if (other.CompareTag("Candle"))
+        /*if (other.CompareTag("Candle"))
         {
             other.GetComponent<Candle>().LightUpCandle();
-        }
+        }*/
         /*if (other.CompareTag("Teleport"))
         {
             other.gameObject.GetComponent<EndLevelChecker>().HandleEndOfLevel();

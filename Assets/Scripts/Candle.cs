@@ -5,10 +5,15 @@ using UnityEngine;
 public class Candle : MonoBehaviour
 {
     private bool isLit;
-    // Start is called before the first frame update
+    GameObject flameObj = null;
+
+    
     void Start()
     {
         isLit = false;
+        flameObj = GetComponentInChildren<Animator>().gameObject;
+        if (flameObj)
+            flameObj.SetActive(false);
     }
     public bool HasBeenLit()
     {
@@ -17,5 +22,15 @@ public class Candle : MonoBehaviour
     public void LightUpCandle()
     {
         isLit = true;
+        if (flameObj)
+            flameObj.SetActive(true);
+    }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("PlayerAttack"))
+        {
+            LightUpCandle();
+        }
     }
 }
