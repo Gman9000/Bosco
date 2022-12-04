@@ -227,7 +227,7 @@ GameObject:
   m_Component:
   - component: {fileID: 15796251}
   - component: {fileID: 15796252}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -276,7 +276,6 @@ GameObject:
   - component: {fileID: 16451774}
   - component: {fileID: 16451773}
   - component: {fileID: 16451772}
-  - component: {fileID: 16451771}
   m_Layer: 6
   m_Name: Hidden Entrance (94)
   m_TagString: Hidden
@@ -299,27 +298,6 @@ Transform:
   m_Father: {fileID: 208555875}
   m_RootOrder: 18
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!50 &16451771
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 16451769}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!114 &16451772
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -546,7 +524,7 @@ GameObject:
   m_Component:
   - component: {fileID: 34714539}
   - component: {fileID: 34714540}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -623,7 +601,7 @@ GameObject:
   m_Component:
   - component: {fileID: 60628570}
   - component: {fileID: 60628571}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -672,7 +650,6 @@ GameObject:
   - component: {fileID: 63204609}
   - component: {fileID: 63204608}
   - component: {fileID: 63204607}
-  - component: {fileID: 63204606}
   m_Layer: 6
   m_Name: Hidden Entrance (73)
   m_TagString: Hidden
@@ -695,27 +672,6 @@ Transform:
   m_Father: {fileID: 1172721174}
   m_RootOrder: 20
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!50 &63204606
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 63204604}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!114 &63204607
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1077,7 +1033,7 @@ GameObject:
   m_Component:
   - component: {fileID: 117108083}
   - component: {fileID: 117108084}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -1250,8 +1206,7 @@ GameObject:
   - component: {fileID: 145723558}
   - component: {fileID: 145723557}
   - component: {fileID: 145723555}
-  - component: {fileID: 145723556}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Hidden Entrance (16)
   m_TagString: Hidden
   m_Icon: {fileID: 0}
@@ -1274,27 +1229,6 @@ MonoBehaviour:
   adjacentHiddenEntrances: []
   delayTime: 0.1
   canBeHitByPlayer: 0
---- !u!50 &145723556
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 145723554}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!61 &145723557
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1478,8 +1412,7 @@ GameObject:
   - component: {fileID: 151544548}
   - component: {fileID: 151544547}
   - component: {fileID: 151544545}
-  - component: {fileID: 151544546}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Hidden Entrance (27)
   m_TagString: Hidden
   m_Icon: {fileID: 0}
@@ -1502,27 +1435,6 @@ MonoBehaviour:
   adjacentHiddenEntrances: []
   delayTime: 0.1
   canBeHitByPlayer: 0
---- !u!50 &151544546
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 151544544}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!61 &151544547
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1627,7 +1539,6 @@ GameObject:
   - component: {fileID: 151586724}
   - component: {fileID: 151586723}
   - component: {fileID: 151586722}
-  - component: {fileID: 151586721}
   m_Layer: 6
   m_Name: Hidden Entrance (68)
   m_TagString: Hidden
@@ -1650,27 +1561,6 @@ Transform:
   m_Father: {fileID: 1172721174}
   m_RootOrder: 15
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!50 &151586721
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 151586719}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!114 &151586722
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1776,7 +1666,6 @@ GameObject:
   - component: {fileID: 158960178}
   - component: {fileID: 158960177}
   - component: {fileID: 158960176}
-  - component: {fileID: 158960175}
   m_Layer: 6
   m_Name: Hidden Entrance (113)
   m_TagString: Hidden
@@ -1799,27 +1688,6 @@ Transform:
   m_Father: {fileID: 208555875}
   m_RootOrder: 36
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!50 &158960175
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 158960173}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!114 &158960176
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1953,7 +1821,7 @@ GameObject:
   m_Component:
   - component: {fileID: 181382514}
   - component: {fileID: 181382515}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -2049,8 +1917,7 @@ GameObject:
   - component: {fileID: 185164214}
   - component: {fileID: 185164213}
   - component: {fileID: 185164211}
-  - component: {fileID: 185164212}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Hidden Entrance (21)
   m_TagString: Hidden
   m_Icon: {fileID: 0}
@@ -2073,27 +1940,6 @@ MonoBehaviour:
   adjacentHiddenEntrances: []
   delayTime: 0.1
   canBeHitByPlayer: 0
---- !u!50 &185164212
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 185164210}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!61 &185164213
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2476,7 +2322,6 @@ GameObject:
   - component: {fileID: 196934409}
   - component: {fileID: 196934408}
   - component: {fileID: 196934406}
-  - component: {fileID: 196934407}
   m_Layer: 6
   m_Name: Hidden Entrance (46)
   m_TagString: Hidden
@@ -2500,27 +2345,6 @@ MonoBehaviour:
   adjacentHiddenEntrances: []
   delayTime: 0.1
   canBeHitByPlayer: 0
---- !u!50 &196934407
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 196934405}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!61 &196934408
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2625,7 +2449,6 @@ GameObject:
   - component: {fileID: 201335232}
   - component: {fileID: 201335231}
   - component: {fileID: 201335230}
-  - component: {fileID: 201335229}
   m_Layer: 6
   m_Name: Hidden Entrance (103)
   m_TagString: Hidden
@@ -2648,27 +2471,6 @@ Transform:
   m_Father: {fileID: 208555875}
   m_RootOrder: 27
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!50 &201335229
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 201335227}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!114 &201335230
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2888,7 +2690,6 @@ GameObject:
   - component: {fileID: 233291448}
   - component: {fileID: 233291447}
   - component: {fileID: 233291446}
-  - component: {fileID: 233291445}
   m_Layer: 6
   m_Name: Hidden Entrance (62)
   m_TagString: Hidden
@@ -2911,27 +2712,6 @@ Transform:
   m_Father: {fileID: 1172721174}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!50 &233291445
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 233291443}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!114 &233291446
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3146,8 +2926,7 @@ GameObject:
   - component: {fileID: 243283866}
   - component: {fileID: 243283865}
   - component: {fileID: 243283863}
-  - component: {fileID: 243283864}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Hidden Entrance (40)
   m_TagString: Hidden
   m_Icon: {fileID: 0}
@@ -3170,27 +2949,6 @@ MonoBehaviour:
   adjacentHiddenEntrances: []
   delayTime: 0.1
   canBeHitByPlayer: 0
---- !u!50 &243283864
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 243283862}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!61 &243283865
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -3389,7 +3147,6 @@ GameObject:
   - component: {fileID: 259639912}
   - component: {fileID: 259639911}
   - component: {fileID: 259639910}
-  - component: {fileID: 259639909}
   m_Layer: 6
   m_Name: Hidden Entrance (81)
   m_TagString: Hidden
@@ -3412,27 +3169,6 @@ Transform:
   m_Father: {fileID: 208555875}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!50 &259639909
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 259639907}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!114 &259639910
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3585,8 +3321,7 @@ GameObject:
   - component: {fileID: 285893779}
   - component: {fileID: 285893778}
   - component: {fileID: 285893776}
-  - component: {fileID: 285893777}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Hidden Entrance (25)
   m_TagString: Hidden
   m_Icon: {fileID: 0}
@@ -3609,27 +3344,6 @@ MonoBehaviour:
   adjacentHiddenEntrances: []
   delayTime: 0.1
   canBeHitByPlayer: 0
---- !u!50 &285893777
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 285893775}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!61 &285893778
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -3693,8 +3407,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -1920555623
+  m_SortingLayer: 1
   m_SortingOrder: 0
   m_Sprite: {fileID: -4818650310412941511, guid: 47ea5f9422cf0b74099e27adb0f177b8, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -3732,7 +3446,7 @@ GameObject:
   m_Component:
   - component: {fileID: 287255319}
   - component: {fileID: 287255320}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -3781,7 +3495,6 @@ GameObject:
   - component: {fileID: 293239186}
   - component: {fileID: 293239185}
   - component: {fileID: 293239184}
-  - component: {fileID: 293239183}
   m_Layer: 6
   m_Name: Hidden Entrance (54)
   m_TagString: Hidden
@@ -3804,27 +3517,6 @@ Transform:
   m_Father: {fileID: 1172721174}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!50 &293239183
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 293239181}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!114 &293239184
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3930,7 +3622,6 @@ GameObject:
   - component: {fileID: 293450946}
   - component: {fileID: 293450945}
   - component: {fileID: 293450944}
-  - component: {fileID: 293450943}
   m_Layer: 6
   m_Name: HiddenEntrance (6)
   m_TagString: Hidden
@@ -3938,27 +3629,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!50 &293450943
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 293450942}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!114 &293450944
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4461,7 +4131,7 @@ GameObject:
   m_Component:
   - component: {fileID: 323681027}
   - component: {fileID: 323681028}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -4498,6 +4168,104 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 1
+--- !u!1 &328943292
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 328943296}
+  - component: {fileID: 328943295}
+  - component: {fileID: 328943294}
+  - component: {fileID: 328943293}
+  m_Layer: 0
+  m_Name: Backup Entrance
+  m_TagString: Hidden
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!50 &328943293
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 328943292}
+  m_BodyType: 2
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
+--- !u!114 &328943294
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 328943292}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2af323180f551744983006f2d65f6358, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  waitTime: 0.1
+  adjacentHiddenEntrances:
+  - {fileID: 1672435160}
+  delayTime: 0.1
+  canBeHitByPlayer: 1
+--- !u!61 &328943295
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 328943292}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1, y: 1}
+    newSize: {x: 1, y: 1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1}
+  m_EdgeRadius: 0
+--- !u!4 &328943296
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 328943292}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 3, y: 1, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 983882361}
+  m_Father: {fileID: 1672435163}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &335236248
 GameObject:
   m_ObjectHideFlags: 0
@@ -4510,8 +4278,7 @@ GameObject:
   - component: {fileID: 335236252}
   - component: {fileID: 335236251}
   - component: {fileID: 335236249}
-  - component: {fileID: 335236250}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Hidden Entrance (7)
   m_TagString: Hidden
   m_Icon: {fileID: 0}
@@ -4534,27 +4301,6 @@ MonoBehaviour:
   adjacentHiddenEntrances: []
   delayTime: 0.1
   canBeHitByPlayer: 0
---- !u!50 &335236250
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 335236248}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!61 &335236251
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -4659,8 +4405,7 @@ GameObject:
   - component: {fileID: 337961632}
   - component: {fileID: 337961631}
   - component: {fileID: 337961629}
-  - component: {fileID: 337961630}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Hidden Entrance (41)
   m_TagString: Hidden
   m_Icon: {fileID: 0}
@@ -4683,27 +4428,6 @@ MonoBehaviour:
   adjacentHiddenEntrances: []
   delayTime: 0.1
   canBeHitByPlayer: 0
---- !u!50 &337961630
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 337961628}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!61 &337961631
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -4806,7 +4530,7 @@ GameObject:
   m_Component:
   - component: {fileID: 338129093}
   - component: {fileID: 338129094}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -4855,8 +4579,7 @@ GameObject:
   - component: {fileID: 340887305}
   - component: {fileID: 340887304}
   - component: {fileID: 340887302}
-  - component: {fileID: 340887303}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: HiddenEntrance
   m_TagString: Hidden
   m_Icon: {fileID: 0}
@@ -4879,27 +4602,6 @@ MonoBehaviour:
   adjacentHiddenEntrances: []
   delayTime: 0.1
   canBeHitByPlayer: 0
---- !u!50 &340887303
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 340887301}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!61 &340887304
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -5002,7 +4704,7 @@ GameObject:
   m_Component:
   - component: {fileID: 343738362}
   - component: {fileID: 343738363}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -5098,7 +4800,6 @@ GameObject:
   - component: {fileID: 355366314}
   - component: {fileID: 355366313}
   - component: {fileID: 355366311}
-  - component: {fileID: 355366312}
   m_Layer: 6
   m_Name: HiddenEntrance (2)
   m_TagString: Hidden
@@ -5122,27 +4823,6 @@ MonoBehaviour:
   adjacentHiddenEntrances: []
   delayTime: 0.1
   canBeHitByPlayer: 0
---- !u!50 &355366312
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 355366310}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!61 &355366313
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -5288,7 +4968,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.1, y: 0}
+  m_Offset: {x: -0.17, y: 0.02}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -5299,7 +4979,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.89, y: 0.88}
+  m_Size: {x: 0.88, y: 0.88}
   m_EdgeRadius: 0
 --- !u!50 &357263473
 Rigidbody2D:
@@ -5338,12 +5018,13 @@ MonoBehaviour:
   - {fileID: 8300000, guid: e79b59bb6551e884caefdb07a0fb1783, type: 3}
   - {fileID: 8300000, guid: 193628398b5107047a548bacf40a36ac, type: 3}
   - {fileID: 8300000, guid: a6b758dd20c1b8c48a140e2796fb73cb, type: 3}
-  moveSpeed: 4.6
+  moveSpeed: 4
   jumpSpeed: 10
   jumpTime: 0.265
-  originalGravityScale: 6.25
+  originalGravityScale: 7
   DownThrustGravityModifier: 2
   rightAttackHitbox: {fileID: 2034284715}
+  SpinAttackHitbox: {fileID: 1510731117}
   upAttackHitbox: {fileID: 129843167}
   downAttackHitbox: {fileID: 149069492}
   radialAttackHitbox: {fileID: 639445267}
@@ -5352,6 +5033,7 @@ MonoBehaviour:
   hitComboWindow: 0.3
   comboCooldown: 0.25
   maxhealth: 5
+  deathTime: 0
   animatorController: {fileID: 357263471}
 --- !u!212 &357263475
 SpriteRenderer:
@@ -5412,7 +5094,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 357263470}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 48.56, y: 41.18, z: 0}
+  m_LocalPosition: {x: 29.5, y: 32.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 129843169}
@@ -5558,7 +5240,6 @@ GameObject:
   - component: {fileID: 358780823}
   - component: {fileID: 358780822}
   - component: {fileID: 358780821}
-  - component: {fileID: 358780820}
   m_Layer: 6
   m_Name: Hidden Entrance (85)
   m_TagString: Hidden
@@ -5581,27 +5262,6 @@ Transform:
   m_Father: {fileID: 208555875}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!50 &358780820
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 358780818}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!114 &358780821
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5997,7 +5657,6 @@ GameObject:
   - component: {fileID: 408476874}
   - component: {fileID: 408476873}
   - component: {fileID: 408476872}
-  - component: {fileID: 408476871}
   m_Layer: 6
   m_Name: Hidden Entrance (69)
   m_TagString: Hidden
@@ -6020,27 +5679,6 @@ Transform:
   m_Father: {fileID: 1172721174}
   m_RootOrder: 16
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!50 &408476871
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 408476869}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!114 &408476872
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6233,7 +5871,6 @@ MonoBehaviour:
   - {fileID: 337961629}
   - {fileID: 1500851541}
   - {fileID: 1000175290}
-  - {fileID: 0}
   delayTime: 0.01
   canBeHitByPlayer: 1
 --- !u!61 &409266988
@@ -6246,7 +5883,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -6341,7 +5978,6 @@ GameObject:
   - component: {fileID: 420770501}
   - component: {fileID: 420770500}
   - component: {fileID: 420770499}
-  - component: {fileID: 420770498}
   m_Layer: 6
   m_Name: TriggeringHidden Entrance
   m_TagString: Hidden
@@ -6349,27 +5985,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!50 &420770498
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 420770497}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!114 &420770499
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6701,7 +6316,6 @@ GameObject:
   - component: {fileID: 438045920}
   - component: {fileID: 438045919}
   - component: {fileID: 438045918}
-  - component: {fileID: 438045917}
   m_Layer: 6
   m_Name: Hidden Entrance (108)
   m_TagString: Hidden
@@ -6724,27 +6338,6 @@ Transform:
   m_Father: {fileID: 208555875}
   m_RootOrder: 32
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!50 &438045917
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 438045915}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!114 &438045918
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6850,7 +6443,6 @@ GameObject:
   - component: {fileID: 449337302}
   - component: {fileID: 449337301}
   - component: {fileID: 449337300}
-  - component: {fileID: 449337299}
   m_Layer: 6
   m_Name: Hidden Entrance (90)
   m_TagString: Hidden
@@ -6873,27 +6465,6 @@ Transform:
   m_Father: {fileID: 208555875}
   m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!50 &449337299
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 449337297}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!114 &449337300
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6999,7 +6570,6 @@ GameObject:
   - component: {fileID: 453004422}
   - component: {fileID: 453004421}
   - component: {fileID: 453004420}
-  - component: {fileID: 453004419}
   m_Layer: 6
   m_Name: Hidden Entrance (77)
   m_TagString: Hidden
@@ -7022,27 +6592,6 @@ Transform:
   m_Father: {fileID: 208555875}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!50 &453004419
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 453004417}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!114 &453004420
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7146,7 +6695,7 @@ GameObject:
   m_Component:
   - component: {fileID: 457861560}
   - component: {fileID: 457861561}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -7289,8 +6838,7 @@ GameObject:
   - component: {fileID: 474676081}
   - component: {fileID: 474676080}
   - component: {fileID: 474676078}
-  - component: {fileID: 474676079}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Hidden Entrance (18)
   m_TagString: Hidden
   m_Icon: {fileID: 0}
@@ -7313,27 +6861,6 @@ MonoBehaviour:
   adjacentHiddenEntrances: []
   delayTime: 0.1
   canBeHitByPlayer: 0
---- !u!50 &474676079
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 474676077}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!61 &474676080
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -7438,7 +6965,6 @@ GameObject:
   - component: {fileID: 476151519}
   - component: {fileID: 476151518}
   - component: {fileID: 476151517}
-  - component: {fileID: 476151516}
   m_Layer: 6
   m_Name: HiddenEntrance (5)
   m_TagString: Hidden
@@ -7446,27 +6972,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!50 &476151516
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 476151515}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!114 &476151517
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7696,7 +7201,6 @@ GameObject:
   - component: {fileID: 481873607}
   - component: {fileID: 481873606}
   - component: {fileID: 481873605}
-  - component: {fileID: 481873604}
   m_Layer: 6
   m_Name: Hidden Entrance (52)
   m_TagString: Hidden
@@ -7704,27 +7208,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!50 &481873604
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 481873603}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!114 &481873605
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7986,7 +7469,6 @@ GameObject:
   - component: {fileID: 517178951}
   - component: {fileID: 517178950}
   - component: {fileID: 517178949}
-  - component: {fileID: 517178948}
   m_Layer: 6
   m_Name: Hidden Entrance (95)
   m_TagString: Hidden
@@ -8009,27 +7491,6 @@ Transform:
   m_Father: {fileID: 208555875}
   m_RootOrder: 19
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!50 &517178948
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 517178946}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!114 &517178949
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8182,7 +7643,6 @@ GameObject:
   - component: {fileID: 531647060}
   - component: {fileID: 531647059}
   - component: {fileID: 531647058}
-  - component: {fileID: 531647057}
   m_Layer: 6
   m_Name: Hidden Entrance (78)
   m_TagString: Hidden
@@ -8205,27 +7665,6 @@ Transform:
   m_Father: {fileID: 208555875}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!50 &531647057
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 531647055}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!114 &531647058
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8438,7 +7877,7 @@ GameObject:
   m_Component:
   - component: {fileID: 539053601}
   - component: {fileID: 539053602}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -8485,7 +7924,7 @@ GameObject:
   m_Component:
   - component: {fileID: 541811827}
   - component: {fileID: 541811828}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -8534,7 +7973,6 @@ GameObject:
   - component: {fileID: 543919858}
   - component: {fileID: 543919857}
   - component: {fileID: 543919856}
-  - component: {fileID: 543919855}
   m_Layer: 6
   m_Name: Hidden Entrance (89)
   m_TagString: Hidden
@@ -8557,27 +7995,6 @@ Transform:
   m_Father: {fileID: 208555875}
   m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!50 &543919855
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 543919853}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!114 &543919856
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8775,7 +8192,7 @@ GameObject:
   m_Component:
   - component: {fileID: 561660492}
   - component: {fileID: 561660493}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -8822,7 +8239,7 @@ GameObject:
   m_Component:
   - component: {fileID: 570080173}
   - component: {fileID: 570080174}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -8871,7 +8288,6 @@ GameObject:
   - component: {fileID: 570277458}
   - component: {fileID: 570277457}
   - component: {fileID: 570277456}
-  - component: {fileID: 570277455}
   m_Layer: 6
   m_Name: Hidden Entrance (79)
   m_TagString: Hidden
@@ -8894,27 +8310,6 @@ Transform:
   m_Father: {fileID: 208555875}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!50 &570277455
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 570277453}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!114 &570277456
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9020,8 +8415,7 @@ GameObject:
   - component: {fileID: 573734883}
   - component: {fileID: 573734882}
   - component: {fileID: 573734880}
-  - component: {fileID: 573734881}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Hidden Entrance (15)
   m_TagString: Hidden
   m_Icon: {fileID: 0}
@@ -9044,27 +8438,6 @@ MonoBehaviour:
   adjacentHiddenEntrances: []
   delayTime: 0.1
   canBeHitByPlayer: 0
---- !u!50 &573734881
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 573734879}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!61 &573734882
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -9169,7 +8542,6 @@ GameObject:
   - component: {fileID: 591144562}
   - component: {fileID: 591144561}
   - component: {fileID: 591144560}
-  - component: {fileID: 591144559}
   m_Layer: 6
   m_Name: Hidden Entrance (59)
   m_TagString: Hidden
@@ -9192,27 +8564,6 @@ Transform:
   m_Father: {fileID: 1172721174}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!50 &591144559
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 591144557}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!114 &591144560
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9321,7 +8672,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &594326104
 Transform:
   m_ObjectHideFlags: 0
@@ -9391,7 +8742,7 @@ GameObject:
   m_Component:
   - component: {fileID: 602209234}
   - component: {fileID: 602209235}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -9440,8 +8791,7 @@ GameObject:
   - component: {fileID: 603334811}
   - component: {fileID: 603334810}
   - component: {fileID: 603334808}
-  - component: {fileID: 603334809}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Hidden Entrance (5)
   m_TagString: Hidden
   m_Icon: {fileID: 0}
@@ -9464,27 +8814,6 @@ MonoBehaviour:
   adjacentHiddenEntrances: []
   delayTime: 0.1
   canBeHitByPlayer: 0
---- !u!50 &603334809
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 603334807}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!61 &603334810
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -9624,7 +8953,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   smoothDampTime: 0
-  followRectSize: {x: 2, y: 3}
+  followRectSize: {x: 2, y: 1}
   offset: {x: 0, y: 1}
 --- !u!50 &608699576
 Rigidbody2D:
@@ -9745,7 +9074,6 @@ GameObject:
   - component: {fileID: 617164479}
   - component: {fileID: 617164478}
   - component: {fileID: 617164477}
-  - component: {fileID: 617164476}
   m_Layer: 6
   m_Name: Hidden Entrance (70)
   m_TagString: Hidden
@@ -9768,27 +9096,6 @@ Transform:
   m_Father: {fileID: 1172721174}
   m_RootOrder: 17
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!50 &617164476
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 617164474}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!114 &617164477
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10191,8 +9498,7 @@ GameObject:
   - component: {fileID: 647436939}
   - component: {fileID: 647436938}
   - component: {fileID: 647436936}
-  - component: {fileID: 647436937}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Hidden Entrance (22)
   m_TagString: Hidden
   m_Icon: {fileID: 0}
@@ -10215,27 +9521,6 @@ MonoBehaviour:
   adjacentHiddenEntrances: []
   delayTime: 0.1
   canBeHitByPlayer: 0
---- !u!50 &647436937
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 647436935}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!61 &647436938
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -42650,8 +41935,8 @@ Tilemap:
   - first: {x: -29, y: 6, z: 0}
     second:
       serializedVersion: 2
-      m_TileIndex: 8
-      m_TileSpriteIndex: 12
+      m_TileIndex: 12
+      m_TileSpriteIndex: 25
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
@@ -43580,8 +42865,8 @@ Tilemap:
   - first: {x: -29, y: 7, z: 0}
     second:
       serializedVersion: 2
-      m_TileIndex: 14
-      m_TileSpriteIndex: 14
+      m_TileIndex: 34
+      m_TileSpriteIndex: 34
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
@@ -48410,8 +47695,8 @@ Tilemap:
   - first: {x: -11, y: 12, z: 0}
     second:
       serializedVersion: 2
-      m_TileIndex: 1
-      m_TileSpriteIndex: 1
+      m_TileIndex: 3
+      m_TileSpriteIndex: 3
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
@@ -49340,8 +48625,8 @@ Tilemap:
   - first: {x: -11, y: 13, z: 0}
     second:
       serializedVersion: 2
-      m_TileIndex: 14
-      m_TileSpriteIndex: 14
+      m_TileIndex: 0
+      m_TileSpriteIndex: 0
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
@@ -50270,8 +49555,8 @@ Tilemap:
   - first: {x: -11, y: 14, z: 0}
     second:
       serializedVersion: 2
-      m_TileIndex: 14
-      m_TileSpriteIndex: 14
+      m_TileIndex: 0
+      m_TileSpriteIndex: 0
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
@@ -56379,13 +55664,13 @@ Tilemap:
       m_AllTileFlags: 1073741825
   m_AnimatedTiles: {}
   m_TileAssetArray:
-  - m_RefCount: 48
+  - m_RefCount: 50
     m_Data: {fileID: 11400000, guid: dffaee69ab802a747b6eebf0d48426e6, type: 2}
-  - m_RefCount: 19
+  - m_RefCount: 18
     m_Data: {fileID: 11400000, guid: be1af8d32649c994d998adb4e579fb9a, type: 2}
   - m_RefCount: 108
     m_Data: {fileID: 11400000, guid: 14cd05ba0136ce949ae71a0278f41a68, type: 2}
-  - m_RefCount: 119
+  - m_RefCount: 120
     m_Data: {fileID: 11400000, guid: 93f1c33496717b343943fd570ef72b1d, type: 2}
   - m_RefCount: 4
     m_Data: {fileID: 11400000, guid: d2a18e01dc5d66e42b15beb824b9b861, type: 2}
@@ -56395,7 +55680,7 @@ Tilemap:
     m_Data: {fileID: 11400000, guid: b2b8cbcff35efd848a2d5380bdc5cd3d, type: 2}
   - m_RefCount: 1
     m_Data: {fileID: 11400000, guid: 15156d843fb4b524bbf1de6fe4bb2b65, type: 2}
-  - m_RefCount: 23
+  - m_RefCount: 22
     m_Data: {fileID: 11400000, guid: 9ea0a0824808f384397d08ceb7d6cb9d, type: 2}
   - m_RefCount: 8
     m_Data: {fileID: 11400000, guid: 4b5fdf23d297d7d47a169fb7c460bbd4, type: 2}
@@ -56403,11 +55688,11 @@ Tilemap:
     m_Data: {fileID: 11400000, guid: 02189dcef495a9b40893d3058daa4951, type: 2}
   - m_RefCount: 8
     m_Data: {fileID: 11400000, guid: f84498c7f43eb01468bf4bb3e4ae1593, type: 2}
-  - m_RefCount: 11
+  - m_RefCount: 12
     m_Data: {fileID: 11400000, guid: cc2e49695c7a4bf4ea2b8bb59e0ee186, type: 2}
   - m_RefCount: 5
     m_Data: {fileID: 11400000, guid: f55c11bc2ce38a54e92c2739e46865e2, type: 2}
-  - m_RefCount: 86
+  - m_RefCount: 83
     m_Data: {fileID: 11400000, guid: af25265a927db3547827cf233c33caf7, type: 2}
   - m_RefCount: 5
     m_Data: {fileID: 11400000, guid: 476211deecc464b438d7b8a1e474a617, type: 2}
@@ -56447,7 +55732,7 @@ Tilemap:
     m_Data: {fileID: 11400000, guid: 6b68e521cbc1cb24a8330fb5ce25c9ba, type: 2}
   - m_RefCount: 1
     m_Data: {fileID: 11400000, guid: 9c3c02b678e4b074a8ff75c3bdd7197d, type: 2}
-  - m_RefCount: 10
+  - m_RefCount: 11
     m_Data: {fileID: 11400000, guid: 94852ad80c004b3419db727b21058ba6, type: 2}
   - m_RefCount: 1
     m_Data: {fileID: 11400000, guid: 85ef164f79c66db47a8a9b7698b9e022, type: 2}
@@ -56462,13 +55747,13 @@ Tilemap:
   - m_RefCount: 5
     m_Data: {fileID: 11400000, guid: cdc1fa26e82d18e4db3d234d2d82cb95, type: 2}
   m_TileSpriteArray:
-  - m_RefCount: 48
+  - m_RefCount: 50
     m_Data: {fileID: -5893872823423097886, guid: 47ea5f9422cf0b74099e27adb0f177b8, type: 3}
-  - m_RefCount: 19
+  - m_RefCount: 18
     m_Data: {fileID: -2025498520911094271, guid: 47ea5f9422cf0b74099e27adb0f177b8, type: 3}
   - m_RefCount: 108
     m_Data: {fileID: 8961658934299784465, guid: 47ea5f9422cf0b74099e27adb0f177b8, type: 3}
-  - m_RefCount: 119
+  - m_RefCount: 120
     m_Data: {fileID: -394062059835265117, guid: 47ea5f9422cf0b74099e27adb0f177b8, type: 3}
   - m_RefCount: 4
     m_Data: {fileID: -6810102771080225870, guid: 47ea5f9422cf0b74099e27adb0f177b8, type: 3}
@@ -56486,11 +55771,11 @@ Tilemap:
     m_Data: {fileID: 7640190859277038996, guid: 47ea5f9422cf0b74099e27adb0f177b8, type: 3}
   - m_RefCount: 17
     m_Data: {fileID: 5425809039718344614, guid: b0373f4e319b62a48b5574c9fdec2bf1, type: 3}
-  - m_RefCount: 23
+  - m_RefCount: 22
     m_Data: {fileID: 1393229536087524929, guid: 47ea5f9422cf0b74099e27adb0f177b8, type: 3}
   - m_RefCount: 8
     m_Data: {fileID: 5630870268809034554, guid: 47ea5f9422cf0b74099e27adb0f177b8, type: 3}
-  - m_RefCount: 86
+  - m_RefCount: 83
     m_Data: {fileID: 1612206129647790914, guid: 47ea5f9422cf0b74099e27adb0f177b8, type: 3}
   - m_RefCount: 5
     m_Data: {fileID: 5589211093539297924, guid: b0373f4e319b62a48b5574c9fdec2bf1, type: 3}
@@ -56512,7 +55797,7 @@ Tilemap:
     m_Data: {fileID: -3483580779672501201, guid: b0373f4e319b62a48b5574c9fdec2bf1, type: 3}
   - m_RefCount: 8
     m_Data: {fileID: -7778011983984834028, guid: 47ea5f9422cf0b74099e27adb0f177b8, type: 3}
-  - m_RefCount: 11
+  - m_RefCount: 12
     m_Data: {fileID: -4736528836439802678, guid: 47ea5f9422cf0b74099e27adb0f177b8, type: 3}
   - m_RefCount: 0
     m_Data: {fileID: 0}
@@ -56530,7 +55815,7 @@ Tilemap:
     m_Data: {fileID: -7432990290717759194, guid: b0373f4e319b62a48b5574c9fdec2bf1, type: 3}
   - m_RefCount: 1
     m_Data: {fileID: -2913240285359734573, guid: b0373f4e319b62a48b5574c9fdec2bf1, type: 3}
-  - m_RefCount: 10
+  - m_RefCount: 11
     m_Data: {fileID: -167388734037847649, guid: 47ea5f9422cf0b74099e27adb0f177b8, type: 3}
   - m_RefCount: 2
     m_Data: {fileID: 261074717711556055, guid: 47ea5f9422cf0b74099e27adb0f177b8, type: 3}
@@ -56602,7 +55887,6 @@ GameObject:
   - component: {fileID: 652789743}
   - component: {fileID: 652789742}
   - component: {fileID: 652789741}
-  - component: {fileID: 652789740}
   m_Layer: 6
   m_Name: Hidden Entrance (61)
   m_TagString: Hidden
@@ -56625,27 +55909,6 @@ Transform:
   m_Father: {fileID: 1172721174}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!50 &652789740
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 652789738}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!114 &652789741
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -56751,7 +56014,6 @@ GameObject:
   - component: {fileID: 658865842}
   - component: {fileID: 658865841}
   - component: {fileID: 658865840}
-  - component: {fileID: 658865839}
   m_Layer: 6
   m_Name: Hidden Entrance (67)
   m_TagString: Hidden
@@ -56774,27 +56036,6 @@ Transform:
   m_Father: {fileID: 1172721174}
   m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!50 &658865839
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 658865837}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!114 &658865840
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -57009,8 +56250,7 @@ GameObject:
   - component: {fileID: 660069449}
   - component: {fileID: 660069448}
   - component: {fileID: 660069446}
-  - component: {fileID: 660069447}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Hidden Entrance (11)
   m_TagString: Hidden
   m_Icon: {fileID: 0}
@@ -57033,27 +56273,6 @@ MonoBehaviour:
   adjacentHiddenEntrances: []
   delayTime: 0.1
   canBeHitByPlayer: 0
---- !u!50 &660069447
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 660069445}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!61 &660069448
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -57205,8 +56424,7 @@ GameObject:
   - component: {fileID: 695015480}
   - component: {fileID: 695015479}
   - component: {fileID: 695015477}
-  - component: {fileID: 695015478}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Hidden Entrance (12)
   m_TagString: Hidden
   m_Icon: {fileID: 0}
@@ -57229,27 +56447,6 @@ MonoBehaviour:
   adjacentHiddenEntrances: []
   delayTime: 0.1
   canBeHitByPlayer: 0
---- !u!50 &695015478
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 695015476}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!61 &695015479
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -57406,7 +56603,7 @@ GameObject:
   m_Component:
   - component: {fileID: 717366047}
   - component: {fileID: 717366048}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -57500,7 +56697,7 @@ GameObject:
   m_Component:
   - component: {fileID: 728206791}
   - component: {fileID: 728206792}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -57596,7 +56793,6 @@ GameObject:
   - component: {fileID: 752642795}
   - component: {fileID: 752642794}
   - component: {fileID: 752642793}
-  - component: {fileID: 752642792}
   m_Layer: 6
   m_Name: Hidden Entrance (65)
   m_TagString: Hidden
@@ -57619,27 +56815,6 @@ Transform:
   m_Father: {fileID: 1172721174}
   m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!50 &752642792
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 752642790}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!114 &752642793
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -57745,8 +56920,7 @@ GameObject:
   - component: {fileID: 754658995}
   - component: {fileID: 754658994}
   - component: {fileID: 754658992}
-  - component: {fileID: 754658993}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Hidden Entrance (35)
   m_TagString: Hidden
   m_Icon: {fileID: 0}
@@ -57769,27 +56943,6 @@ MonoBehaviour:
   adjacentHiddenEntrances: []
   delayTime: 0.1
   canBeHitByPlayer: 0
---- !u!50 &754658993
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 754658991}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!61 &754658994
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -57894,7 +57047,6 @@ GameObject:
   - component: {fileID: 755216489}
   - component: {fileID: 755216488}
   - component: {fileID: 755216487}
-  - component: {fileID: 755216486}
   m_Layer: 6
   m_Name: Hidden Entrance (75)
   m_TagString: Hidden
@@ -57917,27 +57069,6 @@ Transform:
   m_Father: {fileID: 1172721174}
   m_RootOrder: 22
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!50 &755216486
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 755216484}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!114 &755216487
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -58043,8 +57174,7 @@ GameObject:
   - component: {fileID: 761108213}
   - component: {fileID: 761108212}
   - component: {fileID: 761108210}
-  - component: {fileID: 761108211}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Hidden Entrance (33)
   m_TagString: Hidden
   m_Icon: {fileID: 0}
@@ -58067,27 +57197,6 @@ MonoBehaviour:
   adjacentHiddenEntrances: []
   delayTime: 0.1
   canBeHitByPlayer: 0
---- !u!50 &761108211
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 761108209}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!61 &761108212
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -58348,7 +57457,7 @@ GameObject:
   m_Component:
   - component: {fileID: 766187190}
   - component: {fileID: 766187191}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -58395,7 +57504,7 @@ GameObject:
   m_Component:
   - component: {fileID: 772943242}
   - component: {fileID: 772943243}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -58548,7 +57657,6 @@ GameObject:
   - component: {fileID: 802559442}
   - component: {fileID: 802559441}
   - component: {fileID: 802559440}
-  - component: {fileID: 802559439}
   m_Layer: 6
   m_Name: Hidden Entrance (93)
   m_TagString: Hidden
@@ -58571,27 +57679,6 @@ Transform:
   m_Father: {fileID: 208555875}
   m_RootOrder: 17
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!50 &802559439
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 802559437}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!114 &802559440
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -58695,7 +57782,7 @@ GameObject:
   m_Component:
   - component: {fileID: 804128763}
   - component: {fileID: 804128764}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -58836,7 +57923,6 @@ GameObject:
   - component: {fileID: 805944333}
   - component: {fileID: 805944332}
   - component: {fileID: 805944331}
-  - component: {fileID: 805944330}
   m_Layer: 6
   m_Name: Hidden Entrance (86)
   m_TagString: Hidden
@@ -58859,27 +57945,6 @@ Transform:
   m_Father: {fileID: 208555875}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!50 &805944330
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 805944328}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!114 &805944331
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -58983,7 +58048,7 @@ GameObject:
   m_Component:
   - component: {fileID: 806542957}
   - component: {fileID: 806542958}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -59030,7 +58095,7 @@ GameObject:
   m_Component:
   - component: {fileID: 809088845}
   - component: {fileID: 809088846}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -59079,7 +58144,6 @@ GameObject:
   - component: {fileID: 812875443}
   - component: {fileID: 812875442}
   - component: {fileID: 812875440}
-  - component: {fileID: 812875441}
   m_Layer: 6
   m_Name: Hidden Entrance (45)
   m_TagString: Hidden
@@ -59103,27 +58167,6 @@ MonoBehaviour:
   adjacentHiddenEntrances: []
   delayTime: 0.1
   canBeHitByPlayer: 0
---- !u!50 &812875441
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 812875439}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!61 &812875442
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -59228,7 +58271,6 @@ GameObject:
   - component: {fileID: 820007476}
   - component: {fileID: 820007475}
   - component: {fileID: 820007474}
-  - component: {fileID: 820007473}
   m_Layer: 6
   m_Name: Hidden Entrance (111)
   m_TagString: Hidden
@@ -59251,27 +58293,6 @@ Transform:
   m_Father: {fileID: 208555875}
   m_RootOrder: 34
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!50 &820007473
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 820007471}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!114 &820007474
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -59377,7 +58398,6 @@ GameObject:
   - component: {fileID: 821643001}
   - component: {fileID: 821643000}
   - component: {fileID: 821642999}
-  - component: {fileID: 821642998}
   m_Layer: 6
   m_Name: Hidden Entrance (82)
   m_TagString: Hidden
@@ -59400,27 +58420,6 @@ Transform:
   m_Father: {fileID: 208555875}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!50 &821642998
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 821642996}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!114 &821642999
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -59620,7 +58619,6 @@ GameObject:
   - component: {fileID: 830532450}
   - component: {fileID: 830532449}
   - component: {fileID: 830532448}
-  - component: {fileID: 830532447}
   m_Layer: 6
   m_Name: Hidden Entrance (100)
   m_TagString: Hidden
@@ -59643,27 +58641,6 @@ Transform:
   m_Father: {fileID: 208555875}
   m_RootOrder: 24
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!50 &830532447
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 830532445}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!114 &830532448
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -59816,7 +58793,6 @@ GameObject:
   - component: {fileID: 834942610}
   - component: {fileID: 834942609}
   - component: {fileID: 834942608}
-  - component: {fileID: 834942607}
   m_Layer: 6
   m_Name: Hidden Entrance (104)
   m_TagString: Hidden
@@ -59839,27 +58815,6 @@ Transform:
   m_Father: {fileID: 208555875}
   m_RootOrder: 28
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!50 &834942607
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 834942605}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!114 &834942608
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -59965,7 +58920,6 @@ GameObject:
   - component: {fileID: 855380372}
   - component: {fileID: 855380371}
   - component: {fileID: 855380370}
-  - component: {fileID: 855380369}
   m_Layer: 6
   m_Name: Hidden Entrance (80)
   m_TagString: Hidden
@@ -59988,27 +58942,6 @@ Transform:
   m_Father: {fileID: 208555875}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!50 &855380369
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 855380367}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!114 &855380370
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -60142,7 +59075,7 @@ GameObject:
   m_Component:
   - component: {fileID: 866061046}
   - component: {fileID: 866061047}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -60283,7 +59216,7 @@ GameObject:
   m_Component:
   - component: {fileID: 883889867}
   - component: {fileID: 883889868}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -60724,7 +59657,6 @@ GameObject:
   - component: {fileID: 937995137}
   - component: {fileID: 937995136}
   - component: {fileID: 937995135}
-  - component: {fileID: 937995134}
   m_Layer: 6
   m_Name: Hidden Entrance (99)
   m_TagString: Hidden
@@ -60747,27 +59679,6 @@ Transform:
   m_Father: {fileID: 208555875}
   m_RootOrder: 23
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!50 &937995134
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 937995132}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!114 &937995135
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -61014,7 +59925,6 @@ GameObject:
   - component: {fileID: 942653582}
   - component: {fileID: 942653581}
   - component: {fileID: 942653580}
-  - component: {fileID: 942653579}
   m_Layer: 6
   m_Name: Hidden Entrance (92)
   m_TagString: Hidden
@@ -61037,27 +59947,6 @@ Transform:
   m_Father: {fileID: 208555875}
   m_RootOrder: 16
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!50 &942653579
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 942653577}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!114 &942653580
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -61312,7 +60201,6 @@ GameObject:
   - component: {fileID: 954452295}
   - component: {fileID: 954452294}
   - component: {fileID: 954452293}
-  - component: {fileID: 954452292}
   m_Layer: 6
   m_Name: Hidden Entrance (72)
   m_TagString: Hidden
@@ -61335,27 +60223,6 @@ Transform:
   m_Father: {fileID: 1172721174}
   m_RootOrder: 19
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!50 &954452292
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 954452290}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!114 &954452293
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -61496,6 +60363,108 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 1
+--- !u!1 &983882360
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 983882361}
+  - component: {fileID: 983882363}
+  - component: {fileID: 983882362}
+  m_Layer: 0
+  m_Name: landmine-hard_0 (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &983882361
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 983882360}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 328943296}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &983882362
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 983882360}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 77d1469af3a9c6f43b565b6faf37c201, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!212 &983882363
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 983882360}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: -1920555623
+  m_SortingLayer: 1
+  m_SortingOrder: 5
+  m_Sprite: {fileID: 5812330170672425242, guid: 3fb6a085cf90cec498ef2ccc37e9fcb8, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 0.625, y: 0.5}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
 --- !u!1 &986698912
 GameObject:
   m_ObjectHideFlags: 0
@@ -61602,7 +60571,6 @@ GameObject:
   - component: {fileID: 987338073}
   - component: {fileID: 987338072}
   - component: {fileID: 987338071}
-  - component: {fileID: 987338070}
   m_Layer: 6
   m_Name: Hidden Entrance (87)
   m_TagString: Hidden
@@ -61625,27 +60593,6 @@ Transform:
   m_Father: {fileID: 208555875}
   m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!50 &987338070
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 987338068}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!114 &987338071
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -61749,7 +60696,7 @@ GameObject:
   m_Component:
   - component: {fileID: 991679835}
   - component: {fileID: 991679836}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -61798,8 +60745,7 @@ GameObject:
   - component: {fileID: 1000175293}
   - component: {fileID: 1000175292}
   - component: {fileID: 1000175290}
-  - component: {fileID: 1000175291}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Hidden Entrance (43)
   m_TagString: Hidden
   m_Icon: {fileID: 0}
@@ -61822,27 +60768,6 @@ MonoBehaviour:
   adjacentHiddenEntrances: []
   delayTime: 0.1
   canBeHitByPlayer: 0
---- !u!50 &1000175291
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1000175289}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!61 &1000175292
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -62284,8 +61209,7 @@ GameObject:
   - component: {fileID: 1059978410}
   - component: {fileID: 1059978409}
   - component: {fileID: 1059978407}
-  - component: {fileID: 1059978408}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Hidden Entrance (32)
   m_TagString: Hidden
   m_Icon: {fileID: 0}
@@ -62308,27 +61232,6 @@ MonoBehaviour:
   adjacentHiddenEntrances: []
   delayTime: 0.1
   canBeHitByPlayer: 0
---- !u!50 &1059978408
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1059978406}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!61 &1059978409
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -62431,7 +61334,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1060013737}
   - component: {fileID: 1060013738}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -62480,8 +61383,7 @@ GameObject:
   - component: {fileID: 1063398824}
   - component: {fileID: 1063398823}
   - component: {fileID: 1063398821}
-  - component: {fileID: 1063398822}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Hidden Entrance (30)
   m_TagString: Hidden
   m_Icon: {fileID: 0}
@@ -62504,27 +61406,6 @@ MonoBehaviour:
   adjacentHiddenEntrances: []
   delayTime: 0.1
   canBeHitByPlayer: 0
---- !u!50 &1063398822
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1063398820}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!61 &1063398823
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -62676,7 +61557,6 @@ GameObject:
   - component: {fileID: 1073791997}
   - component: {fileID: 1073791996}
   - component: {fileID: 1073791994}
-  - component: {fileID: 1073791995}
   m_Layer: 6
   m_Name: HiddenEntrance (1)
   m_TagString: Hidden
@@ -62700,27 +61580,6 @@ MonoBehaviour:
   adjacentHiddenEntrances: []
   delayTime: 0.1
   canBeHitByPlayer: 0
---- !u!50 &1073791995
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1073791993}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!61 &1073791996
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -62870,7 +61729,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1098219577}
   - component: {fileID: 1098219578}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -62917,7 +61776,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1105483562}
   - component: {fileID: 1105483563}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -63113,7 +61972,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1121798367}
   - component: {fileID: 1121798368}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -63209,8 +62068,7 @@ GameObject:
   - component: {fileID: 1129421323}
   - component: {fileID: 1129421322}
   - component: {fileID: 1129421320}
-  - component: {fileID: 1129421321}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Hidden Entrance (4)
   m_TagString: Hidden
   m_Icon: {fileID: 0}
@@ -63233,27 +62091,6 @@ MonoBehaviour:
   adjacentHiddenEntrances: []
   delayTime: 0.1
   canBeHitByPlayer: 0
---- !u!50 &1129421321
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1129421319}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!61 &1129421322
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -63358,7 +62195,6 @@ GameObject:
   - component: {fileID: 1140402280}
   - component: {fileID: 1140402279}
   - component: {fileID: 1140402278}
-  - component: {fileID: 1140402277}
   m_Layer: 6
   m_Name: Hidden Entrance (96)
   m_TagString: Hidden
@@ -63381,27 +62217,6 @@ Transform:
   m_Father: {fileID: 208555875}
   m_RootOrder: 20
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!50 &1140402277
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1140402275}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!114 &1140402278
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -63507,7 +62322,6 @@ GameObject:
   - component: {fileID: 1142022966}
   - component: {fileID: 1142022965}
   - component: {fileID: 1142022964}
-  - component: {fileID: 1142022963}
   m_Layer: 6
   m_Name: Hidden Entrance (112)
   m_TagString: Hidden
@@ -63530,27 +62344,6 @@ Transform:
   m_Father: {fileID: 208555875}
   m_RootOrder: 35
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!50 &1142022963
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1142022961}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!114 &1142022964
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -63656,7 +62449,6 @@ GameObject:
   - component: {fileID: 1143716789}
   - component: {fileID: 1143716788}
   - component: {fileID: 1143716787}
-  - component: {fileID: 1143716786}
   m_Layer: 6
   m_Name: Hidden Entrance (50)
   m_TagString: Hidden
@@ -63664,27 +62456,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!50 &1143716786
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1143716785}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!114 &1143716787
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -63805,7 +62576,6 @@ GameObject:
   - component: {fileID: 1146280840}
   - component: {fileID: 1146280839}
   - component: {fileID: 1146280838}
-  - component: {fileID: 1146280837}
   m_Layer: 6
   m_Name: Hidden Entrance (56)
   m_TagString: Hidden
@@ -63828,27 +62598,6 @@ Transform:
   m_Father: {fileID: 1172721174}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!50 &1146280837
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1146280835}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!114 &1146280838
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -63952,7 +62701,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1146554281}
   - component: {fileID: 1146554282}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -64083,8 +62832,7 @@ GameObject:
   - component: {fileID: 1167905758}
   - component: {fileID: 1167905757}
   - component: {fileID: 1167905755}
-  - component: {fileID: 1167905756}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Hidden Entrance (34)
   m_TagString: Hidden
   m_Icon: {fileID: 0}
@@ -64107,27 +62855,6 @@ MonoBehaviour:
   adjacentHiddenEntrances: []
   delayTime: 0.1
   canBeHitByPlayer: 0
---- !u!50 &1167905756
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1167905754}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!61 &1167905757
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -64285,8 +63012,7 @@ GameObject:
   - component: {fileID: 1190429080}
   - component: {fileID: 1190429079}
   - component: {fileID: 1190429077}
-  - component: {fileID: 1190429078}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Hidden Entrance (23)
   m_TagString: Hidden
   m_Icon: {fileID: 0}
@@ -64309,27 +63035,6 @@ MonoBehaviour:
   adjacentHiddenEntrances: []
   delayTime: 0.1
   canBeHitByPlayer: 0
---- !u!50 &1190429078
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1190429076}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!61 &1190429079
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -64434,7 +63139,6 @@ GameObject:
   - component: {fileID: 1191095536}
   - component: {fileID: 1191095535}
   - component: {fileID: 1191095534}
-  - component: {fileID: 1191095533}
   m_Layer: 6
   m_Name: Hidden Entrance (71)
   m_TagString: Hidden
@@ -64457,27 +63161,6 @@ Transform:
   m_Father: {fileID: 1172721174}
   m_RootOrder: 18
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!50 &1191095533
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1191095531}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!114 &1191095534
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -64630,7 +63313,6 @@ GameObject:
   - component: {fileID: 1212791351}
   - component: {fileID: 1212791350}
   - component: {fileID: 1212791349}
-  - component: {fileID: 1212791348}
   m_Layer: 6
   m_Name: Hidden Entrance (57)
   m_TagString: Hidden
@@ -64653,27 +63335,6 @@ Transform:
   m_Father: {fileID: 1172721174}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!50 &1212791348
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1212791346}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!114 &1212791349
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -64779,7 +63440,6 @@ GameObject:
   - component: {fileID: 1215791530}
   - component: {fileID: 1215791529}
   - component: {fileID: 1215791528}
-  - component: {fileID: 1215791527}
   m_Layer: 6
   m_Name: Hidden Entrance (74)
   m_TagString: Hidden
@@ -64802,27 +63462,6 @@ Transform:
   m_Father: {fileID: 1172721174}
   m_RootOrder: 21
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!50 &1215791527
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1215791525}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!114 &1215791528
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -64975,7 +63614,6 @@ GameObject:
   - component: {fileID: 1217491170}
   - component: {fileID: 1217491169}
   - component: {fileID: 1217491168}
-  - component: {fileID: 1217491167}
   m_Layer: 6
   m_Name: Hidden Entrance (84)
   m_TagString: Hidden
@@ -64998,27 +63636,6 @@ Transform:
   m_Father: {fileID: 208555875}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!50 &1217491167
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1217491165}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!114 &1217491168
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -65124,7 +63741,6 @@ GameObject:
   - component: {fileID: 1223130722}
   - component: {fileID: 1223130721}
   - component: {fileID: 1223130720}
-  - component: {fileID: 1223130719}
   m_Layer: 6
   m_Name: Hidden Entrance (83)
   m_TagString: Hidden
@@ -65147,27 +63763,6 @@ Transform:
   m_Father: {fileID: 208555875}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!50 &1223130719
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1223130717}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!114 &1223130720
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -65273,7 +63868,6 @@ GameObject:
   - component: {fileID: 1235868162}
   - component: {fileID: 1235868161}
   - component: {fileID: 1235868160}
-  - component: {fileID: 1235868159}
   m_Layer: 6
   m_Name: Hidden Entrance (98)
   m_TagString: Hidden
@@ -65296,27 +63890,6 @@ Transform:
   m_Father: {fileID: 208555875}
   m_RootOrder: 22
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!50 &1235868159
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1235868157}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!114 &1235868160
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -65469,8 +64042,7 @@ GameObject:
   - component: {fileID: 1265934794}
   - component: {fileID: 1265934793}
   - component: {fileID: 1265934791}
-  - component: {fileID: 1265934792}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Hidden Entrance (2)
   m_TagString: Hidden
   m_Icon: {fileID: 0}
@@ -65493,27 +64065,6 @@ MonoBehaviour:
   adjacentHiddenEntrances: []
   delayTime: 0.1
   canBeHitByPlayer: 0
---- !u!50 &1265934792
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1265934790}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!61 &1265934793
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -65663,7 +64214,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1295946567}
   - component: {fileID: 1295946568}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -66118,8 +64669,7 @@ GameObject:
   - component: {fileID: 1332004869}
   - component: {fileID: 1332004868}
   - component: {fileID: 1332004866}
-  - component: {fileID: 1332004867}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Hidden Entrance (13)
   m_TagString: Hidden
   m_Icon: {fileID: 0}
@@ -66142,27 +64692,6 @@ MonoBehaviour:
   adjacentHiddenEntrances: []
   delayTime: 0.1
   canBeHitByPlayer: 0
---- !u!50 &1332004867
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1332004865}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!61 &1332004868
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -66267,7 +64796,6 @@ GameObject:
   - component: {fileID: 1333486240}
   - component: {fileID: 1333486239}
   - component: {fileID: 1333486238}
-  - component: {fileID: 1333486237}
   m_Layer: 6
   m_Name: HiddenEntrance (7)
   m_TagString: Hidden
@@ -66275,27 +64803,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!50 &1333486237
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1333486236}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!114 &1333486238
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -66463,7 +64970,6 @@ GameObject:
   - component: {fileID: 1377494773}
   - component: {fileID: 1377494772}
   - component: {fileID: 1377494771}
-  - component: {fileID: 1377494770}
   m_Layer: 6
   m_Name: Hidden Entrance (97)
   m_TagString: Hidden
@@ -66486,27 +64992,6 @@ Transform:
   m_Father: {fileID: 208555875}
   m_RootOrder: 21
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!50 &1377494770
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1377494768}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!114 &1377494771
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -66612,8 +65097,7 @@ GameObject:
   - component: {fileID: 1378958631}
   - component: {fileID: 1378958630}
   - component: {fileID: 1378958628}
-  - component: {fileID: 1378958629}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Hidden Entrance (37)
   m_TagString: Hidden
   m_Icon: {fileID: 0}
@@ -66636,27 +65120,6 @@ MonoBehaviour:
   adjacentHiddenEntrances: []
   delayTime: 0.1
   canBeHitByPlayer: 0
---- !u!50 &1378958629
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1378958627}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!61 &1378958630
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -66759,7 +65222,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1383220788}
   - component: {fileID: 1383220789}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -66778,7 +65241,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1672435163}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!58 &1383220789
 CircleCollider2D:
@@ -67025,7 +65488,6 @@ GameObject:
   - component: {fileID: 1405886389}
   - component: {fileID: 1405886388}
   - component: {fileID: 1405886387}
-  - component: {fileID: 1405886386}
   m_Layer: 6
   m_Name: Hidden Entrance (63)
   m_TagString: Hidden
@@ -67048,27 +65510,6 @@ Transform:
   m_Father: {fileID: 1172721174}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!50 &1405886386
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1405886384}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!114 &1405886387
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -67174,8 +65615,7 @@ GameObject:
   - component: {fileID: 1417374406}
   - component: {fileID: 1417374405}
   - component: {fileID: 1417374403}
-  - component: {fileID: 1417374404}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Hidden Entrance (14)
   m_TagString: Hidden
   m_Icon: {fileID: 0}
@@ -67198,27 +65638,6 @@ MonoBehaviour:
   adjacentHiddenEntrances: []
   delayTime: 0.1
   canBeHitByPlayer: 0
---- !u!50 &1417374404
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1417374402}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!61 &1417374405
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -67352,7 +65771,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1428385138}
   - component: {fileID: 1428385139}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -67448,7 +65867,6 @@ GameObject:
   - component: {fileID: 1438107762}
   - component: {fileID: 1438107761}
   - component: {fileID: 1438107760}
-  - component: {fileID: 1438107759}
   m_Layer: 6
   m_Name: Hidden Entrance (105)
   m_TagString: Hidden
@@ -67471,27 +65889,6 @@ Transform:
   m_Father: {fileID: 208555875}
   m_RootOrder: 29
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!50 &1438107759
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1438107757}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!114 &1438107760
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -67595,7 +65992,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1447692669}
   - component: {fileID: 1447692670}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -67644,8 +66041,7 @@ GameObject:
   - component: {fileID: 1448391551}
   - component: {fileID: 1448391550}
   - component: {fileID: 1448391548}
-  - component: {fileID: 1448391549}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Hidden Entrance (20)
   m_TagString: Hidden
   m_Icon: {fileID: 0}
@@ -67668,27 +66064,6 @@ MonoBehaviour:
   adjacentHiddenEntrances: []
   delayTime: 0.1
   canBeHitByPlayer: 0
---- !u!50 &1448391549
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1448391547}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!61 &1448391550
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -67793,7 +66168,6 @@ GameObject:
   - component: {fileID: 1457983221}
   - component: {fileID: 1457983220}
   - component: {fileID: 1457983219}
-  - component: {fileID: 1457983218}
   m_Layer: 6
   m_Name: Hidden Entrance (91)
   m_TagString: Hidden
@@ -67816,27 +66190,6 @@ Transform:
   m_Father: {fileID: 208555875}
   m_RootOrder: 15
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!50 &1457983218
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1457983216}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!114 &1457983219
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -67942,7 +66295,6 @@ GameObject:
   - component: {fileID: 1459212633}
   - component: {fileID: 1459212632}
   - component: {fileID: 1459212631}
-  - component: {fileID: 1459212630}
   m_Layer: 6
   m_Name: Trigger Hidden Entrance
   m_TagString: Hidden
@@ -67966,27 +66318,6 @@ Transform:
   m_Father: {fileID: 1172721174}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!50 &1459212630
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1459212628}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!114 &1459212631
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -68208,7 +66539,6 @@ GameObject:
   - component: {fileID: 1469869015}
   - component: {fileID: 1469869014}
   - component: {fileID: 1469869013}
-  - component: {fileID: 1469869012}
   m_Layer: 6
   m_Name: Hidden Entrance (49)
   m_TagString: Hidden
@@ -68216,27 +66546,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!50 &1469869012
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1469869011}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!114 &1469869013
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -68404,8 +66713,7 @@ GameObject:
   - component: {fileID: 1479852424}
   - component: {fileID: 1479852423}
   - component: {fileID: 1479852421}
-  - component: {fileID: 1479852422}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Hidden Entrance (26)
   m_TagString: Hidden
   m_Icon: {fileID: 0}
@@ -68428,27 +66736,6 @@ MonoBehaviour:
   adjacentHiddenEntrances: []
   delayTime: 0.1
   canBeHitByPlayer: 0
---- !u!50 &1479852422
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1479852420}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!61 &1479852423
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -68553,8 +66840,7 @@ GameObject:
   - component: {fileID: 1500851544}
   - component: {fileID: 1500851543}
   - component: {fileID: 1500851541}
-  - component: {fileID: 1500851542}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Hidden Entrance (42)
   m_TagString: Hidden
   m_Icon: {fileID: 0}
@@ -68577,27 +66863,6 @@ MonoBehaviour:
   adjacentHiddenEntrances: []
   delayTime: 0.1
   canBeHitByPlayer: 0
---- !u!50 &1500851542
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1500851540}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!61 &1500851543
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -68988,7 +67253,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1525020434}
   - component: {fileID: 1525020435}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -69124,7 +67389,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1534224201}
   - component: {fileID: 1534224202}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -69172,7 +67437,7 @@ GameObject:
   - component: {fileID: 1537963802}
   - component: {fileID: 1537963801}
   - component: {fileID: 1537963800}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Easy mine
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -69261,7 +67526,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1672435163}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1556538607
 GameObject:
@@ -69273,7 +67538,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1556538608}
   - component: {fileID: 1556538609}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -69322,7 +67587,6 @@ GameObject:
   - component: {fileID: 1566638734}
   - component: {fileID: 1566638733}
   - component: {fileID: 1566638732}
-  - component: {fileID: 1566638731}
   m_Layer: 6
   m_Name: Hidden Entrance (101)
   m_TagString: Hidden
@@ -69345,27 +67609,6 @@ Transform:
   m_Father: {fileID: 208555875}
   m_RootOrder: 25
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!50 &1566638731
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1566638729}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!114 &1566638732
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -69518,8 +67761,7 @@ GameObject:
   - component: {fileID: 1621348706}
   - component: {fileID: 1621348705}
   - component: {fileID: 1621348703}
-  - component: {fileID: 1621348704}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Hidden Entrance (8)
   m_TagString: Hidden
   m_Icon: {fileID: 0}
@@ -69542,27 +67784,6 @@ MonoBehaviour:
   adjacentHiddenEntrances: []
   delayTime: 0.1
   canBeHitByPlayer: 0
---- !u!50 &1621348704
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1621348702}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!61 &1621348705
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -69667,8 +67888,7 @@ GameObject:
   - component: {fileID: 1627452497}
   - component: {fileID: 1627452496}
   - component: {fileID: 1627452494}
-  - component: {fileID: 1627452495}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Hidden Entrance (38)
   m_TagString: Hidden
   m_Icon: {fileID: 0}
@@ -69691,27 +67911,6 @@ MonoBehaviour:
   adjacentHiddenEntrances: []
   delayTime: 0.1
   canBeHitByPlayer: 0
---- !u!50 &1627452495
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1627452493}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!61 &1627452496
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -69863,7 +68062,6 @@ GameObject:
   - component: {fileID: 1655996097}
   - component: {fileID: 1655996096}
   - component: {fileID: 1655996095}
-  - component: {fileID: 1655996094}
   m_Layer: 6
   m_Name: HiddenEntrance (4)
   m_TagString: Hidden
@@ -69871,27 +68069,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!50 &1655996094
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1655996093}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!114 &1655996095
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -70106,35 +68283,13 @@ GameObject:
   - component: {fileID: 1672435162}
   - component: {fileID: 1672435161}
   - component: {fileID: 1672435160}
-  - component: {fileID: 1672435159}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: TriggeringHiddenEntrance (3)
   m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!50 &1672435159
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1672435158}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!114 &1672435160
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -70246,8 +68401,9 @@ Transform:
   m_LocalPosition: {x: 36.5, y: 30.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 1383220788}
   - {fileID: 1537963802}
+  - {fileID: 1383220788}
+  - {fileID: 328943296}
   m_Father: {fileID: 0}
   m_RootOrder: 15
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -70263,7 +68419,6 @@ GameObject:
   - component: {fileID: 1674292144}
   - component: {fileID: 1674292143}
   - component: {fileID: 1674292142}
-  - component: {fileID: 1674292141}
   m_Layer: 6
   m_Name: Hidden Entrance (88)
   m_TagString: Hidden
@@ -70286,27 +68441,6 @@ Transform:
   m_Father: {fileID: 208555875}
   m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!50 &1674292141
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1674292139}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!114 &1674292142
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -70412,8 +68546,7 @@ GameObject:
   - component: {fileID: 1679333718}
   - component: {fileID: 1679333717}
   - component: {fileID: 1679333715}
-  - component: {fileID: 1679333716}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Hidden Entrance (3)
   m_TagString: Hidden
   m_Icon: {fileID: 0}
@@ -70436,27 +68569,6 @@ MonoBehaviour:
   adjacentHiddenEntrances: []
   delayTime: 0.1
   canBeHitByPlayer: 0
---- !u!50 &1679333716
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1679333714}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!61 &1679333717
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -70606,7 +68718,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1694891181}
   - component: {fileID: 1694891182}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -70655,7 +68767,6 @@ GameObject:
   - component: {fileID: 1699758989}
   - component: {fileID: 1699758988}
   - component: {fileID: 1699758987}
-  - component: {fileID: 1699758986}
   m_Layer: 6
   m_Name: Hidden Entrance (107)
   m_TagString: Hidden
@@ -70678,27 +68789,6 @@ Transform:
   m_Father: {fileID: 208555875}
   m_RootOrder: 31
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!50 &1699758986
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1699758984}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!114 &1699758987
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -70927,8 +69017,7 @@ GameObject:
   - component: {fileID: 1732179983}
   - component: {fileID: 1732179982}
   - component: {fileID: 1732179980}
-  - component: {fileID: 1732179981}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Hidden Entrance (39)
   m_TagString: Hidden
   m_Icon: {fileID: 0}
@@ -70951,27 +69040,6 @@ MonoBehaviour:
   adjacentHiddenEntrances: []
   delayTime: 0.1
   canBeHitByPlayer: 0
---- !u!50 &1732179981
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1732179979}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!61 &1732179982
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -71076,8 +69144,7 @@ GameObject:
   - component: {fileID: 1734351659}
   - component: {fileID: 1734351658}
   - component: {fileID: 1734351656}
-  - component: {fileID: 1734351657}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Hidden Entrance (36)
   m_TagString: Hidden
   m_Icon: {fileID: 0}
@@ -71100,27 +69167,6 @@ MonoBehaviour:
   adjacentHiddenEntrances: []
   delayTime: 0.1
   canBeHitByPlayer: 0
---- !u!50 &1734351657
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1734351655}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!61 &1734351658
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -71225,7 +69271,6 @@ GameObject:
   - component: {fileID: 1748301282}
   - component: {fileID: 1748301281}
   - component: {fileID: 1748301280}
-  - component: {fileID: 1748301279}
   m_Layer: 6
   m_Name: Hidden Entrance (48)
   m_TagString: Hidden
@@ -71233,27 +69278,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!50 &1748301279
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1748301278}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!114 &1748301280
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -71421,8 +69445,7 @@ GameObject:
   - component: {fileID: 1751233286}
   - component: {fileID: 1751233285}
   - component: {fileID: 1751233283}
-  - component: {fileID: 1751233284}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Hidden Entrance (24)
   m_TagString: Hidden
   m_Icon: {fileID: 0}
@@ -71445,27 +69468,6 @@ MonoBehaviour:
   adjacentHiddenEntrances: []
   delayTime: 0.1
   canBeHitByPlayer: 0
---- !u!50 &1751233284
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1751233282}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!61 &1751233285
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -71677,7 +69679,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1751701367}
   - component: {fileID: 1751701368}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -71726,8 +69728,7 @@ GameObject:
   - component: {fileID: 1752398122}
   - component: {fileID: 1752398121}
   - component: {fileID: 1752398119}
-  - component: {fileID: 1752398120}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Hidden Entrance (10)
   m_TagString: Hidden
   m_Icon: {fileID: 0}
@@ -71750,27 +69751,6 @@ MonoBehaviour:
   adjacentHiddenEntrances: []
   delayTime: 0.1
   canBeHitByPlayer: 0
---- !u!50 &1752398120
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1752398118}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!61 &1752398121
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -71969,7 +69949,6 @@ GameObject:
   - component: {fileID: 1767125070}
   - component: {fileID: 1767125069}
   - component: {fileID: 1767125068}
-  - component: {fileID: 1767125067}
   m_Layer: 6
   m_Name: Hidden Entrance (106)
   m_TagString: Hidden
@@ -71992,27 +69971,6 @@ Transform:
   m_Father: {fileID: 208555875}
   m_RootOrder: 30
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!50 &1767125067
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1767125065}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!114 &1767125068
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -72118,7 +70076,6 @@ GameObject:
   - component: {fileID: 1770190249}
   - component: {fileID: 1770190248}
   - component: {fileID: 1770190247}
-  - component: {fileID: 1770190246}
   m_Layer: 6
   m_Name: TriggerSecretEntrance
   m_TagString: Hidden
@@ -72140,27 +70097,6 @@ Transform:
   m_Father: {fileID: 208555875}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!50 &1770190246
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1770190244}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!114 &1770190247
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -72449,7 +70385,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1771989711}
   - component: {fileID: 1771989712}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -72498,7 +70434,6 @@ GameObject:
   - component: {fileID: 1795638191}
   - component: {fileID: 1795638190}
   - component: {fileID: 1795638189}
-  - component: {fileID: 1795638188}
   m_Layer: 6
   m_Name: Hidden Entrance (60)
   m_TagString: Hidden
@@ -72521,27 +70456,6 @@ Transform:
   m_Father: {fileID: 1172721174}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!50 &1795638188
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1795638186}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!114 &1795638189
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -72658,8 +70572,7 @@ GameObject:
   - component: {fileID: 1834491960}
   - component: {fileID: 1834491959}
   - component: {fileID: 1834491957}
-  - component: {fileID: 1834491958}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Hidden Entrance (6)
   m_TagString: Hidden
   m_Icon: {fileID: 0}
@@ -72682,27 +70595,6 @@ MonoBehaviour:
   adjacentHiddenEntrances: []
   delayTime: 0.1
   canBeHitByPlayer: 0
---- !u!50 &1834491958
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1834491956}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!61 &1834491959
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -72807,7 +70699,6 @@ GameObject:
   - component: {fileID: 1882633706}
   - component: {fileID: 1882633705}
   - component: {fileID: 1882633704}
-  - component: {fileID: 1882633703}
   m_Layer: 6
   m_Name: Hidden Entrance (64)
   m_TagString: Hidden
@@ -72830,27 +70721,6 @@ Transform:
   m_Father: {fileID: 1172721174}
   m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!50 &1882633703
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1882633701}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!114 &1882633704
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -72954,7 +70824,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1883292480}
   - component: {fileID: 1883292481}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -73097,7 +70967,6 @@ GameObject:
   - component: {fileID: 1897917730}
   - component: {fileID: 1897917729}
   - component: {fileID: 1897917728}
-  - component: {fileID: 1897917727}
   m_Layer: 6
   m_Name: Hidden Entrance (66)
   m_TagString: Hidden
@@ -73120,27 +70989,6 @@ Transform:
   m_Father: {fileID: 1172721174}
   m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!50 &1897917727
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1897917725}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!114 &1897917728
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -73293,7 +71141,6 @@ GameObject:
   - component: {fileID: 1901749854}
   - component: {fileID: 1901749853}
   - component: {fileID: 1901749852}
-  - component: {fileID: 1901749851}
   m_Layer: 6
   m_Name: Hidden Entrance (53)
   m_TagString: Hidden
@@ -73316,27 +71163,6 @@ Transform:
   m_Father: {fileID: 1172721174}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!50 &1901749851
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1901749849}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!114 &1901749852
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -73591,7 +71417,6 @@ GameObject:
   - component: {fileID: 1919618491}
   - component: {fileID: 1919618490}
   - component: {fileID: 1919618489}
-  - component: {fileID: 1919618488}
   m_Layer: 6
   m_Name: Hidden Entrance (102)
   m_TagString: Hidden
@@ -73614,27 +71439,6 @@ Transform:
   m_Father: {fileID: 208555875}
   m_RootOrder: 26
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!50 &1919618488
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1919618486}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!114 &1919618489
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -73738,7 +71542,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1930510629}
   - component: {fileID: 1930510630}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -73787,8 +71591,7 @@ GameObject:
   - component: {fileID: 1955519247}
   - component: {fileID: 1955519246}
   - component: {fileID: 1955519244}
-  - component: {fileID: 1955519245}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Hidden Entrance (29)
   m_TagString: Hidden
   m_Icon: {fileID: 0}
@@ -73811,27 +71614,6 @@ MonoBehaviour:
   adjacentHiddenEntrances: []
   delayTime: 0.1
   canBeHitByPlayer: 0
---- !u!50 &1955519245
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1955519243}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!61 &1955519246
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -73895,8 +71677,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -1920555623
+  m_SortingLayer: 1
   m_SortingOrder: 0
   m_Sprite: {fileID: -4752754735582442470, guid: 0b10d52d9d018b14bba8de95e5a40fcb, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -73934,7 +71716,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1974637586}
   - component: {fileID: 1974637587}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -74130,7 +71912,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2011857821}
   - component: {fileID: 2011857822}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -74179,8 +71961,7 @@ GameObject:
   - component: {fileID: 2012353072}
   - component: {fileID: 2012353071}
   - component: {fileID: 2012353069}
-  - component: {fileID: 2012353070}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Hidden Entrance (31)
   m_TagString: Hidden
   m_Icon: {fileID: 0}
@@ -74203,27 +71984,6 @@ MonoBehaviour:
   adjacentHiddenEntrances: []
   delayTime: 0.1
   canBeHitByPlayer: 0
---- !u!50 &2012353070
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2012353068}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!61 &2012353071
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -74328,8 +72088,7 @@ GameObject:
   - component: {fileID: 2015715299}
   - component: {fileID: 2015715298}
   - component: {fileID: 2015715296}
-  - component: {fileID: 2015715297}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Hidden Entrance (17)
   m_TagString: Hidden
   m_Icon: {fileID: 0}
@@ -74352,27 +72111,6 @@ MonoBehaviour:
   adjacentHiddenEntrances: []
   delayTime: 0.1
   canBeHitByPlayer: 0
---- !u!50 &2015715297
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2015715295}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!61 &2015715298
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -74477,8 +72215,7 @@ GameObject:
   - component: {fileID: 2016854228}
   - component: {fileID: 2016854227}
   - component: {fileID: 2016854225}
-  - component: {fileID: 2016854226}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Hidden Entrance (9)
   m_TagString: Hidden
   m_Icon: {fileID: 0}
@@ -74501,27 +72238,6 @@ MonoBehaviour:
   adjacentHiddenEntrances: []
   delayTime: 0.1
   canBeHitByPlayer: 0
---- !u!50 &2016854226
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2016854224}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!61 &2016854227
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -74626,7 +72342,6 @@ GameObject:
   - component: {fileID: 2022243543}
   - component: {fileID: 2022243542}
   - component: {fileID: 2022243541}
-  - component: {fileID: 2022243540}
   m_Layer: 6
   m_Name: Hidden Entrance (109)
   m_TagString: Hidden
@@ -74649,27 +72364,6 @@ Transform:
   m_Father: {fileID: 208555875}
   m_RootOrder: 33
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!50 &2022243540
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2022243538}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!114 &2022243541
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -75074,7 +72768,6 @@ GameObject:
   - component: {fileID: 2060631038}
   - component: {fileID: 2060631037}
   - component: {fileID: 2060631036}
-  - component: {fileID: 2060631035}
   m_Layer: 6
   m_Name: Hidden Entrance (51)
   m_TagString: Hidden
@@ -75082,27 +72775,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!50 &2060631035
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2060631034}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!114 &2060631036
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -75481,8 +73153,7 @@ GameObject:
   - component: {fileID: 2094365793}
   - component: {fileID: 2094365792}
   - component: {fileID: 2094365790}
-  - component: {fileID: 2094365791}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Hidden Entrance (19)
   m_TagString: Hidden
   m_Icon: {fileID: 0}
@@ -75505,27 +73176,6 @@ MonoBehaviour:
   adjacentHiddenEntrances: []
   delayTime: 0.1
   canBeHitByPlayer: 0
---- !u!50 &2094365791
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2094365789}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!61 &2094365792
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -75630,7 +73280,6 @@ GameObject:
   - component: {fileID: 2107802314}
   - component: {fileID: 2107802313}
   - component: {fileID: 2107802312}
-  - component: {fileID: 2107802311}
   m_Layer: 6
   m_Name: Hidden Entrance (55)
   m_TagString: Hidden
@@ -75653,27 +73302,6 @@ Transform:
   m_Father: {fileID: 1172721174}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!50 &2107802311
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2107802309}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!114 &2107802312
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -75779,8 +73407,7 @@ GameObject:
   - component: {fileID: 2109367378}
   - component: {fileID: 2109367377}
   - component: {fileID: 2109367375}
-  - component: {fileID: 2109367376}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Hidden Entrance (28)
   m_TagString: Hidden
   m_Icon: {fileID: 0}
@@ -75803,27 +73430,6 @@ MonoBehaviour:
   adjacentHiddenEntrances: []
   delayTime: 0.1
   canBeHitByPlayer: 0
---- !u!50 &2109367376
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2109367374}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!61 &2109367377
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -76232,13 +73838,9 @@ CompositeCollider2D:
         Y: 30000000
       - X: -300000000
         Y: 60000000
-      - X: -280000000
+      - X: -290000100
         Y: 60000000
-      - X: -280000000
-        Y: 80000000
-      - X: -290000000
-        Y: 80000000
-      - X: -290000000
+      - X: -290000100
         Y: 70000000
       - X: -300000000
         Y: 70000000
@@ -76519,10 +74121,8 @@ CompositeCollider2D:
       - {x: -29.000029, y: 3}
       - {x: -30, y: 3.0000293}
       - {x: -29.999971, y: 6}
-      - {x: -28, y: 6.000029}
-      - {x: -28.000029, y: 8}
-      - {x: -29, y: 7.9999704}
-      - {x: -29.000029, y: 7}
+      - {x: -29.00001, y: 6.000029}
+      - {x: -29.000038, y: 7}
       - {x: -30, y: 7.0000296}
       - {x: -29.999971, y: 10}
       - {x: -29, y: 10.00003}
@@ -76602,14 +74202,14 @@ CompositeCollider2D:
       - {x: -14.000029, y: 13}
       - {x: -16, y: 12.99997}
       - {x: -15.999971, y: 12}
-    - - {x: -9.00003, y: 8}
-      - {x: -9.00003, y: 9}
-      - {x: -10, y: 8.99997}
-      - {x: -9.99997, y: 8}
     - - {x: -7.0000296, y: 8}
       - {x: -7.0000296, y: 9}
       - {x: -8, y: 8.99997}
       - {x: -7.9999704, y: 8}
+    - - {x: -9.00003, y: 8}
+      - {x: -9.00003, y: 9}
+      - {x: -10, y: 8.99997}
+      - {x: -9.99997, y: 8}
     - - {x: -11.00003, y: 3}
       - {x: -11.00003, y: 7}
       - {x: -12, y: 6.9999704}
@@ -89130,7 +86730,7 @@ Tilemap:
     second:
       serializedVersion: 2
       m_TileIndex: 22
-      m_TileSpriteIndex: 23
+      m_TileSpriteIndex: 27
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
@@ -89170,7 +86770,7 @@ Tilemap:
     second:
       serializedVersion: 2
       m_TileIndex: 23
-      m_TileSpriteIndex: 22
+      m_TileSpriteIndex: 23
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
@@ -89531,16 +87131,6 @@ Tilemap:
       serializedVersion: 2
       m_TileIndex: 1
       m_TileSpriteIndex: 1
-      m_TileMatrixIndex: 0
-      m_TileColorIndex: 0
-      m_TileObjectToInstantiateIndex: 65535
-      dummyAlignment: 0
-      m_AllTileFlags: 1073741825
-  - first: {x: -29, y: 6, z: 0}
-    second:
-      serializedVersion: 2
-      m_TileIndex: 18
-      m_TileSpriteIndex: 0
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
@@ -90036,16 +87626,6 @@ Tilemap:
       m_TileObjectToInstantiateIndex: 65535
       dummyAlignment: 0
       m_AllTileFlags: 1073741825
-  - first: {x: -29, y: 7, z: 0}
-    second:
-      serializedVersion: 2
-      m_TileIndex: 27
-      m_TileSpriteIndex: 27
-      m_TileMatrixIndex: 0
-      m_TileColorIndex: 0
-      m_TileObjectToInstantiateIndex: 65535
-      dummyAlignment: 0
-      m_AllTileFlags: 1073741825
   - first: {x: -26, y: 7, z: 0}
     second:
       serializedVersion: 2
@@ -90150,7 +87730,7 @@ Tilemap:
     second:
       serializedVersion: 2
       m_TileIndex: 0
-      m_TileSpriteIndex: 8
+      m_TileSpriteIndex: 22
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
@@ -102814,8 +100394,8 @@ Tilemap:
     m_Data: {fileID: 11400000, guid: 12dfaa3c193d8e34eb3fd247e469b617, type: 2}
   - m_RefCount: 48
     m_Data: {fileID: 11400000, guid: cac1af1f7a79ca0498b8f51f77b314f5, type: 2}
-  - m_RefCount: 1
-    m_Data: {fileID: 11400000, guid: cc2e49695c7a4bf4ea2b8bb59e0ee186, type: 2}
+  - m_RefCount: 0
+    m_Data: {fileID: 0}
   - m_RefCount: 6
     m_Data: {fileID: 11400000, guid: 19df5fa2865f8fc47a99a88a2045e5e4, type: 2}
   - m_RefCount: 8
@@ -102832,11 +100412,11 @@ Tilemap:
     m_Data: {fileID: 11400000, guid: b0939ab21c53d9b4ea81a3fd771eaa7f, type: 2}
   - m_RefCount: 2
     m_Data: {fileID: 11400000, guid: 5081fa399528cd945bd0b5bcba426568, type: 2}
-  - m_RefCount: 1
-    m_Data: {fileID: 11400000, guid: 94852ad80c004b3419db727b21058ba6, type: 2}
+  - m_RefCount: 0
+    m_Data: {fileID: 0}
   m_TileSpriteArray:
-  - m_RefCount: 1
-    m_Data: {fileID: -4736528836439802678, guid: 47ea5f9422cf0b74099e27adb0f177b8, type: 3}
+  - m_RefCount: 0
+    m_Data: {fileID: 0}
   - m_RefCount: 34
     m_Data: {fileID: -8185252286816643056, guid: 47ea5f9422cf0b74099e27adb0f177b8, type: 3}
   - m_RefCount: 6
@@ -102851,8 +100431,8 @@ Tilemap:
     m_Data: {fileID: -9264146362022084, guid: 0b10d52d9d018b14bba8de95e5a40fcb, type: 3}
   - m_RefCount: 48
     m_Data: {fileID: 8147275610191718606, guid: 47ea5f9422cf0b74099e27adb0f177b8, type: 3}
-  - m_RefCount: 1
-    m_Data: {fileID: -6942478570949865756, guid: 47ea5f9422cf0b74099e27adb0f177b8, type: 3}
+  - m_RefCount: 0
+    m_Data: {fileID: 0}
   - m_RefCount: 6
     m_Data: {fileID: 6941044494407015772, guid: 47ea5f9422cf0b74099e27adb0f177b8, type: 3}
   - m_RefCount: 9
@@ -102880,9 +100460,9 @@ Tilemap:
   - m_RefCount: 6
     m_Data: {fileID: -8507936627233245176, guid: 0b10d52d9d018b14bba8de95e5a40fcb, type: 3}
   - m_RefCount: 1
-    m_Data: {fileID: 4419895515107148841, guid: 47ea5f9422cf0b74099e27adb0f177b8, type: 3}
+    m_Data: {fileID: -6942478570949865756, guid: 47ea5f9422cf0b74099e27adb0f177b8, type: 3}
   - m_RefCount: 1
-    m_Data: {fileID: -2858659963971078791, guid: 47ea5f9422cf0b74099e27adb0f177b8, type: 3}
+    m_Data: {fileID: 4419895515107148841, guid: 47ea5f9422cf0b74099e27adb0f177b8, type: 3}
   - m_RefCount: 1
     m_Data: {fileID: 3050078739295607600, guid: 47ea5f9422cf0b74099e27adb0f177b8, type: 3}
   - m_RefCount: 2
@@ -102890,9 +100470,9 @@ Tilemap:
   - m_RefCount: 2
     m_Data: {fileID: 4723250963254362342, guid: 47ea5f9422cf0b74099e27adb0f177b8, type: 3}
   - m_RefCount: 1
-    m_Data: {fileID: -167388734037847649, guid: 47ea5f9422cf0b74099e27adb0f177b8, type: 3}
+    m_Data: {fileID: -2858659963971078791, guid: 47ea5f9422cf0b74099e27adb0f177b8, type: 3}
   m_TileMatrixArray:
-  - m_RefCount: 2605
+  - m_RefCount: 2603
     m_Data:
       e00: 1
       e01: 0
@@ -102911,7 +100491,7 @@ Tilemap:
       e32: 0
       e33: 1
   m_TileColorArray:
-  - m_RefCount: 2605
+  - m_RefCount: 2603
     m_Data: {r: 1, g: 1, b: 1, a: 1}
   m_TileObjectToInstantiateArray: []
   m_AnimationFrameRate: 1

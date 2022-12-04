@@ -36,15 +36,17 @@ public class CameraController : MonoBehaviour
     void Update()
     {
         if (shakeCoroutine == null)
-            CalcPlayerPos();
-        if (transform.position.x != moveTo.x || transform.position.y != moveTo.y)
         {
-            transform.position = (Vector3)moveTo + Vector3.back * 10;
+            CalcMovePos();
+            if (transform.position.x != moveTo.x || transform.position.y != moveTo.y)
+            {
+                transform.position = (Vector3)moveTo + Vector3.back * 10;
+            }
         }
     }
 
 
-    private void CalcPlayerPos()
+    private void CalcMovePos()
     {
         Vector2 playerPos = (Vector2)Player.Instance.transform.position + offset;
 
@@ -67,12 +69,6 @@ public class CameraController : MonoBehaviour
         {
             moveTo += Vector2.up * (playerPos.y - followRect.yMin);
         }
-
-
-
-        Vector2 pos = transform.position;
-
-        transform.position = playerPos;
     }
 
     public void HorShake(int pixels)
@@ -83,8 +79,9 @@ public class CameraController : MonoBehaviour
 
     IEnumerator ShakeSide(int pixels)
     {
+        CalcMovePos();
         Vector3 playerRootPos = Player.Instance.transform.position;
-        Vector3 camRootPos = transform.position;
+        Vector3 camRootPos = (Vector3)moveTo + Vector3.back * 10;;
 
         for (int i = pixels; i > 0; i--)
         {
@@ -93,12 +90,13 @@ public class CameraController : MonoBehaviour
             Player.Instance.transform.position += rightMove;
             moveTo = camRootPos;
             moveTo += (Vector2) rightMove;
+            transform.position = (Vector3)moveTo + Vector3.back * 10;;
 
-            yield return new WaitForSeconds(.03F);
+            yield return new WaitForSeconds(.022F);
         }
 
+        CalcMovePos();
         Player.Instance.transform.position = playerRootPos;
-        transform.position = camRootPos;
 
         shakeCoroutine = null;
         yield break;

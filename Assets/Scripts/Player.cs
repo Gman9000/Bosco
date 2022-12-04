@@ -75,6 +75,9 @@ public class Player : MonoBehaviour
     bool IsHittingRightWall;
     bool IsHittingLeftWall;
     // Start is called before the first frame update
+
+
+    bool isGroundPounding = false;
     void Awake()
     {
         currentHealth = maxhealth;
@@ -87,6 +90,11 @@ public class Player : MonoBehaviour
         //canPlay = true;
         checkpoint = this.gameObject.transform.position;
         Instance = this;
+    }
+
+    void Start()
+    {
+        isGroundPounding = false;
     }
 
     // Update is called once per frame
@@ -105,10 +113,11 @@ public class Player : MonoBehaviour
         IsHittingLeftWall = boxCollider2D.IsHittingLeftWall(myRB.position, this.transform.localScale.x);
         if (isGrounded)
         {
-            if (myRB.gravityScale > originalGravityScale)   // if is falling fast
+            if (isGroundPounding)   // if is falling fast
             {
-                CameraController.Instance.HorShake(2);          // shake screen
-                pausePhysicsCoroutine = StartCoroutine(PausePhysics(.2F));
+                CameraController.Instance.HorShake(3);          // shake screen
+                DoPhysicsPause(.2F);
+                isGroundPounding = false;
             }
 
             myRB.gravityScale = originalGravityScale;
@@ -257,6 +266,13 @@ public class Player : MonoBehaviour
         //CameraController.CameraUpdate();
     }
 
+    public void DoPhysicsPause(float time)
+    {
+        if (pausePhysicsCoroutine != null)
+            StopCoroutine(pausePhysicsCoroutine);
+        pausePhysicsCoroutine = StartCoroutine(PausePhysics(time));
+    }
+
     public void TakeDamage()
     {
         currentHealth--;
@@ -287,7 +303,7 @@ public class Player : MonoBehaviour
                     {
                         StartCoroutine(Hit(1));
 
-                        pausePhysicsCoroutine = StartCoroutine(PausePhysics(.1F));
+                        DoPhysicsPause(.1F);
                         SoundSystem.PlaySfx(sfx_swordSide[0], 4);   //play attack sfx
                     }
                     else
@@ -299,7 +315,7 @@ public class Player : MonoBehaviour
                             else
                                 consecutiveHits = 1;
 
-                            pausePhysicsCoroutine = StartCoroutine(PausePhysics(.15F));                            
+                            DoPhysicsPause(.15F);                        
                             StartCoroutine(Hit(4));
                             SoundSystem.PlaySfx(sfx_swordSide[consecutiveHits - 1], 4);   //play attack sfx
                         }
@@ -318,9 +334,10 @@ public class Player : MonoBehaviour
                         StartCoroutine(Hit(2));
                         SoundSystem.PlaySfx(sfx_swordSide[0], 4);   //play attack sfx
                         
-                        myRB.velocity = Vector3.down * 20;
-                        myRB.gravityScale = originalGravityScale * DownThrustGravityModifier;
-                        pausePhysicsCoroutine = StartCoroutine(PausePhysics(.1F));
+                        myRB.velocity = Vector3.down * 38;
+                        isGroundPounding = true;
+                        myRB.gravityScale = - 0; //originalGravityScale * DownThrustGravityModifier;
+                        DoPhysicsPause(.1F);
                     }
                     else if (PlayerInput.IsPressingUp())
                     {
@@ -329,7 +346,7 @@ public class Player : MonoBehaviour
                         SoundSystem.PlaySfx(sfx_swordSide[0], 4);   //play attack sfx
                         myRB.velocity = Vector3.up * 15;
                         myRB.gravityScale = originalGravityScale * .97F;
-                        pausePhysicsCoroutine = StartCoroutine(PausePhysics(.12F));
+                        DoPhysicsPause(.1F);
                     }
                     else
                     {
