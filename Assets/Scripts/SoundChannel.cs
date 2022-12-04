@@ -23,7 +23,6 @@ public class SoundChannel : MonoBehaviour
 
     public void PlayBgm(AudioClip clip)
     {
-        return;
         bgmResumeSample = 0;
         sfxSampleTime = 0;
 

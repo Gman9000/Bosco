@@ -44,6 +44,9 @@ public class Player : MonoBehaviour
     public float deathTime;
 
 
+    private SpriteAnimator animator;
+
+
     //[SerializeField] private float bouncyJumpTimeModifier;
     //[SerializeField] private float bouncyJumpSpeedModifier;
 
@@ -67,7 +70,7 @@ public class Player : MonoBehaviour
     //[SerializeField] private AudioSource jumpSFX;
 
     //animator
-    [SerializeField] private Animator animatorController;
+    //[SerializeField] private Animator animatorController;
 
     //for groundChecks
     bool isGrounded;
@@ -90,6 +93,8 @@ public class Player : MonoBehaviour
         //canPlay = true;
         checkpoint = this.gameObject.transform.position;
         Instance = this;
+
+        animator = GetComponent<SpriteAnimator>();
     }
 
     void Start()
@@ -122,11 +127,11 @@ public class Player : MonoBehaviour
 
             myRB.gravityScale = originalGravityScale;
         }
-        animatorController.SetBool("isGrounded", isGrounded);
+        //animatorController.SetBool("isGrounded", isGrounded);
         //myRB.velocity = new Vector2(0f, 0f);
         myRB.velocity = new Vector2(0f, myRB.velocity.y);
-        animatorController.SetFloat("horizontalVelocity", Mathf.Abs(myRB.velocity.x));
-        animatorController.SetBool("crouching", false);
+        //animatorController.SetFloat("horizontalVelocity", Mathf.Abs(myRB.velocity.x));
+        //animatorController.SetBool("crouching", false);
         //if (LevelManager.Instance.GetGameStartStatus() && !PauseMenu.Instance.Paused())
         //{
         //animatorController.SetFloat("horizontalVelocity", -1f);
@@ -134,14 +139,12 @@ public class Player : MonoBehaviour
             {
                 myRB.velocity = new Vector2(-moveSpeed, myRB.velocity.y);
                 this.transform.rotation = new Quaternion(0f, 180f, this.transform.rotation.z, this.transform.rotation.w);
-                animatorController.SetFloat("horizontalVelocity", Mathf.Abs(myRB.velocity.x));
             }
 
             if (PlayerInput.IsPressingRight())
             {
                 myRB.velocity = new Vector2(moveSpeed, myRB.velocity.y);
                 this.transform.rotation = new Quaternion(0f, 0f, this.transform.rotation.z, this.transform.rotation.w);
-                animatorController.SetFloat("horizontalVelocity", Mathf.Abs(myRB.velocity.x));
             }
         
             if (isGrounded && PlayerInput.HasPressedJumpKey())
@@ -149,7 +152,6 @@ public class Player : MonoBehaviour
                 isJumping = true;
                 jumpTimeCountdown = jumpTime;
                 myRB.velocity = new Vector2(myRB.velocity.x, jumpSpeed);
-                animatorController.SetBool("isGrounded", isGrounded);
             }
 
             if (isJumping && PlayerInput.HasHeldJumpKey())
@@ -174,7 +176,7 @@ public class Player : MonoBehaviour
             }
             if(PlayerInput.IsPressingDown() && isGrounded)
             {
-                animatorController.SetBool("crouching", true);
+                //animatorController.SetBool("crouching", true);
             }
 
 
@@ -264,6 +266,35 @@ public class Player : MonoBehaviour
 
 
         //CameraController.CameraUpdate();
+
+
+        Animate();
+    }
+
+    void Animate()
+    {
+        if (isGrounded)
+        {
+            if ((PlayerInput.IsPressingLeft() || PlayerInput.IsPressingRight()))
+            {
+                animator.Play(AnimMode.Looped, "run");
+            }
+            else
+            {
+                animator.Play(AnimMode.Looped, "idle");
+            }
+        }
+        else
+        {
+            if (myRB.velocity.y > 0)
+            {
+                animator.Play(AnimMode.Hang, "jump");
+            }
+            else
+            {
+                animator.Play(AnimMode.Hang, "fall");
+            }
+        }
     }
 
     public void DoPhysicsPause(float time)
@@ -276,7 +307,7 @@ public class Player : MonoBehaviour
     public void TakeDamage()
     {
         currentHealth--;
-        animatorController.SetTrigger("getHurt");
+        //animatorController.SetTrigger("getHurt");
         if(currentHealth <= 0)
         {
             //for now this is death
@@ -399,31 +430,31 @@ public class Player : MonoBehaviour
             case 1:
                 // Upwards attack
                 upAttackHitbox.SetActive(true);
-                animatorController.SetBool("attackingUp", true);
+                //animatorController.SetBool("attackingUp", true);
                 break;
             case 2:
                 //Downwards attack
                 downAttackHitbox.SetActive(true);
-                animatorController.SetTrigger("downThrust");
+                //animatorController.SetTrigger("downThrust");
                 break;
             case 3:
                 //Spin attack
                 //take the leftAttackHitBox and turn that into the spin attack that hits both the left and the right of the player
                 SpinAttackHitbox.SetActive(true);
-                animatorController.SetTrigger("attackCombo3");
-                animatorController.SetBool("attackComboEnded",false);
+                //animatorController.SetTrigger("attackCombo3");
+                //animatorController.SetBool("attackComboEnded",false);
                 break;
             case 4:
                 //Right attack
                 rightAttackHitbox.SetActive(true);
-                animatorController.SetTrigger("attackCombo1");
-                animatorController.SetBool("attackComboEnded",false);
+                //animatorController.SetTrigger("attackCombo1");
+                //animatorController.SetBool("attackComboEnded",false);
 
                 break;
             case 5:
                 //radial attack
                 radialAttackHitbox.SetActive(true);
-                animatorController.SetTrigger("radialAttack");
+                //animatorController.SetTrigger("radialAttack");
                 break;
             default:
                 Debug.Log("AN ERROR HAS OCCURRED WHILE TRYING TO ATTACK");
@@ -440,30 +471,30 @@ public class Player : MonoBehaviour
             case 1:
                 // Upwards attack
                 upAttackHitbox.SetActive(false);
-                animatorController.SetBool("attackingUp", false);
+                //animatorController.SetBool("attackingUp", false);
                 break;
             case 2:
                 //Downwards attack
                 downAttackHitbox.SetActive(false);
-                animatorController.ResetTrigger("downThrust");
+                //animatorController.ResetTrigger("downThrust");
                 break;
             case 3:
                 //Spin attack
                 //take the leftAttackHitBox and turn that into the spin attack that hits both the left and the right of the player
                 SpinAttackHitbox.SetActive(false);                
-                animatorController.ResetTrigger("attackCombo3");
-                animatorController.SetBool("attackComboEnded",true);
+                //animatorController.ResetTrigger("attackCombo3");
+                //animatorController.SetBool("attackComboEnded",true);
                 break;
             case 4:
                 //Right attack
                 rightAttackHitbox.SetActive(false);
-                animatorController.ResetTrigger("attackCombo1");
-                animatorController.SetBool("attackComboEnded",true);
+                //animatorController.ResetTrigger("attackCombo1");
+                //animatorController.SetBool("attackComboEnded",true);
                 break;
             case 5:
                 //radial attack
                 radialAttackHitbox.SetActive(false);
-                animatorController.ResetTrigger("radialAttack");
+                //animatorController.ResetTrigger("radialAttack");
                 break;
             default:
                 Debug.Log("AN ERROR HAS OCCURRED WHILE TRYING TO ATTACK");
@@ -535,7 +566,7 @@ public class Player : MonoBehaviour
     }*/
     private IEnumerator Die()
     {
-        animatorController.SetBool("playerDed", true);
+        //animatorController.SetBool("playerDed", true);
         yield return new WaitForSeconds(deathTime);   //wait the established amount of seconds.
         ResetToLastCheckPoint();
 
@@ -544,7 +575,7 @@ public class Player : MonoBehaviour
     {
         this.gameObject.transform.position = checkpoint;
         currentHealth = maxhealth;
-        animatorController.SetBool("playerDed", false);
+        //animatorController.SetBool("playerDed", false);
     }
 
     IEnumerator PausePhysics(float duration)
