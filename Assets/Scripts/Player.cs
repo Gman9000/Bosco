@@ -22,6 +22,13 @@ public class Player : MonoBehaviour
     public float originalGravityScale;
     public float DownThrustGravityModifier;
 
+    public Transform topLeftRaycast;
+    public Transform topRightRaycast;
+    public Transform bottomLeftRaycast;
+    public Transform bottomRightRaycast;
+    public float rayCastMagnitude;
+
+
     //for attacking
     //[SerializeField] private GameObject leftAttackHitbox;
     [SerializeField] private GameObject rightAttackHitbox;
@@ -112,10 +119,10 @@ public class Player : MonoBehaviour
         {
             shootCooldownCounter -= Time.deltaTime;
         }*/
-        isGrounded = boxCollider2D.IsGrounded(myRB.position, this.transform.localScale.x);
-        isHittingCeiling = boxCollider2D.IsHittingCeiling(myRB.position, this.transform.localScale.x);
-        IsHittingRightWall = boxCollider2D.IsHittingRightWall(myRB.position, this.transform.localScale.x);
-        IsHittingLeftWall = boxCollider2D.IsHittingLeftWall(myRB.position, this.transform.localScale.x);
+        isGrounded = boxCollider2D.IsGrounded(bottomLeftRaycast.position, bottomRightRaycast.position, this.transform.localScale.x, rayCastMagnitude);
+        isHittingCeiling = boxCollider2D.IsHittingCeiling(topLeftRaycast.position, topRightRaycast.position, this.transform.localScale.x, rayCastMagnitude);
+        IsHittingRightWall = boxCollider2D.IsHittingRightWall(topRightRaycast.position, bottomRightRaycast.position, this.transform.localScale.x, rayCastMagnitude);
+        IsHittingLeftWall = boxCollider2D.IsHittingLeftWall(topLeftRaycast.position, bottomLeftRaycast.position, this.transform.localScale.x, rayCastMagnitude);
         if (isGrounded)
         {
             if (isGroundPounding)   // if is falling fast
