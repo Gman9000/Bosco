@@ -33,6 +33,8 @@ public class SpriteAnimator : MonoBehaviour
 
     public bool AtEnd => CurrentFrame >= CurrentFrameCount - 1;
 
+    public System.Action onEnd = () => {};
+
     private AnimMode _currentMode = AnimMode.None;
 
     private Coroutine _animatorCoroutine = null;
@@ -94,7 +96,11 @@ public class SpriteAnimator : MonoBehaviour
         while (mode == AnimMode.Looped && _frames.Count > 1);
 
         if (mode != AnimMode.Hang)
+        {
+            onEnd.Invoke();
+            onEnd = () => {};
             Resume(mode);
+        }
         
         yield return null;
     }
@@ -136,15 +142,20 @@ public class SpriteAnimator : MonoBehaviour
         Resume(mode);
     }
 
-    public void Play(AnimMode mode, string animName)
+    public void Play(AnimMode mode, string animName, System.Action onEnd = null)
     {
         if (_currentAnim.ToLower() == animName.ToLower())
             return;
+        if (onEnd == null)
+            this.onEnd = () => {};
+        else
+            this.onEnd = onEnd;
+        
         _ren.enabled = true;
         if (_currentMode == AnimMode.OnceDie && mode != AnimMode.OnceDie)
             return;
         if (_animatorCoroutine != null)
-        StopCoroutine(_animatorCoroutine);
+            StopCoroutine(_animatorCoroutine);
         _currentMode = mode;
         _currentAnim = animName;
         _animatorCoroutine = StartCoroutine(Animate(animName, mode));

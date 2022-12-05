@@ -75,6 +75,11 @@ public class CameraController : MonoBehaviour
     {
         if (shakeCoroutine == null)
             shakeCoroutine = StartCoroutine(ShakeSide(pixels));
+        else
+        {
+            StopCoroutine(shakeCoroutine);
+            shakeCoroutine = StartCoroutine(ShakeSide(-pixels));
+        }
     }
 
     IEnumerator ShakeSide(int pixels)
@@ -92,7 +97,7 @@ public class CameraController : MonoBehaviour
             moveTo += (Vector2) rightMove;
             transform.position = (Vector3)moveTo + Vector3.back * 10;;
 
-            yield return new WaitForSeconds(.022F);
+            yield return new WaitForFixedUpdate();
         }
 
         CalcMovePos();
