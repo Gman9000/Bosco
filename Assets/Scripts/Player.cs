@@ -40,8 +40,11 @@ public class Player : MonoBehaviour
     public float hitTime;
     public float hitCooldown;   // should be less than hit time
     public float hitComboWindow;   // should be less than hit time
-    public float comboCooldown;
+
+    Coroutine hitCoroutine = null;
+    
     private float hitTimeStamp = 0; // the time when the player attacked
+    private float comboTimeStamp = 0; // the time when the player attacked
 
     //health stuff
     public float maxhealth;
@@ -117,7 +120,6 @@ public class Player : MonoBehaviour
         isGroundPounding = false;
     }
 
-    // Update is called once per frame
     void Update()
     {
         //animatorController.SetFloat("horizontalVelocity", myRB.velocity.x);
@@ -127,6 +129,8 @@ public class Player : MonoBehaviour
         {
             shootCooldownCounter -= Time.deltaTime;
         }*/
+
+        bool wasGrounded = isGrounded;
         isGrounded = boxCollider2D.IsGrounded(bottomLeftRaycast.position, bottomRightRaycast.position, this.transform.localScale.x, rayCastMagnitude);
         isHittingCeiling = boxCollider2D.IsHittingCeiling(topLeftRaycast.position, topRightRaycast.position, this.transform.localScale.x, rayCastMagnitude);
         IsHittingRightWall = boxCollider2D.IsHittingRightWall(topRightRaycast.position, bottomRightRaycast.position, this.transform.localScale.x, rayCastMagnitude);
@@ -138,12 +142,16 @@ public class Player : MonoBehaviour
                 CameraController.Instance.HorShake(3);          // shake screen
                 DoPhysicsPause(.2F);
                 isGroundPounding = false;
-                
             }
 
             myRB.gravityScale = originalGravityScale;
             radialAttackHitbox.SetActive(false);
             canAerialAttack = true;
+
+            if (!wasGrounded)
+            {
+                upAttackHitbox.SetActive(false);
+            }
         }
         //animatorController.SetBool("isGrounded", isGrounded);
         //myRB.velocity = new Vector2(0f, 0f);
@@ -298,11 +306,7 @@ public class Player : MonoBehaviour
     {
         if (isGrounded)
         {
-            if (attackSequenceCoroutine != null)
-            {
-                
-            }
-            else if (upAttackHitbox.activeSelf)
+            if (upAttackHitbox.activeSelf)
             {
                 animator.Play(AnimMode.Hang, "upslash ground");
             }
@@ -329,11 +333,7 @@ public class Player : MonoBehaviour
         }
         else
         {
-            if (attackSequenceCoroutine != null)
-            {
-
-            }
-            else if (downAttackHitbox.activeSelf)
+            if (downAttackHitbox.activeSelf)
             {
                 animator.Play(AnimMode.Hang, "downslash");
             }
@@ -380,8 +380,20 @@ public class Player : MonoBehaviour
 
     private void AttackInputs()
     {
+        
+        if (Time.time - comboTimeStamp > hitComboWindow)
+            consecutiveHits = 0;
+
         if (PlayerInput.HasPressedAttackKey())
-            StartCoroutine(AttackSequence());
+        {
+            if (Time.time - hitTimeStamp >= hitCooldown && !PhysicPaused)
+            {
+                if (attackSequenceCoroutine != null)
+                    StopCoroutine(attackSequenceCoroutine);
+                attackSequenceCoroutine = StartCoroutine(AttackSequence());
+            }
+        }
+            
         /*
         if (consecutiveHits >= 3 && Time.time - hitTimeStamp >= comboCooldown)
             {
@@ -395,7 +407,9 @@ public class Player : MonoBehaviour
                 {
                     if (PlayerInput.IsPressingUp() )
                     {
-                        StartCoroutine(Hit(1));
+                        if (hitCoroutine != null)
+                    StopCoroutine(hitCoroutine);
+                hitCoroutine = StartCoroutine(Hit(1));
 
                         DoPhysicsPause(.1F);
                         SoundSystem.PlaySfx(sfx_swordSounds[0], 4);   //play attack sfx
@@ -410,7 +424,9 @@ public class Player : MonoBehaviour
 
                     /*if (PlayerInput.IsPressingDown())
                     {
-                        StartCoroutine(Hit(2));
+                        if (hitCoroutine != null)
+                    StopCoroutine(hitCoroutine);
+                hitCoroutine = StartCoroutine(Hit(2));
                         SoundSystem.PlaySfx(sfx_swordSounds[0], 4);   //play attack sfx
                         
                         myRB.velocity = Vector3.down * 38;
@@ -421,7 +437,9 @@ public class Player : MonoBehaviour
                     }
                     else if (PlayerInput.IsPressingUp())
                     {
-                        StartCoroutine(Hit(1));
+                        if (hitCoroutine != null)
+                    StopCoroutine(hitCoroutine);
+                hitCoroutine = StartCoroutine(Hit(1));
 
                         SoundSystem.PlaySfx(sfx_swordSounds[0], 4);   //play attack sfx
                         myRB.velocity = Vector3.up * 15;
@@ -431,7 +449,9 @@ public class Player : MonoBehaviour
                     }
                     else
                     {
-                        StartCoroutine(Hit(5));
+                        if (hitCoroutine != null)
+                    StopCoroutine(hitCoroutine);
+                hitCoroutine = StartCoroutine(Hit(5));
                         SoundSystem.PlaySfx(sfx_swordSounds[0], 4);   //play attack sfx
                         canAerialAttack = false;
                     }
@@ -442,11 +462,15 @@ public class Player : MonoBehaviour
 
                 /*if (PlayerInput.IsPressingLeft() && PlayerInput.HasPressedAttackKey() && isGrounded)
                 {
-                    StartCoroutine(Hit(3));
+                    if (hitCoroutine != null)
+                    StopCoroutine(hitCoroutine);
+                hitCoroutine = StartCoroutine(Hit(3));
                 }*/
                 /*else if ((PlayerInput.IsPressingRight() || PlayerInput.IsPressingLeft()) && PlayerInput.HasPressedAttackKey() && isGrounded)
                 {
-                    StartCoroutine(Hit(4));
+                    if (hitCoroutine != null)
+                    StopCoroutine(hitCoroutine);
+                hitCoroutine = StartCoroutine(Hit(4));
                 }
             }*/
     }
@@ -477,6 +501,11 @@ public class Player : MonoBehaviour
 
         float hitMod = 1.0F;
 
+        upAttackHitbox.SetActive(false);
+        downAttackHitbox.SetActive(false);
+        rightAttackHitbox.SetActive(false);
+        spinAttackHitbox.SetActive(false);
+        radialAttackHitbox.SetActive(false);
             
         switch (hitBoxIndex)
         {
@@ -485,6 +514,8 @@ public class Player : MonoBehaviour
                 upAttackHitbox.SetActive(true);
                 if (!isGrounded)
                     hitMod = 1.2F;
+                else
+                    hitMod = .85F;
                 //animatorController.SetBool("attackingUp", true);
                 break;
             case 2:
@@ -647,8 +678,6 @@ public class Player : MonoBehaviour
 
     IEnumerator AttackSequence()
     {
-        if (attackSequenceCoroutine != null)
-            yield break;
         if (!isGrounded)
         {
             if (canAerialAttack)
@@ -659,9 +688,6 @@ public class Player : MonoBehaviour
                 yield break;
             }
         }
-
-        if (consecutiveHits >= 3 && Time.time - hitTimeStamp >= comboCooldown)
-            consecutiveHits = 0;
 
         
         Vector2 lastInputDirection = Vector2.zero;
@@ -675,7 +701,7 @@ public class Player : MonoBehaviour
             yield return new WaitForEndOfFrame();
             if (PlayerInput.IsPressingDown() && !isGrounded)
                 lastInputDirection = Vector2.down;
-            else if (PlayerInput.IsPressingUp())
+            else if (PlayerInput.IsPressingUp() && !upAttackHitbox.activeSelf)
                 lastInputDirection = Vector2.up;
             else if (PlayerInput.IsPressingLeft())
                 lastInputDirection = Vector2.left;
@@ -683,6 +709,10 @@ public class Player : MonoBehaviour
                 lastInputDirection = Vector2.right;
         }
         while (myRB.constraints == RigidbodyConstraints2D.FreezeAll);
+
+
+        if (isGrounded)
+            animator.PlayDefault();
 
 
         if (lastInputDirection == Vector2.down)
@@ -698,7 +728,9 @@ public class Player : MonoBehaviour
                 myRB.velocity = Vector3.down * 38;
                 isGroundPounding = true;
                 myRB.gravityScale = - 0; 
-                yield return Hit(2);
+                if (hitCoroutine != null)
+                    StopCoroutine(hitCoroutine);
+                hitCoroutine = StartCoroutine(Hit(2));
             }
         }
         else if (lastInputDirection == Vector2.up)
@@ -715,39 +747,51 @@ public class Player : MonoBehaviour
             }
 
             SoundSystem.PlaySfx(sfx_swordSounds[0], 4);
-            yield return Hit(1);
+            if (hitCoroutine != null)
+                StopCoroutine(hitCoroutine);
+            hitCoroutine = StartCoroutine(Hit(1));
         }
         else
         {
             if (isGrounded)
             {
-                if (consecutiveHits < 3)
-                {
-                    if (Time.time - hitTimeStamp < hitComboWindow)
-                        consecutiveHits++;
-                    else
-                        consecutiveHits = 1;
-                       
-                    SoundSystem.PlaySfx(sfx_swordSounds[consecutiveHits - 1], 4);   //play attack sfx
-                    DoPhysicsPause(.07F);
-                    yield return Hit(4);
-                }
-                else
-                {
-                    //do spin attack here and reset the other trigger here
-                    SoundSystem.PlaySfx(sfx_swordSounds[3], 4);
-                    DoPhysicsPause(.175F);
-                    yield return Hit(3);
-                }
+                consecutiveHits++;
 
-                
-                hitTimeStamp = Time.time;
+                switch (consecutiveHits)
+                {
+                    case 1:
+                        SoundSystem.PlaySfx(sfx_swordSounds[0], 4);   //play attack sfx
+                        DoPhysicsPause(.07F);
+                        if (hitCoroutine != null)
+                            StopCoroutine(hitCoroutine);
+                        hitCoroutine = StartCoroutine(Hit(4));
+                        break;
+                    case 2:
+                        SoundSystem.PlaySfx(sfx_swordSounds[1], 4);   //play attack sfx
+                        DoPhysicsPause(.07F);
+                        if (hitCoroutine != null)
+                            StopCoroutine(hitCoroutine);
+                        hitCoroutine = StartCoroutine(Hit(4));
+                        break;
+                    case 3: //do spin attack here and reset the other trigger here
+                        SoundSystem.PlaySfx(sfx_swordSounds[3], 4);
+                        DoPhysicsPause(.5F);
+                        if (hitCoroutine != null)
+                            StopCoroutine(hitCoroutine);
+                        hitCoroutine = StartCoroutine(Hit(3));
+                        consecutiveHits = 0;
+                        break;
+
+                }
+                comboTimeStamp = Time.time;
             }
             else
             {
                 // radial spin
                 SoundSystem.PlaySfx(sfx_swordSounds[3], 4);
-                yield return Hit(5);
+                if (hitCoroutine != null)
+                    StopCoroutine(hitCoroutine);
+                hitCoroutine = StartCoroutine(Hit(5));
             }
         }
 
