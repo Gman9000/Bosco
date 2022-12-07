@@ -5,9 +5,9 @@ using UnityEngine;
 public class SoundSystem : MonoBehaviour
 {
     static public SoundSystem Instance;
-    static public int songPositionSamples => Instance.channels[0] != null ? Instance.channels[0].src.timeSamples : 0;
+    static public float songPositionTime => Instance.channels[0] != null ? Instance.channels[0].src.time : 0;
     public AudioClip[] defaultSong = new AudioClip[4];
-    public int defaultSongLoopPoint = 0;    // in samples
+    public float defaultSongLoopPoint = 0;    // in seconds
     [HideInInspector]public SoundChannel[] channels;
     
     void Awake()
@@ -24,23 +24,23 @@ public class SoundSystem : MonoBehaviour
             PlayBgm(defaultSong, defaultSongLoopPoint, true);
     }
 
-    static public void PlayBgm(AudioClip[] song, int loop, bool firstPlay)
+    static public void PlayBgm(AudioClip[] song, float loop, bool firstPlay)
     {
         for (int i = 0; i < 4; i++)
         {
             Instance.channels[i].PlayBgm(song[i]);
             if (!firstPlay)
-                Instance.channels[i].src.timeSamples = loop;
+                Instance.channels[i].src.time = loop;
         }
 
         if (loop > 0)
-            Instance.StartCoroutine(Instance.LoopMusicToSample(song, loop));
+            Instance.StartCoroutine(Instance.LoopMusicToTime(song, loop));
     }
 
     
-    IEnumerator LoopMusicToSample(AudioClip[] song, int loop)
+    IEnumerator LoopMusicToTime(AudioClip[] song, float loop)
     {
-        yield return new WaitUntil(() => SoundSystem.songPositionSamples >= song[0].samples - 1000/* || !Instance.channels[0].src.isPlaying*/);
+        yield return new WaitUntil(() => SoundSystem.songPositionTime >= song[0].length - .01F/* || !Instance.channels[0].src.isPlaying*/);
         for (int i = 0; i < 4; i++)
             PlayBgm(song, loop, false);
         yield break;

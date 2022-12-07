@@ -8,8 +8,8 @@ public class SoundChannel : MonoBehaviour
     bool muteBgm = false;
     bool songPlaying = false;
 
-    int bgmResumeSample = 0;
-    int sfxSampleTime = 0;
+    float bgmResumeTime = 0;
+    float sfxTime = 0;
 
     Coroutine resumeBgm = null;
 
@@ -23,8 +23,8 @@ public class SoundChannel : MonoBehaviour
 
     public void PlayBgm(AudioClip clip)
     {
-        bgmResumeSample = 0;
-        sfxSampleTime = 0;
+        bgmResumeTime = 0;
+        sfxTime = 0;
 
         muteBgm = false;
         bgm = src.clip = clip;
@@ -39,11 +39,10 @@ public class SoundChannel : MonoBehaviour
         if (songPlaying)
         {
             if (muteBgm)
-                sfxSampleTime += src.timeSamples;
+                sfxTime += src.time;
             else
             {
-                bgmResumeSample = src.timeSamples;
-                sfxSampleTime = 0;
+                sfxTime = 0;
             }
 
             if (resumeBgm != null)
@@ -64,17 +63,17 @@ public class SoundChannel : MonoBehaviour
         muteBgm = true;
         src.loop = false;
         src.clip = sfx;
-        src.timeSamples = 0;
+        src.time = 0;
         src.Play();
 
         yield return new WaitUntil(() => !src.isPlaying);
 
-        int resumeAtSamples = SoundSystem.songPositionSamples;    
+        float resumeAt = SoundSystem.songPositionTime;    
         src.clip = bgm;
         src.loop = false;
         muteBgm = false;
-        src.timeSamples = resumeAtSamples;
-        sfxSampleTime = 0;
+        src.time = resumeAt;
+        sfxTime = 0;
         src.Play();
 
 

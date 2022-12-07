@@ -3624,7 +3624,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 0.5
-  m_Pitch: 1
+  m_Pitch: 3
   Loop: 0
   Mute: 0
   Spatialize: 0
@@ -3867,7 +3867,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 0.5
-  m_Pitch: 1
+  m_Pitch: 3
   Loop: 0
   Mute: 0
   Spatialize: 0
@@ -8645,7 +8645,7 @@ MonoBehaviour:
   m_RefResolutionY: 144
   m_UpscaleRT: 1
   m_PixelSnapping: 1
-  m_CropFrameX: 0
+  m_CropFrameX: 1
   m_CropFrameY: 1
   m_StretchFill: 0
 --- !u!81 &608699578
@@ -8683,7 +8683,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 4.5
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -8963,7 +8963,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 0.5
-  m_Pitch: 1
+  m_Pitch: 3
   Loop: 0
   Mute: 0
   Spatialize: 0
@@ -56164,7 +56164,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 9985517f70af70a4e91038eead292d66, type: 3}
   - {fileID: 8300000, guid: 1ca38f30d6bc58543ab728b10496b67b, type: 3}
   - {fileID: 8300000, guid: 6caf1efba20a1e7449dfd7504e5f86bb, type: 3}
-  defaultSongLoopPoint: 886244
+  defaultSongLoopPoint: 18.46361
   channels: []
 --- !u!1 &717366046
 GameObject:
@@ -59390,7 +59390,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 0.5
-  m_Pitch: 1
+  m_Pitch: 3
   Loop: 0
   Mute: 0
   Spatialize: 0
@@ -72576,6 +72576,14 @@ PrefabInstance:
       value: 0.35
       objectReference: {fileID: 0}
     - target: {fileID: 3857109394764173081, guid: fc5ca1f9a411b6141b5e1ef2fab56489, type: 3}
+      propertyPath: sfx_hurt
+      value: 
+      objectReference: {fileID: 8300000, guid: c737ec4897a09f040a4a78958d853fba, type: 3}
+    - target: {fileID: 3857109394764173081, guid: fc5ca1f9a411b6141b5e1ef2fab56489, type: 3}
+      propertyPath: sfx_jump
+      value: 
+      objectReference: {fileID: 8300000, guid: e080572334d19ca449b7a2ff0f791cd3, type: 3}
+    - target: {fileID: 3857109394764173081, guid: fc5ca1f9a411b6141b5e1ef2fab56489, type: 3}
       propertyPath: hitCooldown
       value: 0
       objectReference: {fileID: 0}
@@ -72587,6 +72595,10 @@ PrefabInstance:
       propertyPath: hitComboWindow
       value: 0.3
       objectReference: {fileID: 0}
+    - target: {fileID: 3857109394764173081, guid: fc5ca1f9a411b6141b5e1ef2fab56489, type: 3}
+      propertyPath: sfx_swordSounds.Array.data[3]
+      value: 
+      objectReference: {fileID: 8300000, guid: 48dc82424e1caf043b42a22ae6390b30, type: 3}
     - target: {fileID: 3857109394764173083, guid: fc5ca1f9a411b6141b5e1ef2fab56489, type: 3}
       propertyPath: m_RootOrder
       value: 1

@@ -5,12 +5,18 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     public AudioClip[] sfx_swordSounds;
+    public AudioClip sfx_jump;
+    public AudioClip sfx_hurt;
+
     private int consecutiveHits = 0;
 
     public static Player Instance { get; protected set; }
     private Rigidbody2D myRB;
     public float moveSpeed;
     //private bool canPlay;
+
+    public float invincibilityTime = 1.2F;
+
     private BoxCollider2D boxCollider2D;
 
     //for jumping
@@ -92,11 +98,15 @@ public class Player : MonoBehaviour
     bool canAerialAttack = false;
 
 
+
     bool isGroundPounding = false;
 
     Coroutine attackSequenceCoroutine = null;
 
     bool PhysicPaused => myRB.constraints == RigidbodyConstraints2D.FreezeAll;
+
+    float hurtTimeStamp = 0;
+
 
 
     void Awake()
@@ -106,7 +116,6 @@ public class Player : MonoBehaviour
         //essence = null;
         //jumpTimeCountdown = jumpTime;
         myRB = GetComponent<Rigidbody2D>();
-        myRB.gravityScale = originalGravityScale;
         boxCollider2D = GetComponent<BoxCollider2D>();
         //canPlay = true;
         checkpoint = this.gameObject.transform.position;
@@ -118,6 +127,16 @@ public class Player : MonoBehaviour
     void Start()
     {
         isGroundPounding = false;
+        myRB.gravityScale = originalGravityScale;
+        myRB.velocity = Vector2.zero;
+
+        upAttackHitbox.SetActive(false);
+        downAttackHitbox.SetActive(false);
+        rightAttackHitbox.SetActive(false);
+        spinAttackHitbox.SetActive(false);
+        radialAttackHitbox.SetActive(false);
+        animator.PlayDefault();
+        hurtTimeStamp = -invincibilityTime;
     }
 
     void Update()
@@ -145,12 +164,18 @@ public class Player : MonoBehaviour
             }
 
             myRB.gravityScale = originalGravityScale;
-            radialAttackHitbox.SetActive(false);
+            if (radialAttackHitbox.activeSelf)
+            {
+                radialAttackHitbox.SetActive(false);
+                DoPhysicsPause(.05F);
+                animator.PlayDefault();
+            }
             canAerialAttack = true;
 
             if (!wasGrounded)
             {
                 upAttackHitbox.SetActive(false);
+                myRB.velocity = new Vector2(myRB.velocity.x, 0);
             }
         }
         //animatorController.SetBool("isGrounded", isGrounded);
@@ -183,6 +208,7 @@ public class Player : MonoBehaviour
             isJumping = true;
             jumpTimeCountdown = jumpTime;
             myRB.velocity = new Vector2(myRB.velocity.x, jumpSpeed);
+            SoundSystem.PlaySfx(sfx_jump, 2);
         }
 
         if (isJumping && PlayerInput.HasHeldJumpKey())
@@ -201,6 +227,8 @@ public class Player : MonoBehaviour
                 isJumping = false;
             }
         }
+
+
         if (PlayerInput.HasReleasedJumpKey())
         {
             isJumping = false;
@@ -302,6 +330,15 @@ public class Player : MonoBehaviour
         Animate();
     }
 
+    void FixedUpdate()
+    {
+        if (Time.time - hurtTimeStamp < invincibilityTime)
+            animator.Ren.enabled = !animator.Ren.enabled;
+        else
+            animator.Ren.enabled = true;
+    }
+
+
     void Animate()
     {
         if (isGrounded)
@@ -366,16 +403,21 @@ public class Player : MonoBehaviour
 
     public void TakeDamage()
     {
-        currentHealth--;
-        //animatorController.SetTrigger("getHurt");
-        if(currentHealth <= 0)
-        {
-            //for now this is death
-            StartCoroutine(Die());
+        if (Time.time - hurtTimeStamp >= invincibilityTime)
+        {            
+            hurtTimeStamp = Time.time;
+            SoundSystem.PlaySfx(sfx_hurt, 3);
+            
+            currentHealth--;
+            if(currentHealth <= 0)
+            {
+                //for now this is death
+                StartCoroutine(Die());
 
-            //ResetToLastCheckPoint();
+                //ResetToLastCheckPoint();
+            }
+            //animatorController.ResetTrigger("getHurt");
         }
-        //animatorController.ResetTrigger("getHurt");
     }
 
     private void AttackInputs()
