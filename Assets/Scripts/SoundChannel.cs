@@ -6,11 +6,10 @@ public class SoundChannel : MonoBehaviour
 {
     [HideInInspector]public AudioSource src;
     bool muteBgm = false;
-    bool loopBgm = false;
     bool songPlaying = false;
 
-    int bgmResumeSample = 0;
-    int sfxSampleTime = 0;
+    float bgmResumeTime = 0;
+    float sfxTime = 0;
 
     Coroutine resumeBgm = null;
 
@@ -22,16 +21,16 @@ public class SoundChannel : MonoBehaviour
         src = GetComponent<AudioSource>();
     }
 
-    public void PlayBgm(AudioClip clip, bool loop)
+    public void PlayBgm(AudioClip clip)
     {
-        return;
-        bgmResumeSample = 0;
-        sfxSampleTime = 0;
+        bgmResumeTime = 0;
+        sfxTime = 0;
 
         muteBgm = false;
         bgm = src.clip = clip;
-        src.loop = loopBgm = loop;
+        src.loop = false;
         songPlaying = true;
+
         src.Play();
     }
 
@@ -40,11 +39,10 @@ public class SoundChannel : MonoBehaviour
         if (songPlaying)
         {
             if (muteBgm)
-                sfxSampleTime += src.timeSamples;
+                sfxTime += src.time;
             else
             {
-                bgmResumeSample = src.timeSamples;
-                sfxSampleTime = 0;
+                sfxTime = 0;
             }
 
             if (resumeBgm != null)
@@ -65,17 +63,17 @@ public class SoundChannel : MonoBehaviour
         muteBgm = true;
         src.loop = false;
         src.clip = sfx;
-        src.timeSamples = 0;
+        src.time = 0;
         src.Play();
 
         yield return new WaitUntil(() => !src.isPlaying);
 
-        int resumeAtSamples = SoundSystem.songPositionSamples;    
+        float resumeAt = SoundSystem.songPositionTime;    
         src.clip = bgm;
-        src.loop = loopBgm;
+        src.loop = false;
         muteBgm = false;
-        src.timeSamples = resumeAtSamples;
-        sfxSampleTime = 0;
+        src.time = resumeAt;
+        sfxTime = 0;
         src.Play();
 
 

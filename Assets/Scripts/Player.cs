@@ -4,13 +4,19 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public AudioClip[] sfx_swordSide;
+    public AudioClip[] sfx_swordSounds;
+    public AudioClip sfx_jump;
+    public AudioClip sfx_hurt;
+
     private int consecutiveHits = 0;
 
     public static Player Instance { get; protected set; }
     private Rigidbody2D myRB;
     public float moveSpeed;
     //private bool canPlay;
+
+    public float invincibilityTime = 1.2F;
+
     private BoxCollider2D boxCollider2D;
 
     //for jumping
@@ -32,7 +38,7 @@ public class Player : MonoBehaviour
     //for attacking
     //[SerializeField] private GameObject leftAttackHitbox;
     [SerializeField] private GameObject rightAttackHitbox;
-    [SerializeField] private GameObject SpinAttackHitbox;
+    [SerializeField] private GameObject spinAttackHitbox;
     [SerializeField] private GameObject upAttackHitbox;
     [SerializeField] private GameObject downAttackHitbox;
     [SerializeField] private GameObject radialAttackHitbox;
@@ -40,13 +46,21 @@ public class Player : MonoBehaviour
     public float hitTime;
     public float hitCooldown;   // should be less than hit time
     public float hitComboWindow;   // should be less than hit time
-    public float comboCooldown;
+
+    Coroutine hitCoroutine = null;
+    
     private float hitTimeStamp = 0; // the time when the player attacked
+    private float comboTimeStamp = 0; // the time when the player attacked
 
     //health stuff
     public float maxhealth;
     private float currentHealth;
+
+    Coroutine pausePhysicsCoroutine = null;
     public float deathTime;
+
+
+    private SpriteAnimator animator;
 
 
     //[SerializeField] private float bouncyJumpTimeModifier;
@@ -72,7 +86,7 @@ public class Player : MonoBehaviour
     //[SerializeField] private AudioSource jumpSFX;
 
     //animator
-    [SerializeField] private Animator animatorController;
+    //[SerializeField] private Animator animatorController;
 
     //for groundChecks
     bool isGrounded;
@@ -80,6 +94,21 @@ public class Player : MonoBehaviour
     bool IsHittingRightWall;
     bool IsHittingLeftWall;
     // Start is called before the first frame update
+
+    bool canAerialAttack = false;
+
+
+
+    bool isGroundPounding = false;
+
+    Coroutine attackSequenceCoroutine = null;
+
+    bool PhysicPaused => myRB.constraints == RigidbodyConstraints2D.FreezeAll;
+
+    float hurtTimeStamp = 0;
+
+
+
     void Awake()
     {
         currentHealth = maxhealth;
@@ -87,14 +116,29 @@ public class Player : MonoBehaviour
         //essence = null;
         //jumpTimeCountdown = jumpTime;
         myRB = GetComponent<Rigidbody2D>();
-        myRB.gravityScale = originalGravityScale;
         boxCollider2D = GetComponent<BoxCollider2D>();
         //canPlay = true;
         checkpoint = this.gameObject.transform.position;
         Instance = this;
+
+        animator = GetComponent<SpriteAnimator>();
     }
 
-    // Update is called once per frame
+    void Start()
+    {
+        isGroundPounding = false;
+        myRB.gravityScale = originalGravityScale;
+        myRB.velocity = Vector2.zero;
+
+        upAttackHitbox.SetActive(false);
+        downAttackHitbox.SetActive(false);
+        rightAttackHitbox.SetActive(false);
+        spinAttackHitbox.SetActive(false);
+        radialAttackHitbox.SetActive(false);
+        animator.PlayDefault();
+        hurtTimeStamp = -invincibilityTime;
+    }
+
     void Update()
     {
         //animatorController.SetFloat("horizontalVelocity", myRB.velocity.x);
@@ -104,68 +148,95 @@ public class Player : MonoBehaviour
         {
             shootCooldownCounter -= Time.deltaTime;
         }*/
+
+        bool wasGrounded = isGrounded;
         isGrounded = boxCollider2D.IsGrounded(bottomLeftRaycast.position, bottomRightRaycast.position, this.transform.localScale.x, rayCastMagnitude);
         isHittingCeiling = boxCollider2D.IsHittingCeiling(topLeftRaycast.position, topRightRaycast.position, this.transform.localScale.x, rayCastMagnitude);
         IsHittingRightWall = boxCollider2D.IsHittingRightWall(topRightRaycast.position, bottomRightRaycast.position, this.transform.localScale.x, rayCastMagnitude);
         IsHittingLeftWall = boxCollider2D.IsHittingLeftWall(topLeftRaycast.position, bottomLeftRaycast.position, this.transform.localScale.x, rayCastMagnitude);
         if (isGrounded)
         {
+            if (isGroundPounding)   // if is falling fast
+            {
+                CameraController.Instance.HorShake(3);          // shake screen
+                DoPhysicsPause(.2F);
+                isGroundPounding = false;
+            }
+
             myRB.gravityScale = originalGravityScale;
+            if (radialAttackHitbox.activeSelf)
+            {
+                radialAttackHitbox.SetActive(false);
+                DoPhysicsPause(.05F);
+                animator.PlayDefault();
+            }
+            canAerialAttack = true;
+
+            if (!wasGrounded)
+            {
+                upAttackHitbox.SetActive(false);
+                myRB.velocity = new Vector2(myRB.velocity.x, 0);
+            }
         }
-        animatorController.SetBool("isGrounded", isGrounded);
+        //animatorController.SetBool("isGrounded", isGrounded);
         //myRB.velocity = new Vector2(0f, 0f);
         myRB.velocity = new Vector2(0f, myRB.velocity.y);
-        animatorController.SetFloat("horizontalVelocity", Mathf.Abs(myRB.velocity.x));
-        animatorController.SetBool("crouching", false);
+        //animatorController.SetFloat("horizontalVelocity", Mathf.Abs(myRB.velocity.x));
+        //animatorController.SetBool("crouching", false);
         //if (LevelManager.Instance.GetGameStartStatus() && !PauseMenu.Instance.Paused())
         //{
         //animatorController.SetFloat("horizontalVelocity", -1f);
-        if (PlayerInput.IsPressingLeft())
-            {
-                myRB.velocity = new Vector2(-moveSpeed, myRB.velocity.y);
-                this.transform.rotation = new Quaternion(0f, 180f, this.transform.rotation.z, this.transform.rotation.w);
-                animatorController.SetFloat("horizontalVelocity", Mathf.Abs(myRB.velocity.x));
-            }
-
-            if (PlayerInput.IsPressingRight())
-            {
-                myRB.velocity = new Vector2(moveSpeed, myRB.velocity.y);
-                this.transform.rotation = new Quaternion(0f, 0f, this.transform.rotation.z, this.transform.rotation.w);
-                animatorController.SetFloat("horizontalVelocity", Mathf.Abs(myRB.velocity.x));
-            }
         
-            if (isGrounded && PlayerInput.HasPressedJumpKey())
-            {
-                isJumping = true;
-                jumpTimeCountdown = jumpTime;
-                myRB.velocity = new Vector2(myRB.velocity.x, jumpSpeed);
-                animatorController.SetBool("isGrounded", isGrounded);
-            }
+        if (PlayerInput.IsPressingLeft())
+        {
+            myRB.velocity = new Vector2(-moveSpeed, myRB.velocity.y);
+            this.transform.rotation = new Quaternion(0f, 180f, this.transform.rotation.z, this.transform.rotation.w);
+        }
+        else if (PlayerInput.IsPressingRight())
+        {
+            myRB.velocity = new Vector2(moveSpeed, myRB.velocity.y);
+            this.transform.rotation = new Quaternion(0f, 0f, this.transform.rotation.z, this.transform.rotation.w);
+        }
 
-            if (isJumping && PlayerInput.HasHeldJumpKey())
+        if (PlayerInput.IsPressingDown())
+        {
+            myRB.velocity = new Vector2(0, myRB.velocity.y);
+        }
+
+        if (isGrounded && PlayerInput.HasPressedJumpKey())
+        {
+            isJumping = true;
+            jumpTimeCountdown = jumpTime;
+            myRB.velocity = new Vector2(myRB.velocity.x, jumpSpeed);
+            SoundSystem.PlaySfx(sfx_jump, 2);
+        }
+
+        if (isJumping && PlayerInput.HasHeldJumpKey())
+        {
+            if (jumpTimeCountdown > 0)
             {
-                if (jumpTimeCountdown > 0)
+                myRB.velocity = new Vector2(myRB.velocity.x, jumpSpeed);
+                jumpTimeCountdown -= Time.deltaTime;
+                if (isHittingCeiling)
                 {
-                    myRB.velocity = new Vector2(myRB.velocity.x, jumpSpeed);
-                    jumpTimeCountdown -= Time.deltaTime;
-                    if (isHittingCeiling)
-                    {
-                        jumpTimeCountdown = 0;
-                    }
-                }
-                else
-                {
-                    isJumping = false;
+                    jumpTimeCountdown = 0;
                 }
             }
-            if (PlayerInput.HasReleasedJumpKey())
+            else
             {
-               isJumping = false;
+                isJumping = false;
             }
-            if(PlayerInput.IsPressingDown() && isGrounded)
-            {
-                animatorController.SetBool("crouching", true);
-            }
+        }
+
+
+        if (PlayerInput.HasReleasedJumpKey())
+        {
+            isJumping = false;
+        }
+        if(PlayerInput.IsPressingDown() && isGrounded)
+        {
+            //animatorController.SetBool("crouching", true);
+        }
 
 
 
@@ -254,24 +325,118 @@ public class Player : MonoBehaviour
 
 
         //CameraController.CameraUpdate();
+
+
+        Animate();
+    }
+
+    void FixedUpdate()
+    {
+        if (Time.time - hurtTimeStamp < invincibilityTime)
+            animator.Ren.enabled = !animator.Ren.enabled;
+        else
+            animator.Ren.enabled = true;
+    }
+
+
+    void Animate()
+    {
+        if (isGrounded)
+        {
+            if (upAttackHitbox.activeSelf)
+            {
+                animator.Play(AnimMode.Hang, "upslash ground");
+            }
+            else if (spinAttackHitbox.activeSelf)
+            {
+                animator.Play(AnimMode.Looped, "spin");//, () => {animator.Play(AnimMode.Looped, "spin"); Debug.Log("hhh");});
+            }
+            else if (rightAttackHitbox.activeSelf)
+            {
+                animator.Play(AnimMode.Hang, consecutiveHits <= 1 ? "slash 1" : "slash 2");
+            }
+            else if (!PhysicPaused && PlayerInput.IsPressingDown())
+            {
+                animator.Play(AnimMode.Looped, "duck");
+            }
+            else if (!PhysicPaused && (PlayerInput.IsPressingLeft() || PlayerInput.IsPressingRight()))
+            {
+                animator.Play(AnimMode.Looped, "run");
+            }
+            else if (!PhysicPaused)
+            {
+                animator.Play(AnimMode.Looped, "idle");
+            }
+        }
+        else
+        {
+            if (downAttackHitbox.activeSelf)
+            {
+                animator.Play(AnimMode.Hang, "downslash");
+            }
+            else if (radialAttackHitbox.activeSelf)
+            {
+                animator.Play(AnimMode.Looped, "somersault");
+            }
+            else if (upAttackHitbox.activeSelf)
+            {
+                animator.Play(AnimMode.Hang, "upslash air");
+            }
+            else if (myRB.velocity.y > 0)
+            {
+                animator.Play(AnimMode.Hang, "jump");
+            }
+            else
+            {
+                animator.Play(AnimMode.Hang, "fall");
+            }
+
+        }
+    }
+
+    public void DoPhysicsPause(float time)
+    {
+        if (pausePhysicsCoroutine != null)
+            StopCoroutine(pausePhysicsCoroutine);
+        pausePhysicsCoroutine = StartCoroutine(PausePhysics(time));
     }
 
     public void TakeDamage()
     {
-        currentHealth--;
-        animatorController.SetTrigger("getHurt");
-        if(currentHealth <= 0)
-        {
-            //for now this is death
-            StartCoroutine(Die());
+        if (Time.time - hurtTimeStamp >= invincibilityTime)
+        {            
+            hurtTimeStamp = Time.time;
+            SoundSystem.PlaySfx(sfx_hurt, 3);
+            
+            currentHealth--;
+            if(currentHealth <= 0)
+            {
+                //for now this is death
+                StartCoroutine(Die());
 
-            //ResetToLastCheckPoint();
+                //ResetToLastCheckPoint();
+            }
+            //animatorController.ResetTrigger("getHurt");
         }
-        //animatorController.ResetTrigger("getHurt");
     }
 
     private void AttackInputs()
     {
+        
+        if (Time.time - comboTimeStamp > hitComboWindow)
+            consecutiveHits = 0;
+
+        if (PlayerInput.HasPressedAttackKey())
+        {
+            if (Time.time - hitTimeStamp >= hitCooldown && !PhysicPaused)
+            {
+                if (attackSequenceCoroutine != null)
+                    StopCoroutine(attackSequenceCoroutine);
+                attackSequenceCoroutine = StartCoroutine(AttackSequence());
+            }
+        }
+            
+        /*
         if (consecutiveHits >= 3 && Time.time - hitTimeStamp >= comboCooldown)
             {
                 consecutiveHits = 0;
@@ -284,65 +449,72 @@ public class Player : MonoBehaviour
                 {
                     if (PlayerInput.IsPressingUp() )
                     {
-                        StartCoroutine(Hit(1));
+                        if (hitCoroutine != null)
+                    StopCoroutine(hitCoroutine);
+                hitCoroutine = StartCoroutine(Hit(1));
 
-                        SoundSystem.PlaySfx(sfx_swordSide[0], 4);   //play attack sfx
+                        DoPhysicsPause(.1F);
+                        SoundSystem.PlaySfx(sfx_swordSounds[0], 4);   //play attack sfx
                     }
                     else
                     {                        
-                        if (consecutiveHits < 3)
-                        {
-                            if (Time.time - hitTimeStamp < hitComboWindow)
-                                consecutiveHits++;
-                            else
-                                consecutiveHits = 1;
-                            
-                            StartCoroutine(Hit(4));
-                            SoundSystem.PlaySfx(sfx_swordSide[consecutiveHits - 1], 4);   //play attack sfx
-                        }
-                        else
-                        {
-                            //do spin attack here and reset the other trigger here
-                            StartCoroutine(Hit(3));
-                            return;
-                        }
+                        
+                    }
                 }
-                }
-                else
+                else if (canAerialAttack)
                 {
-                    if (PlayerInput.IsPressingDown())
+
+                    /*if (PlayerInput.IsPressingDown())
                     {
-                        myRB.gravityScale = originalGravityScale * DownThrustGravityModifier;
-                        myRB.velocity = Vector3.down * 10;
-                        StartCoroutine(Hit(2));
-                        SoundSystem.PlaySfx(sfx_swordSide[0], 4);   //play attack sfx
+                        if (hitCoroutine != null)
+                    StopCoroutine(hitCoroutine);
+                hitCoroutine = StartCoroutine(Hit(2));
+                        SoundSystem.PlaySfx(sfx_swordSounds[0], 4);   //play attack sfx
+                        
+                        myRB.velocity = Vector3.down * 38;
+                        isGroundPounding = true;
+                        myRB.gravityScale = - 0; //originalGravityScale * DownThrustGravityModifier;
+                        DoPhysicsPause(.1F);
+                        canAerialAttack = false;
                     }
                     else if (PlayerInput.IsPressingUp())
                     {
-                        StartCoroutine(Hit(1));
+                        if (hitCoroutine != null)
+                    StopCoroutine(hitCoroutine);
+                hitCoroutine = StartCoroutine(Hit(1));
 
-                        SoundSystem.PlaySfx(sfx_swordSide[0], 4);   //play attack sfx
-                        myRB.velocity = Vector3.up * 5;
+                        SoundSystem.PlaySfx(sfx_swordSounds[0], 4);   //play attack sfx
+                        myRB.velocity = Vector3.up * 15;
+                        myRB.gravityScale = originalGravityScale * .97F;
+                        DoPhysicsPause(.1F);
+                        canAerialAttack = false;
                     }
                     else
                     {
-                        StartCoroutine(Hit(5));
-                        SoundSystem.PlaySfx(sfx_swordSide[0], 4);   //play attack sfx
+                        if (hitCoroutine != null)
+                    StopCoroutine(hitCoroutine);
+                hitCoroutine = StartCoroutine(Hit(5));
+                        SoundSystem.PlaySfx(sfx_swordSounds[0], 4);   //play attack sfx
+                        canAerialAttack = false;
                     }
-                }
+                }*/
 
                 
-                hitTimeStamp = Time.time;
+                
 
                 /*if (PlayerInput.IsPressingLeft() && PlayerInput.HasPressedAttackKey() && isGrounded)
                 {
-                    StartCoroutine(Hit(3));
+                    if (hitCoroutine != null)
+                    StopCoroutine(hitCoroutine);
+                hitCoroutine = StartCoroutine(Hit(3));
                 }*/
                 /*else if ((PlayerInput.IsPressingRight() || PlayerInput.IsPressingLeft()) && PlayerInput.HasPressedAttackKey() && isGrounded)
                 {
-                    StartCoroutine(Hit(4));
-                }*/
-            }
+                    if (hitCoroutine != null)
+                    StopCoroutine(hitCoroutine);
+                hitCoroutine = StartCoroutine(Hit(4));
+                }
+            }*/
     }
 
     private IEnumerator Hit(int hitBoxIndex)
@@ -369,37 +541,50 @@ public class Player : MonoBehaviour
 
         isHitting = true;       //set isHitting to true.
 
+        float hitMod = 1.0F;
+
+        upAttackHitbox.SetActive(false);
+        downAttackHitbox.SetActive(false);
+        rightAttackHitbox.SetActive(false);
+        spinAttackHitbox.SetActive(false);
+        radialAttackHitbox.SetActive(false);
             
         switch (hitBoxIndex)
         {
             case 1:
                 // Upwards attack
                 upAttackHitbox.SetActive(true);
-                animatorController.SetBool("attackingUp", true);
+                if (!isGrounded)
+                    hitMod = 1.2F;
+                else
+                    hitMod = .85F;
+                //animatorController.SetBool("attackingUp", true);
                 break;
             case 2:
                 //Downwards attack
                 downAttackHitbox.SetActive(true);
-                animatorController.SetTrigger("downThrust");
+                //animatorController.SetTrigger("downThrust");
                 break;
             case 3:
                 //Spin attack
                 //take the leftAttackHitBox and turn that into the spin attack that hits both the left and the right of the player
-                SpinAttackHitbox.SetActive(true);
-                animatorController.SetTrigger("attackCombo3");
-                animatorController.SetBool("attackComboEnded",false);
+                spinAttackHitbox.SetActive(true);
+                hitMod = 2;
+                //animatorController.SetTrigger("attackCombo3");
+                //animatorController.SetBool("attackComboEnded",false);
                 break;
             case 4:
                 //Right attack
                 rightAttackHitbox.SetActive(true);
-                animatorController.SetTrigger("attackCombo1");
-                animatorController.SetBool("attackComboEnded",false);
+                //animatorController.SetTrigger("attackCombo1");
+                //animatorController.SetBool("attackComboEnded",false);
 
                 break;
             case 5:
                 //radial attack
                 radialAttackHitbox.SetActive(true);
-                animatorController.SetTrigger("radialAttack");
+                hitMod = 2;
+                //animatorController.SetTrigger("radialAttack");
                 break;
             default:
                 Debug.Log("AN ERROR HAS OCCURRED WHILE TRYING TO ATTACK");
@@ -409,37 +594,37 @@ public class Player : MonoBehaviour
 
 
 
-        yield return new WaitForSeconds(hitTime);   //wait the established amount of seconds.
+        yield return new WaitForSeconds(hitTime * hitMod);   //wait the established amount of seconds.
 
         switch (hitBoxIndex)
         {
             case 1:
                 // Upwards attack
                 upAttackHitbox.SetActive(false);
-                animatorController.SetBool("attackingUp", false);
+                //animatorController.SetBool("attackingUp", false);
                 break;
             case 2:
                 //Downwards attack
                 downAttackHitbox.SetActive(false);
-                animatorController.ResetTrigger("downThrust");
+                //animatorController.ResetTrigger("downThrust");
                 break;
             case 3:
                 //Spin attack
                 //take the leftAttackHitBox and turn that into the spin attack that hits both the left and the right of the player
-                SpinAttackHitbox.SetActive(false);                
-                animatorController.ResetTrigger("attackCombo3");
-                animatorController.SetBool("attackComboEnded",true);
+                spinAttackHitbox.SetActive(false);                
+                //animatorController.ResetTrigger("attackCombo3");
+                //animatorController.SetBool("attackComboEnded",true);
                 break;
             case 4:
                 //Right attack
                 rightAttackHitbox.SetActive(false);
-                animatorController.ResetTrigger("attackCombo1");
-                animatorController.SetBool("attackComboEnded",true);
+                //animatorController.ResetTrigger("attackCombo1");
+                //animatorController.SetBool("attackComboEnded",true);
                 break;
             case 5:
                 //radial attack
                 radialAttackHitbox.SetActive(false);
-                animatorController.ResetTrigger("radialAttack");
+                //animatorController.ResetTrigger("radialAttack");
                 break;
             default:
                 Debug.Log("AN ERROR HAS OCCURRED WHILE TRYING TO ATTACK");
@@ -456,18 +641,18 @@ public class Player : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Ground"))
+        if (other.CompareTag("Ground") || other.CompareTag("Hidden"))
         {
-            checkpoint = new Vector2(other.gameObject.transform.position.x, other.gameObject.transform.position.y + 1);
+            //checkpoint = new Vector2(other.gameObject.transform.position.x, other.gameObject.transform.position.y + 1);
         }
         if (other.CompareTag("Reset"))
         {
             this.gameObject.transform.position = checkpoint;
         }
-        if (other.CompareTag("Candle"))
+        /*if (other.CompareTag("Candle"))
         {
             other.GetComponent<Candle>().LightUpCandle();
-        }
+        }*/
         /*if (other.CompareTag("Teleport"))
         {
             other.gameObject.GetComponent<EndLevelChecker>().HandleEndOfLevel();
@@ -499,7 +684,6 @@ public class Player : MonoBehaviour
             TakeDamage();
             //also take knockback
         }
-
     }
 
     /*private void OnTriggerStay2D(Collider2D other)
@@ -511,7 +695,7 @@ public class Player : MonoBehaviour
     }*/
     private IEnumerator Die()
     {
-        animatorController.SetBool("playerDed", true);
+        //animatorController.SetBool("playerDed", true);
         yield return new WaitForSeconds(deathTime);   //wait the established amount of seconds.
         ResetToLastCheckPoint();
 
@@ -520,6 +704,140 @@ public class Player : MonoBehaviour
     {
         this.gameObject.transform.position = checkpoint;
         currentHealth = maxhealth;
-        animatorController.SetBool("playerDed", false);
+        //animatorController.SetBool("playerDed", false);
+    }
+
+    IEnumerator PausePhysics(float duration)
+    {
+        Vector2 velocity = myRB.velocity;
+        myRB.constraints = RigidbodyConstraints2D.FreezeAll;
+        yield return new WaitForSeconds(duration);
+        myRB.constraints = RigidbodyConstraints2D.FreezeRotation;
+        pausePhysicsCoroutine = null;
+        myRB.velocity = velocity;
+        yield break;
+    }
+
+    IEnumerator AttackSequence()
+    {
+        if (!isGrounded)
+        {
+            if (canAerialAttack)
+                canAerialAttack = false;
+            else
+            {
+                attackSequenceCoroutine = null;
+                yield break;
+            }
+        }
+
+        
+        Vector2 lastInputDirection = Vector2.zero;
+        if (isGrounded)
+            DoPhysicsPause(.05F);
+        else
+            DoPhysicsPause(.08F);
+
+        do
+        {
+            yield return new WaitForEndOfFrame();
+            if (PlayerInput.IsPressingDown() && !isGrounded)
+                lastInputDirection = Vector2.down;
+            else if (PlayerInput.IsPressingUp() && !upAttackHitbox.activeSelf)
+                lastInputDirection = Vector2.up;
+            else if (PlayerInput.IsPressingLeft())
+                lastInputDirection = Vector2.left;
+            else if (PlayerInput.IsPressingRight())
+                lastInputDirection = Vector2.right;
+        }
+        while (myRB.constraints == RigidbodyConstraints2D.FreezeAll);
+
+
+        if (isGrounded)
+            animator.PlayDefault();
+
+
+        if (lastInputDirection == Vector2.down)
+        {
+            if (isGrounded)
+            {
+
+            }
+            else
+            {
+                SoundSystem.PlaySfx(sfx_swordSounds[0], 4);   //play attack sfx
+                
+                myRB.velocity = Vector3.down * 38;
+                isGroundPounding = true;
+                myRB.gravityScale = - 0; 
+                if (hitCoroutine != null)
+                    StopCoroutine(hitCoroutine);
+                hitCoroutine = StartCoroutine(Hit(2));
+            }
+        }
+        else if (lastInputDirection == Vector2.up)
+        {
+            if (isGrounded)
+            {
+                SoundSystem.PlaySfx(sfx_swordSounds[0], 4);   //play attack sfx
+                DoPhysicsPause(.12F);
+            }
+            else
+            {
+                myRB.velocity = Vector3.up * 15;
+                myRB.gravityScale = originalGravityScale * .97F;
+            }
+
+            SoundSystem.PlaySfx(sfx_swordSounds[0], 4);
+            if (hitCoroutine != null)
+                StopCoroutine(hitCoroutine);
+            hitCoroutine = StartCoroutine(Hit(1));
+        }
+        else
+        {
+            if (isGrounded)
+            {
+                consecutiveHits++;
+
+                switch (consecutiveHits)
+                {
+                    case 1:
+                        SoundSystem.PlaySfx(sfx_swordSounds[0], 4);   //play attack sfx
+                        DoPhysicsPause(.07F);
+                        if (hitCoroutine != null)
+                            StopCoroutine(hitCoroutine);
+                        hitCoroutine = StartCoroutine(Hit(4));
+                        break;
+                    case 2:
+                        SoundSystem.PlaySfx(sfx_swordSounds[1], 4);   //play attack sfx
+                        DoPhysicsPause(.07F);
+                        if (hitCoroutine != null)
+                            StopCoroutine(hitCoroutine);
+                        hitCoroutine = StartCoroutine(Hit(4));
+                        break;
+                    case 3: //do spin attack here and reset the other trigger here
+                        SoundSystem.PlaySfx(sfx_swordSounds[3], 4);
+                        DoPhysicsPause(.5F);
+                        if (hitCoroutine != null)
+                            StopCoroutine(hitCoroutine);
+                        hitCoroutine = StartCoroutine(Hit(3));
+                        consecutiveHits = 0;
+                        break;
+
+                }
+                comboTimeStamp = Time.time;
+            }
+            else
+            {
+                // radial spin
+                SoundSystem.PlaySfx(sfx_swordSounds[3], 4);
+                if (hitCoroutine != null)
+                    StopCoroutine(hitCoroutine);
+                hitCoroutine = StartCoroutine(Hit(5));
+            }
+        }
+
+        attackSequenceCoroutine = null;
+        yield break;
     }
 }

@@ -24,7 +24,7 @@ TagManager:
   - UI
   - Ground
   - Player
-  - HiddenGround
+  - 
   - EnemyMelee
   - EnemyThrowing
   - EnemyFlying

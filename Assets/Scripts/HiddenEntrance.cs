@@ -6,11 +6,13 @@ public class HiddenEntrance : MonoBehaviour
 {
     //public GameObject explosionRadius;
     public float waitTime;
+
     public List<HiddenEntrance> adjacentHiddenEntrances;
     private bool hasExploded;
     public float delayTime;
     private float delayTimeCountdown;
     public bool canBeHitByPlayer;
+
 
     //randomization of list
     /*public void HandleReveal()
