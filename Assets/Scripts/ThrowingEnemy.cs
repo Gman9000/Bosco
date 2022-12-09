@@ -17,10 +17,13 @@ public class ThrowingEnemy : MonoBehaviour
     public int maxEnemyHealth;
     private int currentEnemyHealth;             //health of enemy unit
     private bool hitState = false;      //is the enemy's invincibility frames currently active
+    private bool knockBackState = false;
+    public float knockBackStateTime;
     private bool isShooting = false;    //is the enemy currently shooting.
     public float fireRate;              //the amount of time between each of the enemy's shots.
     public Animator flyingAnim;
     public float deathTimer;
+    private bool leftOfPlayer;
     //bool isDetectingPlayer;
     //private CircleCollider2D CircleCollider2D;
     //private Rigidbody2D myRB;
@@ -39,8 +42,13 @@ public class ThrowingEnemy : MonoBehaviour
 
     public EnemyRespawner mySpawner;
 
+    private Rigidbody2D myRB;
+    public float knockBackForce;
+
+
     private void Awake()
     {
+        myRB = GetComponent<Rigidbody2D>();
         bounceRight = false;
         bounceRightTimeCountdown = bounceRightTime;
         currentEnemyHealth = maxEnemyHealth;
@@ -54,6 +62,7 @@ public class ThrowingEnemy : MonoBehaviour
     {
         currentWaypoint = waypoint01;   //set the first waypoint.
         hitState = false;
+        knockBackState = false;
         currentEnemyHealth = maxEnemyHealth;
         
     }
@@ -66,90 +75,92 @@ public class ThrowingEnemy : MonoBehaviour
 
         //Vector3 playerVector = (Vector2)playerTarget.transform.position;
         //directionMemory.x = (playerVector.x - transform.position.x);
-
-        if (waypointMode)
+        if (!hitState)
         {
-            if (Vector2.Distance(transform.position, currentWaypoint.transform.position) > 1f)
+            if (waypointMode)
             {
-                Vector3 directionOfTravel = currentWaypoint.transform.position - transform.position;
-                directionOfTravel.Normalize();
+                if (Vector2.Distance(transform.position, currentWaypoint.transform.position) > 1f)
+                {
+                    Vector3 directionOfTravel = currentWaypoint.transform.position - transform.position;
+                    directionOfTravel.Normalize();
 
+                    Vector3 enemyDirection = transform.localScale;
+
+                    if (transform.position.x < currentWaypoint.transform.position.x)
+                    {
+                        enemyDirection.x = -enemyWidth;
+                    }
+
+                    else if (transform.position.x > currentWaypoint.transform.position.x)
+                    {
+                        enemyDirection.x = enemyWidth;
+                    }
+
+                    transform.localScale = enemyDirection;
+                    Motion(directionOfTravel, speedMod);
+
+                }
+                else
+                {
+                    if (currentWaypoint == waypoint01) currentWaypoint = waypoint02;
+                    else currentWaypoint = waypoint01;
+                }
+            }
+            else
+            {
+                bounceRightTimeCountdown -= Time.deltaTime;
+                if (bounceRightTimeCountdown <= 0)
+                {
+                    bounceRight = !bounceRight;
+                    bounceRightTimeCountdown = bounceRightTime;
+                }
                 Vector3 enemyDirection = transform.localScale;
 
-                if (transform.position.x < currentWaypoint.transform.position.x)
+                if (transform.position.x < playerTarget.transform.position.x)
                 {
                     enemyDirection.x = -enemyWidth;
+                    leftOfPlayer = false;
                 }
 
-                else if (transform.position.x > currentWaypoint.transform.position.x)
+                else if (transform.position.x > playerTarget.transform.position.x)
                 {
                     enemyDirection.x = enemyWidth;
+                    leftOfPlayer = true;
                 }
-
                 transform.localScale = enemyDirection;
-                Motion(directionOfTravel, speedMod);
 
+                Vector3 direction;
+
+                if (bounceRight)
+                {
+                    direction = Vector3.up + Vector3.right;
+                }
+                else
+                {
+                    direction = Vector3.up + Vector3.left;
+                }
+                Motion(direction, 0.5f * speedMod);
             }
-            else
+
+            //this.transform.position += Vector3.up * Game.PingPong(Game.gameTime * 7F) * Game.PIXEL / 4.0f * 800F * Time.deltaTime;
+
+
+
+            //otherwise, switch waypoints.
+
+
+            //if the player is close enough, shoot a projectile.
+            //if ((Vector2.Distance(transform.position, playerTarget.transform.position) < shootDistance) && (!isShooting))
+
+            //if ( (playerTarget.transform.position.x == this.transform.position.x)
+            if (!waypointMode && (!isShooting))
             {
-                if (currentWaypoint == waypoint01) currentWaypoint = waypoint02;
-                else currentWaypoint = waypoint01;
+                //Debug.Log("Player x: " + playerTarget.transform.position.x);
+                //Debug.Log("Enemy x: " + transform.position.x);
+                //Debug.Log("WE REACHED SHOOTING");
+                StartCoroutine(ShootProjectile());
             }
         }
-        else
-        {
-            bounceRightTimeCountdown -= Time.deltaTime;
-            if(bounceRightTimeCountdown <= 0)
-            {
-                bounceRight = !bounceRight;
-                bounceRightTimeCountdown = bounceRightTime;
-            }
-            Vector3 enemyDirection = transform.localScale;
-
-            if (transform.position.x < playerTarget.transform.position.x)
-            {
-                enemyDirection.x = -enemyWidth;
-            }
-
-            else if (transform.position.x > playerTarget.transform.position.x)
-            {
-                enemyDirection.x = enemyWidth;
-            }
-            transform.localScale = enemyDirection;
-
-            Vector3 direction;
-            
-            if (bounceRight)
-            {
-                direction = Vector3.up + Vector3.right;
-            }
-            else
-            {
-                direction = Vector3.up + Vector3.left;
-            }
-            Motion(direction, 0.5f * speedMod);
-
-        }
-
-        //this.transform.position += Vector3.up * Game.PingPong(Game.gameTime * 7F) * Game.PIXEL / 4.0f * 800F * Time.deltaTime;
-
-
-
-        //otherwise, switch waypoints.
-
-
-        //if the player is close enough, shoot a projectile.
-        //if ((Vector2.Distance(transform.position, playerTarget.transform.position) < shootDistance) && (!isShooting))
-
-        //if ( (playerTarget.transform.position.x == this.transform.position.x)
-        if (!waypointMode && (!isShooting))
-        {
-            //Debug.Log("Player x: " + playerTarget.transform.position.x);
-            //Debug.Log("Enemy x: " + transform.position.x);
-            //Debug.Log("WE REACHED SHOOTING");
-            StartCoroutine(ShootProjectile());
-        }
-
     }
 
     public void Motion(Vector3 directionOfTravel, float speed)
@@ -165,6 +176,13 @@ public class ThrowingEnemy : MonoBehaviour
         if (other.CompareTag("PlayerAttack"))
         {
             TakeDamage();
+            TakeKnockBack();
+
+        }
+        if (other.CompareTag("PlayerTarget"))
+        {
+            other.transform.parent.GetComponent<Player>().TakeDamage();
+            TakeKnockBack();
         }
     }
 
@@ -173,6 +191,13 @@ public class ThrowingEnemy : MonoBehaviour
         if (other.CompareTag("PlayerAttack"))
         {
             TakeDamage();
+            TakeKnockBack();
+
+        }
+        if (other.CompareTag("PlayerTarget"))
+        {
+            other.transform.parent.GetComponent<Player>().TakeDamage();
+            TakeKnockBack();
         }
     }
 
@@ -211,12 +236,33 @@ public class ThrowingEnemy : MonoBehaviour
     void FixedUpdate()
     {
 
-        if (hitState)   ren.color = ren.color.a == 0 ? Color.white : new Color(0,0,0,0);
-        else            ren.color = Color.white;
-
+        if (hitState) ren.color = ren.color.a == 0 ? Color.white : new Color(0, 0, 0, 0);
+        else
+        {
+            ren.color = Color.white;
+        }
+        if (!knockBackState)
+        {
+            myRB.velocity = new Vector2(0, myRB.velocity.y);
+        }
     }
 
     //enemy is hit with player attack and takes damage
+    public void TakeKnockBack()
+    {
+        if (!knockBackState)
+        {
+            if (leftOfPlayer)
+            {
+                myRB.AddForce((Vector2.left * knockBackForce), ForceMode2D.Impulse);
+            }
+            else
+            {
+                myRB.AddForce((Vector2.right * knockBackForce), ForceMode2D.Impulse);
+            }
+            StartCoroutine(KnockBackState());
+        }
+    }
     public void TakeDamage()
     {
         if (!hitState)
@@ -254,5 +300,13 @@ public class ThrowingEnemy : MonoBehaviour
         yield return new WaitForSeconds(0.2f);
 
         hitState = false;
+    }
+    private IEnumerator KnockBackState()
+    {
+        knockBackState = true;
+
+        yield return new WaitForSeconds(knockBackStateTime);
+
+        knockBackState = false;
     }
 }

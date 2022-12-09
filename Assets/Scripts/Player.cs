@@ -16,6 +16,7 @@ public class Player : MonoBehaviour
     //private bool canPlay;
 
     public float invincibilityTime = 1.2F;
+    public float invincibilityTimeFactor;
 
     private BoxCollider2D boxCollider2D;
 
@@ -55,6 +56,7 @@ public class Player : MonoBehaviour
     //health stuff
     public float maxhealth;
     private float currentHealth;
+    public float knockBackForce;
 
     Coroutine pausePhysicsCoroutine = null;
     public float deathTime;
@@ -97,13 +99,15 @@ public class Player : MonoBehaviour
 
     bool canAerialAttack = false;
 
+    bool facingLeft;
+    //[SerializeField] private Transform spriteTransform;
 
 
     bool isGroundPounding = false;
-
+    bool hitState;
     Coroutine attackSequenceCoroutine = null;
 
-    bool PhysicPaused => myRB.constraints == RigidbodyConstraints2D.FreezeAll;
+    bool PhysicsPaused => myRB.constraints == RigidbodyConstraints2D.FreezeAll;
 
     float hurtTimeStamp = 0;
 
@@ -111,6 +115,7 @@ public class Player : MonoBehaviour
 
     void Awake()
     {
+        hitState = false;
         currentHealth = maxhealth;
         //shootCooldownCounter = 0f;
         //essence = null;
@@ -135,7 +140,7 @@ public class Player : MonoBehaviour
         rightAttackHitbox.SetActive(false);
         spinAttackHitbox.SetActive(false);
         radialAttackHitbox.SetActive(false);
-        animator.PlayDefault();
+        animator.PlayDefault(); //this is for safety's sake
         hurtTimeStamp = -invincibilityTime;
     }
 
@@ -149,6 +154,14 @@ public class Player : MonoBehaviour
             shootCooldownCounter -= Time.deltaTime;
         }*/
 
+        if(transform.rotation.y >= 180)
+        {
+            facingLeft = false;
+        }
+        else
+        {
+            facingLeft = true;
+        }
         bool wasGrounded = isGrounded;
         isGrounded = boxCollider2D.IsGrounded(bottomLeftRaycast.position, bottomRightRaycast.position, this.transform.localScale.x, rayCastMagnitude);
         isHittingCeiling = boxCollider2D.IsHittingCeiling(topLeftRaycast.position, topRightRaycast.position, this.transform.localScale.x, rayCastMagnitude);
@@ -178,164 +191,89 @@ public class Player : MonoBehaviour
                 myRB.velocity = new Vector2(myRB.velocity.x, 0);
             }
         }
-        //animatorController.SetBool("isGrounded", isGrounded);
-        //myRB.velocity = new Vector2(0f, 0f);
-        myRB.velocity = new Vector2(0f, myRB.velocity.y);
-        //animatorController.SetFloat("horizontalVelocity", Mathf.Abs(myRB.velocity.x));
-        //animatorController.SetBool("crouching", false);
-        //if (LevelManager.Instance.GetGameStartStatus() && !PauseMenu.Instance.Paused())
-        //{
-        //animatorController.SetFloat("horizontalVelocity", -1f);
-        
-        if (PlayerInput.IsPressingLeft())
+        if (!hitState)
         {
-            myRB.velocity = new Vector2(-moveSpeed, myRB.velocity.y);
-            this.transform.rotation = new Quaternion(0f, 180f, this.transform.rotation.z, this.transform.rotation.w);
-        }
-        else if (PlayerInput.IsPressingRight())
-        {
-            myRB.velocity = new Vector2(moveSpeed, myRB.velocity.y);
-            this.transform.rotation = new Quaternion(0f, 0f, this.transform.rotation.z, this.transform.rotation.w);
-        }
-
-        if (PlayerInput.IsPressingDown())
-        {
-            myRB.velocity = new Vector2(0, myRB.velocity.y);
-        }
-
-        if (isGrounded && PlayerInput.HasPressedJumpKey())
-        {
-            isJumping = true;
-            jumpTimeCountdown = jumpTime;
-            myRB.velocity = new Vector2(myRB.velocity.x, jumpSpeed);
-            SoundSystem.PlaySfx(sfx_jump, 2);
-        }
-
-        if (isJumping && PlayerInput.HasHeldJumpKey())
-        {
-            if (jumpTimeCountdown > 0)
+            myRB.velocity = new Vector2(0f, myRB.velocity.y);
+            if (PlayerInput.IsPressingLeft())
             {
+                myRB.velocity = new Vector2(-moveSpeed, myRB.velocity.y);
+                this.transform.rotation = new Quaternion(0f, 180f, this.transform.rotation.z, this.transform.rotation.w);
+            }
+            else if (PlayerInput.IsPressingRight())
+            {
+                myRB.velocity = new Vector2(moveSpeed, myRB.velocity.y);
+                this.transform.rotation = new Quaternion(0f, 0f, this.transform.rotation.z, this.transform.rotation.w);
+            }
+
+            if (PlayerInput.IsPressingDown())
+            {
+                myRB.velocity = new Vector2(0, myRB.velocity.y);
+            }
+
+            if (isGrounded && PlayerInput.HasPressedJumpKey())
+            {
+                isJumping = true;
+                jumpTimeCountdown = jumpTime;
                 myRB.velocity = new Vector2(myRB.velocity.x, jumpSpeed);
-                jumpTimeCountdown -= Time.deltaTime;
-                if (isHittingCeiling)
+                SoundSystem.PlaySfx(sfx_jump, 2);
+            }
+
+            if (isJumping && PlayerInput.HasHeldJumpKey())
+            {
+                if (jumpTimeCountdown > 0)
                 {
-                    jumpTimeCountdown = 0;
+                    myRB.velocity = new Vector2(myRB.velocity.x, jumpSpeed);
+                    jumpTimeCountdown -= Time.deltaTime;
+                    if (isHittingCeiling)
+                    {
+                        jumpTimeCountdown = 0;
+                    }
+                }
+                else
+                {
+                    isJumping = false;
                 }
             }
-            else
+
+
+            if (PlayerInput.HasReleasedJumpKey())
             {
                 isJumping = false;
             }
-        }
-
-
-        if (PlayerInput.HasReleasedJumpKey())
-        {
-            isJumping = false;
-        }
-        if(PlayerInput.IsPressingDown() && isGrounded)
-        {
-            //animatorController.SetBool("crouching", true);
-        }
-
-
-
-
-        /*if (PlayerInput.HasPressedJumpKey())
-        {
-            //Debug.Log("We pressed jump");
-            //Debug.Log("Grounded: " + isGrounded);
-            //Debug.Log("Bouncy Grounded: " + isOnBouncyGround);
-            if (isGrounded)
+            if (PlayerInput.IsPressingDown() && isGrounded)
             {
-            //jumpSFX.Play();
-            //myRB.AddForce(Vector2.up * jumpSpeed,ForceMode2D.Impulse);
-            //myRB.velocity = new Vector2(myRB.velocity.x, jumpSpeed);
-            //myRB.velocity = new Vector2(myRB.velocity.x, jumpSpeed);
-                jumpSpeed = originalJumpSpeed;
-                jumpTimeCountdown = jumpTime;
+                //animatorController.SetBool("crouching", true);
             }
-        }*/
-        /*if (PlayerInput.HasPressedAttackKey())
-        {
-            shotSFX.Play();
-            lookDirection = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
-            lookAngle = Mathf.Atan2(lookDirection.y, lookDirection.x) * Mathf.Rad2Deg;
-            firePosition.rotation = Quaternion.Euler(0f, 0f, lookAngle - 90f);
-            GameObject firedBullet = Instantiate(bullet, firePosition.position, firePosition.rotation);
-            firedBullet.GetComponent<Rigidbody2D>().velocity = firePosition.up * firingSpeed;
-
-            //do something
-        }*/
-
-        /*if (PlayerInput.HasPressedAbsorbPlacementKey() && essence == null && shootCooldownCounter <= 0f)
-        {
-            shotSFX.Play();
-            animatorController.SetTrigger("shoot");
-            lookDirection = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
-            lookAngle = Mathf.Atan2(lookDirection.y, lookDirection.x) * Mathf.Rad2Deg;
-            firePosition.rotation = Quaternion.Euler(0f, 0f, lookAngle - 90f);
-            GameObject firedBullet = Instantiate(bullet, firePosition.position, firePosition.rotation);
-            firedBullet.GetComponent<Rigidbody2D>().velocity = firePosition.up * firingSpeed;
-            shootCooldownCounter = shootCooldown;
-            //do something
-        }
-
-        if (PlayerInput.HasPressedAbsorbPlacementKey() && essence != null && shootCooldownCounter <= 0f)
-        {
-            shotSFX.Play();
-            animatorController.SetTrigger("shoot");
-            lookDirection = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
-            lookAngle = Mathf.Atan2(lookDirection.y, lookDirection.x) * Mathf.Rad2Deg;
-            firePosition.rotation = Quaternion.Euler(0f, 0f, lookAngle - 90f);
-            GameObject firedBullet = Instantiate(bullet, firePosition.position, firePosition.rotation);
-            firedBullet.GetComponent<Rigidbody2D>().velocity = firePosition.up * firingSpeed;
-            shootCooldownCounter = shootCooldown;
-            //do something
-        }*/
-
-        AttackInputs();
 
 
-        if (PlayerInput.HasPressedResetKey())
-        {
-            LevelManager.Instance.ResetToLastCheckPoint();
-        }
+            AttackInputs();
 
-        if (PlayerInput.HasPressedEscapeKey())
-        {
-            PauseMenu.Instance.ActivateMenu();
-        }
-
-            /*if (jumpTimeCountdown > 0f)
+            if (PlayerInput.HasPressedResetKey())
             {
-                jumpTimeCountdown -= Time.deltaTime;
-                //myRB.gravityScale = 0;
-                myRB.velocity = new Vector2(myRB.velocity.x, jumpSpeed);
-                animatorController.SetFloat("verticalVelocity", Mathf.Abs(myRB.velocity.y));
-            }*/
-        //}
+                LevelManager.Instance.ResetToLastCheckPoint();
+            }
 
-
-        // this snaps the player to be pixel perfect and not make a super janky camera
-        /*Vector2 playerPos = transform.position;
-        playerPos.x = (float)(System.Math.Round((double)playerPos.x * 16.0) / 16.0);
-        playerPos.y = (float)(System.Math.Round((double)playerPos.y * 16.0) / 16.0);
-        transform.position = playerPos;*/
-
-
-        //CameraController.CameraUpdate();
-
-
-        Animate();
+            if (PlayerInput.HasPressedEscapeKey())
+            {
+                PauseMenu.Instance.ActivateMenu();
+            }
+        }
+        Animate();   
     }
 
-    void FixedUpdate()
+
+        void FixedUpdate()
     {
         if (Time.time - hurtTimeStamp < invincibilityTime)
             animator.Ren.enabled = !animator.Ren.enabled;
         else
+        {
             animator.Ren.enabled = true;
+        }
+        if(Time.time - hurtTimeStamp >= invincibilityTime / invincibilityTimeFactor)
+        {
+            hitState = false;
+        }
     }
 
 
@@ -355,15 +293,15 @@ public class Player : MonoBehaviour
             {
                 animator.Play(AnimMode.Hang, consecutiveHits <= 1 ? "slash 1" : "slash 2");
             }
-            else if (!PhysicPaused && PlayerInput.IsPressingDown())
+            else if (!PhysicsPaused && PlayerInput.IsPressingDown())
             {
                 animator.Play(AnimMode.Looped, "duck");
             }
-            else if (!PhysicPaused && (PlayerInput.IsPressingLeft() || PlayerInput.IsPressingRight()))
+            else if (!PhysicsPaused && (PlayerInput.IsPressingLeft() || PlayerInput.IsPressingRight()))
             {
                 animator.Play(AnimMode.Looped, "run");
             }
-            else if (!PhysicPaused)
+            else if (!PhysicsPaused)
             {
                 animator.Play(AnimMode.Looped, "idle");
             }
@@ -401,11 +339,27 @@ public class Player : MonoBehaviour
         pausePhysicsCoroutine = StartCoroutine(PausePhysics(time));
     }
 
+    public void TakeKnockBack()
+    {
+        if (facingLeft)
+        {
+            myRB.velocity = new Vector2(-knockBackForce, myRB.velocity.y);
+        }
+        else
+        {
+            myRB.velocity = new Vector2(knockBackForce, myRB.velocity.y);
+        }
+    }
+
     public void TakeDamage()
     {
+        hitState = true;
+
         if (Time.time - hurtTimeStamp >= invincibilityTime)
-        {            
+        {
+            
             hurtTimeStamp = Time.time;
+            TakeKnockBack();
             SoundSystem.PlaySfx(sfx_hurt, 3);
             
             currentHealth--;
@@ -418,6 +372,18 @@ public class Player : MonoBehaviour
             }
             //animatorController.ResetTrigger("getHurt");
         }
+        /*if (Time.time - hurtTimeStamp >= invincibilityTime / invincibilityTimeFactor)
+        {
+            //myRB.velocity = new Vector2(0f, myRB.velocity.y);
+            if (facingLeft)
+            {
+                myRB.velocity = new Vector2(-knockBackForce, myRB.velocity.y);
+            }
+            else
+            {
+                myRB.velocity = new Vector2(knockBackForce, myRB.velocity.y);
+            }
+        }*/
     }
 
     private void AttackInputs()
@@ -428,7 +394,7 @@ public class Player : MonoBehaviour
 
         if (PlayerInput.HasPressedAttackKey())
         {
-            if (Time.time - hitTimeStamp >= hitCooldown && !PhysicPaused)
+            if (Time.time - hitTimeStamp >= hitCooldown && !PhysicsPaused)
             {
                 if (attackSequenceCoroutine != null)
                     StopCoroutine(attackSequenceCoroutine);
@@ -704,6 +670,7 @@ public class Player : MonoBehaviour
     {
         this.gameObject.transform.position = checkpoint;
         currentHealth = maxhealth;
+        Start();
         //animatorController.SetBool("playerDed", false);
     }
 
