@@ -51,7 +51,7 @@ public class Player : MonoBehaviour
     public float hitCooldown;   // should be less than hit time
     public float hitComboWindow;   // should be less than hit time
 
-    Coroutine hitCoroutine = null;
+
     
     private float hitTimeStamp = 0; // the time when the player attacked
     private float comboTimeStamp = 0; // the time when the player attacked
@@ -60,15 +60,17 @@ public class Player : MonoBehaviour
     public int maxhealth;
     private int currentHealth;
 
+    Coroutine hitCoroutine = null;
     Coroutine pausePhysicsCoroutine = null;
     Coroutine pauseInputMoveCoroutine = null;
-    Coroutine pauseInputAttackCoroutine = null;
+    Coroutine pauseInputAttackCoroutine = null;  
+    Coroutine attackSequenceCoroutine = null;
     public float deathTime;
 
 
     [HideInInspector]public SpriteAnimator animator;
 
-    private bool FacingRight => transform.rotation.y == 0;
+    public bool FacingRight => transform.rotation.y == 0;
 
 
 
@@ -111,8 +113,6 @@ public class Player : MonoBehaviour
 
     bool isGroundPounding = false;
 
-    Coroutine attackSequenceCoroutine = null;
-
     bool PhysicsPaused => myRB.constraints == RigidbodyConstraints2D.FreezeAll;
 
     float hurtTimeStamp = 0;
@@ -146,6 +146,16 @@ public class Player : MonoBehaviour
         radialAttackHitbox.SetActive(false);
         animator.PlayDefault();
         hurtTimeStamp = -invincibilityTime;
+
+        myRB.constraints = RigidbodyConstraints2D.FreezeRotation;
+
+        StopAllCoroutines();
+
+        hitCoroutine = null;
+        pausePhysicsCoroutine = null;
+        pauseInputMoveCoroutine = null;
+        pauseInputAttackCoroutine = null;  
+        attackSequenceCoroutine = null;
     }
 
     void Update()
@@ -160,8 +170,9 @@ public class Player : MonoBehaviour
         {
             if (isGroundPounding)   // if is falling fast
             {
-                CameraController.Instance.HorShake(3);          // shake screen
-                DoPhysicsPause(.2F);
+                CameraController.Instance.HorShake(4);          // shake screen
+                DoPhysicsPause(.4F);
+                DoInputAttackPause(.4F);
                 isGroundPounding = false;
             }
 
@@ -183,14 +194,12 @@ public class Player : MonoBehaviour
         }
         
         
-
         if (inputMovePaused)
         {
             if (spinAttackHitbox.activeSelf)
             {
                 myRB.velocity = new Vector2(FacingRight ? 3.0F : -3.0F, myRB.velocity.y);
             }
-
             if (rightAttackHitbox.activeSelf && isGrounded)
             {
                 if (Time.time - hitTimeStamp > .15F)
@@ -201,8 +210,9 @@ public class Player : MonoBehaviour
         }
         else
         {
-            
-            myRB.velocity = new Vector2(0, myRB.velocity.y);
+            if (!spinAttackHitbox.activeSelf)
+                myRB.velocity = new Vector2(0, myRB.velocity.y);
+
             if (PlayerInput.IsPressingLeft())
             {
                 myRB.velocity = new Vector2(-moveSpeed, myRB.velocity.y);
@@ -503,7 +513,6 @@ public class Player : MonoBehaviour
         {
             this.gameObject.transform.position = checkpoint;
         }
-
     }
 
     private void OnTriggerStay2D(Collider2D other)
@@ -518,15 +527,6 @@ public class Player : MonoBehaviour
         if (other.gameObject.GetComponent<Collider2D>().CompareTag("EnemyMelee"))
         {
             other.gameObject.GetComponent<Collider2D>().transform.parent.GetComponent<MeleeEnemy>().jumpBackwardsMode = true;
-            TakeDamage();
-            //also take knockback
-        }
-    }
-
-    private void OnCollisionEnter2D(Collision2D other)
-    {
-        if (other.gameObject.GetComponent<Collider2D>().CompareTag("Enemy"))
-        {
             TakeDamage();
             //also take knockback
         }
@@ -559,7 +559,7 @@ public class Player : MonoBehaviour
     {
         this.gameObject.transform.position = checkpoint;
         currentHealth = maxhealth;
-        //animatorController.SetBool("playerDed", false);
+        Start();
     }
 
     IEnumerator PausePhysics(float duration)
@@ -654,8 +654,9 @@ public class Player : MonoBehaviour
                 SoundSystem.PlaySfx(sfx_swordSounds[0], 4);   //play attack sfx
                 
                 myRB.velocity = Vector3.down * 38;
+                DoInputAttackPause(.5F);
                 isGroundPounding = true;
-                myRB.gravityScale = - 0; 
+                myRB.gravityScale = 0;
                 if (hitCoroutine != null)
                     StopCoroutine(hitCoroutine);
                 hitCoroutine = StartCoroutine(Hit(2));
@@ -712,8 +713,8 @@ public class Player : MonoBehaviour
                         break;
                     case 3: //do spin attack here and reset the other trigger here
                         SoundSystem.PlaySfx(sfx_swordSounds[3], 4);
-                        DoInputMovePause(.5F);
-                        DoInputAttackPause(.5F);
+                        DoInputMovePause(.33F);
+                        DoInputAttackPause(.66F);
                         if (hitCoroutine != null)
                             StopCoroutine(hitCoroutine);
                         hitCoroutine = StartCoroutine(Hit(3));

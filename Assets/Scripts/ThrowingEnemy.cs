@@ -5,7 +5,7 @@ using UnityEngine;
 public class ThrowingEnemy : MonoBehaviour
 {
     //[SerializeField] private Rigidbody2D rigidBody;      //enemy rigidBody
-    private GameObject playerTarget;    //player character
+    private Player playerTarget;    //player character
     [SerializeField] private GameObject waypoint01;      //first waypoint
     [SerializeField] private GameObject waypoint02;      //second waypoint
     //[SerializeField] private GameObject firingPosition;  //position that projectiles are created.
@@ -13,7 +13,6 @@ public class ThrowingEnemy : MonoBehaviour
     private GameObject currentWaypoint;
     public float speed;                 //enemy speed
     public float followDistance;              //required distance between player and enemy before enemy charges
-    public float enemyWidth;            //width of enemy, needed for when enemy turns around
     public int maxEnemyHealth;
     private int currentEnemyHealth;             //health of enemy unit
     private bool hitState = false;      //is the enemy's invincibility frames currently active
@@ -27,27 +26,32 @@ public class ThrowingEnemy : MonoBehaviour
 
     private float lastPlayerPosTime = 0;
 
+    Vector3 bounceDirection;
+
     //for bouncing back and forth
     private bool bounceRight;
-    public float bounceRightTime;
-    private float bounceRightTimeCountdown;
 
     SpriteRenderer ren;
 
-    public Vector2 directionMemory;
     public Transform projectileSpawnLocation;
 
     public EnemyRespawner mySpawner;
 
+    private Vector2 bounceMultiplier = Vector2.one;
+
+    private Rigidbody2D myRB;
+
+    bool primeToBounce = true;
+
     private void Awake()
     {
         bounceRight = false;
-        bounceRightTimeCountdown = bounceRightTime;
         currentEnemyHealth = maxEnemyHealth;
-        playerTarget = GameObject.FindWithTag("Player");
+        playerTarget = Player.Instance;
         //myRB = GetComponent<Rigidbody2D>();
         //CircleCollider2D = GetComponent<CircleCollider2D>();
         ren = GetComponentInChildren<SpriteRenderer>();
+        myRB = GetComponent<Rigidbody2D>();
     }
 
     void Start()
@@ -55,104 +59,39 @@ public class ThrowingEnemy : MonoBehaviour
         currentWaypoint = waypoint01;   //set the first waypoint.
         hitState = false;
         currentEnemyHealth = maxEnemyHealth;
-        
+        bounceMultiplier = Vector2.one;     
+        bounceDirection = Vector2.zero;
+        myRB.velocity = Vector2.zero;
+        primeToBounce = true;
+        StopAllCoroutines();
     }
 
     void Update()
     {
-        //isDetectingPlayer = CircleCollider2D.IsDetectingThePlayer(this.transform.position, this.transform.localScale.x, distance);
-        bool waypointMode = Vector2.Distance(transform.position, playerTarget.transform.position) > followDistance;
-        float speedMod = waypointMode ? speed : speed * 2;
+        Vector3 enemyDirection = transform.localScale;
 
-        //Vector3 playerVector = (Vector2)playerTarget.transform.position;
-        //directionMemory.x = (playerVector.x - transform.position.x);
-
-        if (waypointMode)
+        if (transform.position.x < playerTarget.transform.position.x)
         {
-            if (Vector2.Distance(transform.position, currentWaypoint.transform.position) > 1f)
-            {
-                Vector3 directionOfTravel = currentWaypoint.transform.position - transform.position;
-                directionOfTravel.Normalize();
-
-                Vector3 enemyDirection = transform.localScale;
-
-                if (transform.position.x < currentWaypoint.transform.position.x)
-                {
-                    enemyDirection.x = -enemyWidth;
-                }
-
-                else if (transform.position.x > currentWaypoint.transform.position.x)
-                {
-                    enemyDirection.x = enemyWidth;
-                }
-
-                transform.localScale = enemyDirection;
-                Motion(directionOfTravel, speedMod);
-
-            }
-            else
-            {
-                if (currentWaypoint == waypoint01) currentWaypoint = waypoint02;
-                else currentWaypoint = waypoint01;
-            }
-        }
-        else
-        {
-            bounceRightTimeCountdown -= Time.deltaTime;
-            if(bounceRightTimeCountdown <= 0)
-            {
-                bounceRight = !bounceRight;
-                bounceRightTimeCountdown = bounceRightTime;
-            }
-            Vector3 enemyDirection = transform.localScale;
-
-            if (transform.position.x < playerTarget.transform.position.x)
-            {
-                enemyDirection.x = -enemyWidth;
-            }
-
-            else if (transform.position.x > playerTarget.transform.position.x)
-            {
-                enemyDirection.x = enemyWidth;
-            }
-            transform.localScale = enemyDirection;
-
-            Vector3 direction;
-            
-            if (bounceRight)
-            {
-                direction = Vector3.up + Vector3.right;
-            }
-            else
-            {
-                direction = Vector3.up + Vector3.left;
-            }
-            Motion(direction, 0.5f * speedMod);
-
+            enemyDirection.x = -1.0F;
         }
 
-        //this.transform.position += Vector3.up * Game.PingPong(Game.gameTime * 7F) * Game.PIXEL / 4.0f * 800F * Time.deltaTime;
-
-
-
-        //otherwise, switch waypoints.
-
-
-        //if the player is close enough, shoot a projectile.
-        //if ((Vector2.Distance(transform.position, playerTarget.transform.position) < shootDistance) && (!isShooting))
-
-        //if ( (playerTarget.transform.position.x == this.transform.position.x)
-        if (!waypointMode && (!isShooting))
+        else if (transform.position.x > playerTarget.transform.position.x)
         {
-            //Debug.Log("Player x: " + playerTarget.transform.position.x);
-            //Debug.Log("Enemy x: " + transform.position.x);
-            //Debug.Log("WE REACHED SHOOTING");
+            enemyDirection.x = 1.0F;
+        }
+        transform.localScale = enemyDirection;
+
+        if (!hitState)
+            Motion(bounceDirection);
+
+        if (!isShooting)
+        {
             StartCoroutine(ShootProjectile());
         }
 
     }
 
-    public void Motion(Vector3 directionOfTravel, float speed)
+    public void Motion(Vector3 directionOfTravel, float speed = 1)
     {
         this.transform.Translate(
             directionOfTravel.x * speed * Time.deltaTime,
@@ -166,6 +105,11 @@ public class ThrowingEnemy : MonoBehaviour
         {
             TakeDamage();
         }
+
+        if (other.CompareTag("PlayerTarget") && !hitState)
+        {
+            Player.Instance.TakeDamage();
+        }
     }
 
     private void OnTriggerStay2D(Collider2D other)
@@ -174,6 +118,43 @@ public class ThrowingEnemy : MonoBehaviour
         {
             TakeDamage();
         }
+
+        if (other.CompareTag("PlayerTarget") && !hitState)
+        {
+            Player.Instance.TakeDamage();
+        }
+    }
+
+    void OnCollisionEnter2D(Collision2D other)
+    {
+        if (other.collider.CompareTag("Ground") && other.GetContact(0).normal.y > 0)
+        {
+            Bounce();            
+            primeToBounce = false;
+        }
+    }
+
+    void OnCollisionStay2D(Collision2D other)
+    {
+        if (primeToBounce && other.collider.CompareTag("Ground") && other.GetContact(0).normal.y > 0)
+        {
+            Bounce();
+            primeToBounce = false;
+        }
+    }
+
+    private void Bounce()
+    {                    
+        bounceRight = !bounceRight;
+        if (Random.value > .75F)
+            bounceMultiplier.x = 2.0F;
+        else
+            bounceMultiplier.x = 1.0F;
+
+        bounceMultiplier.y = 1.0F;
+
+        bounceDirection = (bounceRight ? Vector3.right : Vector3.left) * 2 * bounceMultiplier.x;
+        myRB.velocity = Vector3.up * 3 * bounceMultiplier.y;
     }
 
     private IEnumerator ShootProjectile()
@@ -190,21 +171,16 @@ public class ThrowingEnemy : MonoBehaviour
             vectorToTarget = (2 * Vector3.up) + Vector3.left;
 
         }
-        //float angle = Mathf.Atan2(vectorToTarget.x, vectorToTarget.y) * Mathf.Rad2Deg;
-        //Quaternion rot = Quaternion.AngleAxis(-angle + 135.0f, Vector3.forward);
-        //GameObject projectileGO = Instantiate(projectilePrefab, transform.position, rot) as GameObject;
         GameObject projectileGO = Instantiate(projectilePrefab, projectileSpawnLocation.position, Quaternion.identity) as GameObject;
         projectileGO.GetComponent<Projectile>().SetDirectionAndVelocity(vectorToTarget * 1.5F);
 
 
         //set is shooting to true so that the enemy doesn't shoot again, until coroutine is finished.
         isShooting = true;
-        //flyingAnim.SetTrigger("FlyingAttack");
 
         yield return new WaitForSeconds(fireRate);
 
         isShooting = false;
-        //flyingAnim.ResetTrigger("FlyingAttack");
 
     }
 
@@ -223,21 +199,21 @@ public class ThrowingEnemy : MonoBehaviour
         {
             currentEnemyHealth--;
 
-            if (currentEnemyHealth == 0) { StartCoroutine(DeathState()); } //subject to change.
-            StartCoroutine(HitState());
+            if (currentEnemyHealth == 0) 
+                StartCoroutine(DeathState()); //subject to change.
+            else
+                StartCoroutine(HitState());
         }
 
     }
 
     private IEnumerator DeathState()
     {
-        //flyingAnim.SetTrigger("Death");
         yield return new WaitForSeconds(0.5f);
-        //flyingAnim.ResetTrigger("Death");
-        //Destroy(this.gameObject);
         ResetEnemyHealth();
         mySpawner.IsReadyToSpawn(true);
         gameObject.SetActive(false);
+        Start();
     }
 
     public void ResetEnemyHealth()
@@ -248,8 +224,13 @@ public class ThrowingEnemy : MonoBehaviour
     private IEnumerator HitState()
     {
         hitState = true;
+        float xDir = playerTarget.FacingRight ? 1 : -1;
+        myRB.velocity = xDir * Vector2.right * 5 + Vector2.up * 2;
+        bounceDirection.x = xDir;
 
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.5f);
+        primeToBounce = true;
+        myRB.velocity = Vector2.zero;
 
         hitState = false;
     }
