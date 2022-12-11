@@ -88,16 +88,18 @@ public class CameraController : MonoBehaviour
     IEnumerator ShakeSide(int pixels)
     {
         CalcMovePos();
+
+        Transform playerSprite = Player.Instance.animator.Ren.transform;
         
-        Vector3 playerRootPos = Player.Instance.transform.position;
+        Vector3 playerRootPos = playerSprite.localPosition;
         Vector3 camRootPos = (Vector3)moveTo + Vector3.back * 10;;
 
         for (int i = pixels; i > 0; i--)
         {
             yield return new WaitForFixedUpdate();
             Vector3 rightMove = Vector3.right * i * (i % 2 == 0 ? 1 : -1) * Game.PIXEL;
-            Player.Instance.transform.position = playerRootPos;
-            Player.Instance.transform.position += rightMove;
+            playerSprite.localPosition = playerRootPos;
+            playerSprite.localPosition += rightMove;
             moveTo = camRootPos;
             moveTo += (Vector2) rightMove;
             transform.position = (Vector3)moveTo + Vector3.back * 10;
@@ -107,7 +109,7 @@ public class CameraController : MonoBehaviour
         yield return new WaitForFixedUpdate();
 
         CalcMovePos();
-        Player.Instance.transform.position = playerRootPos;
+        playerSprite.localPosition = playerRootPos;
 
         shakeCoroutine = null;
         yield break;

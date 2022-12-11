@@ -13,14 +13,6 @@ public class HiddenEntrance : MonoBehaviour
     private float delayTimeCountdown;
     public bool canBeHitByPlayer;
 
-
-    //randomization of list
-    /*public void HandleReveal()
-    {
-        StartCoroutine(Explosion());
-        //gameObject.SetActive(false);
-    }*/
-
     private void Start()
     {
         //adjacentHiddenEntrances
@@ -69,11 +61,7 @@ public class HiddenEntrance : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        /*if (other.CompareTag("ChainReaction"))
-        {
-            //Debug.Log("we in");
-            other.gameObject.transform.parent.gameObject.GetComponent<HiddenEntrance>().HandleReveal();
-        }*/
+        
 
         if (other.CompareTag("PlayerAttack") && canBeHitByPlayer)
         {
@@ -84,11 +72,6 @@ public class HiddenEntrance : MonoBehaviour
     }
     private void OnTriggerStay2D(Collider2D other)
     {
-        /*if (other.CompareTag("ChainReaction"))
-        {
-            //Debug.Log("we in");
-            other.gameObject.transform.parent.gameObject.GetComponent<HiddenEntrance>().HandleReveal();
-        }*/
         if (other.CompareTag("PlayerAttack") && canBeHitByPlayer)
         {
             HandleExplosion();
@@ -98,26 +81,12 @@ public class HiddenEntrance : MonoBehaviour
 
     private IEnumerator Explosion()
     {
-        //explosionRadius.SetActive(true);
-        /*RaycastHit hit;
-        
-        Vector3 p1 = transform.position;
-        
-
-        // Cast a sphere wrapping character controller 10 meters forward
-        // to see if it is about to hit anything.
-        if (Physics.SphereCast(p1, 1, transform.forward, out hit, 8))
-        {
-            Debug.Log("WE in here" + hit.collider.tag);
-            if (hit.collider.CompareTag("ChainReaction"))
-            {
-                hit.collider.gameObject.GetComponent<HiddenEntrance>().HandleReveal();
-            }
-        }*/
 
         yield return new WaitForSeconds(waitTime);   //wait the established amount of seconds.
 
         this.gameObject.SetActive(false);
+        Instantiate<GameObject>(Resources.Load<GameObject>("Prefabs/FX-explosion")).transform.position = transform.position;
+        CameraController.Instance.HorShake(1);
 
         yield break;
     }

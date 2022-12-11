@@ -215,7 +215,7 @@ public class Player : MonoBehaviour
             }
             else
             {
-                //SnapToPixel();
+                SnapToPixel();
             }
 
             if (PlayerInput.IsPressingDown())
@@ -388,10 +388,7 @@ public class Player : MonoBehaviour
             {
                 //for now this is death
                 StartCoroutine(Die());
-
-                //ResetToLastCheckPoint();
             }
-            //animatorController.ResetTrigger("getHurt");
         }
     }
 
@@ -573,14 +570,17 @@ public class Player : MonoBehaviour
         myRB.constraints = RigidbodyConstraints2D.FreezeRotation;
         pausePhysicsCoroutine = null;
         myRB.velocity = velocity;
+        SnapToPixel();
         yield break;
     }
 
     IEnumerator PauseInputMove(float duration)
     {
         inputMovePaused = true;
+        myRB.velocity = Vector2.zero;
         yield return new WaitForSeconds(duration);
         inputMovePaused = false;
+        SnapToPixel();
         yield break;
     }
 
@@ -589,6 +589,7 @@ public class Player : MonoBehaviour
         inputAttackPaused = true;
         yield return new WaitForSeconds(duration);
         inputAttackPaused = false;
+        SnapToPixel();
         yield break;
     }
 
@@ -666,6 +667,7 @@ public class Player : MonoBehaviour
             {
                 SoundSystem.PlaySfx(sfx_swordSounds[0], 4);   //play attack sfx
                 DoPhysicsPause(.12F);
+                DoInputMovePause(.3F);
                 hitTimeStamp = Time.time;
             }
             else
