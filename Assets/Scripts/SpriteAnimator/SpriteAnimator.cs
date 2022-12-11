@@ -8,7 +8,6 @@ public class SpriteAnimator : MonoBehaviour
     public bool autoAnim = false;
     public SpriteAnimation[] animations = new SpriteAnimation[0];
     public string defaultAnimation = "default";
-    public Vector2Int defaultCelSize = Vector2Int.one * 16;
     public Dictionary<string, SpriteAnimation> data = new Dictionary<string, SpriteAnimation>();
     
     [HideInInspector]public int indexOffset = 0;
@@ -47,7 +46,7 @@ public class SpriteAnimator : MonoBehaviour
 
         foreach (SpriteAnimation data in animations)
         {
-            Vector2Int cel = data.celSize == Vector2Int.zero ? defaultCelSize : data.celSize;
+            Vector2Int cel = data.celSize;
             int count = data.sheet.width / cel.x;
             int start = 0;
             if (data.endFrame >= 0 && data.endFrame >= data.startFrame && data.endFrame < count)

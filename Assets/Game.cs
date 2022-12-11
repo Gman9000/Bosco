@@ -6,6 +6,9 @@ public class Game : MonoBehaviour
 {
     public const float PIXEL = 1.0F / 16.0F;
     public static float gameTime = 0.0F;    // the time counter used for game logic and custom movement functions
+    public static int litCandlesCount = 0;
+
+    public static int lives = 3;
     void Update()
     {
         gameTime += Time.deltaTime;

@@ -21,6 +21,8 @@ public class Candle : MonoBehaviour
     }
     public void LightUpCandle()
     {
+        if (isLit)  return;
+        Game.litCandlesCount++;
         isLit = true;
         if (flameObj)
             flameObj.SetActive(true);

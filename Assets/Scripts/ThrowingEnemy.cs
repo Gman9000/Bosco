@@ -225,8 +225,6 @@ public class ThrowingEnemy : MonoBehaviour
 
             if (currentEnemyHealth == 0) { StartCoroutine(DeathState()); } //subject to change.
             StartCoroutine(HitState());
-
-            Debug.Log("the hrealth yist yhsrty xd y" + currentEnemyHealth);
         }
 
     }
@@ -251,7 +249,7 @@ public class ThrowingEnemy : MonoBehaviour
     {
         hitState = true;
 
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(0.1f);
 
         hitState = false;
     }

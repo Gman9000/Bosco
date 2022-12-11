@@ -5,46 +5,34 @@ using UnityEngine;
 public class CandleHandler : MonoBehaviour
 {
     public Candle[] candles;
-    private int numberOfLitCandles;
-    // Start is called before the first frame update
 
-    Animator animator;
+    SpriteAnimator animator;
 
     private bool canUseDoor = false;
 
     void Awake()
     {
-        animator = GetComponentInChildren<Animator>();
-        animator.speed = 0;
+        animator = GetComponentInChildren<SpriteAnimator>();
     }
 
-    void Update()
+    void FixedUpdate()
     {
-        if (animator.speed > 0 && animator.GetCurrentAnimatorStateInfo(0).IsName("DoorOpen"))
+        if (animator.CurrentAnim == "open" && !animator.AtEnd)
         {
             CameraController.Instance.HorShake(1);
+            Player.Instance.DoPhysicsPause(.5F);
+            Player.Instance.DoInputMovePause(.5F);
+            Player.Instance.DoInputAttackPause(.5F);
+            Player.Instance.animator.PlayDefault();
         }
     }
 
     private void CandleCheck()
     {
-        foreach (Candle candle in candles)
+        if(Game.litCandlesCount == candles.Length)
         {
-            if (candle.HasBeenLit())
-            {
-                numberOfLitCandles++;
-            }
-        }
-        if(numberOfLitCandles == candles.Length)
-        {
-            //this.gameObject.SetActive(false);
-
-            animator.speed = .25F;
             canUseDoor = true;
-        }
-        else
-        {
-            numberOfLitCandles = 0;
+            animator.Play(AnimMode.Hang, "open");
         }
     }
     private void OnTriggerEnter2D(Collider2D other)
@@ -52,6 +40,7 @@ public class CandleHandler : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             CandleCheck();
+            animator.Play(AnimMode.Hang, "open");
         }
     }
 
