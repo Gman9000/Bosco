@@ -140,6 +140,7 @@ GameObject:
   - component: {fileID: 4140285411552809948}
   - component: {fileID: 4140285411552809949}
   - component: {fileID: 4140285411552809945}
+  - component: {fileID: 5834388622870113481}
   m_Layer: 0
   m_Name: Throwing Enemy Character
   m_TagString: Enemy
@@ -277,13 +278,10 @@ MonoBehaviour:
   projectilePrefab: {fileID: 735789301461741650, guid: fde6966a8373a5b4aa5593adba6a71b4, type: 3}
   speed: 2.5
   followDistance: 5
-  enemyWidth: 1
   maxEnemyHealth: 1
   fireRate: 2
   flyingAnim: {fileID: 4140285411552809945}
   deathTimer: 0
-  bounceRightTime: 0.5
-  directionMemory: {x: 0, y: 0}
   projectileSpawnLocation: {fileID: 4140285412478915679}
   mySpawner: {fileID: 4140285411251426401}
 --- !u!95 &4140285411552809945
@@ -305,6 +303,19 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &5834388622870113481
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4140285411552809939}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb07c9d33c84fa643a0ec9c1227b5b62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tilevalue: 2
 --- !u!1 &4140285411814196310
 GameObject:
   m_ObjectHideFlags: 0

@@ -93,6 +93,7 @@ GameObject:
   - component: {fileID: 3131427757609467278}
   - component: {fileID: 3131427757609467279}
   - component: {fileID: 3131427757609467280}
+  - component: {fileID: -3796795271168176155}
   m_Layer: 0
   m_Name: FX-Explosion
   m_TagString: Untagged
@@ -131,9 +132,9 @@ MonoBehaviour:
   animations:
   - name: default
     sheet: {fileID: 2800000, guid: 1c14a593de4eab84295942b33e38cedd, type: 3}
-    delay: 0.02
+    delay: 0.03
     startFrame: 0
-    endFrame: 2
+    endFrame: -1
     offset: {x: 0, y: 0}
     celSize: {x: 16, y: 16}
   defaultAnimation: default
@@ -150,3 +151,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ce0f561c3f3cae41aa99f70da5aae85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &-3796795271168176155
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3131427757609467281}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb07c9d33c84fa643a0ec9c1227b5b62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tilevalue: 2

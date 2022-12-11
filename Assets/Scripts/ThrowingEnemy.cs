@@ -48,8 +48,6 @@ public class ThrowingEnemy : MonoBehaviour
         bounceRight = false;
         currentEnemyHealth = maxEnemyHealth;
         playerTarget = Player.Instance;
-        //myRB = GetComponent<Rigidbody2D>();
-        //CircleCollider2D = GetComponent<CircleCollider2D>();
         ren = GetComponentInChildren<SpriteRenderer>();
         myRB = GetComponent<Rigidbody2D>();
     }
@@ -161,7 +159,6 @@ public class ThrowingEnemy : MonoBehaviour
     {
         Vector3 vectorToTarget;
         //acquire the player's current position and rotate towards it, then instantiate a bullet prefab with said rotation.
-        //Vector3 vectorToTarget = (playerTarget.transform.position - transform.position).normalized;
         if (playerTarget.transform.position.x > transform.position.x)
         {
             vectorToTarget = (2 * Vector3.up) + Vector3.right;

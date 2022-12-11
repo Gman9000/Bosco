@@ -78,7 +78,7 @@ public class LevelManager : MonoBehaviour
         gameStarted = false;
         mainLevelUI.SetActive(false);
         mainLevelUI.SetActive(false);
-        PauseMenu.Instance.turnOffPauseUI();
+        Game.Unpause();
         yield return null;
 
     }

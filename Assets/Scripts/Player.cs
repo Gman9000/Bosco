@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    static public bool isHurting => Time.time - Instance.hurtTimeStamp < Instance.invincibilityTime;
     static public int Hp => Instance.currentHealth;
     public AudioClip[] sfx_swordSounds;
     public AudioClip sfx_jump;
@@ -170,7 +171,7 @@ public class Player : MonoBehaviour
         {
             if (isGroundPounding)   // if is falling fast
             {
-                CameraController.Instance.HorShake(4);          // shake screen
+                CameraController.Instance.VertShake(4);          // shake screen
                 DoPhysicsPause(.4F);
                 DoInputAttackPause(.4F);
                 isGroundPounding = false;
@@ -188,8 +189,8 @@ public class Player : MonoBehaviour
             if (!wasGrounded)
             {
                 upAttackHitbox.SetActive(false);
-                myRB.velocity = new Vector2(myRB.velocity.x, 0);
-                SnapToPixel();
+                myRB.velocity = new Vector2(myRB.velocity.x, 0);   
+                SnapToPixel();             
             }
         }
         
@@ -276,7 +277,10 @@ public class Player : MonoBehaviour
 
         if (PlayerInput.HasPressedEscapeKey())
         {
-            PauseMenu.Instance.ActivateMenu();
+            if (Game.isPaused)
+                Game.Unpause();
+            else
+                Game.Pause();
         }
 
 
@@ -287,7 +291,7 @@ public class Player : MonoBehaviour
     {
         Vector3 pos = transform.position;
         pos.x = Mathf.Round(pos.x / Game.PIXEL) * Game.PIXEL;
-        pos.y = Mathf.Round(pos.y / Game.PIXEL) * Game.PIXEL;
+        pos.y = Mathf.Floor(pos.y / Game.PIXEL) * Game.PIXEL;
         transform.position = pos;
     }
 
@@ -302,7 +306,24 @@ public class Player : MonoBehaviour
             animator.Ren.enabled = true;
         }
 
-        HUD.Instance.Flash(animator.Ren.enabled);
+        if (HUD.Instance)
+            HUD.Instance.Flash(animator.Ren.enabled, "Main Text Layer", "BG");
+    }
+
+    void OnCollisionEnter2D(Collision2D other)
+    {
+        if (other.collider.CompareTag("Hidden") && other.contacts[0].normal.y > 0)
+        {
+            Vector3 pos = transform.position;
+            pos.y = other.collider.bounds.max.y + boxCollider2D.bounds.size.y / 2.0F;
+            transform.position = pos;
+        }
+
+        if (other.collider.CompareTag("Hidden") || other.collider.CompareTag("Ground")) 
+        {
+            SnapToPixel();
+        }
+            
     }
 
 
@@ -505,10 +526,6 @@ public class Player : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Ground") || other.CompareTag("Hidden"))
-        {
-            //checkpoint = new Vector2(other.gameObject.transform.position.x, other.gameObject.transform.position.y + 1);
-        }
         if (other.CompareTag("Reset"))
         {
             this.gameObject.transform.position = checkpoint;
@@ -532,13 +549,6 @@ public class Player : MonoBehaviour
         }
     }
 
-    /*private void OnTriggerStay2D(Collider2D other)
-    {
-        if (other.CompareTag("Squit"))
-        {
-            this.gameObject.transform.position = other.GetComponent<SquitController>().topRightVertexEscape.position + escapeOffset;
-        }
-    }*/
     private IEnumerator Die()
     {
         //animatorController.SetBool("playerDed", true);

@@ -133,7 +133,7 @@ GameObject:
   m_Component:
   - component: {fileID: 211314}
   - component: {fileID: 211315}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -180,7 +180,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9812583}
   - component: {fileID: 9812584}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -227,7 +227,7 @@ GameObject:
   m_Component:
   - component: {fileID: 15796251}
   - component: {fileID: 15796252}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -276,9 +276,9 @@ GameObject:
   - component: {fileID: 16451774}
   - component: {fileID: 16451773}
   - component: {fileID: 16451772}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (94)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -524,7 +524,7 @@ GameObject:
   m_Component:
   - component: {fileID: 34714539}
   - component: {fileID: 34714540}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -604,9 +604,9 @@ GameObject:
   - component: {fileID: 54120437}
   - component: {fileID: 54120436}
   - component: {fileID: 54120435}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (57)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -750,7 +750,7 @@ GameObject:
   m_Component:
   - component: {fileID: 60628570}
   - component: {fileID: 60628571}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -799,9 +799,9 @@ GameObject:
   - component: {fileID: 63204609}
   - component: {fileID: 63204608}
   - component: {fileID: 63204607}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (73)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -924,7 +924,7 @@ GameObject:
   m_Component:
   - component: {fileID: 70842653}
   - component: {fileID: 70842654}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -1081,7 +1081,8 @@ GameObject:
   - component: {fileID: 78825939}
   - component: {fileID: 78825938}
   - component: {fileID: 78825937}
-  m_Layer: 6
+  - component: {fileID: 78825940}
+  m_Layer: 13
   m_Name: landmine-hard_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1172,6 +1173,19 @@ Transform:
   m_Father: {fileID: 409266990}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &78825940
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 78825936}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb07c9d33c84fa643a0ec9c1227b5b62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tilevalue: 1
 --- !u!1 &117108082
 GameObject:
   m_ObjectHideFlags: 0
@@ -1182,7 +1196,7 @@ GameObject:
   m_Component:
   - component: {fileID: 117108083}
   - component: {fileID: 117108084}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -1276,9 +1290,9 @@ GameObject:
   - component: {fileID: 145723558}
   - component: {fileID: 145723557}
   - component: {fileID: 145723555}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (16)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1403,9 +1417,9 @@ GameObject:
   - component: {fileID: 151544548}
   - component: {fileID: 151544547}
   - component: {fileID: 151544545}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (27)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1530,9 +1544,9 @@ GameObject:
   - component: {fileID: 151586724}
   - component: {fileID: 151586723}
   - component: {fileID: 151586722}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (68)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1657,9 +1671,9 @@ GameObject:
   - component: {fileID: 158960178}
   - component: {fileID: 158960177}
   - component: {fileID: 158960176}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (113)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1812,7 +1826,7 @@ GameObject:
   m_Component:
   - component: {fileID: 181382514}
   - component: {fileID: 181382515}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -1859,7 +1873,7 @@ GameObject:
   m_Component:
   - component: {fileID: 182374266}
   - component: {fileID: 182374267}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -1908,9 +1922,9 @@ GameObject:
   - component: {fileID: 185164214}
   - component: {fileID: 185164213}
   - component: {fileID: 185164211}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (21)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2264,7 +2278,7 @@ GameObject:
   m_Component:
   - component: {fileID: 192783684}
   - component: {fileID: 192783685}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -2313,9 +2327,9 @@ GameObject:
   - component: {fileID: 196934409}
   - component: {fileID: 196934408}
   - component: {fileID: 196934406}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (46)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2440,9 +2454,9 @@ GameObject:
   - component: {fileID: 201335232}
   - component: {fileID: 201335231}
   - component: {fileID: 201335230}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (103)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2565,7 +2579,7 @@ GameObject:
   m_Component:
   - component: {fileID: 202064719}
   - component: {fileID: 202064720}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -2681,9 +2695,9 @@ GameObject:
   - component: {fileID: 233291448}
   - component: {fileID: 233291447}
   - component: {fileID: 233291446}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (62)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2917,9 +2931,9 @@ GameObject:
   - component: {fileID: 243283866}
   - component: {fileID: 243283865}
   - component: {fileID: 243283863}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (40)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3042,7 +3056,7 @@ GameObject:
   m_Component:
   - component: {fileID: 243502998}
   - component: {fileID: 243502999}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -3089,7 +3103,7 @@ GameObject:
   m_Component:
   - component: {fileID: 254130840}
   - component: {fileID: 254130841}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -3138,9 +3152,9 @@ GameObject:
   - component: {fileID: 259639912}
   - component: {fileID: 259639911}
   - component: {fileID: 259639910}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (81)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3263,7 +3277,7 @@ GameObject:
   m_Component:
   - component: {fileID: 266260174}
   - component: {fileID: 266260175}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -3414,9 +3428,9 @@ GameObject:
   - component: {fileID: 285893779}
   - component: {fileID: 285893778}
   - component: {fileID: 285893776}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (25)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3539,7 +3553,7 @@ GameObject:
   m_Component:
   - component: {fileID: 287255319}
   - component: {fileID: 287255320}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -3588,9 +3602,9 @@ GameObject:
   - component: {fileID: 293239186}
   - component: {fileID: 293239185}
   - component: {fileID: 293239184}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (54)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3715,9 +3729,9 @@ GameObject:
   - component: {fileID: 293450946}
   - component: {fileID: 293450945}
   - component: {fileID: 293450944}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: HiddenEntrance (6)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4224,7 +4238,7 @@ GameObject:
   m_Component:
   - component: {fileID: 323681027}
   - component: {fileID: 323681028}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -4273,7 +4287,7 @@ GameObject:
   - component: {fileID: 328943295}
   - component: {fileID: 328943294}
   - component: {fileID: 328943293}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Backup Entrance
   m_TagString: Hidden
   m_Icon: {fileID: 0}
@@ -4371,9 +4385,9 @@ GameObject:
   - component: {fileID: 335236252}
   - component: {fileID: 335236251}
   - component: {fileID: 335236249}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (7)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4498,9 +4512,9 @@ GameObject:
   - component: {fileID: 337961632}
   - component: {fileID: 337961631}
   - component: {fileID: 337961629}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (41)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4623,7 +4637,7 @@ GameObject:
   m_Component:
   - component: {fileID: 338129093}
   - component: {fileID: 338129094}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -4672,9 +4686,9 @@ GameObject:
   - component: {fileID: 340887305}
   - component: {fileID: 340887304}
   - component: {fileID: 340887302}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: HiddenEntrance
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4797,7 +4811,7 @@ GameObject:
   m_Component:
   - component: {fileID: 343738362}
   - component: {fileID: 343738363}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -4844,7 +4858,7 @@ GameObject:
   m_Component:
   - component: {fileID: 352746250}
   - component: {fileID: 352746251}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -4893,9 +4907,9 @@ GameObject:
   - component: {fileID: 355366314}
   - component: {fileID: 355366313}
   - component: {fileID: 355366311}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: HiddenEntrance (2)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5143,9 +5157,9 @@ GameObject:
   - component: {fileID: 358780823}
   - component: {fileID: 358780822}
   - component: {fileID: 358780821}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (85)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5268,7 +5282,7 @@ GameObject:
   m_Component:
   - component: {fileID: 372885311}
   - component: {fileID: 372885312}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -5315,7 +5329,7 @@ GameObject:
   m_Component:
   - component: {fileID: 381962671}
   - component: {fileID: 381962672}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -5362,7 +5376,7 @@ GameObject:
   m_Component:
   - component: {fileID: 382044370}
   - component: {fileID: 382044371}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -5412,9 +5426,9 @@ GameObject:
   - component: {fileID: 402056494}
   - component: {fileID: 402056493}
   - component: {fileID: 402056492}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (54)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5560,9 +5574,9 @@ GameObject:
   - component: {fileID: 408476874}
   - component: {fileID: 408476873}
   - component: {fileID: 408476872}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (69)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5688,9 +5702,9 @@ GameObject:
   - component: {fileID: 409266988}
   - component: {fileID: 409266987}
   - component: {fileID: 409266986}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: TriggeringHiddenEntrance (4)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6033,7 +6047,7 @@ GameObject:
   m_Component:
   - component: {fileID: 434033661}
   - component: {fileID: 434033662}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -6082,9 +6096,9 @@ GameObject:
   - component: {fileID: 438045920}
   - component: {fileID: 438045919}
   - component: {fileID: 438045918}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (108)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6209,9 +6223,9 @@ GameObject:
   - component: {fileID: 449337302}
   - component: {fileID: 449337301}
   - component: {fileID: 449337300}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (90)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6336,9 +6350,9 @@ GameObject:
   - component: {fileID: 453004422}
   - component: {fileID: 453004421}
   - component: {fileID: 453004420}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (77)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6461,7 +6475,7 @@ GameObject:
   m_Component:
   - component: {fileID: 457861560}
   - component: {fileID: 457861561}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -6508,7 +6522,7 @@ GameObject:
   m_Component:
   - component: {fileID: 460406416}
   - component: {fileID: 460406417}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -6555,7 +6569,7 @@ GameObject:
   m_Component:
   - component: {fileID: 473047758}
   - component: {fileID: 473047759}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -6604,9 +6618,9 @@ GameObject:
   - component: {fileID: 474676081}
   - component: {fileID: 474676080}
   - component: {fileID: 474676078}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (18)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6731,9 +6745,9 @@ GameObject:
   - component: {fileID: 476151519}
   - component: {fileID: 476151518}
   - component: {fileID: 476151517}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: HiddenEntrance (5)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6967,9 +6981,9 @@ GameObject:
   - component: {fileID: 481873607}
   - component: {fileID: 481873606}
   - component: {fileID: 481873605}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (52)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7092,7 +7106,7 @@ GameObject:
   m_Component:
   - component: {fileID: 485385276}
   - component: {fileID: 485385277}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -7139,7 +7153,7 @@ GameObject:
   m_Component:
   - component: {fileID: 494058993}
   - component: {fileID: 494058994}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -7186,7 +7200,7 @@ GameObject:
   m_Component:
   - component: {fileID: 495076867}
   - component: {fileID: 495076868}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -7233,7 +7247,7 @@ GameObject:
   m_Component:
   - component: {fileID: 508779333}
   - component: {fileID: 508779334}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -7282,9 +7296,9 @@ GameObject:
   - component: {fileID: 517178951}
   - component: {fileID: 517178950}
   - component: {fileID: 517178949}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (95)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7407,7 +7421,7 @@ GameObject:
   m_Component:
   - component: {fileID: 518761601}
   - component: {fileID: 518761602}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -7456,9 +7470,9 @@ GameObject:
   - component: {fileID: 531647060}
   - component: {fileID: 531647059}
   - component: {fileID: 531647058}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (78)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7690,7 +7704,7 @@ GameObject:
   m_Component:
   - component: {fileID: 539053601}
   - component: {fileID: 539053602}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -7737,7 +7751,7 @@ GameObject:
   m_Component:
   - component: {fileID: 541811827}
   - component: {fileID: 541811828}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -7786,9 +7800,9 @@ GameObject:
   - component: {fileID: 543919858}
   - component: {fileID: 543919857}
   - component: {fileID: 543919856}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (89)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7911,7 +7925,7 @@ GameObject:
   m_Component:
   - component: {fileID: 558199353}
   - component: {fileID: 558199354}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -7958,7 +7972,7 @@ GameObject:
   m_Component:
   - component: {fileID: 559139757}
   - component: {fileID: 559139758}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -8005,7 +8019,7 @@ GameObject:
   m_Component:
   - component: {fileID: 561660492}
   - component: {fileID: 561660493}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -8052,7 +8066,7 @@ GameObject:
   m_Component:
   - component: {fileID: 570080173}
   - component: {fileID: 570080174}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -8101,9 +8115,9 @@ GameObject:
   - component: {fileID: 570277458}
   - component: {fileID: 570277457}
   - component: {fileID: 570277456}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (79)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8228,9 +8242,9 @@ GameObject:
   - component: {fileID: 573734883}
   - component: {fileID: 573734882}
   - component: {fileID: 573734880}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (15)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8457,9 +8471,9 @@ GameObject:
   - component: {fileID: 591144562}
   - component: {fileID: 591144561}
   - component: {fileID: 591144560}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (59)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8657,7 +8671,7 @@ GameObject:
   m_Component:
   - component: {fileID: 602209234}
   - component: {fileID: 602209235}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -8706,9 +8720,9 @@ GameObject:
   - component: {fileID: 603334811}
   - component: {fileID: 603334810}
   - component: {fileID: 603334808}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (5)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8836,6 +8850,7 @@ GameObject:
   - component: {fileID: 608699576}
   - component: {fileID: 608699575}
   - component: {fileID: 608699574}
+  - component: {fileID: 608699581}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -8950,7 +8965,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 3799
+    m_Bits: 11991
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -8977,6 +8992,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &608699581
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 608699573}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19de0d0f8683bb746909d825b72fd974, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isPaused: 0
 --- !u!1 &617164474
 GameObject:
   m_ObjectHideFlags: 0
@@ -8989,9 +9017,9 @@ GameObject:
   - component: {fileID: 617164479}
   - component: {fileID: 617164478}
   - component: {fileID: 617164477}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (70)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -9114,7 +9142,7 @@ GameObject:
   m_Component:
   - component: {fileID: 619084236}
   - component: {fileID: 619084237}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -9164,9 +9192,9 @@ GameObject:
   - component: {fileID: 628415846}
   - component: {fileID: 628415845}
   - component: {fileID: 628415844}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (58)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -9483,9 +9511,9 @@ GameObject:
   - component: {fileID: 647436939}
   - component: {fileID: 647436938}
   - component: {fileID: 647436936}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (22)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -55872,9 +55900,9 @@ GameObject:
   - component: {fileID: 652789743}
   - component: {fileID: 652789742}
   - component: {fileID: 652789741}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (61)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -55999,9 +56027,9 @@ GameObject:
   - component: {fileID: 658865842}
   - component: {fileID: 658865841}
   - component: {fileID: 658865840}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (67)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -56235,9 +56263,9 @@ GameObject:
   - component: {fileID: 660069449}
   - component: {fileID: 660069448}
   - component: {fileID: 660069446}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (11)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -56360,7 +56388,7 @@ GameObject:
   m_Component:
   - component: {fileID: 673911559}
   - component: {fileID: 673911560}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -56507,9 +56535,9 @@ GameObject:
   - component: {fileID: 695015480}
   - component: {fileID: 695015479}
   - component: {fileID: 695015477}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (12)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -56686,7 +56714,7 @@ GameObject:
   m_Component:
   - component: {fileID: 717366047}
   - component: {fileID: 717366048}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -56733,7 +56761,7 @@ GameObject:
   m_Component:
   - component: {fileID: 723335462}
   - component: {fileID: 723335463}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -56780,7 +56808,7 @@ GameObject:
   m_Component:
   - component: {fileID: 728206791}
   - component: {fileID: 728206792}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -56827,7 +56855,7 @@ GameObject:
   m_Component:
   - component: {fileID: 745773931}
   - component: {fileID: 745773932}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -56876,9 +56904,9 @@ GameObject:
   - component: {fileID: 752642795}
   - component: {fileID: 752642794}
   - component: {fileID: 752642793}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (65)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -57003,9 +57031,9 @@ GameObject:
   - component: {fileID: 754658995}
   - component: {fileID: 754658994}
   - component: {fileID: 754658992}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (35)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -57130,9 +57158,9 @@ GameObject:
   - component: {fileID: 755216489}
   - component: {fileID: 755216488}
   - component: {fileID: 755216487}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (75)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -57258,9 +57286,9 @@ GameObject:
   - component: {fileID: 756952191}
   - component: {fileID: 756952190}
   - component: {fileID: 756952189}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (55)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -57406,9 +57434,9 @@ GameObject:
   - component: {fileID: 761108213}
   - component: {fileID: 761108212}
   - component: {fileID: 761108210}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (33)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -57689,7 +57717,7 @@ GameObject:
   m_Component:
   - component: {fileID: 766187190}
   - component: {fileID: 766187191}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -57736,7 +57764,7 @@ GameObject:
   m_Component:
   - component: {fileID: 772943242}
   - component: {fileID: 772943243}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -57840,7 +57868,7 @@ GameObject:
   m_Component:
   - component: {fileID: 794623426}
   - component: {fileID: 794623427}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -57889,9 +57917,9 @@ GameObject:
   - component: {fileID: 802559442}
   - component: {fileID: 802559441}
   - component: {fileID: 802559440}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (93)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -58014,7 +58042,7 @@ GameObject:
   m_Component:
   - component: {fileID: 804128763}
   - component: {fileID: 804128764}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -58155,9 +58183,9 @@ GameObject:
   - component: {fileID: 805944333}
   - component: {fileID: 805944332}
   - component: {fileID: 805944331}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (86)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -58280,7 +58308,7 @@ GameObject:
   m_Component:
   - component: {fileID: 806542957}
   - component: {fileID: 806542958}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -58327,7 +58355,7 @@ GameObject:
   m_Component:
   - component: {fileID: 809088845}
   - component: {fileID: 809088846}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -58376,9 +58404,9 @@ GameObject:
   - component: {fileID: 812875443}
   - component: {fileID: 812875442}
   - component: {fileID: 812875440}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (45)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -58502,6 +58530,7 @@ GameObject:
   - component: {fileID: 815631999}
   - component: {fileID: 815632001}
   - component: {fileID: 815632000}
+  - component: {fileID: 815632002}
   m_Layer: 0
   m_Name: candlefire_0
   m_TagString: Untagged
@@ -58593,6 +58622,19 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &815632002
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 815631998}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb07c9d33c84fa643a0ec9c1227b5b62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tilevalue: 1
 --- !u!1 &820007471
 GameObject:
   m_ObjectHideFlags: 0
@@ -58605,9 +58647,9 @@ GameObject:
   - component: {fileID: 820007476}
   - component: {fileID: 820007475}
   - component: {fileID: 820007474}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (111)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -58732,9 +58774,9 @@ GameObject:
   - component: {fileID: 821643001}
   - component: {fileID: 821643000}
   - component: {fileID: 821642999}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (82)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -58857,7 +58899,7 @@ GameObject:
   m_Component:
   - component: {fileID: 822516679}
   - component: {fileID: 822516680}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -58904,7 +58946,7 @@ GameObject:
   m_Component:
   - component: {fileID: 826592200}
   - component: {fileID: 826592201}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -58953,9 +58995,9 @@ GameObject:
   - component: {fileID: 830532450}
   - component: {fileID: 830532449}
   - component: {fileID: 830532448}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (100)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -59078,7 +59120,7 @@ GameObject:
   m_Component:
   - component: {fileID: 834270690}
   - component: {fileID: 834270691}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -59127,9 +59169,9 @@ GameObject:
   - component: {fileID: 834942610}
   - component: {fileID: 834942609}
   - component: {fileID: 834942608}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (104)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -59252,7 +59294,7 @@ GameObject:
   m_Component:
   - component: {fileID: 842695976}
   - component: {fileID: 842695977}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -59301,9 +59343,9 @@ GameObject:
   - component: {fileID: 855380372}
   - component: {fileID: 855380371}
   - component: {fileID: 855380370}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (80)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -59538,7 +59580,7 @@ GameObject:
   m_Component:
   - component: {fileID: 866061046}
   - component: {fileID: 866061047}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -59585,7 +59627,7 @@ GameObject:
   m_Component:
   - component: {fileID: 867947634}
   - component: {fileID: 867947635}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -59632,7 +59674,7 @@ GameObject:
   m_Component:
   - component: {fileID: 882548293}
   - component: {fileID: 882548294}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -59679,7 +59721,7 @@ GameObject:
   m_Component:
   - component: {fileID: 883889867}
   - component: {fileID: 883889868}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -59726,7 +59768,7 @@ GameObject:
   m_Component:
   - component: {fileID: 888313245}
   - component: {fileID: 888313246}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -59773,7 +59815,7 @@ GameObject:
   m_Component:
   - component: {fileID: 901310823}
   - component: {fileID: 901310824}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -59820,7 +59862,7 @@ GameObject:
   m_Component:
   - component: {fileID: 907025698}
   - component: {fileID: 907025699}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -59868,6 +59910,7 @@ GameObject:
   - component: {fileID: 917188836}
   - component: {fileID: 917188838}
   - component: {fileID: 917188837}
+  - component: {fileID: 917188839}
   m_Layer: 0
   m_Name: candlefire_0 (1)
   m_TagString: Untagged
@@ -59959,6 +60002,19 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &917188839
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 917188835}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb07c9d33c84fa643a0ec9c1227b5b62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tilevalue: 1
 --- !u!1 &924745646
 GameObject:
   m_ObjectHideFlags: 0
@@ -59969,7 +60025,7 @@ GameObject:
   m_Component:
   - component: {fileID: 924745647}
   - component: {fileID: 924745648}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -60018,9 +60074,9 @@ GameObject:
   - component: {fileID: 937995137}
   - component: {fileID: 937995136}
   - component: {fileID: 937995135}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (99)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -60286,9 +60342,9 @@ GameObject:
   - component: {fileID: 942653582}
   - component: {fileID: 942653581}
   - component: {fileID: 942653580}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (92)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -60411,7 +60467,7 @@ GameObject:
   m_Component:
   - component: {fileID: 944094107}
   - component: {fileID: 944094108}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -60459,6 +60515,7 @@ GameObject:
   - component: {fileID: 948781175}
   - component: {fileID: 948781177}
   - component: {fileID: 948781176}
+  - component: {fileID: 948781178}
   m_Layer: 0
   m_Name: candlefire_0
   m_TagString: Untagged
@@ -60550,6 +60607,19 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &948781178
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 948781174}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb07c9d33c84fa643a0ec9c1227b5b62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tilevalue: 1
 --- !u!1 &953386040
 GameObject:
   m_ObjectHideFlags: 0
@@ -60560,7 +60630,7 @@ GameObject:
   m_Component:
   - component: {fileID: 953386041}
   - component: {fileID: 953386042}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -60609,9 +60679,9 @@ GameObject:
   - component: {fileID: 954452295}
   - component: {fileID: 954452294}
   - component: {fileID: 954452293}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (72)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -60734,7 +60804,7 @@ GameObject:
   m_Component:
   - component: {fileID: 973101327}
   - component: {fileID: 973101328}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -60782,7 +60852,8 @@ GameObject:
   - component: {fileID: 983882361}
   - component: {fileID: 983882363}
   - component: {fileID: 983882362}
-  m_Layer: 6
+  - component: {fileID: 983882364}
+  m_Layer: 13
   m_Name: landmine-hard_0 (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -60873,6 +60944,19 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &983882364
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 983882360}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb07c9d33c84fa643a0ec9c1227b5b62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tilevalue: 1
 --- !u!1 &986698912
 GameObject:
   m_ObjectHideFlags: 0
@@ -60883,7 +60967,7 @@ GameObject:
   m_Component:
   - component: {fileID: 986698913}
   - component: {fileID: 986698914}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -60930,7 +61014,7 @@ GameObject:
   m_Component:
   - component: {fileID: 986954301}
   - component: {fileID: 986954302}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -60979,9 +61063,9 @@ GameObject:
   - component: {fileID: 987338073}
   - component: {fileID: 987338072}
   - component: {fileID: 987338071}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (87)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -61104,7 +61188,7 @@ GameObject:
   m_Component:
   - component: {fileID: 991679835}
   - component: {fileID: 991679836}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -61153,9 +61237,9 @@ GameObject:
   - component: {fileID: 1000175293}
   - component: {fileID: 1000175292}
   - component: {fileID: 1000175290}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (43)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -61437,7 +61521,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1030114991}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 2}
+  m_LocalPosition: {x: 0, y: 0, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 685034240}
@@ -61468,30 +61552,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '0 1 2 3 4 5 6 7 8 9 A B C D E F
-
-    1
-
-    2
-
-    3
-
-    4
-
-    5
-
-    6
-
-    7
-
-    8
-
-    9
-
-    A'
+  m_text: "\n      -paused-"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 53a8a2a2f013f6341a8b464800d3930b, type: 2}
-  m_sharedMaterial: {fileID: 3659112419094177574, guid: 53a8a2a2f013f6341a8b464800d3930b, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 55748b1e9295b93459b263e2f7b9d28a, type: 2}
+  m_sharedMaterial: {fileID: 3229459959135810506, guid: 55748b1e9295b93459b263e2f7b9d28a, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -61579,7 +61643,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 3659112419094177574, guid: 53a8a2a2f013f6341a8b464800d3930b, type: 2}
+  - {fileID: 3229459959135810506, guid: 55748b1e9295b93459b263e2f7b9d28a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -61611,7 +61675,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1041022733}
   - component: {fileID: 1041022734}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -61658,7 +61722,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1042659814}
   - component: {fileID: 1042659815}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -61933,9 +61997,9 @@ GameObject:
   - component: {fileID: 1059978410}
   - component: {fileID: 1059978409}
   - component: {fileID: 1059978407}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (32)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -62058,7 +62122,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1060013737}
   - component: {fileID: 1060013738}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -62105,7 +62169,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1063389224}
   - component: {fileID: 1063389225}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -62154,9 +62218,9 @@ GameObject:
   - component: {fileID: 1063398824}
   - component: {fileID: 1063398823}
   - component: {fileID: 1063398821}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (30)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -62279,7 +62343,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1069421821}
   - component: {fileID: 1069421822}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -62328,9 +62392,9 @@ GameObject:
   - component: {fileID: 1073791997}
   - component: {fileID: 1073791996}
   - component: {fileID: 1073791994}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: HiddenEntrance (1)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -62453,7 +62517,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1091386125}
   - component: {fileID: 1091386126}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -62500,7 +62564,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1098219577}
   - component: {fileID: 1098219578}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -62547,7 +62611,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1105483562}
   - component: {fileID: 1105483563}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -62597,9 +62661,9 @@ GameObject:
   - component: {fileID: 1113981531}
   - component: {fileID: 1113981529}
   - component: {fileID: 1113981530}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -62743,7 +62807,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1121798367}
   - component: {fileID: 1121798368}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -62839,9 +62903,9 @@ GameObject:
   - component: {fileID: 1129421323}
   - component: {fileID: 1129421322}
   - component: {fileID: 1129421320}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (4)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -62966,9 +63030,9 @@ GameObject:
   - component: {fileID: 1140402280}
   - component: {fileID: 1140402279}
   - component: {fileID: 1140402278}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (96)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -63093,9 +63157,9 @@ GameObject:
   - component: {fileID: 1142022966}
   - component: {fileID: 1142022965}
   - component: {fileID: 1142022964}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (112)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -63220,9 +63284,9 @@ GameObject:
   - component: {fileID: 1143716789}
   - component: {fileID: 1143716788}
   - component: {fileID: 1143716787}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (50)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -63347,9 +63411,9 @@ GameObject:
   - component: {fileID: 1146280840}
   - component: {fileID: 1146280839}
   - component: {fileID: 1146280838}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (56)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -63472,7 +63536,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1146554281}
   - component: {fileID: 1146554282}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -63519,7 +63583,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1161937749}
   - component: {fileID: 1161937750}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -63569,9 +63633,9 @@ GameObject:
   - component: {fileID: 1166585730}
   - component: {fileID: 1166585729}
   - component: {fileID: 1166585728}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (59)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -63752,9 +63816,9 @@ GameObject:
   - component: {fileID: 1167905758}
   - component: {fileID: 1167905757}
   - component: {fileID: 1167905755}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (34)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -63932,9 +63996,9 @@ GameObject:
   - component: {fileID: 1190429080}
   - component: {fileID: 1190429079}
   - component: {fileID: 1190429077}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (23)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -64059,9 +64123,9 @@ GameObject:
   - component: {fileID: 1191095536}
   - component: {fileID: 1191095535}
   - component: {fileID: 1191095534}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (71)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -64271,7 +64335,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1206035252}
   - component: {fileID: 1206035253}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -64320,9 +64384,9 @@ GameObject:
   - component: {fileID: 1212791351}
   - component: {fileID: 1212791350}
   - component: {fileID: 1212791349}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (57)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -64447,9 +64511,9 @@ GameObject:
   - component: {fileID: 1215791530}
   - component: {fileID: 1215791529}
   - component: {fileID: 1215791528}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (74)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -64572,7 +64636,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1216687402}
   - component: {fileID: 1216687403}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -64621,9 +64685,9 @@ GameObject:
   - component: {fileID: 1217491170}
   - component: {fileID: 1217491169}
   - component: {fileID: 1217491168}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (84)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -64748,9 +64812,9 @@ GameObject:
   - component: {fileID: 1223130722}
   - component: {fileID: 1223130721}
   - component: {fileID: 1223130720}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (83)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -64875,9 +64939,9 @@ GameObject:
   - component: {fileID: 1235868162}
   - component: {fileID: 1235868161}
   - component: {fileID: 1235868160}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (98)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -65000,7 +65064,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1253477777}
   - component: {fileID: 1253477778}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -65049,9 +65113,9 @@ GameObject:
   - component: {fileID: 1265934794}
   - component: {fileID: 1265934793}
   - component: {fileID: 1265934791}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (2)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -65174,7 +65238,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1281849788}
   - component: {fileID: 1281849789}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -65221,7 +65285,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1295946567}
   - component: {fileID: 1295946568}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -65268,7 +65332,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1299349109}
   - component: {fileID: 1299349110}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -65315,7 +65379,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1304565302}
   - component: {fileID: 1304565303}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -65580,7 +65644,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1316530562}
   - component: {fileID: 1316530563}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -65627,7 +65691,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1316943425}
   - component: {fileID: 1316943426}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -65676,9 +65740,9 @@ GameObject:
   - component: {fileID: 1332004869}
   - component: {fileID: 1332004868}
   - component: {fileID: 1332004866}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (13)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -65803,9 +65867,9 @@ GameObject:
   - component: {fileID: 1333486240}
   - component: {fileID: 1333486239}
   - component: {fileID: 1333486238}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: HiddenEntrance (7)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -65928,7 +65992,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1349910420}
   - component: {fileID: 1349910421}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -65977,9 +66041,9 @@ GameObject:
   - component: {fileID: 1377494773}
   - component: {fileID: 1377494772}
   - component: {fileID: 1377494771}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (97)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -66104,9 +66168,9 @@ GameObject:
   - component: {fileID: 1378958631}
   - component: {fileID: 1378958630}
   - component: {fileID: 1378958628}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (37)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -66229,7 +66293,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1383220788}
   - component: {fileID: 1383220789}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -66276,7 +66340,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1384551820}
   - component: {fileID: 1384551821}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -66531,9 +66595,9 @@ GameObject:
   - component: {fileID: 1393722318}
   - component: {fileID: 1393722317}
   - component: {fileID: 1393722316}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (56)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -66677,7 +66741,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1395012740}
   - component: {fileID: 1395012741}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -66726,9 +66790,9 @@ GameObject:
   - component: {fileID: 1405886389}
   - component: {fileID: 1405886388}
   - component: {fileID: 1405886387}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (63)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -66853,9 +66917,9 @@ GameObject:
   - component: {fileID: 1417374406}
   - component: {fileID: 1417374405}
   - component: {fileID: 1417374403}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (14)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -67009,7 +67073,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1428385138}
   - component: {fileID: 1428385139}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -67056,7 +67120,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1433506070}
   - component: {fileID: 1433506071}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -67105,9 +67169,9 @@ GameObject:
   - component: {fileID: 1438107762}
   - component: {fileID: 1438107761}
   - component: {fileID: 1438107760}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (105)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -67230,7 +67294,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1447692669}
   - component: {fileID: 1447692670}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -67279,9 +67343,9 @@ GameObject:
   - component: {fileID: 1448391551}
   - component: {fileID: 1448391550}
   - component: {fileID: 1448391548}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (20)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -67406,9 +67470,9 @@ GameObject:
   - component: {fileID: 1457983221}
   - component: {fileID: 1457983220}
   - component: {fileID: 1457983219}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (91)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -67533,9 +67597,9 @@ GameObject:
   - component: {fileID: 1459212633}
   - component: {fileID: 1459212632}
   - component: {fileID: 1459212631}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Trigger Hidden Entrance
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -67681,7 +67745,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1463510854}
   - component: {fileID: 1463510855}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -67728,7 +67792,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1463612184}
   - component: {fileID: 1463612185}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -67777,9 +67841,9 @@ GameObject:
   - component: {fileID: 1469869015}
   - component: {fileID: 1469869014}
   - component: {fileID: 1469869013}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (49)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -67902,7 +67966,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1471568059}
   - component: {fileID: 1471568060}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -67951,9 +68015,9 @@ GameObject:
   - component: {fileID: 1479852424}
   - component: {fileID: 1479852423}
   - component: {fileID: 1479852421}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (26)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -68078,9 +68142,9 @@ GameObject:
   - component: {fileID: 1500851544}
   - component: {fileID: 1500851543}
   - component: {fileID: 1500851541}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (42)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -68237,7 +68301,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1504087558}
   - component: {fileID: 1504087559}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -68412,7 +68476,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1525020434}
   - component: {fileID: 1525020435}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -68572,7 +68636,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1534224201}
   - component: {fileID: 1534224202}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -68620,7 +68684,8 @@ GameObject:
   - component: {fileID: 1537963802}
   - component: {fileID: 1537963801}
   - component: {fileID: 1537963800}
-  m_Layer: 6
+  - component: {fileID: 1537963803}
+  m_Layer: 13
   m_Name: Easy mine
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -68685,7 +68750,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1920555623
   m_SortingLayer: 1
-  m_SortingOrder: 4
+  m_SortingOrder: 5
   m_Sprite: {fileID: -3401285216227877065, guid: af3511819a950c0468af356ab2362c05, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -68711,6 +68776,19 @@ Transform:
   m_Father: {fileID: 1672435163}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1537963803
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1537963799}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb07c9d33c84fa643a0ec9c1227b5b62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tilevalue: 1
 --- !u!1 &1556538607
 GameObject:
   m_ObjectHideFlags: 0
@@ -68721,7 +68799,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1556538608}
   - component: {fileID: 1556538609}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -68770,9 +68848,9 @@ GameObject:
   - component: {fileID: 1566638734}
   - component: {fileID: 1566638733}
   - component: {fileID: 1566638732}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (101)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -68895,7 +68973,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1567374063}
   - component: {fileID: 1567374064}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -68944,9 +69022,9 @@ GameObject:
   - component: {fileID: 1621348706}
   - component: {fileID: 1621348705}
   - component: {fileID: 1621348703}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (8)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -69071,9 +69149,9 @@ GameObject:
   - component: {fileID: 1627452497}
   - component: {fileID: 1627452496}
   - component: {fileID: 1627452494}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (38)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -69196,7 +69274,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1628843195}
   - component: {fileID: 1628843196}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -69245,9 +69323,9 @@ GameObject:
   - component: {fileID: 1655996097}
   - component: {fileID: 1655996096}
   - component: {fileID: 1655996095}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: HiddenEntrance (4)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -69370,7 +69448,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1661376225}
   - component: {fileID: 1661376226}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -69417,7 +69495,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1668338112}
   - component: {fileID: 1668338113}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -69466,9 +69544,9 @@ GameObject:
   - component: {fileID: 1672435162}
   - component: {fileID: 1672435161}
   - component: {fileID: 1672435160}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: TriggeringHiddenEntrance (3)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -69602,9 +69680,9 @@ GameObject:
   - component: {fileID: 1674292144}
   - component: {fileID: 1674292143}
   - component: {fileID: 1674292142}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (88)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -69729,9 +69807,9 @@ GameObject:
   - component: {fileID: 1679333718}
   - component: {fileID: 1679333717}
   - component: {fileID: 1679333715}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (3)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -69854,7 +69932,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1682030872}
   - component: {fileID: 1682030873}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -69901,7 +69979,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1694891181}
   - component: {fileID: 1694891182}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -69950,9 +70028,9 @@ GameObject:
   - component: {fileID: 1699758989}
   - component: {fileID: 1699758988}
   - component: {fileID: 1699758987}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (107)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -70075,7 +70153,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1720363808}
   - component: {fileID: 1720363809}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -70247,9 +70325,9 @@ GameObject:
   - component: {fileID: 1732179983}
   - component: {fileID: 1732179982}
   - component: {fileID: 1732179980}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (39)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -70374,9 +70452,9 @@ GameObject:
   - component: {fileID: 1734351659}
   - component: {fileID: 1734351658}
   - component: {fileID: 1734351656}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (36)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -70501,9 +70579,9 @@ GameObject:
   - component: {fileID: 1748301282}
   - component: {fileID: 1748301281}
   - component: {fileID: 1748301280}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (48)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -70626,7 +70704,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1750294905}
   - component: {fileID: 1750294906}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -70675,9 +70753,9 @@ GameObject:
   - component: {fileID: 1751233286}
   - component: {fileID: 1751233285}
   - component: {fileID: 1751233283}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (24)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -70909,7 +70987,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1751701367}
   - component: {fileID: 1751701368}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -70958,9 +71036,9 @@ GameObject:
   - component: {fileID: 1752398122}
   - component: {fileID: 1752398121}
   - component: {fileID: 1752398119}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (10)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -71083,7 +71161,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1764125981}
   - component: {fileID: 1764125982}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -71132,9 +71210,9 @@ GameObject:
   - component: {fileID: 1767125070}
   - component: {fileID: 1767125069}
   - component: {fileID: 1767125068}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (106)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -71422,9 +71500,9 @@ GameObject:
   - component: {fileID: 1771665447}
   - component: {fileID: 1771665446}
   - component: {fileID: 1771665445}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (53)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -71568,7 +71646,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1771989711}
   - component: {fileID: 1771989712}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -71617,9 +71695,9 @@ GameObject:
   - component: {fileID: 1795638191}
   - component: {fileID: 1795638190}
   - component: {fileID: 1795638189}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (60)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -72007,9 +72085,9 @@ GameObject:
   - component: {fileID: 1834491960}
   - component: {fileID: 1834491959}
   - component: {fileID: 1834491957}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (6)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -72133,7 +72211,8 @@ GameObject:
   - component: {fileID: 1849464193}
   - component: {fileID: 1849464195}
   - component: {fileID: 1849464194}
-  m_Layer: 6
+  - component: {fileID: 1849464196}
+  m_Layer: 13
   m_Name: Easy mine
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -72212,7 +72291,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1920555623
   m_SortingLayer: 1
-  m_SortingOrder: 4
+  m_SortingOrder: 5
   m_Sprite: {fileID: -3401285216227877065, guid: af3511819a950c0468af356ab2362c05, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -72224,6 +72303,19 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1849464196
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1849464192}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb07c9d33c84fa643a0ec9c1227b5b62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tilevalue: 1
 --- !u!1 &1882633701
 GameObject:
   m_ObjectHideFlags: 0
@@ -72236,9 +72328,9 @@ GameObject:
   - component: {fileID: 1882633706}
   - component: {fileID: 1882633705}
   - component: {fileID: 1882633704}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (64)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -72361,7 +72453,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1883292480}
   - component: {fileID: 1883292481}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -72408,7 +72500,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1888350496}
   - component: {fileID: 1888350497}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -72455,7 +72547,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1895987717}
   - component: {fileID: 1895987718}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -72504,9 +72596,9 @@ GameObject:
   - component: {fileID: 1897917730}
   - component: {fileID: 1897917729}
   - component: {fileID: 1897917728}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (66)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -72629,7 +72721,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1898784341}
   - component: {fileID: 1898784342}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -72678,9 +72770,9 @@ GameObject:
   - component: {fileID: 1901749854}
   - component: {fileID: 1901749853}
   - component: {fileID: 1901749852}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (53)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -72806,9 +72898,9 @@ GameObject:
   - component: {fileID: 1914847636}
   - component: {fileID: 1914847634}
   - component: {fileID: 1914847635}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (1)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -72954,9 +73046,9 @@ GameObject:
   - component: {fileID: 1919618491}
   - component: {fileID: 1919618490}
   - component: {fileID: 1919618489}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (102)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -73161,7 +73253,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1930510629}
   - component: {fileID: 1930510630}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -73208,7 +73300,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1935337352}
   - component: {fileID: 1935337353}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -73257,9 +73349,9 @@ GameObject:
   - component: {fileID: 1955519247}
   - component: {fileID: 1955519246}
   - component: {fileID: 1955519244}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (29)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -73382,7 +73474,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1974637586}
   - component: {fileID: 1974637587}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -73429,7 +73521,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1976030872}
   - component: {fileID: 1976030873}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -73477,6 +73569,7 @@ GameObject:
   - component: {fileID: 2009867708}
   - component: {fileID: 2009867710}
   - component: {fileID: 2009867709}
+  - component: {fileID: 2009867711}
   m_Layer: 0
   m_Name: dooranim_0
   m_TagString: Untagged
@@ -73579,6 +73672,19 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &2009867711
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2009867707}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb07c9d33c84fa643a0ec9c1227b5b62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tilevalue: 2
 --- !u!1 &2011857820
 GameObject:
   m_ObjectHideFlags: 0
@@ -73589,7 +73695,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2011857821}
   - component: {fileID: 2011857822}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -73638,9 +73744,9 @@ GameObject:
   - component: {fileID: 2012353072}
   - component: {fileID: 2012353071}
   - component: {fileID: 2012353069}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (31)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -73765,9 +73871,9 @@ GameObject:
   - component: {fileID: 2015715299}
   - component: {fileID: 2015715298}
   - component: {fileID: 2015715296}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (17)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -73892,9 +73998,9 @@ GameObject:
   - component: {fileID: 2016854228}
   - component: {fileID: 2016854227}
   - component: {fileID: 2016854225}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (9)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -74019,9 +74125,9 @@ GameObject:
   - component: {fileID: 2022243543}
   - component: {fileID: 2022243542}
   - component: {fileID: 2022243541}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (109)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -74270,7 +74376,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2044268811}
   - component: {fileID: 2044268812}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -74317,7 +74423,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2046790713}
   - component: {fileID: 2046790714}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -74366,9 +74472,9 @@ GameObject:
   - component: {fileID: 2060631038}
   - component: {fileID: 2060631037}
   - component: {fileID: 2060631036}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (51)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -74492,7 +74598,8 @@ GameObject:
   - component: {fileID: 2080105341}
   - component: {fileID: 2080105343}
   - component: {fileID: 2080105342}
-  m_Layer: 6
+  - component: {fileID: 2080105344}
+  m_Layer: 13
   m_Name: landmine-hard_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -74583,6 +74690,19 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &2080105344
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2080105340}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb07c9d33c84fa643a0ec9c1227b5b62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tilevalue: 1
 --- !u!1 &2080357368
 GameObject:
   m_ObjectHideFlags: 0
@@ -74593,7 +74713,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2080357369}
   - component: {fileID: 2080357370}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -74751,9 +74871,9 @@ GameObject:
   - component: {fileID: 2094365793}
   - component: {fileID: 2094365792}
   - component: {fileID: 2094365790}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (19)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -74878,9 +74998,9 @@ GameObject:
   - component: {fileID: 2107802314}
   - component: {fileID: 2107802313}
   - component: {fileID: 2107802312}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (55)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -75005,9 +75125,9 @@ GameObject:
   - component: {fileID: 2109367378}
   - component: {fileID: 2109367377}
   - component: {fileID: 2109367375}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Hidden Entrance (28)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -75170,7 +75290,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2118962760}
   - component: {fileID: 2118962761}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -75218,6 +75338,7 @@ GameObject:
   - component: {fileID: 2119205787}
   - component: {fileID: 2119205786}
   - component: {fileID: 2119205785}
+  - component: {fileID: 2119205788}
   m_Layer: 0
   m_Name: candlefire_0
   m_TagString: Untagged
@@ -75309,6 +75430,19 @@ Transform:
   m_Father: {fileID: 23742316}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2119205788
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2119205784}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb07c9d33c84fa643a0ec9c1227b5b62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tilevalue: 1
 --- !u!1 &2137907523
 GameObject:
   m_ObjectHideFlags: 0
@@ -102069,9 +102203,9 @@ GameObject:
   - component: {fileID: 2139791486}
   - component: {fileID: 2139791485}
   - component: {fileID: 2139791484}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: TriggeringHidden Entrance (1)
-  m_TagString: Ground
+  m_TagString: Hidden
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -102209,7 +102343,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2141651746}
   - component: {fileID: 2141651747}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: chainReactionHitbox
   m_TagString: ChainReaction
   m_Icon: {fileID: 0}
@@ -102259,11 +102393,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2300325343495513334, guid: fc5ca1f9a411b6141b5e1ef2fab56489, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 29.09
+      value: 69
       objectReference: {fileID: 0}
     - target: {fileID: 2300325343495513334, guid: fc5ca1f9a411b6141b5e1ef2fab56489, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 30.71
+      value: 32.6
       objectReference: {fileID: 0}
     - target: {fileID: 2300325343495513334, guid: fc5ca1f9a411b6141b5e1ef2fab56489, type: 3}
       propertyPath: m_LocalPosition.z

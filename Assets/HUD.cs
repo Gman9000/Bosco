@@ -29,54 +29,65 @@ public class HUD : MonoBehaviour
                 texts.Add(obj.name, txt);
             }
         }
-
-        texts["Main Text Layer"].enabled = false;
-        renderers["candle 0"].enabled = false;
-        renderers["candle 1"].enabled = false;
-        renderers["candle 2"].enabled = false;
-        renderers["candle 3"].enabled = false;
+        renderers["candle 0"].gameObject.SetActive(false);
+        renderers["candle 1"].gameObject.SetActive(false);
+        renderers["candle 2"].gameObject.SetActive(false);
+        renderers["candle 3"].gameObject.SetActive(false);
+        
+        Write("");
     }
 
     void FixedUpdate()
     {
         texts["Lives Text Layer"].text = "" + Game.lives;
 
-        renderers["candle 0"].enabled = false;
-        renderers["candle 1"].enabled = false;
-        renderers["candle 2"].enabled = false;
-        renderers["candle 3"].enabled = false;
-
-        renderers["hp 0"].enabled = false;
-        renderers["hp 1"].enabled = false;
-        renderers["hp 2"].enabled = false;
+        renderers["hp 0"].gameObject.SetActive(false);
+        renderers["hp 1"].gameObject.SetActive(false);
+        renderers["hp 2"].gameObject.SetActive(false);
 
         if (flash)
         {
             for (int i = 0; i < 4 && i < Game.litCandlesCount; i++)
             {
-                renderers["candle " + i].enabled = true;
+                renderers["candle " + i].gameObject.SetActive(true);
             }
 
 
             for (int i = 0; i < 3 && i < Player.Hp; i++)
             {
-                renderers["hp " + i].enabled = true;
+                renderers["hp " + i].gameObject.SetActive(true);
             }
-
         }
     }
 
-    public void Flash(bool visible)
+    void Update()
+    {
+        if (!Player.isHurting || Game.isPaused)
+            Flash(!texts["Main Text Layer"].enabled, "Main Text Layer");
+        if (!Game.isPaused)
+            renderers["BG"].enabled = true;
+    }
+
+    public void Flash(bool visible, params string[] exclude)
     {
         if (flash == visible)   return;
 
+        List<string> exclusions = new List<string>(exclude);
+
         flash = visible;
         foreach (SpriteRenderer ren in renderers.Values)
-            if (ren.gameObject.name != "BG")
+            if (!exclusions.Contains(ren.gameObject.name))
                 ren.enabled = visible;
 
         foreach (TMPro.TMP_Text txt in texts.Values)
-            if (txt.gameObject.name != "Main Text Layer")
+            if (!exclusions.Contains(txt.gameObject.name))
                 txt.enabled = visible;
+    }
+
+    static public void Write(string str)
+    {
+        TMPro.TMP_Text txt = Instance.texts["Main Text Layer"];
+        txt.text = str;
+        txt.enabled = str != null && str.Length > 0;            
     }
 }

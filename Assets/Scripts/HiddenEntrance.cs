@@ -86,7 +86,7 @@ public class HiddenEntrance : MonoBehaviour
 
         this.gameObject.SetActive(false);
         Instantiate<GameObject>(Resources.Load<GameObject>("Prefabs/FX-explosion")).transform.position = transform.position;
-        CameraController.Instance.HorShake(1);
+        CameraController.Instance.VertShake(2);
 
         yield break;
     }
