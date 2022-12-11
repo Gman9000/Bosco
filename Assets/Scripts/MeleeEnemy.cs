@@ -17,13 +17,10 @@ public class MeleeEnemy : MonoBehaviour
     public int maxEnemyHealth;
     private int currentEnemyHealth;             //health of enemy unit
     private bool hitState = false;      //is the enemy's invincibility frames currently active
-    private bool knockBackState = false;
-    public float knockBackStateTime;
     private bool isMeleeing = false;    //is the enemy currently shooting.
     public float fireRate;
     private float fireRateCountdown;
     public float hitTime;
-    private bool leftOfPlayer;
 
     public Animator flyingAnim;
     public float deathTimer;
@@ -45,10 +42,6 @@ public class MeleeEnemy : MonoBehaviour
     private Vector3 enemyDirection;
 
     public EnemyRespawner mySpawner;
-    
-    private Rigidbody2D myRB;
-    public float knockBackForce;
-    SpriteRenderer ren;
 
     private void Awake()
     {
@@ -58,8 +51,6 @@ public class MeleeEnemy : MonoBehaviour
         playerTarget = GameObject.FindWithTag("Player");
         //myRB = GetComponent<Rigidbody2D>();
         //CircleCollider2D = GetComponent<CircleCollider2D>();
-        ren = GetComponentInChildren<SpriteRenderer>();
-
     }
 
     void Start()
@@ -112,13 +103,11 @@ public class MeleeEnemy : MonoBehaviour
             if (transform.position.x < playerTarget.transform.position.x)
             {
                 enemyDirection.x = -enemyWidth;
-                leftOfPlayer = true;
             }
 
             else if (transform.position.x > playerTarget.transform.position.x)
             {
                 enemyDirection.x = +enemyWidth;
-                leftOfPlayer = false;
             }
             transform.localScale = enemyDirection;
             Motion(directionToPlayer, speedMod);
@@ -175,21 +164,7 @@ public class MeleeEnemy : MonoBehaviour
         }
 
     }
-    void FixedUpdate()
-    {
 
-        if (hitState) ren.color = ren.color.a == 0 ? Color.white : new Color(0, 0, 0, 0);
-        else
-        {
-            ren.color = Color.white;
-            myRB.velocity = new Vector2(0, myRB.velocity.y);
-        }
-        if (!knockBackState)
-        {
-            myRB.velocity = new Vector2(0, myRB.velocity.y);
-        }
-
-    }
     public void Motion(Vector3 directionOfTravel, float speed)
     {
         this.transform.Translate(
@@ -204,22 +179,12 @@ public class MeleeEnemy : MonoBehaviour
         {
             TakeDamage();
         }
-        if (other.CompareTag("PlayerTarget"))
-        {
-            other.transform.parent.GetComponent<Player>().TakeDamage();
-            TakeKnockBack();
-        }
     }
     private void OnTriggerStay2D(Collider2D other)
     {
         if (other.CompareTag("PlayerAttack"))
         {
             TakeDamage();
-        }
-        if (other.CompareTag("PlayerTarget"))
-        {
-            other.transform.parent.GetComponent<Player>().TakeDamage();
-            TakeKnockBack();
         }
     }
 
@@ -241,21 +206,6 @@ public class MeleeEnemy : MonoBehaviour
         //flyingAnim.ResetTrigger("FlyingAttack");
 
     }
-    public void TakeKnockBack()
-    {
-        if (!knockBackState)
-        {
-            if (leftOfPlayer)
-            {
-                myRB.AddForce((Vector2.left * knockBackForce), ForceMode2D.Impulse);
-            }
-            else
-            {
-                myRB.AddForce((Vector2.right * knockBackForce), ForceMode2D.Impulse);
-            }
-            StartCoroutine(KnockBackState());
-        }
-    }
 
     //enemy is hit with player attack and takes damage
     public void TakeDamage()
@@ -268,15 +218,6 @@ public class MeleeEnemy : MonoBehaviour
             StartCoroutine(HitState());
         }
 
-    }
-
-    private IEnumerator KnockBackState()
-    {
-        knockBackState = true;
-
-        yield return new WaitForSeconds(knockBackStateTime);
-
-        knockBackState = false;
     }
 
     private IEnumerator DeathState()

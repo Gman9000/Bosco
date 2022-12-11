@@ -17,8 +17,6 @@ public class FlyingEnemy : MonoBehaviour
     public int maxEnemyHealth;
     private int currentEnemyHealth;             //health of enemy unit
     private bool hitState = false;      //is the enemy's invincibility frames currently active
-    private bool knockBackState = false;
-    public float knockBackStateTime;
     private bool isShooting = false;    //is the enemy currently shooting.
     public float fireRate;              //the amount of time between each of the enemy's shots.
     public Animator flyingAnim;
@@ -26,16 +24,11 @@ public class FlyingEnemy : MonoBehaviour
     //bool isDetectingPlayer;
     //private CircleCollider2D CircleCollider2D;
     //private Rigidbody2D myRB;
-    private bool leftOfPlayer;
 
     private float lastPlayerPosTime = 0;
 
     public Vector2 directionMemory;
     public EnemyRespawner mySpawner;
-
-    private Rigidbody2D myRB;
-    public float knockBackForce;
-    SpriteRenderer ren;
 
     private void Awake()
     {
@@ -43,8 +36,6 @@ public class FlyingEnemy : MonoBehaviour
         playerTarget = GameObject.FindWithTag("Player");
         //myRB = GetComponent<Rigidbody2D>();
         //CircleCollider2D = GetComponent<CircleCollider2D>();
-        ren = GetComponentInChildren<SpriteRenderer>();
-
     }
 
     void Start()
@@ -140,36 +131,6 @@ public class FlyingEnemy : MonoBehaviour
         
     }
 
-    void FixedUpdate()
-    {
-
-        if (hitState) ren.color = ren.color.a == 0 ? Color.white : new Color(0, 0, 0, 0);
-        else
-        {
-            ren.color = Color.white;
-            myRB.velocity = new Vector2(0, myRB.velocity.y);
-        }
-        if (!knockBackState)
-        {
-            myRB.velocity = new Vector2(0, myRB.velocity.y);
-        }
-
-    }
-    public void TakeKnockBack()
-    {
-        if (!knockBackState)
-        {
-            if (leftOfPlayer)
-            {
-                myRB.AddForce((Vector2.left * knockBackForce), ForceMode2D.Impulse);
-            }
-            else
-            {
-                myRB.AddForce((Vector2.right * knockBackForce), ForceMode2D.Impulse);
-            }
-            StartCoroutine(KnockBackState());
-        }
-    }
     public void Motion(Vector3 directionOfTravel, float speed)
     {
         this.transform.Translate(
@@ -186,11 +147,6 @@ public class FlyingEnemy : MonoBehaviour
             //gameObject.SetActive(false);
             TakeDamage();
         }
-        if (other.CompareTag("PlayerTarget"))
-        {
-            other.transform.parent.GetComponent<Player>().TakeDamage();
-            TakeKnockBack();
-        }
     }
 
     private void OnTriggerStay2D(Collider2D other)
@@ -199,20 +155,8 @@ public class FlyingEnemy : MonoBehaviour
         {
             TakeDamage();
         }
-                if (other.CompareTag("PlayerTarget"))
-        {
-            other.transform.parent.GetComponent<Player>().TakeDamage();
-            TakeKnockBack();
-        }
     }
-    private IEnumerator KnockBackState()
-    {
-        knockBackState = true;
 
-        yield return new WaitForSeconds(knockBackStateTime);
-
-        knockBackState = false;
-    }
     private IEnumerator ShootProjectile()
     {
         //acquire the player's current position and rotate towards it, then instantiate a bullet prefab with said rotation.

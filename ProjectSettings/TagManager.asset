@@ -15,9 +15,6 @@ TagManager:
   - Teleport
   - ChainReaction
   - EnemyMelee
-  - EnemyFlying
-  - EnemyThrowing
-  - PlayerTarget
   layers:
   - Default
   - TransparentFX
@@ -31,7 +28,7 @@ TagManager:
   - EnemyMelee
   - EnemyThrowing
   - EnemyFlying
-  - PlayerTarget
+  - 
   - 
   - 
   - 
