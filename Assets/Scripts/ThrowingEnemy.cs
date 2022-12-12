@@ -7,7 +7,6 @@ public class ThrowingEnemy : MonoBehaviour , IEnemy
     private Player playerTarget;    //player character
     [SerializeField] private GameObject waypoint01;      //first waypoint
     [SerializeField] private GameObject waypoint02;      //second waypoint
-    //[SerializeField] private GameObject firingPosition;  //position that projectiles are created.
     [SerializeField] private GameObject projectilePrefab;      //bullet prefab
     private GameObject currentWaypoint;
     public float speed;                 //enemy speed
@@ -216,7 +215,7 @@ public class ThrowingEnemy : MonoBehaviour , IEnemy
     {
         hitState = true;
         float xDir = playerTarget.FacingRight ? 1 : -1;
-        myRB.velocity = xDir * Vector2.right * 5 + Vector2.up * 2;
+        myRB.velocity = xDir * Vector2.right * 10 + Vector2.up * .15F;
         bounceDirection.x = xDir;
 
         yield return new WaitForSeconds(0.5f);

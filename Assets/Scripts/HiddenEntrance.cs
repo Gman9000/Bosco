@@ -15,6 +15,13 @@ public class HiddenEntrance : MonoBehaviour
 
     private void Start()
     {
+        GameObject hiddenChild = new GameObject("Hidden Child");
+        hiddenChild.transform.SetParent(transform, false);
+
+        Transform[] childs = transform.GetComponentsInChildren<Transform>();
+        foreach (Transform child in childs)
+            child.tag = "Hidden";
+
         //adjacentHiddenEntrances
         for (int i = 0; i < adjacentHiddenEntrances.Count; i++)
         {

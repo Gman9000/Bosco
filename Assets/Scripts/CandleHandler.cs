@@ -20,9 +20,8 @@ public class CandleHandler : MonoBehaviour
         if (animator.CurrentAnim == "open" && !animator.AtEnd)
         {
             CameraController.Instance.VertShake(2);
-            Player.Instance.DoPhysicsPause(.5F);
-            Player.Instance.DoInputMovePause(.5F);
-            Player.Instance.DoInputAttackPause(.5F);
+            Player.Instance.DoInputMovePause(.45F);
+            Player.Instance.DoInputAttackPause(.45F);
             Player.Instance.animator.PlayDefault();
         }
     }

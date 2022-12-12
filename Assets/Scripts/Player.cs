@@ -312,17 +312,18 @@ public class Player : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D other)
     {
-        if (other.collider.CompareTag("Hidden") && other.contacts[0].normal.y > 0)
+        if (other.transform.childCount > 0 && other.transform.GetChild(0).CompareTag("Hidden") && other.contacts[0].normal.y > 0)
         {
             Vector3 pos = transform.position;
-            pos.y = other.collider.bounds.max.y + boxCollider2D.bounds.size.y / 2.0F;
+            pos.y = other.collider.bounds.center.y + 1;
             transform.position = pos;
-        }
-
-        if (other.collider.CompareTag("Hidden") || other.collider.CompareTag("Ground")) 
-        {
             SnapToPixel();
         }
+
+        /*if (other.collider.CompareTag("Hidden") || other.collider.CompareTag("Ground")) 
+        {
+            SnapToPixel();
+        }*/
             
     }
 
