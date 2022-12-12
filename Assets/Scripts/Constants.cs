@@ -56,10 +56,10 @@ public class PlayerInput
         return (Input.GetKeyDown(KeyCode.LeftControl) || Input.GetKeyDown(KeyCode.RightControl) || Input.GetKeyDown(KeyCode.X));
     }
 
-    /*public static bool HasPressedDown()
+    public static bool HasPressedEnter()
     {
-        return (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.L));
-    }*/
+        return (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter));
+    }
 
     /*public static bool HasPressedLeft()
     {

@@ -73,25 +73,6 @@ public class Player : MonoBehaviour
 
     public bool FacingRight => transform.rotation.y == 0;
 
-
-
-
-    //[SerializeField] private float bouncyJumpTimeModifier;
-    //[SerializeField] private float bouncyJumpSpeedModifier;
-
-    //for firing the Essence Absorb bullet
-    //public GameObject bullet;
-    //public Transform firePosition;
-    //public float firingSpeed;
-    //private Vector2 lookDirection;
-    //private float lookAngle;
-    //private float shootCooldownCounter;
-    //public float shootCooldown;
-    //for escaping a squit
-    //private Vector3 escapeOffset = new Vector3(-0.5f,0.5f,0f);
-    //for the essence that is absorbed;
-    //public GameObject essence;
-
     private Vector3 checkpoint;
 
     //sfx
@@ -104,8 +85,8 @@ public class Player : MonoBehaviour
     //for groundChecks
     bool isGrounded;
     bool isHittingCeiling;
-    bool IsHittingRightWall;
-    bool IsHittingLeftWall;
+    bool isHittingRightWall;
+    bool isHittingLeftWall;
     // Start is called before the first frame update
 
     bool canAerialAttack = false;
@@ -162,16 +143,19 @@ public class Player : MonoBehaviour
         bool wasGrounded = isGrounded;
         isGrounded = boxCollider2D.IsGrounded(bottomLeftRaycast.position, bottomRightRaycast.position, this.transform.localScale.x, rayCastMagnitude);
         isHittingCeiling = boxCollider2D.IsHittingCeiling(topLeftRaycast.position, topRightRaycast.position, this.transform.localScale.x, rayCastMagnitude);
-        IsHittingRightWall = boxCollider2D.IsHittingRightWall(topRightRaycast.position, bottomRightRaycast.position, this.transform.localScale.x, rayCastMagnitude);
-        IsHittingLeftWall = boxCollider2D.IsHittingLeftWall(topLeftRaycast.position, bottomLeftRaycast.position, this.transform.localScale.x, rayCastMagnitude);
-        if (isGrounded)
+        isHittingRightWall = boxCollider2D.IsHittingRightWall(topRightRaycast.position, bottomRightRaycast.position, this.transform.localScale.x, rayCastMagnitude);
+        isHittingLeftWall = boxCollider2D.IsHittingLeftWall(topLeftRaycast.position, bottomLeftRaycast.position, this.transform.localScale.x, rayCastMagnitude);
+        if (Game.gameStarted)
         {
-            if (isGroundPounding)   // if is falling fast
+            if (isGrounded)
             {
-                CameraController.Instance.VertShake(4);          // shake screen
-                DoPhysicsPause(.6F);
-                DoInputAttackPause(.6F);
-                isGroundPounding = false;
+                if (isGroundPounding)   // if is falling fast
+                {
+                    CameraController.Instance.VertShake(4);          // shake screen
+                    DoPhysicsPause(.6F);
+                    DoInputAttackPause(.6F);
+                    isGroundPounding = false;
+                }
             }
 
             myRB.gravityScale = originalGravityScale;
@@ -202,86 +186,122 @@ public class Player : MonoBehaviour
             {
                 if (Time.time - hitTimeStamp > .15F)
                 {
-                    myRB.velocity = new Vector2(0, myRB.velocity.y);
+                    CameraController.Instance.VertShake(4);          // shake screen
+                    DoPhysicsPause(.4F);
+                    downAttackHitbox.SetActive(false);
+                    DoInputAttackPause(.4F);
+                    isGroundPounding = false;
+                }
+
+                myRB.gravityScale = originalGravityScale;
+                if (radialAttackHitbox.activeSelf)
+                {
+                    radialAttackHitbox.SetActive(false);
+                    DoPhysicsPause(.05F);
+                    animator.PlayDefault();
+                }
+                canAerialAttack = true;
+
+                if (!wasGrounded)
+                {
+                    upAttackHitbox.SetActive(false);
+                    myRB.velocity = new Vector2(myRB.velocity.x, 0);
+                    SnapToPixel();
                 }
             }
-        }
-        else
-        {
-            if (!spinAttackHitbox.activeSelf)
-                myRB.velocity = new Vector2(0, myRB.velocity.y);
 
-            if (PlayerInput.IsPressingLeft())
+
+            if (inputMovePaused)
             {
-                myRB.velocity = new Vector2(-moveSpeed, myRB.velocity.y);
-                this.transform.rotation = new Quaternion(0f, 180f, this.transform.rotation.z, this.transform.rotation.w);
-            }
-            else if (PlayerInput.IsPressingRight())
-            {
-                myRB.velocity = new Vector2(moveSpeed, myRB.velocity.y);
-                this.transform.rotation = new Quaternion(0f, 0f, this.transform.rotation.z, this.transform.rotation.w);
+                if (spinAttackHitbox.activeSelf)
+                {
+                    myRB.velocity = new Vector2(FacingRight ? 3.0F : -3.0F, myRB.velocity.y);
+                }
+                if (rightAttackHitbox.activeSelf && isGrounded)
+                {
+                    if (Time.time - hitTimeStamp > .15F)
+                    {
+                        myRB.velocity = new Vector2(0, myRB.velocity.y);
+                    }
+                }
             }
             else
             {
-                SnapToPixel();
-            }
+                if (!spinAttackHitbox.activeSelf)
+                    myRB.velocity = new Vector2(0, myRB.velocity.y);
 
-            if (PlayerInput.IsPressingDown())
-            {
-                myRB.velocity = new Vector2(0, myRB.velocity.y);
-            }
-
-            if (isGrounded && PlayerInput.HasPressedJumpKey())
-            {
-                isJumping = true;
-                jumpTimeCountdown = jumpTime;
-                myRB.velocity = new Vector2(myRB.velocity.x, jumpSpeed);
-                SoundSystem.PlaySfx(sfx_jump, 2);
-            }
-
-            if (isJumping && PlayerInput.HasHeldJumpKey())
-            {
-                if (jumpTimeCountdown > 0)
+                if (PlayerInput.IsPressingLeft())
                 {
-                    myRB.velocity = new Vector2(myRB.velocity.x, jumpSpeed);
-                    jumpTimeCountdown -= Time.deltaTime;
-                    if (isHittingCeiling)
-                    {
-                        jumpTimeCountdown = 0;
-                    }
+                    myRB.velocity = new Vector2(-moveSpeed, myRB.velocity.y);
+                    this.transform.rotation = new Quaternion(0f, 180f, this.transform.rotation.z, this.transform.rotation.w);
+                }
+                else if (PlayerInput.IsPressingRight())
+                {
+                    myRB.velocity = new Vector2(moveSpeed, myRB.velocity.y);
+                    this.transform.rotation = new Quaternion(0f, 0f, this.transform.rotation.z, this.transform.rotation.w);
                 }
                 else
+                {
+                    SnapToPixel();
+                }
+
+                if (PlayerInput.IsPressingDown())
+                {
+                    myRB.velocity = new Vector2(0, myRB.velocity.y);
+                }
+
+                if (isGrounded && PlayerInput.HasPressedJumpKey())
+                {
+                    isJumping = true;
+                    jumpTimeCountdown = jumpTime;
+                    myRB.velocity = new Vector2(myRB.velocity.x, jumpSpeed);
+                    SoundSystem.PlaySfx(sfx_jump, 2);
+                }
+
+                if (isJumping && PlayerInput.HasHeldJumpKey())
+                {
+                    if (jumpTimeCountdown > 0)
+                    {
+                        myRB.velocity = new Vector2(myRB.velocity.x, jumpSpeed);
+                        jumpTimeCountdown -= Time.deltaTime;
+                        if (isHittingCeiling)
+                        {
+                            jumpTimeCountdown = 0;
+                        }
+                    }
+                    else
+                    {
+                        isJumping = false;
+                    }
+                }
+
+
+                if (PlayerInput.HasReleasedJumpKey())
                 {
                     isJumping = false;
                 }
             }
 
 
-            if (PlayerInput.HasReleasedJumpKey())
+            AttackInputs();
+
+
+            if (PlayerInput.HasPressedResetKey())
             {
-                isJumping = false;
+                LevelManager.Instance.ResetToLastCheckPoint();
             }
+
+            if (PlayerInput.HasPressedEscapeKey())
+            {
+                if (Game.isPaused)
+                    Game.Unpause();
+                else
+                    Game.Pause();
+            }
+
+
+            Animate();
         }
-
-
-        AttackInputs();
-
-
-        if (PlayerInput.HasPressedResetKey())
-        {
-            LevelManager.Instance.ResetToLastCheckPoint();
-        }
-
-        if (PlayerInput.HasPressedEscapeKey())
-        {
-            if (Game.isPaused)
-                Game.Unpause();
-            else
-                Game.Pause();
-        }
-
-
-        Animate();
     }
 
     void SnapToPixel()
@@ -472,6 +492,7 @@ public class Player : MonoBehaviour
             case 2:
                 //Downwards attack
                 downAttackHitbox.SetActive(true);
+                hitMod = 500;//for down attacks we want the hitbox active for as long as possible
                 break;
             case 3:
                 //Spin attack
