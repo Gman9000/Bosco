@@ -2,9 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ThrowingEnemy : MonoBehaviour
+public class ThrowingEnemy : MonoBehaviour , IEnemy
 {
-    //[SerializeField] private Rigidbody2D rigidBody;      //enemy rigidBody
     private Player playerTarget;    //player character
     [SerializeField] private GameObject waypoint01;      //first waypoint
     [SerializeField] private GameObject waypoint02;      //second waypoint
@@ -20,9 +19,6 @@ public class ThrowingEnemy : MonoBehaviour
     public float fireRate;              //the amount of time between each of the enemy's shots.
     public Animator flyingAnim;
     public float deathTimer;
-    //bool isDetectingPlayer;
-    //private CircleCollider2D CircleCollider2D;
-    //private Rigidbody2D myRB;
 
     private float lastPlayerPosTime = 0;
 
@@ -32,6 +28,7 @@ public class ThrowingEnemy : MonoBehaviour
     private bool bounceRight;
 
     SpriteRenderer ren;
+    SpriteSimulator sim;
 
     public Transform projectileSpawnLocation;
 
@@ -49,10 +46,11 @@ public class ThrowingEnemy : MonoBehaviour
         currentEnemyHealth = maxEnemyHealth;
         playerTarget = Player.Instance;
         ren = GetComponentInChildren<SpriteRenderer>();
+        sim = GetComponentInChildren<SpriteSimulator>();
         myRB = GetComponent<Rigidbody2D>();
     }
 
-    void Start()
+    public void Start()
     {
         currentWaypoint = waypoint01;   //set the first waypoint.
         hitState = false;
@@ -61,7 +59,7 @@ public class ThrowingEnemy : MonoBehaviour
         bounceDirection = Vector2.zero;
         myRB.velocity = Vector2.zero;
         primeToBounce = true;
-        //StopAllCoroutines();
+        StopAllCoroutines();
     }
 
     void Update()
@@ -186,7 +184,6 @@ public class ThrowingEnemy : MonoBehaviour
 
         if (hitState)   ren.color = ren.color.a == 0 ? Color.white : new Color(0,0,0,0);
         else            ren.color = Color.white;
-
     }
 
     //enemy is hit with player attack and takes damage
@@ -201,16 +198,13 @@ public class ThrowingEnemy : MonoBehaviour
             else
                 StartCoroutine(HitState());
         }
-
     }
 
     private IEnumerator DeathState()
     {
         yield return new WaitForSeconds(0.5f);
         ResetEnemyHealth();
-        mySpawner.IsReadyToSpawn(true);
         gameObject.SetActive(false);
-        Start();
     }
 
     public void ResetEnemyHealth()

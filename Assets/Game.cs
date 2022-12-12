@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Game : MonoBehaviour
 {
+    public float publicVariable = 0;
+    public static Game Instance;
     public const float PIXEL = 1.0F / 16.0F;    
     public const float WIDTH = 160.0F;
     public const float HEIGHT = 144.0F;
@@ -21,6 +23,11 @@ public class Game : MonoBehaviour
     static private int[] scanlineSimTotal;
 
 
+    void Awake()
+    {        
+        Instance = this;
+    }
+
     void Start()
     {
         isPaused = false;
@@ -30,11 +37,13 @@ public class Game : MonoBehaviour
             scanlines[i] = new List<SpriteSimulator>();
     }
 
+    #if !UNITY_EDITOR
     void OnApplicationFocus(bool focused)
     {
         if (!focused)
             Pause();
     }
+    #endif
 
     static public void Pause()
     {
@@ -71,7 +80,7 @@ public class Game : MonoBehaviour
         for (int i = 0; i < scanlines.Length; i++)
             scanlines[i].Clear();
 
-        
+
         for (int i = 0; i < scanlineSimTotal.Length; i++)
             scanlineSimTotal[i] = 0;
         
@@ -82,14 +91,16 @@ public class Game : MonoBehaviour
 
             int scanlineIndex = Mathf.FloorToInt(y / (16.0F * PIXEL));
 
-            if (scanlineIndex > 1 && scanlineIndex < scanlines.Length && Mathf.Abs(x) < WIDTH * PIXEL / 2.1F)
+            if (scanlineIndex > 0 && scanlineIndex < scanlines.Length && Mathf.Abs(x) < WIDTH * PIXEL / 2.0F)
             {
                 scanlineSimTotal[scanlineIndex] += sim.tilevalue;
                 scanlines[scanlineIndex].Add(sim);
-                sim.Flash(true);
+                sim.SetOutOfView(false);
             }
             else
-                sim.Flash(false);                      
+            {
+                sim.SetOutOfView(true);
+            }
         }
 
         Time.timeScale = 1.0F;
@@ -108,10 +119,8 @@ public class Game : MonoBehaviour
                     scanlines[y][x].Flash((Time.frameCount) % 2 != x % 2);
                     Time.timeScale *= .95F;
                 }
-                    
             }
         }
-
     }
 
     static public void RemoveSimulatedSprite(SpriteSimulator sim)
@@ -130,5 +139,14 @@ public class Game : MonoBehaviour
             return 1;
         else
             return -1;
+    }
+
+    static public bool IsPointOnScreen(Vector2 point, float widthMargin)
+    {
+        float x = point.x - Camera.main.transform.position.x;        
+        float y = point.y - Camera.main.transform.position.y + scanlines.Length / 2.0F;
+
+        int scanlineIndex = Mathf.FloorToInt(y / (16.0F * PIXEL));
+        return scanlineIndex >= -1 && scanlineIndex <= scanlines.Length && Mathf.Abs(x) < WIDTH * PIXEL / 2.0 + widthMargin;
     }
 }

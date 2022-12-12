@@ -12,18 +12,28 @@ public class SpriteSimulator : MonoBehaviour
 
     public bool Flashed => ren.color.a > 0;
 
+    bool _outOfView = false;
+    [HideInInspector] public bool OutOfView => _outOfView;
+
     void Start()
     {
         Game.simulatedSprites.Add(this);
         ren = GetComponentInChildren<SpriteRenderer>();
+        _outOfView = false;
     }
 
     public void Flash(bool visible)
     {
-        if (visible)
-            ren.color = Color.white;
-        else
-            ren.color = new Color(0,0,0,0);
+        if (OutOfView)  return;
+
+        ren.enabled = visible;
+    }
+
+    public void SetOutOfView(bool hide)
+    {
+        _outOfView = hide;
+        
+        ren.enabled = !hide;
     }
 
     void OnDestroy()
