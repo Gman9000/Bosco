@@ -8,7 +8,6 @@ public class ThrowingEnemy : MonoBehaviour , IEnemy
     [SerializeField] private GameObject waypoint01;      //first waypoint
     [SerializeField] private GameObject waypoint02;      //second waypoint
     [SerializeField] private GameObject projectilePrefab;      //bullet prefab
-    private GameObject currentWaypoint;
     public float speed;                 //enemy speed
     public float followDistance;              //required distance between player and enemy before enemy charges
     public int maxEnemyHealth;
@@ -51,7 +50,6 @@ public class ThrowingEnemy : MonoBehaviour , IEnemy
 
     public void Start()
     {
-        currentWaypoint = waypoint01;   //set the first waypoint.
         hitState = false;
         currentEnemyHealth = maxEnemyHealth;
         bounceMultiplier = Vector2.one;     
@@ -75,6 +73,11 @@ public class ThrowingEnemy : MonoBehaviour , IEnemy
             enemyDirection.x = 1.0F;
         }
         transform.localScale = enemyDirection;
+
+        if (transform.position.x < waypoint01.transform.position.x)
+            bounceDirection = Vector3.right * 2;
+        else if (transform.position.x > waypoint02.transform.position.x)
+            bounceDirection = Vector3.left * 2;
 
         if (!hitState)
             Motion(bounceDirection);

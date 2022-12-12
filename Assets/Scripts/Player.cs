@@ -122,9 +122,6 @@ public class Player : MonoBehaviour
     void Awake()
     {
         currentHealth = maxhealth;
-        //shootCooldownCounter = 0f;
-        //essence = null;
-        //jumpTimeCountdown = jumpTime;
         myRB = GetComponent<Rigidbody2D>();
         boxCollider2D = GetComponent<BoxCollider2D>();
         //canPlay = true;
@@ -172,8 +169,8 @@ public class Player : MonoBehaviour
             if (isGroundPounding)   // if is falling fast
             {
                 CameraController.Instance.VertShake(4);          // shake screen
-                DoPhysicsPause(.4F);
-                DoInputAttackPause(.4F);
+                DoPhysicsPause(.6F);
+                DoInputAttackPause(.6F);
                 isGroundPounding = false;
             }
 
@@ -330,7 +327,11 @@ public class Player : MonoBehaviour
 
     void Animate()
     {
-        if (isGrounded)
+        
+
+        if (isHurting)
+            animator.Play(AnimMode.Looped, "hurt");
+        else if (isGrounded)
         {
             if (upAttackHitbox.activeSelf)
             {
@@ -416,6 +417,10 @@ public class Player : MonoBehaviour
             SoundSystem.PlaySfx(sfx_hurt, 3);
             
             currentHealth--;
+            DoInputMovePause(.25F);
+            DoInputAttackPause(.25F);
+            myRB.velocity = Vector2.up + (FacingRight ? Vector2.left * 5F : Vector2.right * 5F);
+
             if(currentHealth <= 0)
             {
                 //for now this is death

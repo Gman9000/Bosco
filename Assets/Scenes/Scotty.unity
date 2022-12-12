@@ -96598,5 +96598,13 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 12
       objectReference: {fileID: 0}
+    - target: {fileID: 3056626077748400874, guid: fc5ca1f9a411b6141b5e1ef2fab56489, type: 3}
+      propertyPath: animations.Array.data[13].delay
+      value: 0.03
+      objectReference: {fileID: 0}
+    - target: {fileID: 3056626077748400874, guid: fc5ca1f9a411b6141b5e1ef2fab56489, type: 3}
+      propertyPath: animations.Array.data[13].celSize.x
+      value: 24
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fc5ca1f9a411b6141b5e1ef2fab56489, type: 3}
