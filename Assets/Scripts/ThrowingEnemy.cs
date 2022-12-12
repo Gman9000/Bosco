@@ -61,7 +61,7 @@ public class ThrowingEnemy : MonoBehaviour
         bounceDirection = Vector2.zero;
         myRB.velocity = Vector2.zero;
         primeToBounce = true;
-        StopAllCoroutines();
+        //StopAllCoroutines();
     }
 
     void Update()

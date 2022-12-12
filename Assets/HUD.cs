@@ -64,8 +64,7 @@ public class HUD : MonoBehaviour
     {
         if (!Player.isHurting || Game.isPaused)
             Flash(!texts["Main Text Layer"].enabled, "Main Text Layer");
-        if (!Game.isPaused)
-            renderers["BG"].enabled = true;
+        renderers["BG"].enabled = !Game.isPaused;
     }
 
     public void Flash(bool visible, params string[] exclude)
@@ -73,6 +72,8 @@ public class HUD : MonoBehaviour
         if (flash == visible)   return;
 
         List<string> exclusions = new List<string>(exclude);
+
+        exclusions.Add("BG");
 
         flash = visible;
         foreach (SpriteRenderer ren in renderers.Values)
