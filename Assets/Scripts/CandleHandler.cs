@@ -40,7 +40,6 @@ public class CandleHandler : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             CandleCheck();
-            animator.Play(AnimMode.Hang, "open");
         }
     }
 

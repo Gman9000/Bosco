@@ -222,13 +222,8 @@ public class MeleeEnemy : MonoBehaviour
 
     private IEnumerator DeathState()
     {
-        //flyingAnim.SetTrigger("Death");
         yield return new WaitForSeconds(0.5f);
-        //flyingAnim.ResetTrigger("Death");
-        //Destroy(this.gameObject);
-        //Debug.Log("MELEE ENEMY DED");
         ResetEnemyHealth();
-        mySpawner.IsReadyToSpawn(true);
         gameObject.SetActive(false);
     }
 

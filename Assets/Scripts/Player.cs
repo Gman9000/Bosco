@@ -283,15 +283,15 @@ public class Player : MonoBehaviour
     {
         if (Time.time - hurtTimeStamp < invincibilityTime)
         {
-            animator.Ren.enabled = !animator.Ren.enabled;
+            animator.Ren.color = animator.Ren.color.a == 0 ? Color.white : new Color(0,0,0,0);
         }
         else
         {
-            animator.Ren.enabled = true;
+            animator.Ren.color = Color.white;
         }
 
         if (HUD.Instance)
-            HUD.Instance.Flash(animator.Ren.enabled, "Main Text Layer", "BG");
+            HUD.Instance.Flash(animator.Ren.color.a == 1, "Main Text Layer", "BG");
     }
 
     void OnCollisionEnter2D(Collision2D other)

@@ -200,7 +200,6 @@ public class FlyingEnemy : MonoBehaviour
         //flyingAnim.ResetTrigger("Death");
         //Destroy(this.gameObject);
         ResetEnemyHealth();
-        mySpawner.IsReadyToSpawn(true);
         gameObject.SetActive(false);
     }
 

@@ -5,45 +5,25 @@ using UnityEngine;
 public class EnemyRespawner : MonoBehaviour
 {
     public GameObject objectToSpawn;
-    private bool isReadyToRespawnEnemy;
-    // Start is called before the first frame update
-    void Awake()
-    {
 
+    private IEnemy enemyScript;
+
+    void Start()
+    {
+        objectToSpawn.SetActive(false);
+        enemyScript = objectToSpawn.GetComponent<IEnemy>();
     }
-    public void IsReadyToSpawn(bool trigger)
-    {
-        isReadyToRespawnEnemy = trigger;
-    }
-
-    /*void OnBecameVisible()
-    {
-        if (isReadyToRespawnEnemy)
-        {
-            Debug.Log("we are ready to spawn");
-        }
-    }*/
-
-    /*void OnBecameInvisible()
-    {
-        if (isReadyToRespawnEnemy)
-        {
-            Debug.Log("we are ready to spawn");
-            objectToSpawn.transform.position = transform.position;
-            objectToSpawn.SetActive(true);
-            objectToSpawn.SendMessage("Start", SendMessageOptions.DontRequireReceiver);
-        }
-    }*/
 
     void Update()
     {
-        if (isReadyToRespawnEnemy && (Mathf.Abs(Camera.main.transform.position.x - transform.position.x) > 7F
-        || Mathf.Abs(Camera.main.transform.position.y - transform.position.y) > 6F))
+        if (!Game.IsPointOnScreen(objectToSpawn.transform.position, 2))
+            objectToSpawn.SetActive(false);
+
+        if (!Game.IsPointOnScreen(transform.position, 1) && !objectToSpawn.activeSelf)
         {
-            Debug.Log("we are ready to spawn");
-            objectToSpawn.transform.position = transform.position;
             objectToSpawn.SetActive(true);
-            objectToSpawn.SendMessage("Start", SendMessageOptions.DontRequireReceiver);
+            enemyScript.Start();
+            objectToSpawn.transform.localPosition = Vector3.zero;
         }
     }
 }
