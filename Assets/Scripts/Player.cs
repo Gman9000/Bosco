@@ -156,6 +156,7 @@ public class Player : MonoBehaviour
                 {
                     CameraController.Instance.VertShake(4);          // shake screen
                     DoPhysicsPause(.4F);
+                    downAttackHitbox.SetActive(false);
                     DoInputAttackPause(.4F);
                     isGroundPounding = false;
                 }
@@ -450,6 +451,7 @@ public class Player : MonoBehaviour
             case 2:
                 //Downwards attack
                 downAttackHitbox.SetActive(true);
+                hitMod = 500;//for down attacks we want the hitbox active for as long as possible
                 break;
             case 3:
                 //Spin attack

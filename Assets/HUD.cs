@@ -5,9 +5,8 @@ using UnityEngine;
 public class HUD : MonoBehaviour
 {
     static public HUD Instance;
-
-    Dictionary<string, SpriteRenderer> renderers = new Dictionary<string, SpriteRenderer>();
-    Dictionary<string, TMPro.TMP_Text> texts = new Dictionary<string, TMPro.TMP_Text>();
+    [HideInInspector] public Dictionary<string, SpriteRenderer> renderers = new Dictionary<string, SpriteRenderer>();
+    [HideInInspector] public Dictionary<string, TMPro.TMP_Text> texts = new Dictionary<string, TMPro.TMP_Text>();
 
     bool flash = true;
 
@@ -62,9 +61,12 @@ public class HUD : MonoBehaviour
 
     void Update()
     {
-        if (!Player.isHurting || Game.isPaused)
-            Flash(!texts["Main Text Layer"].enabled, "Main Text Layer");
-        renderers["BG"].enabled = !Game.isPaused;
+        if (Game.gameStarted)
+        {
+            if (!Player.isHurting || Game.isPaused)
+                Flash(!texts["Main Text Layer"].enabled, "Main Text Layer");
+            renderers["BG"].enabled = !Game.isPaused;
+        }
     }
 
     public void Flash(bool visible, params string[] exclude)
@@ -74,6 +76,8 @@ public class HUD : MonoBehaviour
         List<string> exclusions = new List<string>(exclude);
 
         exclusions.Add("BG");
+        exclusions.Add("Title"); //this animated title might cause problems so we are excluding it
+
 
         flash = visible;
         foreach (SpriteRenderer ren in renderers.Values)

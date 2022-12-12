@@ -13,6 +13,8 @@ public class Game : MonoBehaviour
     public static int litCandlesCount = 0;
     public static int lives = 3;
     public static bool isPaused;
+    public static bool gameStarted;
+    //public GameObject TitleImage;
 
 
     static public List<SpriteSimulator> simulatedSprites = new List<SpriteSimulator>();
@@ -30,6 +32,8 @@ public class Game : MonoBehaviour
 
     void Start()
     {
+        gameStarted = false;
+        ShowTitle();
         isPaused = false;
         scanlines = new List<SpriteSimulator>[(int)Mathf.RoundToInt(HEIGHT / 16.0F)];
         scanlineSimTotal = new int[scanlines.Length];
@@ -37,14 +41,24 @@ public class Game : MonoBehaviour
             scanlines[i] = new List<SpriteSimulator>();
     }
 
-    #if !UNITY_EDITOR
+#if !UNITY_EDITOR
     void OnApplicationFocus(bool focused)
     {
         if (!focused)
             Pause();
     }
-    #endif
+#endif
+    public void ShowTitle()
+    {
+        HUD.Instance.renderers["Title"].enabled = true;
+        HUD.Write("\n\n\n\n\n\n\n\n     press enter\n       to play");
+    }
 
+    public void HideTitle()
+    {
+        HUD.Instance.renderers["Title"].enabled = false;
+        HUD.Write(null);
+    }
     static public void Pause()
     {
         if (isPaused)   return;
@@ -73,6 +87,15 @@ public class Game : MonoBehaviour
 
     void Update()
     {
+        if (!gameStarted)
+        {
+            if (PlayerInput.HasPressedEnter())
+            {
+                gameStarted = true;
+                HideTitle();
+            }
+        }
+
         if (isPaused)   return;
 
         gameTime += Time.deltaTime;
