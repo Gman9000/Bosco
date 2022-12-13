@@ -9,6 +9,8 @@ public class SoundSystem : MonoBehaviour
     public AudioClip[] defaultSong = new AudioClip[4];
     public float defaultSongLoopPoint = 0;    // in seconds
     [HideInInspector]public SoundChannel[] channels;
+
+    bool bgmMode = false;
     
     void Awake()
     {
@@ -20,8 +22,9 @@ public class SoundSystem : MonoBehaviour
 
     void Start()
     {
-        if (defaultSong[0] != null)
-            PlayBgm(defaultSong, defaultSongLoopPoint, true);
+        /*
+        if (defaultSong != null)
+            PlayBgm(defaultSong, defaultSongLoopPoint, true);*/
     }
 
     static public void PlayBgm(AudioClip[] song, float loop, bool firstPlay)
@@ -35,15 +38,58 @@ public class SoundSystem : MonoBehaviour
 
         if (loop > 0)
             Instance.StartCoroutine(Instance.LoopMusicToTime(song, loop));
+        Instance.bgmMode = true;
+    }
+
+    static public void DoFade(float volChange)
+    {
+        Instance.StartCoroutine(Instance.FadeOut(1.0F - volChange));
+    }
+
+    IEnumerator FadeOut(float volChange)
+    {
+        if (!bgmMode)
+            yield break;
+        
+        while (bgmMode && channels[0].src.volume > .1)
+        {
+            foreach (SoundChannel channel in Instance.channels) 
+            {
+                channel.src.volume *= volChange;
+            }
+            yield return new WaitForSeconds(.8F);
+        }
+
+        foreach (SoundChannel channel in Instance.channels) 
+        {
+            channel.src.Stop();
+            channel.src.volume = .5F;
+        }
+
+        bgmMode = false;
+
+        yield break;
     }
 
     
     IEnumerator LoopMusicToTime(AudioClip[] song, float loop)
     {
-        yield return new WaitUntil(() => SoundSystem.songPositionTime >= song[0].length - .01F/* || !Instance.channels[0].src.isPlaying*/);
+        yield return new WaitUntil(() => SoundSystem.songPositionTime >= song[0].length - .01F || (!Instance.channels[0].src.isPlaying && bgmMode));
         for (int i = 0; i < 4; i++)
             PlayBgm(song, loop, false);
         yield break;
+    }
+
+    static public void Pause()
+    {
+        foreach (SoundChannel channel in Instance.channels)
+            channel.src.Pause();
+    }
+
+    static public void Unpause()
+    {
+        foreach (SoundChannel channel in Instance.channels)
+            channel.src.UnPause();
     }
 
     static public void PlaySfx(AudioClip sound, int channelIndex)

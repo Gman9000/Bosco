@@ -67,6 +67,11 @@ public class HUD : MonoBehaviour
                 Flash(!texts["Main Text Layer"].enabled, "Main Text Layer");
             renderers["BG"].enabled = !Game.isPaused;
         }
+        else
+        {
+            Flash(false, "Main Text Layer", "Title", "Bosco Sprite", "Credits");
+            renderers["BG"].enabled = false;
+        }
     }
 
     public void Flash(bool visible, params string[] exclude)

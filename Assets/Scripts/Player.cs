@@ -39,6 +39,8 @@ public class Player : MonoBehaviour
     private bool inputMovePaused = false;
     private bool inputAttackPaused = false;
 
+    private bool tbc = false;
+
 
     //for attacking
     //[SerializeField] private GameObject leftAttackHitbox;
@@ -114,6 +116,11 @@ public class Player : MonoBehaviour
 
     void Start()
     {
+        inputAttackPaused = false;
+        inputMovePaused = false;
+
+        
+        boxCollider2D.enabled = true;
         isGroundPounding = false;
         myRB.gravityScale = originalGravityScale;
         myRB.velocity = Vector2.zero;
@@ -139,23 +146,35 @@ public class Player : MonoBehaviour
 
     void Update()
     {
+        if (!Game.gameStarted || tbc)  return;
+        
+        if (PlayerInput.HasPressedStart())
+        {
+            if (Game.isPaused)
+                Game.Unpause();
+            else
+                Game.Pause();
+        }
+
+        if (Game.isPaused)  return;
+
+
+        
 
         bool wasGrounded = isGrounded;
         isGrounded = boxCollider2D.IsGrounded(bottomLeftRaycast.position, bottomRightRaycast.position, this.transform.localScale.x, rayCastMagnitude);
         isHittingCeiling = boxCollider2D.IsHittingCeiling(topLeftRaycast.position, topRightRaycast.position, this.transform.localScale.x, rayCastMagnitude);
         isHittingRightWall = boxCollider2D.IsHittingRightWall(topRightRaycast.position, bottomRightRaycast.position, this.transform.localScale.x, rayCastMagnitude);
         isHittingLeftWall = boxCollider2D.IsHittingLeftWall(topLeftRaycast.position, bottomLeftRaycast.position, this.transform.localScale.x, rayCastMagnitude);
-        if (Game.gameStarted)
+        if (isGrounded)
         {
-            if (isGrounded)
+            if (isGroundPounding)   // if is falling fast
             {
-                if (isGroundPounding)   // if is falling fast
-                {
-                    CameraController.Instance.VertShake(4);          // shake screen
-                    DoPhysicsPause(.6F);
-                    DoInputAttackPause(.6F);
-                    isGroundPounding = false;
-                }
+                CameraController.Instance.VertShake(4);          // shake screen
+                DoPhysicsPause(.4F);
+                downAttackHitbox.SetActive(false);
+                DoInputAttackPause(.4F);
+                isGroundPounding = false;
             }
 
             myRB.gravityScale = originalGravityScale;
@@ -186,123 +205,75 @@ public class Player : MonoBehaviour
             {
                 if (Time.time - hitTimeStamp > .15F)
                 {
-                    CameraController.Instance.VertShake(4);          // shake screen
-                    DoPhysicsPause(.4F);
-                    downAttackHitbox.SetActive(false);
-                    DoInputAttackPause(.4F);
-                    isGroundPounding = false;
-                }
-
-                myRB.gravityScale = originalGravityScale;
-                if (radialAttackHitbox.activeSelf)
-                {
-                    radialAttackHitbox.SetActive(false);
-                    DoPhysicsPause(.05F);
-                    animator.PlayDefault();
-                }
-                canAerialAttack = true;
-
-                if (!wasGrounded)
-                {
-                    upAttackHitbox.SetActive(false);
-                    myRB.velocity = new Vector2(myRB.velocity.x, 0);
-                    SnapToPixel();
+                    myRB.velocity = new Vector2(0, myRB.velocity.y);
                 }
             }
+        }
+        else
+        {
+            if (!spinAttackHitbox.activeSelf)
+                myRB.velocity = new Vector2(0, myRB.velocity.y);
 
-
-            if (inputMovePaused)
+            if (PlayerInput.IsPressingLeft())
             {
-                if (spinAttackHitbox.activeSelf)
-                {
-                    myRB.velocity = new Vector2(FacingRight ? 3.0F : -3.0F, myRB.velocity.y);
-                }
-                if (rightAttackHitbox.activeSelf && isGrounded)
-                {
-                    if (Time.time - hitTimeStamp > .15F)
-                    {
-                        myRB.velocity = new Vector2(0, myRB.velocity.y);
-                    }
-                }
+                myRB.velocity = new Vector2(-moveSpeed, myRB.velocity.y);
+                this.transform.rotation = new Quaternion(0f, 180f, this.transform.rotation.z, this.transform.rotation.w);
+            }
+            else if (PlayerInput.IsPressingRight())
+            {
+                myRB.velocity = new Vector2(moveSpeed, myRB.velocity.y);
+                this.transform.rotation = new Quaternion(0f, 0f, this.transform.rotation.z, this.transform.rotation.w);
             }
             else
             {
-                if (!spinAttackHitbox.activeSelf)
-                    myRB.velocity = new Vector2(0, myRB.velocity.y);
+                SnapToPixel();
+            }
 
-                if (PlayerInput.IsPressingLeft())
+            if (PlayerInput.IsPressingDown())
+            {
+                myRB.velocity = new Vector2(0, myRB.velocity.y);
+            }
+
+            if (isGrounded && PlayerInput.HasPressedA())
+            {
+                isJumping = true;
+                jumpTimeCountdown = jumpTime;
+                myRB.velocity = new Vector2(myRB.velocity.x, jumpSpeed);
+                SoundSystem.PlaySfx(sfx_jump, 2);
+            }
+
+            if (isJumping && PlayerInput.HasHeldA())
+            {
+                if (jumpTimeCountdown > 0)
                 {
-                    myRB.velocity = new Vector2(-moveSpeed, myRB.velocity.y);
-                    this.transform.rotation = new Quaternion(0f, 180f, this.transform.rotation.z, this.transform.rotation.w);
-                }
-                else if (PlayerInput.IsPressingRight())
-                {
-                    myRB.velocity = new Vector2(moveSpeed, myRB.velocity.y);
-                    this.transform.rotation = new Quaternion(0f, 0f, this.transform.rotation.z, this.transform.rotation.w);
+                    myRB.velocity = new Vector2(myRB.velocity.x, jumpSpeed);
+                    jumpTimeCountdown -= Time.deltaTime;
+                    if (isHittingCeiling)
+                    {
+                        jumpTimeCountdown = 0;
+                    }
                 }
                 else
-                {
-                    SnapToPixel();
-                }
-
-                if (PlayerInput.IsPressingDown())
-                {
-                    myRB.velocity = new Vector2(0, myRB.velocity.y);
-                }
-
-                if (isGrounded && PlayerInput.HasPressedJumpKey())
-                {
-                    isJumping = true;
-                    jumpTimeCountdown = jumpTime;
-                    myRB.velocity = new Vector2(myRB.velocity.x, jumpSpeed);
-                    SoundSystem.PlaySfx(sfx_jump, 2);
-                }
-
-                if (isJumping && PlayerInput.HasHeldJumpKey())
-                {
-                    if (jumpTimeCountdown > 0)
-                    {
-                        myRB.velocity = new Vector2(myRB.velocity.x, jumpSpeed);
-                        jumpTimeCountdown -= Time.deltaTime;
-                        if (isHittingCeiling)
-                        {
-                            jumpTimeCountdown = 0;
-                        }
-                    }
-                    else
-                    {
-                        isJumping = false;
-                    }
-                }
-
-
-                if (PlayerInput.HasReleasedJumpKey())
                 {
                     isJumping = false;
                 }
             }
 
 
-            AttackInputs();
-
-
-            if (PlayerInput.HasPressedResetKey())
+            if (PlayerInput.HasReleasedA())
             {
-                LevelManager.Instance.ResetToLastCheckPoint();
+                isJumping = false;
             }
-
-            if (PlayerInput.HasPressedEscapeKey())
-            {
-                if (Game.isPaused)
-                    Game.Unpause();
-                else
-                    Game.Pause();
-            }
-
-
-            Animate();
         }
+
+
+        AttackInputs();
+
+
+        if (currentHealth > 0)
+            Animate();
     }
+
 
     void SnapToPixel()
     {
@@ -335,13 +306,7 @@ public class Player : MonoBehaviour
             pos.y = other.collider.bounds.center.y + 1;
             transform.position = pos;
             SnapToPixel();
-        }
-
-        /*if (other.collider.CompareTag("Hidden") || other.collider.CompareTag("Ground")) 
-        {
-            SnapToPixel();
-        }*/
-            
+        }            
     }
 
 
@@ -349,7 +314,7 @@ public class Player : MonoBehaviour
     {
         
 
-        if (isHurting)
+        if (isHurting && inputMovePaused && inputAttackPaused)
             animator.Play(AnimMode.Looped, "hurt");
         else if (isGrounded)
         {
@@ -431,7 +396,7 @@ public class Player : MonoBehaviour
 
     public void TakeDamage()
     {
-        if (Time.time - hurtTimeStamp >= invincibilityTime)
+        if (Time.time - hurtTimeStamp >= invincibilityTime && currentHealth > 0)
         {
             hurtTimeStamp = Time.time;
             SoundSystem.PlaySfx(sfx_hurt, 3);
@@ -455,7 +420,7 @@ public class Player : MonoBehaviour
         if (Time.time - comboTimeStamp > hitComboWindow)
             consecutiveHits = 0;
 
-        if (PlayerInput.HasPressedAttackKey())
+        if (PlayerInput.HasPressedB())
         {
             if (Time.time - hitTimeStamp >= hitCooldown && !PhysicsPaused && !inputAttackPaused)
             {
@@ -548,14 +513,24 @@ public class Player : MonoBehaviour
                 break;
         }
         isHitting = false;                          //set isHitting to false.
-
     }
+
 
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Reset"))
         {
             this.gameObject.transform.position = checkpoint;
+        }
+
+        if (other.CompareTag("Scene"))
+        {
+            DoInputMovePause(100);
+            DoInputAttackPause(100);
+            DoPhysicsPause(100);
+            tbc = true;
+            Knaz.DoScene();
+            animator.PlayDefault();
         }
     }
 
@@ -574,21 +549,39 @@ public class Player : MonoBehaviour
             TakeDamage();
             //also take knockback
         }
+        if (other.gameObject.CompareTag("Door") && PlayerInput.IsPressingUp() && CandleHandler.canUseDoor)
+        {
+            transform.position = new Vector3(199.5F, 100, transform.position.z);
+        }
     }
 
     private IEnumerator Die()
     {
-        //animatorController.SetBool("playerDed", true);
-        yield return new WaitForSeconds(deathTime);   //wait the established amount of seconds.
+        animator.Play(AnimMode.Looped, "hurt");
+
+        hurtTimeStamp = 0;
+        DoInputAttackPause(3);
+        DoInputMovePause(3);
+
+        yield return new WaitForSeconds(.44F);
+        animator.Play(AnimMode.Hang, "die");
+        
+        SoundSystem.Pause();
+
+        yield return new WaitForSeconds(2.5F);   //wait the established amount of seconds.
 
         if (Game.lives > 0)
         {
             Game.lives--;
             ResetToLastCheckPoint();
+            SoundSystem.Unpause();
+            SoundSystem.PlayBgm(SoundSystem.Instance.defaultSong, SoundSystem.Instance.defaultSongLoopPoint, false);
         }
         else
         {
-            // game over
+            HUD.Write("\n\n\n\n\n      GAME OVER");
+            yield return new WaitForSeconds(4.5F);
+            Game.Reset();
         }
 
     }

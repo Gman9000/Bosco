@@ -57,7 +57,6 @@ public class SpriteAnimator : MonoBehaviour
             Sprite[] frames = new Sprite[count];
             for (int i = 0; i < count; i++)
             {
-                //Vector2 pivot = new Vector2(Mathf.Floor(cel.x / 2.0F) / cel.x, Mathf.Floor(cel.y / 2.0F) / cel.y);
                 Vector2 pivot = Vector2.zero;
                 pivot.x += _ren.sprite.pivot.x / data.celSize.x;
                 pivot.y += _ren.sprite.pivot.y / data.celSize.y;
@@ -77,7 +76,8 @@ public class SpriteAnimator : MonoBehaviour
 
     IEnumerator Animate(string animName, AnimMode mode)
     {
-        _renObj.transform.localPosition = new Vector2(data[animName].offset.x * Game.PIXEL, data[animName].offset.y * Game.PIXEL);
+        if (_renObj.transform != this.transform)
+            _renObj.transform.localPosition = new Vector2(data[animName].offset.x * Game.PIXEL, data[animName].offset.y * Game.PIXEL);
 
         do
         {

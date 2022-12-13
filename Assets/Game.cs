@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Game : MonoBehaviour
 {
@@ -11,7 +12,7 @@ public class Game : MonoBehaviour
     public const float HEIGHT = 144.0F;
     public static float gameTime = 0.0F;    // the time counter used for game logic and custom movement functions
     public static int litCandlesCount = 0;
-    public static int lives = 3;
+    public static int lives = 1;
     public static bool isPaused;
     public static bool gameStarted;
     //public GameObject TitleImage;
@@ -23,6 +24,8 @@ public class Game : MonoBehaviour
     static private List<SpriteSimulator>[] scanlines;
 
     static private int[] scanlineSimTotal;
+
+    bool transitiontoGame = false;
 
 
     void Awake()
@@ -39,19 +42,26 @@ public class Game : MonoBehaviour
         scanlineSimTotal = new int[scanlines.Length];
         for (int i = 0; i < scanlines.Length; i++)
             scanlines[i] = new List<SpriteSimulator>();
+        transitiontoGame = false;
+        
+    }
+
+    static public void Reset()
+    {
+        SceneManager.LoadScene("Scotty");
     }
 
 #if !UNITY_EDITOR
     void OnApplicationFocus(bool focused)
     {
-        if (!focused)
+        if (!focused && gameStarted)
             Pause();
     }
 #endif
     public void ShowTitle()
     {
         HUD.Instance.renderers["Title"].enabled = true;
-        HUD.Write("\n\n\n\n\n\n\n\n     press enter\n       to play");
+        HUD.Write("\n\n\n\n\n\n\n     PRESS START!");
     }
 
     public void HideTitle()
@@ -69,7 +79,8 @@ public class Game : MonoBehaviour
         }
 
         Time.timeScale = 0;        
-        HUD.Write("\n      -paused-");
+        HUD.Write("\n\n\n\n\n      -paused-\n\n (Press R to reset)");
+        SoundSystem.Pause();
     }
 
     static public void Unpause()
@@ -83,20 +94,84 @@ public class Game : MonoBehaviour
 
         Time.timeScale = 1.0F;
         HUD.Write(null);
+        SoundSystem.Unpause();
+    }
+
+    IEnumerator GameGo()
+    {
+        HUD.Instance.texts["Credits"].gameObject.SetActive(false);
+
+        HUD.Instance.texts["Main Text Layer"].text = "\n\n\n\n\n\n\n      LET'S GO!!";
+
+        for (int i = 0; i < 16; i++)
+        {
+            HUD.Instance.texts["Main Text Layer"].enabled = !HUD.Instance.texts["Main Text Layer"].enabled;
+            yield return new WaitForSeconds(.044F);
+        }
+
+        HUD.Instance.texts["Main Text Layer"].enabled = false;
+        
+
+        yield return new WaitForSeconds(.15F);
+
+
+        HUD.Instance.renderers["Bosco Sprite"].GetComponentInChildren<SpriteAnimator>().Play(AnimMode.Looped, "run");
+        while (Mathf.Abs(HUD.Instance.renderers["Bosco Sprite"].transform.localPosition.x) < WIDTH * PIXEL * .75F)
+        {
+            HUD.Instance.renderers["Bosco Sprite"].transform.position += Vector3.right * PIXEL * 4;
+            yield return new WaitForFixedUpdate();
+        }
+
+        HUD.Instance.renderers["Bosco Sprite"].gameObject.SetActive(false);
+        yield return new WaitForSeconds(1);
+
+        gameStarted = true;
+        SoundSystem.PlayBgm(SoundSystem.Instance.defaultSong, SoundSystem.Instance.defaultSongLoopPoint, true);
+        HideTitle();
+        yield break;
+    }
+
+    void FixedUpdate()
+    {
+        if (Player.Instance.transform.position.x > 100)
+        {
+            SoundSystem.DoFade(.01F);
+        }
     }
 
     void Update()
     {
-        if (!gameStarted)
+        if (!gameStarted && !transitiontoGame)
         {
-            if (PlayerInput.HasPressedEnter())
+            if (PlayerInput.HasPressedStart())
             {
-                gameStarted = true;
-                HideTitle();
+                StartCoroutine(GameGo());   
+                transitiontoGame = true;             
             }
+            HUD.Instance.texts["Main Text Layer"].enabled = Time.time % 1F > .5F;
+
+            string[] credit = new[]{
+                "2022 (c) Idea Guy Interactive",
+                "Audio & Design by Scotty Rich",
+                " Coded by Granville Jones Jr.",
+                "  Background Art by Emily Yi",
+                " Sprites by Daniel Hernandez",
+            };
+
+            HUD.Instance.texts["Credits"].text = credit[(int)(Time.time / 3) % 5];
+
+            return;
         }
 
-        if (isPaused)   return;
+        if (isPaused)
+        {            
+            if (PlayerInput.HasPressedSelect() )
+            {
+                Player.Instance.ResetToLastCheckPoint();
+                Unpause();
+            }
+            return;
+        }
 
         gameTime += Time.deltaTime;
 
@@ -164,12 +239,13 @@ public class Game : MonoBehaviour
             return -1;
     }
 
-    static public bool IsPointOnScreen(Vector2 point, float widthMargin)
+    static public bool IsPointOnScreen(Vector2 point, float widthMargin, bool ignoreUp = false)
     {
         float x = point.x - Camera.main.transform.position.x;        
         float y = point.y - Camera.main.transform.position.y + scanlines.Length / 2.0F;
 
         int scanlineIndex = Mathf.FloorToInt(y / (16.0F * PIXEL));
-        return scanlineIndex >= -1 && scanlineIndex <= scanlines.Length && Mathf.Abs(x) < WIDTH * PIXEL / 2.0 + widthMargin;
+        
+        return scanlineIndex >= -1 && (scanlineIndex <= scanlines.Length || ignoreUp) && Mathf.Abs(x) < WIDTH * PIXEL / 2.0 + widthMargin;
     }
 }

@@ -17,7 +17,10 @@ public class Projectile : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        Destroy(this.gameObject, 10);
+        if (!Game.IsPointOnScreen(transform.position, 2, true))
+        {
+            Destroy(gameObject);
+        }
     }
 
     public void SetDirectionAndVelocity(Vector3 playerDirection)
@@ -32,23 +35,10 @@ public class Projectile : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             Player.Instance.TakeDamage();
-            Debug.Log("We have damaged the player");
             Destroy(this.gameObject);
-            //collision.gameObject.GetComponent<PlayerMovement>().DamagePlayer();
         }
-        /*if (collision.gameObject.GetComponent<Collider2D>().CompareTag("Ground"))
-        {
-            Destroy(this.gameObject);
-        }*/
-
-
     }
-
-    void OnBecameInvisible()
-    {
-        Destroy(this.gameObject);
-    }
-
+    
     public void AssignTarget(GameObject target)
     {
 

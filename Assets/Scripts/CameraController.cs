@@ -38,6 +38,8 @@ public class CameraController : MonoBehaviour
 
     void Update()
     {
+        if (!Game.gameStarted)  return;
+        
         if (shakeCoroutine == null)
         {
             CalcMovePos();

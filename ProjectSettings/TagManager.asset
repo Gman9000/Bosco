@@ -16,6 +16,7 @@ TagManager:
   - ChainReaction
   - EnemyMelee
   - PlayerTarget
+  - Scene
   layers:
   - Default
   - TransparentFX
