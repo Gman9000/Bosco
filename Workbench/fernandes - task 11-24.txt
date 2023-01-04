@@ -1,0 +1,63 @@
+!!JAM STARTS 9:10PM BST / 7:10PM EST!!
+
+
+##Fernandes task list: November 24, 2020##
+
+[before jam]
+
+rough sketch a redesign of MacFlare
+- make him as cute as humanly possible
+- add a curved sword (scimtar)
+- keep in mind the sprite will be 16x16
+
+(if time) sketch 3 enemy designs
+- think kirby style enemies, but with armor
+- short demons with armor
+- enemies should by 
+
+
+[phase 1: player and enemies]
+
+(note, the frame spec is the minimum needed. add more if you want)
+
+MacFlare
+- special: the player sprite has a ball body. fire animation will be added in-engine
+- Pallete #1: Player
+- size: 16x16
+- Body (ball) is yellow
+- animations x 8 -
+	> walk (3-5 frames, meta knight ref.png:"Walk")
+	> jump (3 frames{anticipation, jump up, falling down}, meta knight ref.png:"Jump + fall")
+	> slash side 1 (2-5 frames, meta knight ref.png:"Slash 1")
+	> slash side 2 (2-5 frames, meta knight ref.png:"Slash 2")
+	> ground pound (2 frames{anticpation, drop}, a fast heroic thrust of his sword into the ground)
+	> slash up (2-5 frames, like side slashes but facing upward)
+	> duck (1 frame)
+	> hurt (2 frames{just hit, tumble}, meta knight ref.png:"Hit")
+
+Chuckit (enemy)
+- skips back and forth, chucks rocks at you (movement ref: poppy bro sr.)
+- design is up to you. just remember "demons with armor"
+- size: 16x16
+- Palette #2/3: Enemy palette
+- animations x 2
+	> skip (2 frames{left foot, right foot}, poppy bro sr ref.png)
+	> toss (3 frames{anticipation, throw, return}, poppy bro sr ref.png)
+
+Zat (enemy)
+- Flying enemy that tries to move over you and drop daggers
+- design is up to you. just remember "demons with armor"
+- size: 16x16
+- Pallete #2/3: Enemy palette
+- animations x 2
+	> fly (2 frames)
+	> throw (3 frames{anticipation, throw down, return}, throws a series of daggers with it's wing/arm depending on the design you pick)
+
+Spiteknight (enemy)
+- If it sees you, it goes nuts and starts attacking with a melee weapon
+- design is up to you. just remember "demons with armor"
+- size: 16x16
+- Palette #2/3: Enemy palette
+- animations x 2
+	> shuffle (2-3 frames, walking back and forth without lifting their feet)
+	> fury (3-5 frames, running to one side while whipping the weapon around like crazy)
