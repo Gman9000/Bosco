@@ -16,6 +16,7 @@ TagManager:
   - ChainReaction
   - EnemyMelee
   - PlayerTarget
+  - TwoWayPlatform
   layers:
   - Default
   - TransparentFX
@@ -25,7 +26,7 @@ TagManager:
   - UI
   - Ground
   - Player
-  - 
+  - TwoWayPlatform
   - EnemyMelee
   - EnemyThrowing
   - EnemyFlying

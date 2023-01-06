@@ -170,12 +170,13 @@ public class Player : MonoBehaviour
                 }
                 canAerialAttack = true;
 
-                if (!wasGrounded)
+                /*if (!wasGrounded)
                 {
+                    //temporarily commented this out because it was messing with the upslash through the twoway platform it doesn't seem to affect anything else so far.
                     upAttackHitbox.SetActive(false);
                     myRB.velocity = new Vector2(myRB.velocity.x, 0);
                     SnapToPixel();
-                }
+                }*/
             }
 
 
@@ -218,7 +219,7 @@ public class Player : MonoBehaviour
                     myRB.velocity = new Vector2(0, myRB.velocity.y);
                 }
 
-                if (isGrounded && PlayerInput.HasPressedJumpKey())
+                if (isGrounded && PlayerInput.HasPressedJumpKey() && !PlayerInput.IsPressingDown())
                 {
                     isJumping = true;
                     jumpTimeCountdown = jumpTime;
@@ -304,7 +305,7 @@ public class Player : MonoBehaviour
             transform.position = pos;
         }
 
-        if (other.collider.CompareTag("Hidden") || other.collider.CompareTag("Ground")) 
+        if (other.collider.CompareTag("Hidden") || other.collider.CompareTag("Ground") || other.collider.CompareTag("TwoWayPlatform")) 
         {
             SnapToPixel();
         }
