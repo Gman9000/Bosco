@@ -60,3 +60,6 @@ TagManager:
   - name: Objects
     uniqueID: 2374411673
     locked: 0
+  - name: Overlay
+    uniqueID: 4187782507
+    locked: 0

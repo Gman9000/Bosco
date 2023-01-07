@@ -29,6 +29,9 @@ public class SoundSystem : MonoBehaviour
 
     static public void PlayBgm(AudioClip[] song, float loop, bool firstPlay)
     {
+        if (song == null || song.Length < 4)   return;
+
+
         for (int i = 0; i < 4; i++)
         {
             Instance.channels[i].PlayBgm(song[i]);

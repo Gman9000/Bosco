@@ -1,0 +1,17 @@
+Mac the Wisp
+- special: the player sprite has a ball body. fire animation will be added in-engine
+- special: the sword will be a separate sprite that uses the same palette as fire
+- Palletes: ???
+- size: 16x16
+- Body (ball) is yellow
+- animations x 8 -
+	> walk (3-5 frames, meta knight ref.png:"Walk")
+	> jump (3 frames{anticipation, jump up, falling down}, meta knight ref.png:"Jump + fall")
+	> slash side 1 (2-5 frames, meta knight ref.png:"Slash 1")
+	> slash side 2 (2-5 frames, meta knight ref.png:"Slash 2")
+	> ground pound (2 frames{anticpation, drop}, a fast heroic thrust of his sword into the ground)
+	> slash up (2-5 frames, like side slashes but facing upward)
+	> spin slash (2 frames{spin(rotated 90), spin(rotated 45)}, sword kirby ref.png:spin)
+	> duck (1 frame)
+	> hurt (2 frames{just hit, tumble}, meta knight ref.png:"Hit")
+	> die ()
