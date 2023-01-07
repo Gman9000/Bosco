@@ -5,7 +5,7 @@ using UnityEngine;
 public class LightSource : MonoBehaviour
 {
     [HideInInspector]public bool lit = false;
-    [HideInInspector]public float strength = 3.0F;
+    public float strength = 3.0F;
 
     void Start()
     {

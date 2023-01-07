@@ -20,47 +20,57 @@ public class DarkHandler : MonoBehaviour
 
     void FixedUpdate()
     {
-        Vector3 topLeft, bottomRight;
+        Vector3 topRight, bottomLeft;
 
-        topLeft = bottomRight = Camera.main.transform.position;
-        topLeft += Vector3.up * Screen.height / 2;
-        topLeft += Vector3.left * Screen.width / 2;
-        bottomRight += Vector3.down * Screen.height / 2;
-        bottomRight += Vector3.right * Screen.width / 2;
+        topRight = bottomLeft = Camera.main.transform.position;
+        topRight += Vector3.up * Screen.height / 2;
+        topRight += Vector3.right * Screen.width / 2;
+        bottomLeft += Vector3.down * Screen.height / 2;
+        bottomLeft += Vector3.left * Screen.width / 2;
 
-        Vector3Int topLeftCell = darkTiles.WorldToCell(topLeft);
-        Vector3Int bottomRightCell = darkTiles.WorldToCell(bottomRight);
+        Vector3Int topRightCell = darkTiles.WorldToCell(topRight);
+        Vector3Int bottomLeftCell = darkTiles.WorldToCell(bottomLeft);
 
-        /*for (int x = topLeftCell.x; x <= bottomRightCell.x; x++)
-            for (int y = topLeftCell.y; y <= bottomRightCell.y; y++)
-                darkTiles.SetTile(new Vector3Int(x, y, 0), darknessTile);*/
+        for (int x = bottomLeftCell.x; x <= topRightCell.x; x++)
+            for (int y = bottomLeftCell.y; y <= topRightCell.y; y++)
+                darkTiles.SetTile(new Vector3Int(x, y, 0), darknessTile);
 
 
-                NOTE : // the solution is that it needs to be bottom left and top right
-                // not bottom right and top left. down is negative, remember infinite loops abound
+              
 
         foreach (LightSource light in lights)
         {
             Vector3 lightOrigin = light.transform.position;
             
-            topLeft = bottomRight = lightOrigin;
+            topRight = bottomLeft = lightOrigin;
 
-            topLeft += Vector3.left * light.strength / 2;
-            topLeft += Vector3.up * light.strength / 2;
-            bottomRight += Vector3.right * light.strength / 2;
-            bottomRight += Vector3.down * light.strength / 2;
+            topRight += Vector3.up * light.strength / 2;
+            topRight += Vector3.right * light.strength / 2;
+                        
+            bottomLeft += Vector3.down * light.strength / 2;
+            bottomLeft += Vector3.left * light.strength / 2;
 
-            topLeftCell = darkTiles.WorldToCell(topLeft);
-            bottomRightCell = darkTiles.WorldToCell(bottomRight);
+            topRightCell = darkTiles.WorldToCell(topRight);
+            bottomLeftCell = darkTiles.WorldToCell(bottomLeft);
 
-            Debug.Log("x =" + topLeftCell.x + " < " +  bottomRightCell.x);
-            Debug.Log("y =" + topLeftCell.y + " < " +  bottomRightCell.y);
+            Vector3Int lightOriginTile = darkTiles.WorldToCell(lightOrigin);
 
-            for (int x = topLeftCell.x; x <= bottomRightCell.x; x++)
-                for (int y = topLeftCell.y; y <= bottomRightCell.y; y++)
+            // TODO: strength sometimes spits out squares and not circles
+
+            for (int x = bottomLeftCell.x; x <= topRightCell.x; x++)
+                for (int y = bottomLeftCell.y; y <= topRightCell.y; y++)
                 {
-                    darkTiles.SetTile(new Vector3Int(x, y, 0), null);
-                    Debug.Log(x + "  ,   " + y);
+                    float a = x - lightOriginTile.x;
+                    float b = y - lightOriginTile.y;
+
+                    float distance = Mathf.Sqrt(a * a + b * b);
+                    float hyp = (light.strength / 2) * Mathf.Sqrt(2);
+
+                    /*if (x == topRightCell.x && y == topRightCell.y)
+                        Debug.Log(distance);*/
+
+                    if (distance <= hyp / 2)
+                        darkTiles.SetTile(new Vector3Int(x, y, 0), null);
                 }
 
             // TODO: iterate through everything between the two tile coordinates defined above
