@@ -7,7 +7,13 @@ public class Candle : MonoBehaviour
     private bool isLit;
     GameObject flameObj = null;
 
-    
+    LightSource lightSrc;
+
+    void Awake()
+    {
+        lightSrc = GetComponent<LightSource>();
+    }
+
     void Start()
     {
         isLit = false;
@@ -24,6 +30,7 @@ public class Candle : MonoBehaviour
         if (isLit)  return;
         Game.litCandlesCount++;
         isLit = true;
+        lightSrc.Light(true);
         if (flameObj)
             flameObj.SetActive(true);
     }

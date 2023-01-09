@@ -60,14 +60,20 @@ public class Game : MonoBehaviour
 #endif
     public void ShowTitle()
     {
-        HUD.Instance.renderers["Title"].enabled = true;
-        HUD.Write("\n\n\n\n\n\n\n     PRESS START!");
+        if (HUD.Instance)
+        {
+            HUD.Instance.renderers["Title"].enabled = true;
+            HUD.Write("\n\n\n\n\n\n\n     PRESS START!");
+        }
     }
 
     public void HideTitle()
     {
-        HUD.Instance.renderers["Title"].enabled = false;
-        HUD.Write(null);
+        if (HUD.Instance)
+        {
+            HUD.Instance.renderers["Title"].enabled = false;
+            HUD.Write(null);
+        }
     }
     static public void Pause()
     {
@@ -99,30 +105,36 @@ public class Game : MonoBehaviour
 
     IEnumerator GameGo()
     {
-        HUD.Instance.texts["Credits"].gameObject.SetActive(false);
-
-        HUD.Instance.texts["Main Text Layer"].text = "\n\n\n\n\n\n\n      LET'S GO!!";
-
-        for (int i = 0; i < 16; i++)
+        if (HUD.Instance)
         {
-            HUD.Instance.texts["Main Text Layer"].enabled = !HUD.Instance.texts["Main Text Layer"].enabled;
-            yield return new WaitForSeconds(.044F);
-        }
-
-        HUD.Instance.texts["Main Text Layer"].enabled = false;
+            HUD.Instance.texts["Credits"].gameObject.SetActive(false);
+            HUD.Instance.texts["Main Text Layer"].text = "\n\n\n\n\n\n\n      LET'S GO!!";
         
+
+            for (int i = 0; i < 16; i++)
+            {
+                HUD.Instance.texts["Main Text Layer"].enabled = !HUD.Instance.texts["Main Text Layer"].enabled;
+                yield return new WaitForSeconds(.044F);
+            }
+
+            HUD.Instance.texts["Main Text Layer"].enabled = false;
+        }
 
         yield return new WaitForSeconds(.15F);
 
 
-        HUD.Instance.renderers["Bosco Sprite"].GetComponentInChildren<SpriteAnimator>().Play(AnimMode.Looped, "run");
-        while (Mathf.Abs(HUD.Instance.renderers["Bosco Sprite"].transform.localPosition.x) < WIDTH * PIXEL * .75F)
+        if (HUD.Instance)
         {
-            HUD.Instance.renderers["Bosco Sprite"].transform.position += Vector3.right * PIXEL * 4;
-            yield return new WaitForFixedUpdate();
-        }
+            HUD.Instance.renderers["Bosco Sprite"].GetComponentInChildren<SpriteAnimator>().Play(AnimMode.Looped, "run");
+            while (Mathf.Abs(HUD.Instance.renderers["Bosco Sprite"].transform.localPosition.x) < WIDTH * PIXEL * .75F)
+            {
+                HUD.Instance.renderers["Bosco Sprite"].transform.position += Vector3.right * PIXEL * 4;
+                yield return new WaitForFixedUpdate();
+            }
 
-        HUD.Instance.renderers["Bosco Sprite"].gameObject.SetActive(false);
+            if (HUD.Instance)
+                HUD.Instance.renderers["Bosco Sprite"].gameObject.SetActive(false);
+        }
         yield return new WaitForSeconds(1);
 
         gameStarted = true;
@@ -148,7 +160,8 @@ public class Game : MonoBehaviour
                 StartCoroutine(GameGo());   
                 transitiontoGame = true;             
             }
-            HUD.Instance.texts["Main Text Layer"].enabled = Time.time % 1F > .5F;
+            if (HUD.Instance)
+                HUD.Instance.texts["Main Text Layer"].enabled = Time.time % 1F > .5F;
 
             string[] credit = new[]{
                 "2022 (c) Idea Guy Interactive",
@@ -158,7 +171,8 @@ public class Game : MonoBehaviour
                 " Sprites by Daniel Hernandez",
             };
 
-            HUD.Instance.texts["Credits"].text = credit[(int)(Time.time / 3) % 5];
+            if (HUD.Instance)
+                HUD.Instance.texts["Credits"].text = credit[(int)(Time.time / 3) % 5];
 
             return;
         }
