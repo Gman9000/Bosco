@@ -79,6 +79,9 @@ public class CameraController : MonoBehaviour
         {
             moveTo += Vector2.up * (playerPos.y - followRect.yMin);
         }
+
+        moveTo.x = Mathf.Round(moveTo.x / Game.PIXEL) * Game.PIXEL;
+        moveTo.y = Mathf.Round(moveTo.y / Game.PIXEL) * Game.PIXEL;
     }
 
     public void HorShake(int pixels)

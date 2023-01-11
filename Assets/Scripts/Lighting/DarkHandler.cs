@@ -24,10 +24,10 @@ public class DarkHandler : MonoBehaviour
         Vector3 topRight, bottomLeft;
 
         topRight = bottomLeft = Camera.main.transform.position;
-        topRight += Vector3.up * Screen.height / 2;
-        topRight += Vector3.right * Screen.width / 2;
-        bottomLeft += Vector3.down * Screen.height / 2;
-        bottomLeft += Vector3.left * Screen.width / 2;
+        topRight += Vector3.up * 11;
+        topRight += Vector3.right * 16;
+        bottomLeft += Vector3.down * 11;
+        bottomLeft += Vector3.left * 16;
 
         Vector3Int topRightCell = darkTiles.WorldToCell(topRight);
         Vector3Int bottomLeftCell = darkTiles.WorldToCell(bottomLeft);

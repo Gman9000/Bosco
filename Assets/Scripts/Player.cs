@@ -170,7 +170,7 @@ public class Player : MonoBehaviour
         {
             if (isGroundPounding)   // if is falling fast
             {
-                CameraController.Instance.VertShake(4);          // shake screen
+                CameraController.Instance.VertShake(6);          // shake screen
                 DoPhysicsPause(.4F);
                 downAttackHitbox.SetActive(false);
                 DoInputAttackPause(.4F);
@@ -436,7 +436,7 @@ public class Player : MonoBehaviour
 
         isHitting = true;       //set isHitting to true.
 
-        float hitMod = 1.0F;
+        float hitLengthMod = 1.0F;
 
         upAttackHitbox.SetActive(false);
         downAttackHitbox.SetActive(false);
@@ -450,20 +450,20 @@ public class Player : MonoBehaviour
                 // Upwards attack
                 upAttackHitbox.SetActive(true);
                 if (!isGrounded)
-                    hitMod = 1.2F;
+                    hitLengthMod = 1.2F;
                 else
-                    hitMod = .85F;
+                    hitLengthMod = .85F;
                 break;
             case 2:
                 //Downwards attack
                 downAttackHitbox.SetActive(true);
-                hitMod = 500;//for down attacks we want the hitbox active for as long as possible
+                hitLengthMod = 500;//for down attacks we want the hitbox active for as long as possible
                 break;
             case 3:
                 //Spin attack
                 //take the leftAttackHitBox and turn that into the spin attack that hits both the left and the right of the player
                 spinAttackHitbox.SetActive(true);
-                hitMod = 2;
+                hitLengthMod = 2;
                 break;
             case 4:
                 //Right attack
@@ -473,7 +473,7 @@ public class Player : MonoBehaviour
             case 5:
                 //radial attack
                 radialAttackHitbox.SetActive(true);
-                hitMod = 2;
+                hitLengthMod = 1F;
                 break;
             default:
                 Debug.Log("AN ERROR HAS OCCURRED WHILE TRYING TO ATTACK");
@@ -483,7 +483,7 @@ public class Player : MonoBehaviour
 
 
 
-        yield return new WaitForSeconds(hitTime * hitMod);   //wait the established amount of seconds.
+        yield return new WaitForSeconds(hitTime * hitLengthMod);   //wait the established amount of seconds.
 
         switch (hitBoxIndex)
         {
@@ -508,7 +508,7 @@ public class Player : MonoBehaviour
                 radialAttackHitbox.SetActive(false);
                 break;
             default:
-                Debug.Log("AN ERROR HAS OCCURRED WHILE TRYING TO ATTACK");
+                Debug.LogError("AN ERROR HAS OCCURRED WHILE TRYING TO ATTACK");
                 // Statements to Execute if No Case Matches
                 break;
         }
@@ -686,7 +686,7 @@ public class Player : MonoBehaviour
                 myRB.velocity = Vector3.down * 38;
                 DoInputAttackPause(.5F);
                 isGroundPounding = true;
-                myRB.gravityScale = 0;
+                myRB.gravityScale = 30;
                 if (hitCoroutine != null)
                     StopCoroutine(hitCoroutine);
                 hitCoroutine = StartCoroutine(Hit(2));
