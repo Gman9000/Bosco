@@ -34,7 +34,7 @@ public class PassThroughPlatform : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (playerOnPlatform && PlayerInput.IsPressingDown() && PlayerInput.HasPressedJumpKey())
+        if (playerOnPlatform && PlayerInput.IsPressingDown() && PlayerInput.HasPressedA())
         {
             Physics2D.IgnoreCollision(Player.Instance.gameObject.GetComponent<Collider2D>(), theCollider, true);
             //theCollider.enabled = false;
