@@ -15,6 +15,7 @@ public class ThrowingEnemy : MonoBehaviour , IEnemy
     private bool hitState = false;      //is the enemy's invincibility frames currently active
     private bool isShooting = false;    //is the enemy currently shooting.
     public float fireRate;              //the amount of time between each of the enemy's shots.
+    public Animator flyingAnim;
     public float deathTimer;
 
     private float lastPlayerPosTime = 0;

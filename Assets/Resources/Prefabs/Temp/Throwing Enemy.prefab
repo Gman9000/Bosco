@@ -139,6 +139,7 @@ GameObject:
   - component: {fileID: 4140285411552809951}
   - component: {fileID: 4140285411552809948}
   - component: {fileID: 4140285411552809949}
+  - component: {fileID: 4140285411552809945}
   - component: {fileID: 5834388622870113481}
   m_Layer: 10
   m_Name: Throwing Enemy Character
@@ -274,15 +275,34 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   waypoint01: {fileID: 4140285410680150282}
   waypoint02: {fileID: 4140285412238923900}
-  projectilePrefab: {fileID: 735789301461741650, guid: c85bc8f3337efbd499fe2def6685262c, type: 3}
+  projectilePrefab: {fileID: 735789301461741650, guid: fde6966a8373a5b4aa5593adba6a71b4, type: 3}
   speed: 2.5
   followDistance: 5
   maxEnemyHealth: 2
   fireRate: 2
-  flyingAnim: {fileID: 0}
+  flyingAnim: {fileID: 4140285411552809945}
   deathTimer: 0
   projectileSpawnLocation: {fileID: 4140285412478915679}
   mySpawner: {fileID: 4140285411251426401}
+--- !u!95 &4140285411552809945
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4140285411552809939}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!114 &5834388622870113481
 MonoBehaviour:
   m_ObjectHideFlags: 0
