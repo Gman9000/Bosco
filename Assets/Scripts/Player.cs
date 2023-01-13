@@ -167,6 +167,8 @@ public class Player : MonoBehaviour
         {
             if (myRB.velocity.y <= 0)
                 isGrounded = true;
+            if (isGrounded && PlayerInput.IsPressingDown() && PlayerInput.HasPressedA())    // make shift fallthrough
+                isGrounded = false;
         }
         else
         {
@@ -203,7 +205,6 @@ public class Player : MonoBehaviour
                 myRB.velocity = new Vector2(myRB.velocity.x, 0);   
                 SnapToPixel();             
             }
-            
         }
 
 
