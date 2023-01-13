@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class Game : MonoBehaviour
 {
-    public float publicVariable = 0;
+    public bool doTitle = false;
     public static Game Instance;
     public const float PIXEL = 1.0F / 16.0F;    
     public const float WIDTH = 160.0F;
@@ -35,14 +35,24 @@ public class Game : MonoBehaviour
 
     void Start()
     {
-        gameStarted = false;
-        ShowTitle();
+        if (doTitle)
+        {
+            gameStarted = false;
+            ShowTitle();
+            transitiontoGame = false;
+        }
+        else
+        {
+            gameStarted = true;
+            HideTitle();
+        }
+
         isPaused = false;
         scanlines = new List<SpriteSimulator>[(int)Mathf.RoundToInt(HEIGHT / 16.0F)];
         scanlineSimTotal = new int[scanlines.Length];
         for (int i = 0; i < scanlines.Length; i++)
             scanlines[i] = new List<SpriteSimulator>();
-        transitiontoGame = false;
+        
         
     }
 
@@ -72,6 +82,8 @@ public class Game : MonoBehaviour
         if (HUD.Instance)
         {
             HUD.Instance.renderers["Title"].enabled = false;
+            HUD.Instance.texts["Credits"].gameObject.SetActive(false);
+            HUD.Instance.renderers["Bosco Sprite"].enabled = false;
             HUD.Write(null);
         }
     }

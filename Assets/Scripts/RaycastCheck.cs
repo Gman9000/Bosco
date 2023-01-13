@@ -4,15 +4,21 @@ using UnityEngine;
 
 public static class RaycastChecks
 {
-    public static bool IsGrounded(this BoxCollider2D collider, Vector2 leftRaycast, Vector2 rightRaycast, float playerScale, float rayCastMagnitude)
+    public static string IsGrounded(this BoxCollider2D collider, Vector2 leftRaycast, Vector2 rightRaycast, float playerScale, float rayCastMagnitude)
     {
         //scale of player is same on x and y
         int layerMask = LayerMask.GetMask("Ground", "Hidden", "TwoWayPlatform");
 
         Debug.DrawRay(new Vector2(leftRaycast.x, leftRaycast.y), rayCastMagnitude * (collider.size.x / 2 * playerScale) * Vector2.down, Color.green, Time.fixedDeltaTime);
         Debug.DrawRay(new Vector2(rightRaycast.x, rightRaycast.y), rayCastMagnitude * (collider.size.x / 2 * playerScale) * Vector2.down, Color.green, Time.fixedDeltaTime);
-        return Physics2D.Raycast(new Vector2(leftRaycast.x, leftRaycast.y), Vector2.down, rayCastMagnitude * (collider.size.x / 2 * playerScale), layerMask) ||
-               Physics2D.Raycast(new Vector2(rightRaycast.x, rightRaycast.y), Vector2.down, rayCastMagnitude * (collider.size.x / 2 * playerScale), layerMask);
+        RaycastHit2D leftRight = Physics2D.Raycast(new Vector2(leftRaycast.x, leftRaycast.y), Vector2.down, rayCastMagnitude * (collider.size.x / 2 * playerScale), layerMask);
+        RaycastHit2D rightLeft = Physics2D.Raycast(new Vector2(rightRaycast.x, rightRaycast.y), Vector2.down, rayCastMagnitude * (collider.size.x / 2 * playerScale), layerMask);
+        if (leftRight)
+            return LayerMask.LayerToName(leftRight.collider.gameObject.layer);
+        else if (rightLeft)
+            return LayerMask.LayerToName(rightLeft.collider.gameObject.layer);
+        else
+            return null;
     }
     public static bool IsHittingCeiling(this BoxCollider2D collider, Vector2 leftRaycast, Vector2 rightRaycast, float playerScale, float rayCastMagnitude)
     {
@@ -27,7 +33,7 @@ public static class RaycastChecks
     public static bool IsHittingRightWall(this BoxCollider2D collider, Vector2 leftRaycast, Vector2 rightRaycast, float playerScale, float rayCastMagnitude)
     {
         //scale of player is same on x and y
-        int layerMask = LayerMask.GetMask("Ground", "Hidden", "TwoWayPlatform");
+        int layerMask = LayerMask.GetMask("Ground", "Hidden");
 
         Debug.DrawRay(new Vector2(leftRaycast.x, leftRaycast.y), rayCastMagnitude * (collider.size.x / 2 * playerScale) * Vector2.right, Color.blue, Time.fixedDeltaTime);
         Debug.DrawRay(new Vector2(rightRaycast.x, rightRaycast.y), rayCastMagnitude * (collider.size.x / 2 * playerScale) * Vector2.right, Color.blue, Time.fixedDeltaTime);
@@ -38,7 +44,7 @@ public static class RaycastChecks
     public static bool IsHittingLeftWall(this BoxCollider2D collider, Vector2 leftRaycast, Vector2 rightRaycast, float playerScale, float rayCastMagnitude)
     {
         //scale of player is same on x and y
-        int layerMask = LayerMask.GetMask("Ground", "Hidden", "TwoWayPlatform");
+        int layerMask = LayerMask.GetMask("Ground", "Hidden");
 
         Debug.DrawRay(new Vector2(leftRaycast.x, leftRaycast.y), rayCastMagnitude * (collider.size.x / 2 * playerScale) * Vector2.left, Color.blue, Time.fixedDeltaTime);
         Debug.DrawRay(new Vector2(rightRaycast.x, rightRaycast.y), rayCastMagnitude * (collider.size.x / 2 * playerScale) * Vector2.left, Color.blue, Time.fixedDeltaTime);

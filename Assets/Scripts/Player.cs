@@ -162,7 +162,17 @@ public class Player : MonoBehaviour
         
 
         bool wasGrounded = isGrounded;
-        isGrounded = boxCollider2D.IsGrounded(bottomLeftRaycast.position, bottomRightRaycast.position, this.transform.localScale.x, rayCastMagnitude);
+        string groundingLayer = boxCollider2D.IsGrounded(bottomLeftRaycast.position, bottomRightRaycast.position, this.transform.localScale.x, rayCastMagnitude);
+        if (groundingLayer == "TwoWayPlatform")
+        {
+            if (myRB.velocity.y <= 0)
+                isGrounded = true;
+        }
+        else
+        {
+            isGrounded = groundingLayer != null;
+        }
+
         isHittingCeiling = boxCollider2D.IsHittingCeiling(topLeftRaycast.position, topRightRaycast.position, this.transform.localScale.x, rayCastMagnitude);
         isHittingRightWall = boxCollider2D.IsHittingRightWall(topRightRaycast.position, bottomRightRaycast.position, this.transform.localScale.x, rayCastMagnitude);
         isHittingLeftWall = boxCollider2D.IsHittingLeftWall(topLeftRaycast.position, bottomLeftRaycast.position, this.transform.localScale.x, rayCastMagnitude);
@@ -186,15 +196,14 @@ public class Player : MonoBehaviour
             }
             canAerialAttack = true;
 
-            /*
-            if (!wasGrounded)
-            {
-                //temporarily commented this out because it was messing with the upslash through the twoway platform it doesn't seem to affect anything else so far.
+            
+            if (!wasGrounded && myRB.velocity.y < 0)    // check if moving down
+            {                
                 upAttackHitbox.SetActive(false);
                 myRB.velocity = new Vector2(myRB.velocity.x, 0);   
                 SnapToPixel();             
             }
-            */
+            
         }
 
 
