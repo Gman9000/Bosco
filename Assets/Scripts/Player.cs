@@ -186,15 +186,18 @@ public class Player : MonoBehaviour
             }
             canAerialAttack = true;
 
+            /*
             if (!wasGrounded)
             {
+                //temporarily commented this out because it was messing with the upslash through the twoway platform it doesn't seem to affect anything else so far.
                 upAttackHitbox.SetActive(false);
                 myRB.velocity = new Vector2(myRB.velocity.x, 0);   
                 SnapToPixel();             
             }
+            */
         }
-        
-        
+
+
         if (inputMovePaused)
         {
             if (spinAttackHitbox.activeSelf)
