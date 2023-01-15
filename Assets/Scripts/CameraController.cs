@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
+    static public Rect viewRect;
     static public CameraController Instance;
     private Rigidbody2D theRB;
 
@@ -29,7 +30,6 @@ public class CameraController : MonoBehaviour
 
     void Start()
     {
-        //halfRect = new Rect(0, 0, followRect.width / 2.0F, followRect.height / 2.0F);
         theRB = GetComponent<Rigidbody2D>();
         moveTo = Vector2.zero;
         followRect = new Rect(Vector2.zero, followRectSize);
@@ -38,6 +38,9 @@ public class CameraController : MonoBehaviour
 
     void Update()
     {
+        Vector2 point = Camera.main.ViewportToWorldPoint(Vector3.zero);
+        viewRect = new Rect(point.x, point.y, Game.WIDTH_WORLD, Game.HEIGHT_WORLD);
+
         if (!Game.gameStarted)  return;
         
         if (shakeCoroutine == null)

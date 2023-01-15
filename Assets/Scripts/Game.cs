@@ -10,6 +10,8 @@ public class Game : MonoBehaviour
     public const float PIXEL = 1.0F / 16.0F;    
     public const float WIDTH = 160.0F;
     public const float HEIGHT = 144.0F;
+    public const float WIDTH_WORLD = WIDTH * PIXEL;
+    public const float HEIGHT_WORLD = HEIGHT * PIXEL;
     public static float gameTime = 0.0F;    // the time counter used for game logic and custom movement functions
     public static int litCandlesCount = 0;
     public static int lives = 1;
@@ -44,6 +46,7 @@ public class Game : MonoBehaviour
         else
         {
             gameStarted = true;
+            HUD.Instance.renderers["Bosco Sprite"].gameObject.SetActive(false);
             HideTitle();
         }
 
