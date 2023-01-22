@@ -145,7 +145,6 @@ public abstract class PawnEnemy : Pawn
     {
         if (other.CompareTag("PlayerTarget") && !Invincible)
         {
-            Debug.Log("Ass");
             Player.Instance.TakeDamage();
         }
     }

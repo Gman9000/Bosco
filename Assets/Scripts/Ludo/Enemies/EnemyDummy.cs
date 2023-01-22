@@ -4,15 +4,10 @@ using UnityEngine;
 
 public class EnemyDummy : PawnEnemy
 {
-    override public void Start()
-    {
-        base.Start();
-    }
     override protected void UpdateState0()
     {
         base.UpdateState0();
-        if (anim.CurrentAnim != anim.defaultAnimation)
-            anim.PlayDefault();
+        anim.PlayDefault();
     }
     override protected void OnHit()
     {

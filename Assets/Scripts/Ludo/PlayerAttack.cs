@@ -35,6 +35,5 @@ public class PlayerAttack : MonoBehaviour
 
         hitDirectionModified = Game.RestrictDiagonals(hitDirectionModified);
         enemyCollider.GetComponentInChildren<PawnEnemy>().TakeDamage(hitDirectionModified);
-        Debug.Log("Butt");
     }
 }

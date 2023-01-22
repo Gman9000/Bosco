@@ -10,7 +10,7 @@ public class Game : MonoBehaviour
     \*=============*/
     
     public const float PIXEL = 1.0F / 16.0F;    
-    public const float WIDTH = 160.0F;
+    public const float WIDTH = 256.0F;
     public const float HEIGHT = 144.0F;
     public const float WIDTH_WORLD = WIDTH * PIXEL;
     public const float HEIGHT_WORLD = HEIGHT * PIXEL;
@@ -305,7 +305,6 @@ public class Game : MonoBehaviour
         modifiedDirection.x = Mathf.Round(modifiedDirection.x);
         modifiedDirection.y = Mathf.Round(modifiedDirection.y);
         modifiedDirection /= subdivision;
-        Debug.Log(modifiedDirection.Degrees());
         return modifiedDirection;
     }
 }

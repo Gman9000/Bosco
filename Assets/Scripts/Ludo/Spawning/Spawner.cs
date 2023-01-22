@@ -13,6 +13,7 @@ public class Spawner : MonoBehaviour
     private Rect worldBounds;
     private GameObject spawnedEntity = null;
     private Pawn entityPawn = null;
+    private SpriteAnimator entityAnimator = null;
 
     private bool outOfView = true;
 
@@ -41,6 +42,8 @@ public class Spawner : MonoBehaviour
         spawnedEntity = Instantiate(spawnObject);
         spawnedEntity.SetActive(false);
         spawnedEntity.transform.position = transform.position;
+
+        entityAnimator = spawnedEntity.GetComponentInChildren<SpriteAnimator>();
         entityPawn = spawnedEntity.GetComponent<Pawn>();
         if (entityPawn != null)
             entityPawn.SetBounds(worldBounds);
@@ -76,6 +79,8 @@ public class Spawner : MonoBehaviour
     public void Despawn()
     {
         spawnedEntity.SetActive(false);
+        if (entityAnimator != null)
+            entityAnimator.Reset();
     }
 
     public void TrySpawn()
@@ -83,8 +88,8 @@ public class Spawner : MonoBehaviour
         if (!spawnedEntity.activeSelf)  // check dead
         {
             spawnedEntity.transform.position = transform.position;
-            entityPawn.Start();
             spawnedEntity.SetActive(true);
+            entityPawn.Start();            
         }
     }
 }

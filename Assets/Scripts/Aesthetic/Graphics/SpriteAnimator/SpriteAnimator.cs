@@ -22,10 +22,10 @@ public class SpriteAnimator : MonoBehaviour
 
     private List<string> _animQueue = new List<string>();
 
-    private string _currentAnim = "none";
+    private string _currentAnim;
     public string CurrentAnim => _currentAnim;
 
-    private int _currentFrame = 0;
+    private int _currentFrame;
     public int CurrentFrame => _currentFrame;
 
     public int CurrentFrameCount => _frames[CurrentAnim].Length;
@@ -34,14 +34,16 @@ public class SpriteAnimator : MonoBehaviour
 
     public System.Action onEnd = () => {};
 
-    private AnimMode _currentMode = AnimMode.None;
+    private AnimMode _currentMode;
 
-    private Coroutine _animatorCoroutine = null;
+    private Coroutine _animatorCoroutine;
 
     void Awake()
     {
         _renderer = GetComponentInChildren<SpriteRenderer>();
         _renObj = _renderer.gameObject;
+
+        Reset();
 
 
         foreach (SpriteAnimation data in animations)
@@ -71,6 +73,16 @@ public class SpriteAnimator : MonoBehaviour
             Play(AnimMode.Looped, defaultAnimation);
 
         getDefault = () => defaultAnimation;
+    }
+
+    public void Reset()
+    {
+        StopAllCoroutines();
+        _animatorCoroutine = null;
+        _currentAnim = "none";
+        _animQueue = new List<string>();
+        _currentFrame = 0;
+        _currentMode = AnimMode.None;
     }
 
 
@@ -143,6 +155,8 @@ public class SpriteAnimator : MonoBehaviour
 
     public void Play(AnimMode mode, string animName, System.Action onEnd = null)
     {
+        if (!gameObject.activeSelf || !Renderer.gameObject.activeSelf)
+            return;
         if (_currentAnim.ToLower() == animName.ToLower())
             return;
         if (onEnd == null)
