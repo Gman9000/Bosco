@@ -4,7 +4,7 @@ using UnityEngine;
 
 public static class RaycastChecks
 {
-    public static string IsGrounded(this BoxCollider2D collider, Vector2 leftRaycast, Vector2 rightRaycast, float rayCastMagnitude)
+    public static HitInfo IsGrounded(this BoxCollider2D collider, Vector2 leftRaycast, Vector2 rightRaycast, float rayCastMagnitude)
     {
         //scale of player is same on x and y
         int layerMask = LayerMask.GetMask("Ground", "Hidden", "TwoWayPlatform");
@@ -14,14 +14,14 @@ public static class RaycastChecks
         RaycastHit2D leftRight = Physics2D.Raycast(new Vector2(leftRaycast.x, leftRaycast.y), Vector2.down, rayCastMagnitude * (collider.size.x / 2), layerMask);
         RaycastHit2D rightLeft = Physics2D.Raycast(new Vector2(rightRaycast.x, rightRaycast.y), Vector2.down, rayCastMagnitude * (collider.size.x / 2), layerMask);
         if (leftRight)
-            return LayerMask.LayerToName(leftRight.collider.gameObject.layer);
+            return new HitInfo(LayerMask.LayerToName(leftRight.collider.gameObject.layer), leftRight);
         else if (rightLeft)
-            return LayerMask.LayerToName(rightLeft.collider.gameObject.layer);
+            return new HitInfo(LayerMask.LayerToName(rightLeft.collider.gameObject.layer), rightLeft);
         else
-            return null;
+            return new HitInfo();
     }
 
-    public static string IsGrounded(this BoxCollider2D collider, float raycastMagntiude)
+    public static HitInfo IsGrounded(this BoxCollider2D collider, float raycastMagntiude)
     {
         Vector2 leftCast = collider.bounds.center;
         Vector2 rightCast = collider.bounds.center;

@@ -164,8 +164,8 @@ public class Player : Pawn
         
 
         bool wasGrounded = isGrounded;
-        string groundingLayer = boxCollider2D.IsGrounded(bottomLeftRaycast.position, bottomRightRaycast.position, rayCastMagnitude);
-        if (groundingLayer == "TwoWayPlatform")
+        HitInfo groundingLayer = boxCollider2D.IsGrounded(bottomLeftRaycast.position, bottomRightRaycast.position, rayCastMagnitude);
+        if (groundingLayer.layerName == "TwoWayPlatform")
         {
             if (body.velocity.y <= 0)
                 isGrounded = true;
@@ -174,7 +174,7 @@ public class Player : Pawn
         }
         else
         {
-            isGrounded = groundingLayer != null;
+            isGrounded = groundingLayer.layerName != null;
         }
 
         isHittingCeiling = boxCollider2D.IsHittingCeiling(topLeftRaycast.position, topRightRaycast.position, this.transform.localScale.x, rayCastMagnitude);

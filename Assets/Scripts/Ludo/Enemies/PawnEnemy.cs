@@ -24,6 +24,7 @@ public abstract class PawnEnemy : Pawn
 
     // ENGINEERING VARIABLES
     private int currentState;                           // which user-identifiable state this enemy pawn is in (e.g. about to throw attack vs hopping around)
+    protected float InvProgress => invTimer.Progress;
     private Timer invTimer;
     public bool Invincible => invTimer != null && !invTimer.Done;
     protected Player playerTarget => Player.Instance;
@@ -51,8 +52,20 @@ public abstract class PawnEnemy : Pawn
         // PRE-UPDATE LOGIC
         sprite.flipX = facingDirection < 0;
         
-        _isGrounded = boxCollider2D.IsGrounded(.8F) != null;
-        
+        HitInfo groundCheck = boxCollider2D.IsGrounded(.8F);
+        _isGrounded = groundCheck.layerName != null;
+
+        if (_isGrounded)
+        {
+            float yDiff = transform.position.y - boxCollider2D.bounds.min.y;
+            float contactY = groundCheck.hit.point.y + yDiff;
+            body.MovePosition(new Vector2(transform.position.x, contactY));
+            Debug.Log(groundCheck.hit.point);
+        }
+        else
+        {
+            body.MovePosition((Vector2)transform.position + Vector2.down * fixedGravity);
+        }        
 
         if (currentHealth <= 0)
         {
@@ -92,8 +105,8 @@ public abstract class PawnEnemy : Pawn
 
         currentKnockback = force;
         facingDirection = (int)Mathf.Sign(-force.x);
-        if (_isGrounded)
-            currentKnockback = Vector2.right * facingDirection;
+        if (_isGrounded && force.y < 0)
+            currentKnockback.y = 0;
         
         positionWhenHit = transform.position;
 
@@ -122,7 +135,6 @@ public abstract class PawnEnemy : Pawn
 
     protected virtual void UpdateKnockback(Vector2 moveToPoint)
     {
-        // TODO: CODE UNTESTED
         body.MovePosition(positionWhenHit + (moveToPoint - positionWhenHit) * invTimer.Progress);
     }
 
