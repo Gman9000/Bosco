@@ -2,21 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyTosser : Pawn , IEnemy
+public class EnemyTosser : PawnEnemy
 {
     public float fireRate;                                      //the amount of time between each of the enemy's shots.
     public float deathTimer;
     [SerializeField] private GameObject projectilePrefab;       //bullet prefab
     public float speed;                                         //enemy speed
     public float followDistance;                                //required distance between player and enemy before enemy charges
-    public int maxEnemyHealth;
-
-
-
-
-    private Player playerTarget;                                //player character    
-    private int currentEnemyHealth;                             //health of enemy unit
-    private bool hitState = false;                              //is the enemy's invincibility frames currently active
     private bool isShooting = false;                            //is the enemy currently shooting.
     
 
@@ -24,40 +16,25 @@ public class EnemyTosser : Pawn , IEnemy
 
     //for bouncing back and forth
     private bool bounceRight;
-
-    SpriteRenderer ren;
-    SpriteSimulator sim;
-
     public Transform projectileSpawnLocation;
 
     private Vector2 bounceMultiplier = Vector2.one;
 
-    private Rigidbody2D myRB;
-
     bool primeToBounce = true;
-
-    private void Awake()
-    {
-        playerTarget = Player.Instance;
-        ren = GetComponentInChildren<SpriteRenderer>();
-        sim = GetComponentInChildren<SpriteSimulator>();
-        myRB = GetComponent<Rigidbody2D>();
-    }
-
     override public void Start()
     {
+        base.Start();        
         bounceRight = false;
-        hitState = false;
         isShooting = false;
-        currentEnemyHealth = maxEnemyHealth;
+        currentHealth = maxHealth;
         bounceMultiplier = Vector2.one;     
         bounceDirection = Vector2.zero;
-        myRB.velocity = Vector2.zero;
+        body.velocity = Vector2.zero;
         primeToBounce = true;
         StopAllCoroutines();
     }
 
-    void Update()
+    override protected void UpdateState0()
     {
         Vector3 enemyDirection = transform.localScale;
 
@@ -77,7 +54,7 @@ public class EnemyTosser : Pawn , IEnemy
         else if (transform.position.x >= spawnerBounds.xMax)
             bounceDirection = Vector3.left * 2;
 
-        if (!hitState)
+        if (Invincible)
             Motion(bounceDirection);
 
         if (!isShooting)
@@ -94,32 +71,7 @@ public class EnemyTosser : Pawn , IEnemy
             directionOfTravel.y * speed * Time.deltaTime,
             directionOfTravel.z * speed * Time.deltaTime,
             Space.World);
-    }
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.CompareTag("PlayerAttack"))
-        {
-            TakeDamage();
-        }
-
-        if (other.CompareTag("PlayerTarget") && !hitState)
-        {
-            Player.Instance.TakeDamage();
-        }
-    }
-
-    private void OnTriggerStay2D(Collider2D other)
-    {
-        if (other.CompareTag("PlayerAttack"))
-        {
-            TakeDamage();
-        }
-
-        if (other.CompareTag("PlayerTarget") && !hitState)
-        {
-            Player.Instance.TakeDamage();
-        }
-    }
+    }    
 
     void OnCollisionEnter2D(Collision2D other)
     {
@@ -150,24 +102,20 @@ public class EnemyTosser : Pawn , IEnemy
         bounceMultiplier.y = 1.0F;
 
         bounceDirection = (bounceRight ? Vector3.right : Vector3.left) * 2 * bounceMultiplier.x;
-        myRB.velocity = Vector3.up * 3 * bounceMultiplier.y;
+        body.velocity = Vector3.up * 3 * bounceMultiplier.y;
     }
 
     private IEnumerator ShootProjectile()
     {
         Vector3 vectorToTarget;
-        //acquire the player's current position and rotate towards it, then instantiate a bullet prefab with said rotation.
-        if (playerTarget.transform.position.x > transform.position.x)
-        {
-            vectorToTarget = (2 * Vector3.up) + Vector3.right;
-        }
-        else
-        {
-            vectorToTarget = (2 * Vector3.up) + Vector3.left;
 
-        }
-        GameObject projectileGO = Instantiate(projectilePrefab, projectileSpawnLocation.position, Quaternion.identity) as GameObject;
-        projectileGO.GetComponent<Projectile>().SetDirectionAndVelocity(vectorToTarget * 1.5F);
+        //acquire the player's current position and rotate towards it, then instantiate a bullet prefab with said rotation.
+        vectorToTarget = (3 * Vector3.up) + Vector3.right / 2;
+        if (playerTarget.transform.position.x < transform.position.x)
+            vectorToTarget.x = -vectorToTarget.x;
+
+        GameObject projectile = Instantiate(projectilePrefab, projectileSpawnLocation.position, Quaternion.identity) as GameObject;
+        projectile.GetComponent<Projectile>().SetDirectionAndVelocity(vectorToTarget * 1.5F);
 
 
         //set is shooting to true so that the enemy doesn't shoot again, until coroutine is finished.
@@ -179,50 +127,16 @@ public class EnemyTosser : Pawn , IEnemy
 
     }
 
-    void FixedUpdate()
-    {
-
-        if (hitState)   ren.color = ren.color.a == 0 ? Color.white : new Color(0,0,0,0);
-        else            ren.color = Color.white;
-    }
-
-    //enemy is hit with player attack and takes damage
-    public void TakeDamage()
-    {
-        if (!hitState)
-        {
-            currentEnemyHealth--;
-
-            if (currentEnemyHealth == 0) 
-                StartCoroutine(DeathState()); //subject to change.
-            else
-                StartCoroutine(HitState());
-        }
-    }
-
-    private IEnumerator DeathState()
-    {
-        yield return new WaitForSeconds(0.5f);
-        ResetEnemyHealth();
-        gameObject.SetActive(false);
-    }
-
-    public void ResetEnemyHealth()
-    {
-        currentEnemyHealth = maxEnemyHealth;
-    }
-    //activate invincibilitie frames for enemy upon being hit
-    private IEnumerator HitState()
-    {
-        hitState = true;
+    /*//activate invincibilitie frames for enemy upon being hit
+    private IEnumerator invincible()
+    {        
         float xDir = playerTarget.FacingRight ? 1 : -1;
-        myRB.velocity = xDir * Vector2.right * 10 + Vector2.up * .15F;
+        body.velocity = xDir * Vector2.right * 10 + Vector2.up * .15F;
         bounceDirection.x = xDir;
 
         yield return new WaitForSeconds(0.5f);
         primeToBounce = true;
-        myRB.velocity = Vector2.zero;
+        body.velocity = Vector2.zero;
 
-        hitState = false;
-    }
+    }*/
 }

@@ -13,8 +13,8 @@ public class SpriteAnimator : MonoBehaviour
     [HideInInspector]public int indexOffset = 0;
 
     private Dictionary<string, Sprite[]> _frames = new Dictionary<string, Sprite[]>();
-    private SpriteRenderer _ren;
-    public SpriteRenderer Ren => _ren;
+    private SpriteRenderer _renderer;
+    public SpriteRenderer Renderer => _renderer;
 
     public GetAnim getDefault;
 
@@ -40,8 +40,8 @@ public class SpriteAnimator : MonoBehaviour
 
     void Awake()
     {
-        _ren = GetComponentInChildren<SpriteRenderer>();
-        _renObj = _ren.gameObject;
+        _renderer = GetComponentInChildren<SpriteRenderer>();
+        _renObj = _renderer.gameObject;
 
 
         foreach (SpriteAnimation data in animations)
@@ -58,8 +58,8 @@ public class SpriteAnimator : MonoBehaviour
             for (int i = 0; i < count; i++)
             {
                 Vector2 pivot = Vector2.zero;
-                pivot.x += _ren.sprite.pivot.x / data.celSize.x;
-                pivot.y += _ren.sprite.pivot.y / data.celSize.y;
+                pivot.x += _renderer.sprite.pivot.x / data.celSize.x;
+                pivot.y += _renderer.sprite.pivot.y / data.celSize.y;
                 
                 frames[i] = Sprite.Create(data.sheet, new Rect((i + start) * cel.x, 0, cel.x, cel.y), pivot, 16, 0, SpriteMeshType.FullRect, Vector4.zero, false);
             }
@@ -84,7 +84,7 @@ public class SpriteAnimator : MonoBehaviour
             for (int i = 0; i < _frames[animName].Length; i++)
             {
                 int length = _frames[animName].Length;
-                _ren.sprite = _frames[animName][(i + indexOffset) % length];
+                _renderer.sprite = _frames[animName][(i + indexOffset) % length];
                 _currentFrame = (i + indexOffset) % length;
                 if (data[animName].delay > 0)
                     yield return new WaitForSeconds(data[animName].delay);
@@ -108,7 +108,7 @@ public class SpriteAnimator : MonoBehaviour
 
     public void FlipX(int dir)
     {
-        Ren.flipX = dir < 0 ? true : false;
+        Renderer.flipX = dir < 0 ? true : false;
     }
     
     public void Rotate(float degrees)
@@ -150,7 +150,7 @@ public class SpriteAnimator : MonoBehaviour
         else
             this.onEnd = onEnd;
         
-        _ren.enabled = true;
+        _renderer.enabled = true;
         if (_currentMode == AnimMode.OnceDie && mode != AnimMode.OnceDie)
             return;
         if (_animatorCoroutine != null)

@@ -63,7 +63,7 @@ public class HUD : MonoBehaviour
     {
         if (Game.gameStarted)
         {
-            if (!Player.isHurting || Game.isPaused)
+            if (!Player.IsHurting || Game.isPaused)
                 Flash(!texts["Main Text Layer"].enabled, "Main Text Layer");
             renderers["BG"].enabled = !Game.isPaused;
         }

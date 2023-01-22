@@ -50,13 +50,19 @@ public class Spawner : MonoBehaviour
     }
 
     void Update()
-    {       
-        if (!CameraController.viewRect.Overlaps(worldBounds, true))
+    {
+        bool entityVisible = CameraController.viewRect.Contains(spawnedEntity.transform.position);
+        bool spawnPointVisible = CameraController.viewRect.Contains(transform.position);
+        bool entityInBounds = worldBounds.Contains(spawnedEntity.transform.position);
+        bool worldBoundsVisible = worldBounds.Overlaps(CameraController.viewRect);
+
+
+        if (!spawnPointVisible && !entityVisible)
         {
             Despawn();
         }
 
-        if (CameraController.viewRect.Contains(transform.position))
+        if (spawnPointVisible)
         {
             if (outOfView && spawnCondition == SpawnCondition.Camera)
                 TrySpawn();

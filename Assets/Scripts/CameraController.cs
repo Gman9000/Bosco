@@ -39,7 +39,7 @@ public class CameraController : MonoBehaviour
     void Update()
     {
         Vector2 point = Camera.main.ViewportToWorldPoint(Vector3.zero);
-        viewRect = new Rect(point.x, point.y, Game.WIDTH_WORLD, Game.HEIGHT_WORLD);
+        viewRect = new Rect(point.x, point.y, Game.WIDTH_WORLD * 1.15F, Game.HEIGHT_WORLD * 1.15F);
 
         if (!Game.gameStarted)  return;
         
@@ -61,7 +61,7 @@ public class CameraController : MonoBehaviour
 
     private void CalcMovePos()
     {
-        Vector2 playerPos = (Vector2)Player.Instance.transform.position + offset;
+        Vector2 playerPos = (Vector2)Player.Position + offset;
 
         followRect.center = transform.position;
 
@@ -102,7 +102,7 @@ public class CameraController : MonoBehaviour
     IEnumerator ShakeSide(int pixels)
     {
 
-        Transform playerSprite = Player.Instance.animator.Ren.transform;
+        Transform playerSprite = Player.Instance.animator.Renderer.transform;
         
         Vector3 playerRootPos = playerSprite.localPosition;
 
@@ -130,7 +130,7 @@ public class CameraController : MonoBehaviour
     IEnumerator ShakeUp(int pixels)
     {
 
-        Transform playerSprite = Player.Instance.animator.Ren.transform;
+        Transform playerSprite = Player.Instance.animator.Renderer.transform;
         
         Vector3 playerRootPos = playerSprite.localPosition;
 
