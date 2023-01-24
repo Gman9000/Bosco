@@ -24,7 +24,7 @@ public class Player : Pawn
     public float invincibilityTime = 1.2F;
 
     private BoxCollider2D boxCollider2D;
-
+    
     //for jumping
     //public float originalJumpSpeed;
     public float jumpSpeed;
@@ -102,7 +102,7 @@ public class Player : Pawn
     bool PhysicsPaused => body.constraints == RigidbodyConstraints2D.FreezeAll;
 
     float hurtTimeStamp = 0;
-
+    private Timer jumpTimer;
 
     void Awake()
     {
@@ -118,6 +118,7 @@ public class Player : Pawn
 
     override public void Start()
     {
+        jumpTimer = null;
         inputAttackPaused = false;
         inputMovePaused = false;
 
@@ -164,8 +165,8 @@ public class Player : Pawn
         
 
         bool wasGrounded = isGrounded;
-        HitInfo groundingLayer = boxCollider2D.IsGrounded(bottomLeftRaycast.position, bottomRightRaycast.position, rayCastMagnitude);
-        if (groundingLayer.layerName == "TwoWayPlatform")
+        HitInfo groundCheck = boxCollider2D.IsGrounded(bottomLeftRaycast.position, bottomRightRaycast.position, rayCastMagnitude);
+        if (groundCheck.layerName == "TwoWayPlatform")
         {
             if (body.velocity.y <= 0)
                 isGrounded = true;
@@ -174,7 +175,17 @@ public class Player : Pawn
         }
         else
         {
-            isGrounded = groundingLayer.layerName != null;
+            isGrounded = groundCheck.layerName != null;
+        }
+        
+        //GMAN REMEMBER TO COMMENT THIS LATER
+        if (isGrounded && groundCheck.layerName == "TwoWayPlatform" && !wasGrounded)
+        {
+            //float yDiff = transform.position.y - boxCollider2D.bounds.min.y;
+            float feetY = boxCollider2D.bounds.min.y;
+            float surfaceY = groundCheck.hit.collider.bounds.max.y;
+            //Debug.Log(groundCheck.hit.point);
+                if (surfaceY > feetY) isGrounded = false;
         }
 
         isHittingCeiling = boxCollider2D.IsHittingCeiling(topLeftRaycast.position, topRightRaycast.position, this.transform.localScale.x, rayCastMagnitude);
@@ -182,6 +193,7 @@ public class Player : Pawn
         isHittingLeftWall = boxCollider2D.IsHittingLeftWall(topLeftRaycast.position, bottomLeftRaycast.position, this.transform.localScale.x, rayCastMagnitude);
         if (isGrounded)
         {
+            if( jumpTimer != null && jumpTimer.Done) jumpTimer.Cancel();
             if (isGroundPounding)   // if is falling fast
             {
                 CameraController.Instance.VertShake(6);          // shake screen
@@ -252,25 +264,25 @@ public class Player : Pawn
             if (isGrounded && PlayerInput.HasPressedA())
             {
                 isJumping = true;
-                jumpTimeCountdown = jumpTime;
+                //jumpTimeCountdown = jumpTime;
                 body.velocity = new Vector2(body.velocity.x, jumpSpeed);
+                jumpTimer = Timer.Set(jumpTime, () =>
+                {
+                    isJumping = false;
+
+                });
                 SoundSystem.PlaySfx(sfx_jump, 2);
             }
 
             if (isJumping && PlayerInput.HasHeldA())
             {
-                if (jumpTimeCountdown > 0)
+                body.velocity = new Vector2(body.velocity.x, jumpSpeed);
+                if (isHittingCeiling)
                 {
-                    body.velocity = new Vector2(body.velocity.x, jumpSpeed);
-                    jumpTimeCountdown -= Time.deltaTime;
-                    if (isHittingCeiling)
-                    {
-                        jumpTimeCountdown = 0;
-                    }
-                }
-                else
-                {
+                    if(jumpTimer != null && jumpTimer.Done) jumpTimer.Cancel();
                     isJumping = false;
+                    //Timer.Cancel();
+                    //todo: add cancel timer function
                 }
             }
 

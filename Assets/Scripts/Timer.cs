@@ -48,4 +48,10 @@ public class Timer
             }
         }
     }
+
+    public void Cancel()
+    {
+        _done = true;
+        allTimers.Remove(this);
+    }
 }
