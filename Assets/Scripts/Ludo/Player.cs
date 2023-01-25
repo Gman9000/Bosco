@@ -52,7 +52,6 @@ public class Player : Pawn
     [SerializeField] private GameObject spinAttackHitbox;
     [SerializeField] private GameObject upAttackHitbox;
     [SerializeField] private GameObject downAttackHitbox;
-    [SerializeField] private GameObject radialAttackHitbox;
     private bool isHitting = false;
     public float hitTime;
     public float hitCooldown;   // should be less than hit time
@@ -132,7 +131,6 @@ public class Player : Pawn
         downAttackHitbox.SetActive(false);
         rightAttackHitbox.SetActive(false);
         spinAttackHitbox.SetActive(false);
-        radialAttackHitbox.SetActive(false);
         animator.PlayDefault();
         hurtTimeStamp = -invincibilityTime;
 
@@ -204,12 +202,7 @@ public class Player : Pawn
             }
 
             body.gravityScale = originalGravityScale;
-            if (radialAttackHitbox.activeSelf)
-            {
-                radialAttackHitbox.SetActive(false);
-                DoPhysicsPause(.05F);
-                animator.PlayDefault();
-            }
+
             canAerialAttack = true;
 
             
@@ -266,10 +259,11 @@ public class Player : Pawn
                 isJumping = true;
                 //jumpTimeCountdown = jumpTime;
                 body.velocity = new Vector2(body.velocity.x, jumpSpeed);
+                float startY = transform.position.y;
                 jumpTimer = Timer.Set(jumpTime, () =>
                 {
                     isJumping = false;
-
+                    Debug.Log(transform.position.y - startY);
                 });
                 SoundSystem.PlaySfx(sfx_jump, 2);
             }
@@ -380,10 +374,6 @@ public class Player : Pawn
             {
                 animator.Play(AnimMode.Hang, "downslash");
             }
-            else if (radialAttackHitbox.activeSelf)
-            {
-                animator.Play(AnimMode.Looped, "somersault");
-            }
             else if (upAttackHitbox.activeSelf)
             {
                 animator.Play(AnimMode.Hang, "upslash air");
@@ -469,7 +459,6 @@ public class Player : Pawn
         downAttackHitbox.SetActive(false);
         rightAttackHitbox.SetActive(false);
         spinAttackHitbox.SetActive(false);
-        radialAttackHitbox.SetActive(false);
             
         switch (hitBoxIndex)
         {
@@ -496,11 +485,6 @@ public class Player : Pawn
                 //Right attack
                 rightAttackHitbox.SetActive(true);
 
-                break;
-            case 5:
-                //radial attack
-                radialAttackHitbox.SetActive(true);
-                hitLengthMod = 1F;
                 break;
             default:
                 Debug.LogError("AN ERROR HAS OCCURRED WHILE TRYING TO ATTACK");
@@ -529,10 +513,6 @@ public class Player : Pawn
             case 4:
                 //Right attack
                 rightAttackHitbox.SetActive(false);
-                break;
-            case 5:
-                //radial attack
-                radialAttackHitbox.SetActive(false);
                 break;
             default:
                 Debug.LogError("AN ERROR HAS OCCURRED WHILE TRYING TO ATTACK");
@@ -771,11 +751,7 @@ public class Player : Pawn
             }
             else
             {
-                // radial spin
-                SoundSystem.PlaySfx(sfx_swordSounds[3], 4);
-                if (hitCoroutine != null)
-                    StopCoroutine(hitCoroutine);
-                hitCoroutine = StartCoroutine(Hit(5));
+                // default aerial
             }
         }
 
