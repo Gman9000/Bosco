@@ -40,7 +40,7 @@ public class Timer
         for (int i = allTimers.Count - 1; i >= 0; i--)
         {
             Timer timer = allTimers[i];
-            if (Time.time - timer.timeStamp >= timer.duration)
+            if (Time.time - timer.timeStamp + Time.deltaTime > timer.duration)
             {
                 timer.onComplete();
                 timer._done = true;

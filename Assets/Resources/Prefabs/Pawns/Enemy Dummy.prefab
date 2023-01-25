@@ -130,7 +130,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9fc373eba1cacc24fb338c163bc77ced, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 100
+  maxHealth: 320
   invincibilityTime: 0.3
   knockbackDistance: 1
   fixedGravity: 0.25

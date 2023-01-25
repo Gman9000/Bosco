@@ -173,22 +173,20 @@ public class Player : Pawn
         }
         else
         {
-            isGrounded = groundCheck.layerName != null;
+            isGrounded = groundCheck;
         }
         
         //GMAN REMEMBER TO COMMENT THIS LATER
         if (isGrounded && groundCheck.layerName == "TwoWayPlatform" && !wasGrounded)
         {
-            //float yDiff = transform.position.y - boxCollider2D.bounds.min.y;
             float feetY = boxCollider2D.bounds.min.y;
             float surfaceY = groundCheck.hit.collider.bounds.max.y;
-            //Debug.Log(groundCheck.hit.point);
                 if (surfaceY > feetY) isGrounded = false;
         }
 
-        isHittingCeiling = boxCollider2D.IsHittingCeiling(topLeftRaycast.position, topRightRaycast.position, this.transform.localScale.x, rayCastMagnitude);
-        isHittingRightWall = boxCollider2D.IsHittingRightWall(topRightRaycast.position, bottomRightRaycast.position, this.transform.localScale.x, rayCastMagnitude);
-        isHittingLeftWall = boxCollider2D.IsHittingLeftWall(topLeftRaycast.position, bottomLeftRaycast.position, this.transform.localScale.x, rayCastMagnitude);
+        isHittingCeiling = boxCollider2D.IsHittingCeiling(topLeftRaycast.position, topRightRaycast.position, rayCastMagnitude);
+        isHittingRightWall = boxCollider2D.IsHittingRight(topRightRaycast.position, bottomRightRaycast.position, rayCastMagnitude);
+        isHittingLeftWall = boxCollider2D.IsHittingLeft(topLeftRaycast.position, bottomLeftRaycast.position, rayCastMagnitude);
         if (isGrounded)
         {
             if( jumpTimer != null && jumpTimer.Done) jumpTimer.Cancel();
@@ -204,7 +202,6 @@ public class Player : Pawn
             body.gravityScale = originalGravityScale;
 
             canAerialAttack = true;
-
             
             if (!wasGrounded && body.velocity.y < 0)    // check if moving down
             {                

@@ -9,6 +9,7 @@ public abstract class PawnEnemy : Pawn
     public float invincibilityTime = .2F;               // time in seconds enemy is invincible
     public float knockbackDistance = .5F;               // knockback distance in Unity units
     public float fixedGravity = 0;                      // the fixed downward to apply to this enemy. AKA "cheap gravity"
+    public Vector2 visionBoxSize = new Vector2(10, 5);  // the bounds that a player must be inside to trigger non-idle state
 
 
     // CORE VARIABLES
@@ -25,6 +26,7 @@ public abstract class PawnEnemy : Pawn
     // ENGINEERING VARIABLES
     private int currentState;                           // which user-identifiable state this enemy pawn is in (e.g. about to throw attack vs hopping around)
     protected float InvProgress => invTimer.Progress;
+    private Rect visionBox;
     private Timer invTimer;
     public bool Invincible => invTimer != null && !invTimer.Done;
     protected Player playerTarget => Player.Instance;
@@ -32,7 +34,13 @@ public abstract class PawnEnemy : Pawn
     protected Vector2 positionWhenHit;                  // position in world space when the enemy was hit
     
     private bool _isGrounded;
+    private bool _contactLeft;
+    private bool _contactRight;
+    private bool _contactUp;
     public bool IsGrounded => _isGrounded;
+    
+    //private Vector2 velocity;
+    private Vector2? moveTo;
 
     [HideInInspector]public int facingDirection = 1;
     
@@ -46,36 +54,32 @@ public abstract class PawnEnemy : Pawn
         currentHealth = maxHealth;
         currentState = 0; // inits the enemy's state at
         _isGrounded = false;
+        _contactUp = false;
+        _contactLeft = false;
+        _contactRight = false;
+        visionBox = new Rect(transform.position.x, transform.position.y, visionBoxSize.x, visionBoxSize.y);
+        //velocity = Vector2.zero;
+        moveTo = null;
     }
     public void Update()
     {
         // PRE-UPDATE LOGIC
         sprite.flipX = facingDirection < 0;
-        
-        HitInfo groundCheck = boxCollider2D.IsGrounded(.8F);
-        _isGrounded = groundCheck.layerName != null;
+        visionBox.center = transform.position;     // update the center of the vision box to this pawn
 
-        if (_isGrounded)
-        {
-            float yDiff = transform.position.y - boxCollider2D.bounds.min.y;
-            float contactY = groundCheck.hit.point.y + yDiff;
-            body.MovePosition(new Vector2(transform.position.x, contactY));
-            Debug.Log(groundCheck.hit.point);
-        }
-        else
-        {
-            body.MovePosition((Vector2)transform.position + Vector2.down * fixedGravity);
-        }        
+        PhysicsLogic();
+        moveTo = null;       
 
+        // UPDATE LOGIC
         if (currentHealth <= 0)
         {
             // NOTE: leave this block and conditional as-is until we're done writing the structure of this class
         }
         else if (Invincible)
         {
-            UpdateKnockback(positionWhenHit + currentKnockback.normalized * knockbackDistance);
+            moveTo = UpdateKnockback(positionWhenHit + currentKnockback.normalized * knockbackDistance);
         }
-        else
+        else if (visionBox.Contains(Player.Position))
         {
             switch (currentState)
             {
@@ -87,6 +91,75 @@ public abstract class PawnEnemy : Pawn
                     break;
             }
         }
+        else
+        {
+            SetState(0);
+            UpdateStateIdle();
+        }
+    }
+
+    private void PhysicsLogic()
+    {
+        Vector2 motion = moveTo == null ? Vector2.zero : (Vector2)(moveTo - transform.position);
+        if (!_isGrounded)
+            motion.y -= fixedGravity;
+        // COLLISION LOGIC        
+        HitInfo groundCheck = boxCollider2D.IsGrounded(.8F);
+        HitInfo upCheck = boxCollider2D.IsHittingCeiling(.8F);
+        HitInfo leftCheck = boxCollider2D.IsHittingLeft(.8F);
+        HitInfo rightCheck = boxCollider2D.IsHittingRight(.8F);
+        
+        _isGrounded = groundCheck;
+
+        
+
+        if (_isGrounded)
+        {
+            float yDiff = transform.position.y - boxCollider2D.bounds.min.y;
+            float contactY = groundCheck.hit.point.y + yDiff;
+            body.MovePosition(new Vector2(transform.position.x, contactY));
+        }
+        else
+        {
+            if (motion.y < 0)
+                body.MovePosition((Vector2)transform.position + motion * Vector2.up);
+        }
+
+        if (motion.y > 0)
+        {        
+            if (upCheck)
+            {
+                float yDiff = transform.position.y - boxCollider2D.bounds.max.y;
+                float contactY = upCheck.hit.point.y + yDiff;
+                body.MovePosition(new Vector2(transform.position.x, contactY));
+            }
+            else
+                body.MovePosition((Vector2)transform.position + motion * Vector2.up);
+        }
+
+
+        if (motion.x < 0)
+        {
+            if (leftCheck)
+            {
+                float xDiff = transform.position.x - boxCollider2D.bounds.min.x;
+                float contactX = groundCheck.hit.point.x + xDiff;
+                body.MovePosition(new Vector2(contactX, transform.position.y));
+            }
+            else
+                body.MovePosition((Vector2)transform.position + motion * Vector2.right);
+        }
+        else if (motion.x > 0)
+        {
+            if (rightCheck)
+            {
+                float xDiff = transform.position.x - boxCollider2D.bounds.max.x;
+                float contactX = groundCheck.hit.point.x - xDiff;
+                body.MovePosition(new Vector2(contactX, transform.position.y));
+            }
+            else
+                body.MovePosition((Vector2)transform.position + motion * Vector2.right);
+        }
     }
 
     void FixedUpdate()
@@ -97,7 +170,7 @@ public abstract class PawnEnemy : Pawn
             sprite.color = Color.white;
     }
 
-    public void SetState(int state) => currentState = state;    
+    public void SetState(int state) => currentState = state;
 
     public void TakeDamage(Vector2 force)
     {
@@ -133,10 +206,12 @@ public abstract class PawnEnemy : Pawn
 
     protected virtual void OnHit() {}      // called first frame of being hit
 
-    protected virtual void UpdateKnockback(Vector2 moveToPoint)
+    protected virtual Vector2 UpdateKnockback(Vector2 moveToPoint)
     {
-        body.MovePosition(positionWhenHit + (moveToPoint - positionWhenHit) * invTimer.Progress);
+        return positionWhenHit + (moveToPoint - positionWhenHit) * invTimer.Progress;
     }
+
+    protected virtual void UpdateStateIdle() {}
 
     protected virtual void UpdateState0() {}
 
