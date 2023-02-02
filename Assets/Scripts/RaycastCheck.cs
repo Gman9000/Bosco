@@ -9,8 +9,9 @@ public static class RaycastChecks
         //scale of player is same on x and y
         int layerMask = LayerMask.GetMask("Ground", "Hidden", "TwoWayPlatform");
 
-        Debug.DrawRay(new Vector2(raycastA.x, raycastA.y), rayCastMagnitude * (collider.size.x / 2) * Vector2.down, Color.green, Time.fixedDeltaTime);
-        Debug.DrawRay(new Vector2(raycastB.x, raycastB.y), rayCastMagnitude * (collider.size.x / 2) * Vector2.down, Color.green, Time.fixedDeltaTime);
+        Debug.DrawRay(new Vector2(raycastA.x, raycastA.y), rayCastMagnitude * (collider.size.x / 2) * Vector2.down, Color.green);
+        Debug.DrawRay(new Vector2(raycastB.x, raycastB.y), rayCastMagnitude * (collider.size.x / 2) * Vector2.down, Color.green);
+        Debug.DrawRay(new Vector2(raycastB.x, raycastB.y), rayCastMagnitude * (collider.size.x / 2) * Vector2.down, Color.green);
         RaycastHit2D hitAB = Physics2D.Raycast(new Vector2(raycastA.x, raycastA.y), Vector2.down, rayCastMagnitude * (collider.size.x / 2), layerMask);
         RaycastHit2D hitBA = Physics2D.Raycast(new Vector2(raycastB.x, raycastB.y), Vector2.down, rayCastMagnitude * (collider.size.x / 2), layerMask);
         if (hitAB)
@@ -38,8 +39,8 @@ public static class RaycastChecks
     {
         //scale of player is same on x and y
         int layerMask = LayerMask.GetMask("Ground", "Hidden");
-        Debug.DrawRay(new Vector2(raycastA.x, raycastA.y), rayCastMagnitude * (collider.size.x / 2) * Vector2.up, Color.green, Time.fixedDeltaTime);
-        Debug.DrawRay(new Vector2(raycastB.x, raycastB.y), rayCastMagnitude * (collider.size.x / 2) * Vector2.up, Color.green, Time.fixedDeltaTime);
+        Debug.DrawRay(new Vector2(raycastA.x, raycastA.y), rayCastMagnitude * (collider.size.x / 2) * Vector2.up, Color.green);
+        Debug.DrawRay(new Vector2(raycastB.x, raycastB.y), rayCastMagnitude * (collider.size.x / 2) * Vector2.up, Color.green);
         RaycastHit2D hitAB = Physics2D.Raycast(new Vector2(raycastA.x, raycastA.y), Vector2.up, rayCastMagnitude * (collider.size.x / 2), layerMask);
         RaycastHit2D hitBA = Physics2D.Raycast(new Vector2(raycastB.x, raycastB.y), Vector2.up, rayCastMagnitude * (collider.size.x / 2), layerMask);
 
@@ -66,8 +67,8 @@ public static class RaycastChecks
         //scale of player is same on x and y
         int layerMask = LayerMask.GetMask("Ground", "Hidden");
 
-        Debug.DrawRay(new Vector2(raycastA.x, raycastA.y), rayCastMagnitude * (collider.size.x / 2) * Vector2.right, Color.blue, Time.fixedDeltaTime);
-        Debug.DrawRay(new Vector2(raycastB.x, raycastB.y), rayCastMagnitude * (collider.size.x / 2) * Vector2.right, Color.blue, Time.fixedDeltaTime);
+        Debug.DrawRay(new Vector2(raycastA.x, raycastA.y), rayCastMagnitude * (collider.size.x / 2) * Vector2.right, Color.blue);
+        Debug.DrawRay(new Vector2(raycastB.x, raycastB.y), rayCastMagnitude * (collider.size.x / 2) * Vector2.right, Color.blue);
         RaycastHit2D hitAB = Physics2D.Raycast(new Vector2(raycastA.x, raycastA.y), Vector2.right, rayCastMagnitude * (collider.size.x / 2), layerMask);
         RaycastHit2D hitBA = Physics2D.Raycast(new Vector2(raycastB.x, raycastB.y), Vector2.right, rayCastMagnitude * (collider.size.x / 2), layerMask);
 
@@ -94,8 +95,8 @@ public static class RaycastChecks
         //scale of player is same on x and y
         int layerMask = LayerMask.GetMask("Ground", "Hidden");
 
-        Debug.DrawRay(new Vector2(raycastA.x, raycastA.y), rayCastMagnitude * (collider.size.x / 2) * Vector2.left, Color.blue, Time.fixedDeltaTime);
-        Debug.DrawRay(new Vector2(raycastB.x, raycastB.y), rayCastMagnitude * (collider.size.x / 2) * Vector2.left, Color.blue, Time.fixedDeltaTime);
+        Debug.DrawRay(new Vector2(raycastA.x, raycastA.y), rayCastMagnitude * (collider.size.x / 2) * Vector2.left, Color.blue);
+        Debug.DrawRay(new Vector2(raycastB.x, raycastB.y), rayCastMagnitude * (collider.size.x / 2) * Vector2.left, Color.blue);
         RaycastHit2D hitAB = Physics2D.Raycast(new Vector2(raycastA.x, raycastA.y), Vector2.left, rayCastMagnitude * (collider.size.x / 2), layerMask);
         RaycastHit2D hitBA = Physics2D.Raycast(new Vector2(raycastB.x, raycastB.y), Vector2.left, rayCastMagnitude * (collider.size.x / 2), layerMask);
 

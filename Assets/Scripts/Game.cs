@@ -249,7 +249,7 @@ public class Game : MonoBehaviour
             }
         }
 
-        Time.timeScale = 1.0F;
+        Time.timeScale = 1F;
 
         for (int y = 0; y < scanlines.Length; y++)
         {
