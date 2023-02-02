@@ -5,7 +5,8 @@ using UnityEngine;
 
 public enum PState {Unassigned, 
     Idle, Walk, Run, Duck,
-Jump, Fall, 
+Jump, Fall,
+ClimbIdle, ClimbMove,
 G_SwordSide1, G_SwordSide2, G_SwordSide3, G_SwordTwist, G_SwordUp, 
 A_SwordUp, A_SwordRoll, A_SwordSide, A_SwordDown,
 A2G_Land, A2G_SwordLand,
@@ -258,23 +259,29 @@ public class Player : Pawn
                 body.velocity = new Vector2(0, body.velocity.y);
 
             //GMAN COMMENT HERE
+            if (PlayerInput.IsPressingUp())
+            {
+                if (canClimb)
+                {
+                    state = PState.ClimbIdle;
+                }
+            }
 
-            if (canClimb)
+            if (state == PState.ClimbIdle || state == PState.ClimbMove)
             {
                 body.gravityScale = 0f;
                 body.velocity = new Vector2(body.velocity.x, 0f);
+                state = PState.ClimbIdle;
                 if (PlayerInput.IsPressingUp())
                 {
+                    state = PState.ClimbMove;
                     body.velocity = new Vector2(body.velocity.x, moveSpeed);
                 }
-                if (PlayerInput.IsPressingDown())
+                else if (PlayerInput.IsPressingDown())
                 {
+                    state = PState.ClimbMove;
                     body.velocity = new Vector2(body.velocity.x, -moveSpeed);
                 }
-            }
-            else
-            {
-                body.gravityScale = originalGravityScale;
             }
             ///GMAN COMMENT ENDS
             if (PlayerInput.IsPressingLeft())
@@ -642,6 +649,7 @@ public class Player : Pawn
         if (other.CompareTag("Ladder"))
         {
             canClimb = true;
+
         }
 
         if (other.CompareTag("Reset"))
@@ -672,6 +680,11 @@ public class Player : Pawn
     {
         if (other.CompareTag("Ladder"))
         {
+            if (state == PState.ClimbIdle || state == PState.ClimbMove)
+            {
+                state = PState.Unassigned;
+                body.gravityScale = originalGravityScale;
+            }
             canClimb = false;
         }
     }
