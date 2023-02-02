@@ -17,4 +17,33 @@ Scotty 1/24/2023 7:15PM
 +10m
 +10m
 +10m : fixed everything(?)
-+10m : still some bugs you can do to trap the dummy in a wall. was exploring this, but couldn't figure out the edge case yet
++10m : still some bugs you can do to trap the dummy in a wall. was exploring this, but decided to put in in the known bug list and move on
+
+
+Scotty 1/31/2023 8:45PM
+15m adjust dark grid it so it's aligned to the env grid
+
+Scotty 2/1/2023 8:45AM
+10m start writing PlayerState enums
++10m
++10m
+10m rewriting state logic for player
++10m
++10m
++5m
++10m
++10m
++10m
++5m
+
+Scotty 2/1/2023 7:33PM
+22m fixing buggy playerstate system
++10m
++10m
++10m
++5
+done... why do I feel... hollow?
+
+10m wtfing over the edge collision AGAIN
++9m until I gave up and added it to bug list
+
