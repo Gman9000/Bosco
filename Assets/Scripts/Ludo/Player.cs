@@ -92,6 +92,8 @@ public class Player : Pawn
     bool isHittingLeftWall;
     // Start is called before the first frame update
 
+    //for ladder checks
+    bool canClimb = false;
     bool canAerialAttack = false;
 
 
@@ -231,6 +233,26 @@ public class Player : Pawn
             if (!spinAttackHitbox.activeSelf)
                 body.velocity = new Vector2(0, body.velocity.y);
 
+            //GMAN COMMENT HERE
+
+            if (canClimb)
+            {
+                body.gravityScale = 0f;
+                body.velocity = new Vector2(body.velocity.x, 0f);
+                if (PlayerInput.IsPressingUp())
+                {
+                    body.velocity = new Vector2(body.velocity.x, moveSpeed);
+                }
+                if (PlayerInput.IsPressingDown())
+                {
+                    body.velocity = new Vector2(body.velocity.x, -moveSpeed);
+                }
+            }
+            else
+            {
+                body.gravityScale = originalGravityScale;
+            }
+            ///GMAN COMMENT ENDS
             if (PlayerInput.IsPressingLeft())
             {
                 body.velocity = new Vector2(-moveSpeed, body.velocity.y);
@@ -522,6 +544,11 @@ public class Player : Pawn
 
     private void OnTriggerEnter2D(Collider2D other)
     {
+        if (other.CompareTag("Ladder"))
+        {
+            canClimb = true;
+        }
+
         if (other.CompareTag("Reset"))
         {
             this.gameObject.transform.position = checkpoint;
@@ -543,6 +570,14 @@ public class Player : Pawn
         if (other.gameObject.CompareTag("Door") && PlayerInput.IsPressingUp() && CandleHandler.canUseDoor)
         {
             transform.position = new Vector3(199.5F, 100, transform.position.z);
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.CompareTag("Ladder"))
+        {
+            canClimb = false;
         }
     }
 
