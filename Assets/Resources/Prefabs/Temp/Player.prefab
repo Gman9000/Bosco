@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2300325342526230440}
   - component: {fileID: 2300325342526230443}
+  - component: {fileID: 3057281320778646182}
   m_Layer: 0
   m_Name: SpinAttackHitbox
   m_TagString: PlayerAttack
@@ -57,6 +58,20 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 3.1280842, y: 0.8}
   m_EdgeRadius: 0
+--- !u!114 &3057281320778646182
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2300325342526230441}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 744f15115d8496b4f90d439335b7ce83, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hitDirection: {x: 0, y: 0}
+  ignoreY: 1
 --- !u!1 &2300325342758703863
 GameObject:
   m_ObjectHideFlags: 0
@@ -85,7 +100,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2300325343495513334}
-  m_RootOrder: 8
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2300325342825615754
 GameObject:
@@ -115,7 +130,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2300325343495513334}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2300325343013361306
 GameObject:
@@ -215,7 +230,6 @@ Transform:
   - {fileID: 2300325344128519418}
   - {fileID: 2300325342526230440}
   - {fileID: 2300325343604811671}
-  - {fileID: 2300325343853354104}
   - {fileID: 2300325342825615749}
   - {fileID: 2300325342758703862}
   - {fileID: 3056626078687305414}
@@ -257,7 +271,6 @@ MonoBehaviour:
   spinAttackHitbox: {fileID: 2300325342526230441}
   upAttackHitbox: {fileID: 2300325343626698286}
   downAttackHitbox: {fileID: 2300325344128519419}
-  radialAttackHitbox: {fileID: 2300325343853354105}
   hitTime: 0.25
   hitCooldown: 0.1
   hitComboWindow: 0.3
@@ -455,6 +468,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2300325343604811671}
   - component: {fileID: 2300325343604811670}
+  - component: {fileID: 3858792447231744483}
   m_Layer: 0
   m_Name: RightAttackHitbox
   m_TagString: PlayerAttack
@@ -503,6 +517,20 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.7282047, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &3858792447231744483
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2300325343604811668}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 744f15115d8496b4f90d439335b7ce83, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hitDirection: {x: 1, y: 0}
+  ignoreY: 0
 --- !u!1 &2300325343626698286
 GameObject:
   m_ObjectHideFlags: 0
@@ -513,6 +541,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2300325343626698281}
   - component: {fileID: 2300325343626698280}
+  - component: {fileID: 3202877232657178549}
   m_Layer: 0
   m_Name: UpAttackHitbox
   m_TagString: PlayerAttack
@@ -560,63 +589,20 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.8, y: 1.5325813}
   m_EdgeRadius: 0
---- !u!1 &2300325343853354105
-GameObject:
+--- !u!114 &3202877232657178549
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2300325343853354104}
-  - component: {fileID: 2300325343853354107}
-  m_Layer: 0
-  m_Name: RadialAttackHitbox
-  m_TagString: PlayerAttack
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &2300325343853354104
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2300325343853354105}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.12199974, y: 0, z: 0}
-  m_LocalScale: {x: 1.5, y: 1.5, z: 1}
-  m_Children: []
-  m_Father: {fileID: 2300325343495513334}
-  m_RootOrder: 6
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!61 &2300325343853354107
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2300325343853354105}
+  m_GameObject: {fileID: 2300325343626698286}
   m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: -0.04, y: -0.02}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 1.3557343, y: 1.3775133}
-  m_EdgeRadius: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 744f15115d8496b4f90d439335b7ce83, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hitDirection: {x: 0, y: 1}
+  ignoreY: 0
 --- !u!1 &2300325344128519419
 GameObject:
   m_ObjectHideFlags: 0
@@ -627,6 +613,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2300325344128519418}
   - component: {fileID: 2300325344128519413}
+  - component: {fileID: 7836368372836496547}
   m_Layer: 0
   m_Name: DownAttackHitbox
   m_TagString: PlayerAttack
@@ -674,6 +661,20 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.69107246, y: 1.0118313}
   m_EdgeRadius: 0
+--- !u!114 &7836368372836496547
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2300325344128519419}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 744f15115d8496b4f90d439335b7ce83, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hitDirection: {x: 0, y: -1}
+  ignoreY: 0
 --- !u!1 &3056626077694810785
 GameObject:
   m_ObjectHideFlags: 0
@@ -703,7 +704,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2300325343495513334}
-  m_RootOrder: 10
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!61 &3056626077694810791
 BoxCollider2D:
@@ -760,7 +761,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2300325343495513334}
-  m_RootOrder: 9
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &3056626078687305409
 SpriteRenderer:

@@ -13,8 +13,8 @@ public class SpriteAnimator : MonoBehaviour
     [HideInInspector]public int indexOffset = 0;
 
     private Dictionary<string, Sprite[]> _frames = new Dictionary<string, Sprite[]>();
-    private SpriteRenderer _ren;
-    public SpriteRenderer Ren => _ren;
+    private SpriteRenderer _renderer;
+    public SpriteRenderer Renderer => _renderer;
 
     public GetAnim getDefault;
 
@@ -22,10 +22,10 @@ public class SpriteAnimator : MonoBehaviour
 
     private List<string> _animQueue = new List<string>();
 
-    private string _currentAnim = "none";
+    private string _currentAnim;
     public string CurrentAnim => _currentAnim;
 
-    private int _currentFrame = 0;
+    private int _currentFrame;
     public int CurrentFrame => _currentFrame;
 
     public int CurrentFrameCount => _frames[CurrentAnim].Length;
@@ -34,14 +34,16 @@ public class SpriteAnimator : MonoBehaviour
 
     public System.Action onEnd = () => {};
 
-    private AnimMode _currentMode = AnimMode.None;
+    private AnimMode _currentMode;
 
-    private Coroutine _animatorCoroutine = null;
+    private Coroutine _animatorCoroutine;
 
     void Awake()
     {
-        _ren = GetComponentInChildren<SpriteRenderer>();
-        _renObj = _ren.gameObject;
+        _renderer = GetComponentInChildren<SpriteRenderer>();
+        _renObj = _renderer.gameObject;
+
+        Reset();
 
 
         foreach (SpriteAnimation data in animations)
@@ -58,8 +60,8 @@ public class SpriteAnimator : MonoBehaviour
             for (int i = 0; i < count; i++)
             {
                 Vector2 pivot = Vector2.zero;
-                pivot.x += _ren.sprite.pivot.x / data.celSize.x;
-                pivot.y += _ren.sprite.pivot.y / data.celSize.y;
+                pivot.x += _renderer.sprite.pivot.x / data.celSize.x;
+                pivot.y += _renderer.sprite.pivot.y / data.celSize.y;
                 
                 frames[i] = Sprite.Create(data.sheet, new Rect((i + start) * cel.x, 0, cel.x, cel.y), pivot, 16, 0, SpriteMeshType.FullRect, Vector4.zero, false);
             }
@@ -73,6 +75,16 @@ public class SpriteAnimator : MonoBehaviour
         getDefault = () => defaultAnimation;
     }
 
+    public void Reset()
+    {
+        StopAllCoroutines();
+        _animatorCoroutine = null;
+        _currentAnim = "none";
+        _animQueue = new List<string>();
+        _currentFrame = 0;
+        _currentMode = AnimMode.None;
+    }
+
 
     IEnumerator Animate(string animName, AnimMode mode)
     {
@@ -84,7 +96,7 @@ public class SpriteAnimator : MonoBehaviour
             for (int i = 0; i < _frames[animName].Length; i++)
             {
                 int length = _frames[animName].Length;
-                _ren.sprite = _frames[animName][(i + indexOffset) % length];
+                _renderer.sprite = _frames[animName][(i + indexOffset) % length];
                 _currentFrame = (i + indexOffset) % length;
                 if (data[animName].delay > 0)
                     yield return new WaitForSeconds(data[animName].delay);
@@ -108,7 +120,7 @@ public class SpriteAnimator : MonoBehaviour
 
     public void FlipX(int dir)
     {
-        Ren.flipX = dir < 0 ? true : false;
+        Renderer.flipX = dir < 0 ? true : false;
     }
     
     public void Rotate(float degrees)
@@ -143,6 +155,8 @@ public class SpriteAnimator : MonoBehaviour
 
     public void Play(AnimMode mode, string animName, System.Action onEnd = null)
     {
+        if (!gameObject.activeSelf || !Renderer.gameObject.activeSelf)
+            return;
         if (_currentAnim.ToLower() == animName.ToLower())
             return;
         if (onEnd == null)
@@ -150,7 +164,7 @@ public class SpriteAnimator : MonoBehaviour
         else
             this.onEnd = onEnd;
         
-        _ren.enabled = true;
+        _renderer.enabled = true;
         if (_currentMode == AnimMode.OnceDie && mode != AnimMode.OnceDie)
             return;
         if (_animatorCoroutine != null)

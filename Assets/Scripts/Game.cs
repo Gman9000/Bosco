@@ -5,38 +5,55 @@ using UnityEngine.SceneManagement;
 
 public class Game : MonoBehaviour
 {
-    public bool doTitle = false;
-    public static Game Instance;
+    /*=============*\
+    |*--CONSTANTS--*|
+    \*=============*/
+    
     public const float PIXEL = 1.0F / 16.0F;    
-    public const float WIDTH = 160.0F;
+    public const float WIDTH = 256.0F;
     public const float HEIGHT = 144.0F;
     public const float WIDTH_WORLD = WIDTH * PIXEL;
     public const float HEIGHT_WORLD = HEIGHT * PIXEL;
+
+
+    /*=======================*\
+    |*--INSPECTOR VARIABLES--*|
+    \*=======================*/
+
+    public bool doTitle = false;
+
+    /*=================*\
+    |*--STATIC FIELDS--*|
+    \*=================*/
+    public static Game Instance;
     public static float gameTime = 0.0F;    // the time counter used for game logic and custom movement functions
     public static int litCandlesCount = 0;
     public static int lives = 1;
     public static bool isPaused;
     public static bool gameStarted;
-    //public GameObject TitleImage;
+    public static List<SpriteSimulator> simulatedSprites;    
+    private static List<SpriteSimulator>[] scanlines;
+    private static int[] scanlineSimTotal;
 
 
-    static public List<SpriteSimulator> simulatedSprites = new List<SpriteSimulator>();
+    /*================*\
+    |*--LOCAL FIELDS--*|
+    \*================*/
 
-    
-    static private List<SpriteSimulator>[] scanlines;
-
-    static private int[] scanlineSimTotal;
-
-    bool transitiontoGame = false;
-
+    bool transitiontoGame;
 
     void Awake()
     {        
         Instance = this;
+        simulatedSprites = new List<SpriteSimulator>();
+        transitiontoGame = false;
     }
 
     void Start()
     {
+        Awake();
+        Timer.AllTimersInit();
+
         if (doTitle)
         {
             gameStarted = false;
@@ -55,13 +72,11 @@ public class Game : MonoBehaviour
         scanlineSimTotal = new int[scanlines.Length];
         for (int i = 0; i < scanlines.Length; i++)
             scanlines[i] = new List<SpriteSimulator>();
-        
-        
     }
 
     static public void Reset()
     {
-        SceneManager.LoadScene("Scotty");
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
 #if !UNITY_EDITOR
@@ -90,6 +105,7 @@ public class Game : MonoBehaviour
             HUD.Write(null);
         }
     }
+
     static public void Pause()
     {
         if (isPaused)   return;
@@ -160,7 +176,7 @@ public class Game : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (Player.Instance.transform.position.x > 100)
+        if (Player.Position.x > 100)
         {
             SoundSystem.DoFade(.01F);
         }
@@ -168,6 +184,9 @@ public class Game : MonoBehaviour
 
     void Update()
     {
+        Timer.UpdateAll();  // update all timer checks
+
+
         if (!gameStarted && !transitiontoGame)
         {
             if (PlayerInput.HasPressedStart())
@@ -276,5 +295,16 @@ public class Game : MonoBehaviour
         int scanlineIndex = Mathf.FloorToInt(y / (16.0F * PIXEL));
         
         return scanlineIndex >= -1 && (scanlineIndex <= scanlines.Length || ignoreUp) && Mathf.Abs(x) < WIDTH * PIXEL / 2.0 + widthMargin;
+    }
+
+
+    static public Vector2 RestrictDiagonals(Vector2 direction, float subdivision = 2)
+    {
+        Vector2 modifiedDirection = direction;
+        modifiedDirection = (modifiedDirection).normalized * subdivision;
+        modifiedDirection.x = Mathf.Round(modifiedDirection.x);
+        modifiedDirection.y = Mathf.Round(modifiedDirection.y);
+        modifiedDirection /= subdivision;
+        return modifiedDirection;
     }
 }

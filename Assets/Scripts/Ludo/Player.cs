@@ -4,8 +4,12 @@ using UnityEngine;
 
 public class Player : Pawn
 {
-    static public bool isHurting => Time.time - Instance.hurtTimeStamp < Instance.invincibilityTime;
+    static public bool IsHurting => Time.time - Instance.hurtTimeStamp < Instance.invincibilityTime;
     static public int Hp => Instance.currentHealth;
+    static public int FacingDirection => (int)Instance.transform.rotation.y == 0 ? 1 : -1;
+    static public Vector3 Position => Instance.transform.position;
+
+
     public AudioClip[] sfx_swordSounds;
     public AudioClip sfx_jump;
     public AudioClip sfx_hurt;
@@ -13,14 +17,14 @@ public class Player : Pawn
     private int consecutiveHits = 0;
 
     public static Player Instance { get; protected set; }
-    private Rigidbody2D myRB;
+    private Rigidbody2D body;
     public float moveSpeed;
     //private bool canPlay;
 
     public float invincibilityTime = 1.2F;
 
     private BoxCollider2D boxCollider2D;
-
+    
     //for jumping
     //public float originalJumpSpeed;
     public float jumpSpeed;
@@ -48,7 +52,6 @@ public class Player : Pawn
     [SerializeField] private GameObject spinAttackHitbox;
     [SerializeField] private GameObject upAttackHitbox;
     [SerializeField] private GameObject downAttackHitbox;
-    [SerializeField] private GameObject radialAttackHitbox;
     private bool isHitting = false;
     public float hitTime;
     public float hitCooldown;   // should be less than hit time
@@ -73,8 +76,6 @@ public class Player : Pawn
 
     [HideInInspector]public SpriteAnimator animator;
 
-    public bool FacingRight => transform.rotation.y == 0;
-
     private Vector3 checkpoint;
 
     //sfx
@@ -97,15 +98,15 @@ public class Player : Pawn
 
     bool isGroundPounding = false;
 
-    bool PhysicsPaused => myRB.constraints == RigidbodyConstraints2D.FreezeAll;
+    bool PhysicsPaused => body.constraints == RigidbodyConstraints2D.FreezeAll;
 
     float hurtTimeStamp = 0;
-
+    private Timer jumpTimer;
 
     void Awake()
     {
         currentHealth = maxhealth;
-        myRB = GetComponent<Rigidbody2D>();
+        body = GetComponent<Rigidbody2D>();
         boxCollider2D = GetComponent<BoxCollider2D>();
         //canPlay = true;
         checkpoint = this.gameObject.transform.position;
@@ -116,24 +117,24 @@ public class Player : Pawn
 
     override public void Start()
     {
+        jumpTimer = null;
         inputAttackPaused = false;
         inputMovePaused = false;
 
         
         boxCollider2D.enabled = true;
         isGroundPounding = false;
-        myRB.gravityScale = originalGravityScale;
-        myRB.velocity = Vector2.zero;
+        body.gravityScale = originalGravityScale;
+        body.velocity = Vector2.zero;
 
         upAttackHitbox.SetActive(false);
         downAttackHitbox.SetActive(false);
         rightAttackHitbox.SetActive(false);
         spinAttackHitbox.SetActive(false);
-        radialAttackHitbox.SetActive(false);
         animator.PlayDefault();
         hurtTimeStamp = -invincibilityTime;
 
-        myRB.constraints = RigidbodyConstraints2D.FreezeRotation;
+        body.constraints = RigidbodyConstraints2D.FreezeRotation;
 
         StopAllCoroutines();
 
@@ -162,24 +163,33 @@ public class Player : Pawn
         
 
         bool wasGrounded = isGrounded;
-        string groundingLayer = boxCollider2D.IsGrounded(bottomLeftRaycast.position, bottomRightRaycast.position, this.transform.localScale.x, rayCastMagnitude);
-        if (groundingLayer == "TwoWayPlatform")
+        HitInfo groundCheck = boxCollider2D.IsGrounded(bottomLeftRaycast.position, bottomRightRaycast.position, rayCastMagnitude);
+        if (groundCheck.layerName == "TwoWayPlatform")
         {
-            if (myRB.velocity.y <= 0)
+            if (body.velocity.y <= 0)
                 isGrounded = true;
             if (isGrounded && PlayerInput.IsPressingDown() && PlayerInput.HasPressedA())    // make shift fallthrough
                 isGrounded = false;
         }
         else
         {
-            isGrounded = groundingLayer != null;
+            isGrounded = groundCheck;
+        }
+        
+        //GMAN REMEMBER TO COMMENT THIS LATER
+        if (isGrounded && groundCheck.layerName == "TwoWayPlatform" && !wasGrounded)
+        {
+            float feetY = boxCollider2D.bounds.min.y;
+            float surfaceY = groundCheck.hit.collider.bounds.max.y;
+                if (surfaceY > feetY) isGrounded = false;
         }
 
-        isHittingCeiling = boxCollider2D.IsHittingCeiling(topLeftRaycast.position, topRightRaycast.position, this.transform.localScale.x, rayCastMagnitude);
-        isHittingRightWall = boxCollider2D.IsHittingRightWall(topRightRaycast.position, bottomRightRaycast.position, this.transform.localScale.x, rayCastMagnitude);
-        isHittingLeftWall = boxCollider2D.IsHittingLeftWall(topLeftRaycast.position, bottomLeftRaycast.position, this.transform.localScale.x, rayCastMagnitude);
+        isHittingCeiling = boxCollider2D.IsHittingCeiling(topLeftRaycast.position, topRightRaycast.position, rayCastMagnitude);
+        isHittingRightWall = boxCollider2D.IsHittingRight(topRightRaycast.position, bottomRightRaycast.position, rayCastMagnitude);
+        isHittingLeftWall = boxCollider2D.IsHittingLeft(topLeftRaycast.position, bottomLeftRaycast.position, rayCastMagnitude);
         if (isGrounded)
         {
+            if( jumpTimer != null && jumpTimer.Done) jumpTimer.Cancel();
             if (isGroundPounding)   // if is falling fast
             {
                 CameraController.Instance.VertShake(6);          // shake screen
@@ -189,20 +199,14 @@ public class Player : Pawn
                 isGroundPounding = false;
             }
 
-            myRB.gravityScale = originalGravityScale;
-            if (radialAttackHitbox.activeSelf)
-            {
-                radialAttackHitbox.SetActive(false);
-                DoPhysicsPause(.05F);
-                animator.PlayDefault();
-            }
-            canAerialAttack = true;
+            body.gravityScale = originalGravityScale;
 
+            canAerialAttack = true;
             
-            if (!wasGrounded && myRB.velocity.y < 0)    // check if moving down
+            if (!wasGrounded && body.velocity.y < 0)    // check if moving down
             {                
                 upAttackHitbox.SetActive(false);
-                myRB.velocity = new Vector2(myRB.velocity.x, 0);   
+                body.velocity = new Vector2(body.velocity.x, 0);   
                 SnapToPixel();             
             }
         }
@@ -212,29 +216,29 @@ public class Player : Pawn
         {
             if (spinAttackHitbox.activeSelf)
             {
-                myRB.velocity = new Vector2(FacingRight ? 3.0F : -3.0F, myRB.velocity.y);
+                body.velocity = new Vector2(FacingDirection * 3.0F, body.velocity.y);
             }
             if (rightAttackHitbox.activeSelf && isGrounded)
             {
                 if (Time.time - hitTimeStamp > .15F)
                 {
-                    myRB.velocity = new Vector2(0, myRB.velocity.y);
+                    body.velocity = new Vector2(0, body.velocity.y);
                 }
             }
         }
         else
         {
             if (!spinAttackHitbox.activeSelf)
-                myRB.velocity = new Vector2(0, myRB.velocity.y);
+                body.velocity = new Vector2(0, body.velocity.y);
 
             if (PlayerInput.IsPressingLeft())
             {
-                myRB.velocity = new Vector2(-moveSpeed, myRB.velocity.y);
+                body.velocity = new Vector2(-moveSpeed, body.velocity.y);
                 this.transform.rotation = new Quaternion(0f, 180f, this.transform.rotation.z, this.transform.rotation.w);
             }
             else if (PlayerInput.IsPressingRight())
             {
-                myRB.velocity = new Vector2(moveSpeed, myRB.velocity.y);
+                body.velocity = new Vector2(moveSpeed, body.velocity.y);
                 this.transform.rotation = new Quaternion(0f, 0f, this.transform.rotation.z, this.transform.rotation.w);
             }
             else
@@ -244,31 +248,32 @@ public class Player : Pawn
 
             if (PlayerInput.IsPressingDown())
             {
-                myRB.velocity = new Vector2(0, myRB.velocity.y);
+                body.velocity = new Vector2(0, body.velocity.y);
             }
 
             if (isGrounded && PlayerInput.HasPressedA())
             {
                 isJumping = true;
-                jumpTimeCountdown = jumpTime;
-                myRB.velocity = new Vector2(myRB.velocity.x, jumpSpeed);
+                //jumpTimeCountdown = jumpTime;
+                body.velocity = new Vector2(body.velocity.x, jumpSpeed);
+                float startY = transform.position.y;
+                jumpTimer = Timer.Set(jumpTime, () =>
+                {
+                    isJumping = false;
+                    Debug.Log(transform.position.y - startY);
+                });
                 SoundSystem.PlaySfx(sfx_jump, 2);
             }
 
             if (isJumping && PlayerInput.HasHeldA())
             {
-                if (jumpTimeCountdown > 0)
+                body.velocity = new Vector2(body.velocity.x, jumpSpeed);
+                if (isHittingCeiling)
                 {
-                    myRB.velocity = new Vector2(myRB.velocity.x, jumpSpeed);
-                    jumpTimeCountdown -= Time.deltaTime;
-                    if (isHittingCeiling)
-                    {
-                        jumpTimeCountdown = 0;
-                    }
-                }
-                else
-                {
+                    if(jumpTimer != null && jumpTimer.Done) jumpTimer.Cancel();
                     isJumping = false;
+                    //Timer.Cancel();
+                    //todo: add cancel timer function
                 }
             }
 
@@ -300,15 +305,15 @@ public class Player : Pawn
     {
         if (Time.time - hurtTimeStamp < invincibilityTime)
         {
-            animator.Ren.color = animator.Ren.color.a == 0 ? Color.white : new Color(0,0,0,0);
+            animator.Renderer.color = animator.Renderer.color.a == 0 ? Color.white : new Color(0,0,0,0);
         }
         else
         {
-            animator.Ren.color = Color.white;
+            animator.Renderer.color = Color.white;
         }
 
         if (HUD.Instance)
-            HUD.Instance.Flash(animator.Ren.color.a == 1, "Main Text Layer", "BG");
+            HUD.Instance.Flash(animator.Renderer.color.a == 1, "Main Text Layer", "BG");
     }
 
     void OnCollisionEnter2D(Collision2D other)
@@ -327,7 +332,7 @@ public class Player : Pawn
     {
         
 
-        if (isHurting && inputMovePaused && inputAttackPaused)
+        if (IsHurting && inputMovePaused && inputAttackPaused)
             animator.Play(AnimMode.Looped, "hurt");
         else if (isGrounded)
         {
@@ -366,15 +371,11 @@ public class Player : Pawn
             {
                 animator.Play(AnimMode.Hang, "downslash");
             }
-            else if (radialAttackHitbox.activeSelf)
-            {
-                animator.Play(AnimMode.Looped, "somersault");
-            }
             else if (upAttackHitbox.activeSelf)
             {
                 animator.Play(AnimMode.Hang, "upslash air");
             }
-            else if (myRB.velocity.y > 0)
+            else if (body.velocity.y > 0)
             {
                 animator.Play(AnimMode.Hang, "jump");
             }
@@ -417,7 +418,7 @@ public class Player : Pawn
             currentHealth--;
             DoInputMovePause(.25F);
             DoInputAttackPause(.25F);
-            myRB.velocity = Vector2.up + (FacingRight ? Vector2.left * 5F : Vector2.right * 5F);
+            body.velocity = Vector2.up - (FacingDirection * Vector2.right * 5F);
 
             if(currentHealth <= 0)
             {
@@ -455,7 +456,6 @@ public class Player : Pawn
         downAttackHitbox.SetActive(false);
         rightAttackHitbox.SetActive(false);
         spinAttackHitbox.SetActive(false);
-        radialAttackHitbox.SetActive(false);
             
         switch (hitBoxIndex)
         {
@@ -482,11 +482,6 @@ public class Player : Pawn
                 //Right attack
                 rightAttackHitbox.SetActive(true);
 
-                break;
-            case 5:
-                //radial attack
-                radialAttackHitbox.SetActive(true);
-                hitLengthMod = 1F;
                 break;
             default:
                 Debug.LogError("AN ERROR HAS OCCURRED WHILE TRYING TO ATTACK");
@@ -515,10 +510,6 @@ public class Player : Pawn
             case 4:
                 //Right attack
                 rightAttackHitbox.SetActive(false);
-                break;
-            case 5:
-                //radial attack
-                radialAttackHitbox.SetActive(false);
                 break;
             default:
                 Debug.LogError("AN ERROR HAS OCCURRED WHILE TRYING TO ATTACK");
@@ -549,12 +540,6 @@ public class Player : Pawn
 
     private void OnTriggerStay2D(Collider2D other)
     {
-        if (other.gameObject.GetComponent<Collider2D>().CompareTag("EnemyMelee"))
-        {
-            other.gameObject.GetComponent<Collider2D>().transform.parent.GetComponent<MeleeEnemy>().jumpBackwardsMode = true;
-            TakeDamage();
-            //also take knockback
-        }
         if (other.gameObject.CompareTag("Door") && PlayerInput.IsPressingUp() && CandleHandler.canUseDoor)
         {
             transform.position = new Vector3(199.5F, 100, transform.position.z);
@@ -566,8 +551,8 @@ public class Player : Pawn
         animator.Play(AnimMode.Looped, "hurt");
 
         hurtTimeStamp = 0;
-        DoInputAttackPause(3);
-        DoInputMovePause(3);
+        DoInputAttackPause(30);
+        DoInputMovePause(30);
 
         yield return new WaitForSeconds(.44F);
         animator.Play(AnimMode.Hang, "die");
@@ -600,12 +585,12 @@ public class Player : Pawn
 
     IEnumerator PausePhysics(float duration)
     {
-        Vector2 velocity = myRB.velocity;
-        myRB.constraints = RigidbodyConstraints2D.FreezeAll;
+        Vector2 velocity = body.velocity;
+        body.constraints = RigidbodyConstraints2D.FreezeAll;
         yield return new WaitForSeconds(duration);
-        myRB.constraints = RigidbodyConstraints2D.FreezeRotation;
+        body.constraints = RigidbodyConstraints2D.FreezeRotation;
         pausePhysicsCoroutine = null;
-        myRB.velocity = velocity;
+        body.velocity = velocity;
         SnapToPixel();
         yield break;
     }
@@ -613,7 +598,7 @@ public class Player : Pawn
     IEnumerator PauseInputMove(float duration)
     {
         inputMovePaused = true;
-        myRB.velocity = Vector2.zero;
+        body.velocity = Vector2.zero;
         yield return new WaitForSeconds(duration);
         inputMovePaused = false;
         SnapToPixel();
@@ -653,7 +638,7 @@ public class Player : Pawn
             else
             {
                 DoInputMovePause(0.001F);
-                myRB.velocity = new Vector2(FacingRight ? 4F : -4F, myRB.velocity.y);
+                body.velocity = new Vector2(FacingDirection * 4F, body.velocity.y);
             }
         }
         else
@@ -689,10 +674,10 @@ public class Player : Pawn
             {
                 SoundSystem.PlaySfx(sfx_swordSounds[0], 4);   //play attack sfx
                 
-                myRB.velocity = Vector3.down * 38;
+                body.velocity = Vector3.down * 38;
                 DoInputAttackPause(.5F);
                 isGroundPounding = true;
-                myRB.gravityScale = 30;
+                body.gravityScale = 30;
                 if (hitCoroutine != null)
                     StopCoroutine(hitCoroutine);
                 hitCoroutine = StartCoroutine(Hit(2));
@@ -709,8 +694,8 @@ public class Player : Pawn
             }
             else
             {
-                myRB.velocity = Vector3.up * 15;
-                myRB.gravityScale = originalGravityScale * .97F;
+                body.velocity = Vector3.up * 15;
+                body.gravityScale = originalGravityScale * .97F;
             }
 
             SoundSystem.PlaySfx(sfx_swordSounds[0], 4);
@@ -730,7 +715,7 @@ public class Player : Pawn
                         SoundSystem.PlaySfx(sfx_swordSounds[0], 4);   //play attack sfx
                         DoPhysicsPause(.08F);
                         DoInputMovePause(.3F);
-                        myRB.velocity = Vector2.zero;
+                        body.velocity = Vector2.zero;
                         if (hitCoroutine != null)
                             StopCoroutine(hitCoroutine);
                         hitCoroutine = StartCoroutine(Hit(4));
@@ -741,7 +726,7 @@ public class Player : Pawn
 
                         DoPhysicsPause(.08F);
                         DoInputMovePause(.3F);
-                        myRB.velocity = Vector2.zero;
+                        body.velocity = Vector2.zero;
                         if (hitCoroutine != null)
                             StopCoroutine(hitCoroutine);
                         hitCoroutine = StartCoroutine(Hit(4));
@@ -763,11 +748,7 @@ public class Player : Pawn
             }
             else
             {
-                // radial spin
-                SoundSystem.PlaySfx(sfx_swordSounds[3], 4);
-                if (hitCoroutine != null)
-                    StopCoroutine(hitCoroutine);
-                hitCoroutine = StartCoroutine(Hit(5));
+                // default aerial
             }
         }
 

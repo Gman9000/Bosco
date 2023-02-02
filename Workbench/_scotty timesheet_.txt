@@ -1,0 +1,20 @@
+Scotty 1/24/2023 7:15PM
+20m investigating variable jump height
+	FINDING: variable max jump height is tied to Unity's timestep value
+10m divvying task smaller
+10m added an enemy idle state
+5m fixed variable max jump bug, but discovered the running jump being randomly higher now
+5m non-down collision pawnenemy
++10m
++10m
++10m : finished raycastcheck mods. untested
++10m : began implementation
++10m : finished the logic, but now debugging the non-workiness of it
++10m
++10m
++10m
++10m
++10m
++10m
++10m : fixed everything(?)
++10m : still some bugs you can do to trap the dummy in a wall. was exploring this, but couldn't figure out the edge case yet
