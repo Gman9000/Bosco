@@ -229,12 +229,15 @@ public class Player : Pawn
         }
         else    // not grounded
         {
-            if (body.velocity.y < 0 && state != PState.A_SwordDown)
-                state = PState.Fall;
-
-            if (wasGrounded)        // only set as unassigned if the player was JUST on the ground
+            if (state != PState.ClimbIdle && state != PState.ClimbMove)
             {
-                state = PState.Unassigned;
+                if (body.velocity.y < 0 && state != PState.A_SwordDown)
+                    state = PState.Fall;
+
+                if (wasGrounded)        // only set as unassigned if the player was JUST on the ground
+                {
+                    state = PState.Unassigned;
+                }
             }
         }
 
