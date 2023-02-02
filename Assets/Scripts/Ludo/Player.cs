@@ -277,7 +277,7 @@ public class Player : Pawn
                     state = PState.ClimbMove;
                     body.velocity = new Vector2(body.velocity.x, moveSpeed);
                 }
-                else if (PlayerInput.IsPressingDown())
+                if (PlayerInput.IsPressingDown())
                 {
                     state = PState.ClimbMove;
                     body.velocity = new Vector2(body.velocity.x, -moveSpeed);
@@ -649,7 +649,6 @@ public class Player : Pawn
         if (other.CompareTag("Ladder"))
         {
             canClimb = true;
-
         }
 
         if (other.CompareTag("Reset"))
@@ -670,6 +669,10 @@ public class Player : Pawn
 
     private void OnTriggerStay2D(Collider2D other)
     {
+        if (other.CompareTag("Ladder"))
+        {
+            canClimb = true;
+        }
         if (other.gameObject.CompareTag("Door") && PlayerInput.IsPressingUp() && CandleHandler.canUseDoor)
         {
             transform.position = new Vector3(199.5F, 100, transform.position.z);
