@@ -18,6 +18,7 @@ TagManager:
   - PlayerTarget
   - Scene
   - TwoWayPlatform
+  - Rockwall
   layers:
   - Default
   - TransparentFX
@@ -33,7 +34,7 @@ TagManager:
   - EnemyFlying
   - PlayerTarget
   - Hidden
-  - 
+  - Rockwall
   - 
   - 
   - 

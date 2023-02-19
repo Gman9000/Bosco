@@ -7,6 +7,7 @@ public enum PState {Unassigned,
     Idle, Walk, Run, Duck,
 Jump, Fall, 
 G_SwordSide1, G_SwordSide2, G_SwordSide3, G_SwordTwist, G_SwordUp, 
+G_RockclimbingIdle, G_RockclimbingShimmy,
 A_SwordUp, A_SwordRoll, A_SwordSide, A_SwordDown,
 A2G_Land, A2G_SwordLand,
 }
@@ -33,11 +34,12 @@ public class Player : Pawn
     public AudioClip sfx_hurt;
 
     public static Player Instance { get; protected set; }
-    private Rigidbody2D body;
+
+    [HideInInspector]public Rigidbody2D body;
     public float moveSpeed;
     public float invincibilityTime = 1.2F;
 
-    private BoxCollider2D boxCollider2D;
+    [HideInInspector]public BoxCollider2D boxCollider2D;
 
     private PState _state;
 
@@ -55,7 +57,8 @@ public class Player : Pawn
     private float jumpTimeCountdown;
     private bool isJumping;
     public float originalGravityScale;
-    public float DownThrustGravityModifier;
+    public float shimmySpeed = 2;
+    public float rockJumpSpeed = 5;
 
     public Transform topLeftRaycast;
     public Transform topRightRaycast;
@@ -101,6 +104,7 @@ public class Player : Pawn
 
     private Vector3 checkpoint;
 
+    public bool IsDownSlash => downAttackHitbox.activeSelf;
     bool isGrounded;
     bool isHittingCeiling;
     bool isHittingRightWall;
@@ -113,6 +117,8 @@ public class Player : Pawn
 
     float hurtTimeStamp = 0;
     private Timer jumpTimer;
+
+    [HideInInspector]public bool onRockwall;
 
     void Awake()
     {
@@ -132,6 +138,7 @@ public class Player : Pawn
         jumpTimer = null;
         inputAttackPaused = false;
         inputMovePaused = false;
+        onRockwall = false;
 
         
         boxCollider2D.enabled = true;
@@ -169,7 +176,6 @@ public class Player : Pawn
         }
 
         if (Game.isPaused)  return;
-        
 
         bool wasGrounded = isGrounded;
         HitInfo groundCheck = boxCollider2D.IsGrounded(bottomLeftRaycast.position, bottomRightRaycast.position, rayCastMagnitude);
@@ -179,6 +185,8 @@ public class Player : Pawn
                 isGrounded = true;
             if (isGrounded && PlayerInput.IsPressingDown() && PlayerInput.HasPressedA())    // make shift fallthrough
                 isGrounded = false;
+            if (groundCheck.hit.collider.tag == "Rockwall" && !wasGrounded && !PassThroughPlatform.rockwallCondition)
+                isGrounded = false;
         }
         else
         {
@@ -186,7 +194,7 @@ public class Player : Pawn
         }
         
         //GMAN REMEMBER TO COMMENT THIS LATER
-        if (isGrounded && groundCheck.layerName == "TwoWayPlatform" && !wasGrounded)
+        if (isGrounded && (groundCheck.layerName == "TwoWayPlatform") && !wasGrounded)
         {
             float feetY = boxCollider2D.bounds.min.y;
             float surfaceY = groundCheck.hit.collider.bounds.max.y;
@@ -232,7 +240,6 @@ public class Player : Pawn
                 state = PState.Unassigned;
             }
         }
-
 
         if (inputMovePaused)
         {
@@ -285,7 +292,7 @@ public class Player : Pawn
                 jumpTimer = Timer.Set(jumpTime, () =>
                 {
                     isJumping = false;
-                    Debug.Log(transform.position.y - startY);
+                    Debug.Log("jump height:  " + (transform.position.y - startY));
                 });
                 SoundSystem.PlaySfx(sfx_jump, 2);
             }
@@ -305,6 +312,9 @@ public class Player : Pawn
                 isJumping = false;
             }
         }
+
+        if (onRockwall && body.velocity.x != 0)
+            body.velocity = new Vector2(Mathf.Sign(body.velocity.x) * shimmySpeed, 0);
 
         AttackInputs();
 
@@ -326,9 +336,17 @@ public class Player : Pawn
     void SetStateFromHorizontal()
     {
         if (body.velocity.x == 0)
+        {
             state = PState.Idle;
+            if (onRockwall)
+                state = PState.G_RockclimbingIdle;
+        }
         else
+        {
             state = PState.Walk;
+            if (onRockwall)
+                state = PState.G_RockclimbingShimmy;
+        }
     }
 
     void SetStateFromVertical()
@@ -341,12 +359,23 @@ public class Player : Pawn
 
     bool IsAttackState() => AttackStates.Contains(state);
 
-    void SnapToPixel()
+    public void SnapToPixel()
     {
         Vector3 pos = transform.position;
         pos.x = Mathf.Round(pos.x / Game.PIXEL) * Game.PIXEL;
         pos.y = Mathf.Floor(pos.y / Game.PIXEL) * Game.PIXEL;
         transform.position = pos;
+    }
+
+    public void SetGrounded(bool value, string type)
+    {
+        isGrounded = value;
+        switch (type)
+        {
+            case "Rockwall":
+                onRockwall = value;
+                break;
+        }
     }
 
     void FixedUpdate()
@@ -380,61 +409,7 @@ public class Player : Pawn
     {
         if (IsHurting && inputMovePaused && inputAttackPaused)
             animator.Play(AnimMode.Looped, "hurt");
-        else if (isGrounded)
-        {
-
-            /*
-            if (upAttackHitbox.activeSelf)
-            {
-                animator.Play(AnimMode.Hang, "upslash ground");
-            }
-            else if (spinAttackHitbox.activeSelf)
-            {
-                animator.Play(AnimMode.Looped, "spin");
-            }
-            else if (rightAttackHitbox.activeSelf)
-            {
-                animator.Play(AnimMode.Hang, consecutiveHits <= 1 ? "slash 1" : "slash 2");
-            }
-            else if (!PhysicsPaused && !inputMovePaused && PlayerInput.IsPressingDown())
-            {
-                animator.Play(AnimMode.Looped, "duck");
-            }
-            else if (!PhysicsPaused && !inputMovePaused && (PlayerInput.IsPressingLeft() || PlayerInput.IsPressingRight()))
-            {
-                animator.Play(AnimMode.Looped, "walk");
-            }
-            else if (!PhysicsPaused)
-            {
-                animator.Play(AnimMode.Looped, "idle");
-            }*/
-        }
-        else
-        {
-            /*if (spinAttackHitbox.activeSelf)
-            {
-                animator.Play(AnimMode.Looped, "spin");
-            }
-            else if (downAttackHitbox.activeSelf)
-            {
-                animator.Play(AnimMode.Hang, "downslash");
-            }
-            else if (upAttackHitbox.activeSelf)
-            {
-                animator.Play(AnimMode.Hang, "upslash air");
-            }
-            else if (body.velocity.y > 0)
-            {
-                animator.Play(AnimMode.Hang, "jump");
-            }
-            else
-            {
-                animator.Play(AnimMode.Hang, "fall");
-            }*/
-
-        }
-
-        switch (state)
+        else switch (state)
         {
             case PState.Idle:
                 animator.PlayDefault();
@@ -472,6 +447,13 @@ public class Player : Pawn
                 break;
             case PState.A_SwordUp:
                 animator.Play(AnimMode.Hang, "upslash air");
+                break;
+
+            case PState.G_RockclimbingIdle:
+                animator.Play(AnimMode.Looped, "duck");
+                break;
+            case PState.G_RockclimbingShimmy:
+                animator.Play(AnimMode.Looped, "duck");
                 break;
 
 

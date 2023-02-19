@@ -4,48 +4,88 @@ using UnityEngine;
 
 public class PassThroughPlatform : MonoBehaviour
 {
+    static public bool rockwallCondition => PlayerInput.IsPressingUp() && !Player.Instance.IsDownSlash;
+    public bool isRockwall = false;
     public float disableColliderTimer;
     [SerializeField] private Collider2D theCollider;
     private bool playerOnPlatform;
-    // Start is called before the first frame update
+
+    private bool pauseCollisionChanges;
+
+    void Awake()
+    {
+        if (isRockwall)
+        {
+            GetComponent<SpriteRenderer>().enabled = false;
+        }
+    }
+    
     void Start()
     {
-        //theCollider = GetComponent<Collider2D>();
+        pauseCollisionChanges = false;
     }
-
+    
     private void SetPlayerOnPlatform(Collision2D other, bool value)
     {
-        Player thePlayer = other.gameObject.GetComponent<Player>();
-        if(thePlayer != null)
+        Player thePlayer = Player.Instance;
+
+        if(other.gameObject.GetComponent<Player>() != null)
         {
+            thePlayer.SetGrounded(value, gameObject.tag);
             playerOnPlatform = value;
         }
     }
 
     private void OnCollisionEnter2D(Collision2D other)
     {
-        SetPlayerOnPlatform(other, true);
+        if ((isRockwall && !rockwallCondition))
+        {
+            // ignore collision
+        }
+        else
+            SetPlayerOnPlatform(other, true);
     }
 
     private void OnCollisionExit2D(Collision2D other)
     {
         SetPlayerOnPlatform(other, false);
     }
-    // Update is called once per frame
+    
     void Update()
     {
+        if (pauseCollisionChanges)  return;
+
+
+        if (isRockwall)
+        {
+            Physics2D.IgnoreCollision(Player.Instance.boxCollider2D, theCollider, true);
+            if (rockwallCondition || playerOnPlatform)
+            {
+                BoxCollider2D otherCollider = Player.Instance.boxCollider2D;
+                float myTop = theCollider.bounds.center.y + theCollider.bounds.size.y / 2;
+                float playerBottom = otherCollider.bounds.center.y - otherCollider.bounds.size.y / 2;
+
+                if (myTop <= playerBottom + Game.PIXEL)
+                {
+                    Physics2D.IgnoreCollision(Player.Instance.boxCollider2D, theCollider, false);     
+                    
+                }
+            }
+        }
+        
         if (playerOnPlatform && PlayerInput.IsPressingDown() && PlayerInput.HasPressedA())
         {
-            Physics2D.IgnoreCollision(Player.Instance.gameObject.GetComponent<Collider2D>(), theCollider, true);
-            //theCollider.enabled = false;
+            Physics2D.IgnoreCollision(Player.Instance.boxCollider2D, theCollider, true);
             StartCoroutine(EnableCollision());
         }
     }
 
     private IEnumerator EnableCollision()
     {
+        pauseCollisionChanges = true;
         yield return new WaitForSeconds(disableColliderTimer);
-        Physics2D.IgnoreCollision(Player.Instance.gameObject.GetComponent<Collider2D>(), theCollider, false);
-        //theCollider.enabled = true;
+        if (!isRockwall)
+            Physics2D.IgnoreCollision(Player.Instance.boxCollider2D, theCollider, false);
+        pauseCollisionChanges = false;
     }
 }
