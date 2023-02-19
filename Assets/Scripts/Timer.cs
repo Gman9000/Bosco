@@ -15,7 +15,7 @@ public class Timer
     public float Progress => Mathf.Min((Time.time - timeStamp) / duration, 1.0F);
 
     
-    public Timer(float duration, System.Action onComplete)
+    private Timer(float duration, System.Action onComplete)
     {
         this.duration = duration;
         this.onComplete = onComplete;
@@ -29,6 +29,8 @@ public class Timer
         allTimers.Add(ret);
         return ret;
     }
+
+    static public Timer Set(float duration) => Set(duration, () => {});
 
     static public void AllTimersInit()
     {

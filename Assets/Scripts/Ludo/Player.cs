@@ -193,8 +193,6 @@ public class Player : Pawn
                 if (surfaceY > feetY) isGrounded = false;
         }
 
-        Debug.Log(isGrounded);
-
         isHittingCeiling = boxCollider2D.IsHittingCeiling(topLeftRaycast.position, topRightRaycast.position, rayCastMagnitude);
         isHittingRightWall = boxCollider2D.IsHittingRight(topRightRaycast.position, bottomRightRaycast.position, rayCastMagnitude);
         isHittingLeftWall = boxCollider2D.IsHittingLeft(topLeftRaycast.position, bottomLeftRaycast.position, rayCastMagnitude);

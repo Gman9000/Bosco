@@ -47,3 +47,23 @@ done... why do I feel... hollow?
 10m wtfing over the edge collision AGAIN
 +9m until I gave up and added it to bug list
 
+Scotty 2/7/2022 8:43PM
+hard test enemy system by trying to make a sidewalker
+17m trying to figure out where to start in terms of Coroutining
+
+Scotty 2/12/2023
+10m fix weird falling logic bug on sidewalker
++10m
++10m
++10m
++10m
++10m
++10m
++10m
++10m
++10m
+
+Scotty 2/14/2023
++10
++10 SOLVED! Y Interpolation in the MoveToPosition coroutine was overwriting the gravity. The gravity was working, but was reset whenever it was interpolating
+>> NEW TASK : code the sidewalker all the way
