@@ -263,7 +263,7 @@ MonoBehaviour:
   jumpSpeed: 10
   jumpTime: 0.265
   originalGravityScale: 6.25
-  shimmySpeed: 2
+  shimmySpeed: 3
   rockJumpSpeed: 5
   topLeftRaycast: {fileID: 2300325343013361301}
   topRightRaycast: {fileID: 2300325343155431913}
