@@ -35,6 +35,8 @@ public class Game : MonoBehaviour
     private static List<SpriteSimulator>[] scanlines;
     private static int[] scanlineSimTotal;
 
+    public static string debugText;
+
 
     /*================*\
     |*--LOCAL FIELDS--*|
@@ -86,6 +88,12 @@ public class Game : MonoBehaviour
             Pause();
     }
 #endif
+    void OnGUI()
+    {
+        GUI.color = Color.green;
+        GUI.Label(new Rect(0, 0, 200, 100), debugText);
+    }
+
     public void ShowTitle()
     {
         if (HUD.Instance)

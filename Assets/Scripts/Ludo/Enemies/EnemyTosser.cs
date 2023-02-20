@@ -34,7 +34,7 @@ public class EnemyTosser : PawnEnemy
         StopAllCoroutines();
     }
 
-    override protected void UpdateState0()
+    /*override protected void UpdateState0()
     {
         Vector3 enemyDirection = transform.localScale;
 
@@ -62,7 +62,7 @@ public class EnemyTosser : PawnEnemy
             StartCoroutine(ShootProjectile());
         }
 
-    }
+    }*/
 
     public void Motion(Vector3 directionOfTravel, float speed = 1)
     {
