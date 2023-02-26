@@ -7,7 +7,7 @@ public class PassThroughPlatform : MonoBehaviour
     static public bool rockwallCondition => PlayerInput.IsPressingDown() && !Player.Instance.IsDownSlash;
     public bool isRockwall = false;
     public float disableColliderTimer;
-    [SerializeField] private Collider2D theCollider;
+    [SerializeField] private BoxCollider2D theCollider;
     private bool playerOnPlatform;
 
     private bool pauseCollisionChanges;
@@ -62,8 +62,8 @@ public class PassThroughPlatform : MonoBehaviour
             if (rockwallCondition || playerOnPlatform)
             {
                 BoxCollider2D otherCollider = Player.Instance.boxCollider2D;
-                float myTop = theCollider.bounds.center.y + theCollider.bounds.size.y / 2;
-                float playerBottom = otherCollider.bounds.center.y - otherCollider.bounds.size.y / 2;
+                float myTop = theCollider.Top();
+                float playerBottom = otherCollider.Bottom();
 
                 if (myTop <= playerBottom + Game.PIXEL)
                 {

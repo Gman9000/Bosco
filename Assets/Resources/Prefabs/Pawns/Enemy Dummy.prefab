@@ -134,6 +134,7 @@ MonoBehaviour:
   invincibilityTime: 0.3
   knockbackDistance: 1
   fixedGravity: 0.25
+  visionBoxSize: {x: 10, y: 5}
   facingDirection: 1
 --- !u!114 &2721580418243574740
 MonoBehaviour:
@@ -173,7 +174,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2721580418243574741}
-  m_BodyType: 1
+  m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0

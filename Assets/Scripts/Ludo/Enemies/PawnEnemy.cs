@@ -28,7 +28,7 @@ public abstract class PawnEnemy : Pawn
 
     protected System.Func<IEnumerator> stateIdle;
     protected System.Func<IEnumerator> statePrimary;
-    protected float InvProgress => invTimer.Progress;
+    protected float KnockbackProgress => Mathf.Min(1, invTimer.Progress * 2);
     private Rect visionBox;
     private Timer invTimer;
     public bool Invincible => invTimer != null && !invTimer.Done;
@@ -93,7 +93,7 @@ public abstract class PawnEnemy : Pawn
         {
             // NOTE: leave this block and conditional as-is until we're done writing the structure of this class
         }
-        else if (Invincible)
+        else if (Invincible && KnockbackProgress > 0 && KnockbackProgress < 1)
         {
             SetState(null);
             Vector2 newPos = UpdateKnockback(positionWhenHit + currentKnockback.normalized * knockbackDistance);
@@ -136,55 +136,57 @@ public abstract class PawnEnemy : Pawn
 
         Vector2 pos = transform.position;       
 
-        if (motion.y < 0)
+        
+        if (motion.y <= 0)
         {
             if (_isGrounded)
             {
-                float yDiff = transform.position.y - boxCollider2D.bounds.min.y;
+                float yDiff = transform.position.y - boxCollider2D.Bottom();
                 float contactY = groundCheck.hit.point.y + yDiff;
                 pos.y = contactY;
+                if (sprite.enabled)
+                    Debug.Log("down");
             }
             else
             {
                 pos.y += motion.y;
             }
-        }
-        else if (motion.y > 0)
-        {        
+        }    
+        else if (motion.y >= 0)
+        {
             if (upCheck)
             {
-                float yDiff = transform.position.y - boxCollider2D.bounds.max.y;
-                float contactY = upCheck.hit.point.y + yDiff;
-                pos.y = contactY;
+                // move to contact
             }
             else
+            {
                 pos.y += motion.y;
+            }
         }
-
-
-        if (motion.x < 0)
+        
+        if (motion.x <= 0)
         {
             if (leftCheck)
             {
-                float xDiff = transform.position.x - boxCollider2D.bounds.min.x;
-                float contactX = groundCheck.hit.point.x + xDiff;
-                pos.x = contactX;
+                // move to contact
             }
             else
+            {
                 pos.x += motion.x;
+            }
         }
-        else if (motion.x > 0)
+        else if (motion.x >= 0)
         {
             if (rightCheck)
             {
-                float xDiff = transform.position.x - boxCollider2D.bounds.max.x;
-                float contactX = groundCheck.hit.point.x - xDiff;
-                pos.x  = contactX;
+                // move to contact
             }
             else
+            {
                 pos.x += motion.x;
+            }
         }
-
+        
         body.MovePosition(pos);
     }
 
@@ -227,6 +229,7 @@ public abstract class PawnEnemy : Pawn
 
         invTimer = Timer.Set(invincibilityTime, ()=>{
             currentKnockback = Vector2.zero;
+            SetState(stateIdle);
         });
 
         OnHit();
@@ -234,17 +237,17 @@ public abstract class PawnEnemy : Pawn
 
 
     /*================================*\
-    |*--OVERRIDABLE UPDATE FUNCTIONS--*|
+    |*  OVERRIDABLE UPDATE FUNCTIONS  *|
     \*================================*/
 
     protected virtual void OnHit() {}      // called first frame of being hit
 
     protected virtual Vector2 UpdateKnockback(Vector2 moveToPoint)
     {
-        Vector2 upness = Vector2.up * .25F;
+        Vector2 upness = Vector2.up * 1F;
         if (moveToPoint.y < positionWhenHit.y)
             upness = Vector2.zero;
-        return positionWhenHit + (moveToPoint + upness - positionWhenHit) * InvProgress;
+        return positionWhenHit + (moveToPoint + upness - positionWhenHit) * KnockbackProgress;
     }
 
     protected virtual IEnumerator DeathSequence()
@@ -255,7 +258,7 @@ public abstract class PawnEnemy : Pawn
     }
 
     /*=======================*\
-    |*--COLLISION FUNCTIONS--*|
+    |*  COLLISION FUNCTIONS  *|
     \*=======================*/
 
     private void OnTriggerStay2D(Collider2D other)
@@ -267,7 +270,7 @@ public abstract class PawnEnemy : Pawn
     }
 
     /*========================*\
-    |*--ENEMY ACTION TOOLSET--*|
+    |*  ENEMY ACTION TOOLSET  *|
     \*========================*/
 
     protected IEnumerator MoveTowardPositionX(float x, float duration)

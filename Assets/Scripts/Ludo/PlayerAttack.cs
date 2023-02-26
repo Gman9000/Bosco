@@ -26,7 +26,7 @@ public class PlayerAttack : MonoBehaviour
         Vector2 hitDirectionModified = hitDirection;
 
         if (hitDirectionModified.x != 0)
-            hitDirectionModified.x = Player.FacingDirection;
+            hitDirectionModified.x = Mathf.Sign(enemyCollider.transform.position.x - Player.Position.x);
         else if (hitDirectionModified == Vector2.zero)
             hitDirectionModified = (enemyCollider.transform.position - Player.Position).normalized;
             

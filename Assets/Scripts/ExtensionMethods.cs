@@ -2,8 +2,33 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public static class RaycastChecks
+public static class ExtensionMethods
 {
+    /*========*\
+    |  Bounds  |
+    \*========*/
+
+    public static float Top(this Bounds bounds) => bounds.center.y + bounds.size.y / 2;
+    public static float Bottom(this Bounds bounds) => bounds.center.y - bounds.size.y / 2;
+    public static float Left(this Bounds bounds) => bounds.center.x - bounds.size.x / 2;
+    public static float Right(this Bounds bounds) => bounds.center.x + bounds.size.x / 2;
+
+    /*===============*\
+    |  BoxCollider2D  |
+    \*===============*/
+
+    //
+    //  Bounds Shortcuts
+    //
+    public static float Top(this BoxCollider2D collider) => collider.bounds.Top();
+    public static float Bottom(this BoxCollider2D collider) => collider.bounds.Bottom();
+    public static float Left(this BoxCollider2D collider) => collider.bounds.Left();
+    public static float Right(this BoxCollider2D collider) => collider.bounds.Right();
+
+
+    //
+    //  Raycasting
+    //
     public static HitInfo IsGrounded(this BoxCollider2D collider, Vector2 raycastA, Vector2 raycastB, float rayCastMagnitude)
     {
         //scale of player is same on x and y

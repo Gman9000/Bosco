@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class Game : MonoBehaviour
 {
     /*=============*\
-    |*--CONSTANTS--*|
+    |*  CONSTANTS  *|
     \*=============*/
     
     public const float PIXEL = 1.0F / 16.0F;    
@@ -17,13 +17,13 @@ public class Game : MonoBehaviour
 
 
     /*=======================*\
-    |*--INSPECTOR VARIABLES--*|
+    |*  INSPECTOR VARIABLES  *|
     \*=======================*/
 
     public bool doTitle = false;
 
     /*=================*\
-    |*--STATIC FIELDS--*|
+    |*  STATIC FIELDS  *|
     \*=================*/
     public static Game Instance;
     public static float gameTime = 0.0F;    // the time counter used for game logic and custom movement functions
@@ -39,7 +39,7 @@ public class Game : MonoBehaviour
 
 
     /*================*\
-    |*--LOCAL FIELDS--*|
+    |*  LOCAL FIELDS  *|
     \*================*/
 
     bool transitiontoGame;

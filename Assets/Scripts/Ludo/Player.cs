@@ -196,8 +196,8 @@ public class Player : Pawn
         //GMAN REMEMBER TO COMMENT THIS LATER
         if (isGrounded && (groundCheck.layerName == "TwoWayPlatform") && !wasGrounded)
         {
-            float feetY = boxCollider2D.bounds.min.y;
-            float surfaceY = groundCheck.hit.collider.bounds.max.y;
+            float feetY = boxCollider2D.Bottom();
+            float surfaceY = groundCheck.hit.collider.bounds.Top();
                 if (surfaceY > feetY) isGrounded = false;
         }
 

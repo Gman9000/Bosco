@@ -221,8 +221,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 3
-  invincibilityTime: 0.2
-  knockbackDistance: 0.5
-  fixedGravity: 0.2
+  invincibilityTime: 0.3
+  knockbackDistance: 1
+  fixedGravity: 0.25
   visionBoxSize: {x: 10, y: 5}
   facingDirection: 1
