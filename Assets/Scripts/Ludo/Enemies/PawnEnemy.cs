@@ -80,7 +80,7 @@ public abstract class PawnEnemy : Pawn
 
         playerWasInView = false;
         wasKnockingBack = false;
-        //SetState(statePrimary);
+        SetState(statePrimary);
     }
 
     public void Update()
@@ -310,12 +310,12 @@ public abstract class PawnEnemy : Pawn
         yield break;
     }
 
-    protected IEnumerator Act_Inching()
+    protected IEnumerator Act_Inching(float xMove, float moveDuration, float secondsToWait = .2F)
     {
         while (currentHealth > 0)
         {
-            yield return MoveTowardPositionX(transform.position.x - 1, .5F);
-            yield return new WaitForSeconds(.2F);
+            yield return MoveTowardPositionX(transform.position.x + xMove, moveDuration);
+            yield return new WaitForSeconds(secondsToWait);
         }
 
         currentState = null;
