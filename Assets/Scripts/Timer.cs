@@ -12,6 +12,7 @@ public class Timer
     
     protected bool _done;
     public bool Done => _done;
+    public bool Active => !Done && Progress != 0;
     public float Progress => Mathf.Min((Time.time - timeStamp) / duration, 1.0F);
 
     

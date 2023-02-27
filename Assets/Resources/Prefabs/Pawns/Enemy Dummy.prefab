@@ -130,10 +130,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9fc373eba1cacc24fb338c163bc77ced, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 320
+  maxHealth: 325
   invincibilityTime: 0.3
-  knockbackDistance: 1
-  fixedGravity: 0.25
+  knockbackTime: 0.4
+  knockbackDistance: 1.55
+  fixedGravity: 0.2
   visionBoxSize: {x: 10, y: 5}
   facingDirection: 1
 --- !u!114 &2721580418243574740

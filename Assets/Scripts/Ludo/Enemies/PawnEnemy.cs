@@ -6,7 +6,8 @@ public abstract class PawnEnemy : Pawn
 {
     // INSPECTOR DEFINED VALUES
     public int maxHealth = 1;                           // amount of health enemy starts with
-    public float invincibilityTime = .2F;               // time in seconds enemy is invincible
+    public float invincibilityTime = .3F;               // time in seconds enemy is invincible
+    public float knockbackTime = .3F;                   // time in seconds enemy gets knocked back
     public float knockbackDistance = .5F;               // knockback distance in Unity units
     public float fixedGravity = 0;                      // the fixed downward to apply to this enemy. AKA "cheap gravity"
     public Vector2 visionBoxSize = new Vector2(10, 5);  // the bounds that a player must be inside to trigger non-idle state
@@ -28,9 +29,10 @@ public abstract class PawnEnemy : Pawn
 
     protected System.Func<IEnumerator> stateIdle;
     protected System.Func<IEnumerator> statePrimary;
-    protected float KnockbackProgress => Mathf.Min(1, invTimer.Progress * 2);
+    protected float KnockbackProgress => Mathf.Min(1, knockbackTimer.Progress);
     private Rect visionBox;
     private Timer invTimer;
+    private Timer knockbackTimer;
     public bool Invincible => invTimer != null && !invTimer.Done;
     protected Player playerTarget => Player.Instance;
     private Vector2 currentKnockback;                   // direction of the force of an attack that damages this pawn
@@ -48,6 +50,8 @@ public abstract class PawnEnemy : Pawn
     protected float? moveToY;
 
     [HideInInspector]public int facingDirection = 1;
+
+    bool wasKnockingBack;
 
 
     void Awake()
@@ -75,6 +79,7 @@ public abstract class PawnEnemy : Pawn
         moveToY = null;
 
         playerWasInView = false;
+        wasKnockingBack = false;
         //SetState(statePrimary);
     }
 
@@ -93,24 +98,27 @@ public abstract class PawnEnemy : Pawn
         {
             // NOTE: leave this block and conditional as-is until we're done writing the structure of this class
         }
-        else if (Invincible && KnockbackProgress > 0 && KnockbackProgress < 1)
+        else if (knockbackTimer != null && knockbackTimer.Active)
         {
             SetState(null);
             Vector2 newPos = UpdateKnockback(positionWhenHit + currentKnockback.normalized * knockbackDistance);
             moveToX = newPos.x;
             moveToY = newPos.y;
+            wasKnockingBack = true;
         }
-        else if (visionBox.Contains(Player.Position))
+        else if (visionBox.Contains(Player.Position))   // normal behavior loop
         {
-            if (!playerWasInView)
+            if (!playerWasInView || wasKnockingBack)   // this could be a problem if switching from a state not covered by this condition check
                 SetState(statePrimary);
             playerWasInView = true;
+            wasKnockingBack = false;
         }
         else
         {
-            if (playerWasInView)
+            if (playerWasInView || wasKnockingBack)    // this could be a problem if switching from a state not covered by this condition check
                 SetState(stateIdle);
             playerWasInView = false;
+            wasKnockingBack = false;
         }
 
         Debug.DrawLine(new Vector3(visionBox.x, visionBox.y), new Vector3(visionBox.x + visionBox.width, visionBox.y ),Color.blue);
@@ -134,9 +142,8 @@ public abstract class PawnEnemy : Pawn
         if (!_isGrounded)
             motion += Vector2.down * fixedGravity;
 
-        Vector2 pos = transform.position;       
+        Vector2 pos = transform.position;
 
-        
         if (motion.y <= 0)
         {
             if (_isGrounded)
@@ -217,9 +224,7 @@ public abstract class PawnEnemy : Pawn
             currentKnockback.y = 0;
         
         positionWhenHit = transform.position;
-
         currentHealth--;
-
 
         if (currentHealth <= 0)
         {
@@ -227,14 +232,18 @@ public abstract class PawnEnemy : Pawn
             return;
         }
 
-        invTimer = Timer.Set(invincibilityTime, ()=>{
+        invTimer = Timer.Set(invincibilityTime, () => {});
+
+        if (knockbackTimer != null && knockbackTimer.Active)
+            knockbackTimer.Cancel();
+        
+        knockbackTimer = Timer.Set(knockbackTime, () => {
             currentKnockback = Vector2.zero;
             SetState(stateIdle);
         });
 
         OnHit();
     }
-
 
     /*================================*\
     |*  OVERRIDABLE UPDATE FUNCTIONS  *|

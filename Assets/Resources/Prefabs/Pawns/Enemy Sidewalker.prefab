@@ -72,7 +72,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: -4806593572584421430, guid: 7b97bcbd7ff32ea44a7237b3f7f70008, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 0.9010496, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -221,8 +221,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 3
-  invincibilityTime: 0.3
-  knockbackDistance: 1
-  fixedGravity: 0.25
+  invincibilityTime: 0.2
+  knockbackTime: 0.35
+  knockbackDistance: 1.75
+  fixedGravity: 0.2
   visionBoxSize: {x: 10, y: 5}
   facingDirection: 1
