@@ -28,7 +28,7 @@ public class Knaz : MonoBehaviour
             yield return new WaitForFixedUpdate();
         }        
         transform.position = place;
-        CameraController.Instance.VertShake(10);
+        Game.VertShake(10);
         yield return new WaitForSeconds(.75F);
         GetComponent<SpriteAnimator>().Play(AnimMode.Looped, "laugh");
         yield return new WaitForSeconds(2);

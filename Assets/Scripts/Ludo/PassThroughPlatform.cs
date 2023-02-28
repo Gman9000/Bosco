@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PassThroughPlatform : MonoBehaviour
 {
-    static public bool rockwallCondition => PlayerInput.IsPressingDown() && !Player.Instance.IsDownSlash;
+    static public bool rockwallCondition => PlayerInput.IsPressingDown() && !Player.Instance.IsDownSlash && !Player.IsMovesetLocked(PState.G_Rockclimbing);
     public bool isRockwall = false;
     public float disableColliderTimer;
     [SerializeField] private BoxCollider2D theCollider;

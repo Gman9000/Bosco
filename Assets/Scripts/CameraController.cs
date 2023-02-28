@@ -109,16 +109,15 @@ public class CameraController : MonoBehaviour
         for (int i = pixels; i > 0; i--)
         {
             CalcMovePos();
-            yield return new WaitForFixedUpdate();
+            yield return new WaitForSecondsRealtime(Game.TICK_TIME);
+            yield return new WaitUntil(() => !Game.isPaused);
             Vector3 rightMove = Vector3.right * i * (i % 2 == 0 ? 1 : -1) * Game.PIXEL;
             playerSprite.localPosition = playerRootPos;
             playerSprite.localPosition += rightMove;
             transform.position = (Vector3)moveTo + Vector3.back * 10;
-            transform.position += rightMove;
-
-            
+            transform.position += rightMove;            
         }
-        yield return new WaitForFixedUpdate();
+        yield return new WaitForEndOfFrame();
 
         CalcMovePos();
         playerSprite.localPosition = playerRootPos;
@@ -137,7 +136,8 @@ public class CameraController : MonoBehaviour
         for (int i = pixels; i > 0; i--)
         {
             CalcMovePos();
-            yield return new WaitForFixedUpdate();
+            yield return new WaitForSecondsRealtime(Game.TICK_TIME);
+            yield return new WaitUntil(() => !Game.isPaused);
             Vector3 upMove = Vector3.up * i * (i % 2 == 0 ? 1 : -1) * Game.PIXEL;
             playerSprite.localPosition = playerRootPos;
             playerSprite.localPosition += upMove;
@@ -146,7 +146,7 @@ public class CameraController : MonoBehaviour
 
             
         }
-        yield return new WaitForFixedUpdate();
+        yield return new WaitForEndOfFrame();
 
         CalcMovePos();
         playerSprite.localPosition = playerRootPos;

@@ -6,11 +6,12 @@ using UnityEngine;
 public enum PState {Unassigned, 
     Idle, Walk, Run, Duck,
 Jump, Fall, 
-G_SwordSide1, G_SwordSide2, G_SwordSide3, G_SwordTwist, G_SwordUp, 
-G_RockclimbingIdle, G_RockclimbingShimmy,
-A_SwordUp, A_SwordRoll, A_SwordSide, A_SwordDown,
+G_AtkSide1, G_AtkSide2, G_AtkSide3, G_AtkTwist, G_AtkUp, 
+G_Rockclimbing, G_RockclimbingShimmy,
+A_AtkUp, A_AtkSide, A_AtkDown, A_AtkNeutral, A_AtkRoll, 
 A2G_Land, A2G_SwordLand,
 }
+
 public class Player : Pawn
 {
     static public bool IsHurting => Time.time - Instance.hurtTimeStamp < Instance.invincibilityTime;
@@ -19,14 +20,15 @@ public class Player : Pawn
     static public Vector3 Position => Instance.transform.position;
 
     public readonly List<PState> AttackStates = new List<PState>(){
-        PState.G_SwordSide1,
-        PState.G_SwordSide2,
-        PState.G_SwordSide3,
-        PState.G_SwordTwist,
-        PState.G_SwordUp,
-        PState.A_SwordRoll,
-        PState.A_SwordDown,
-        PState.A_SwordUp
+        PState.G_AtkSide1,
+        PState.G_AtkSide2,
+        PState.G_AtkSide3,
+        PState.G_AtkTwist,
+        PState.G_AtkUp,
+        PState.A_AtkRoll,
+        PState.A_AtkDown,
+        PState.A_AtkUp,
+        PState.A_AtkNeutral
     };
 
     public AudioClip[] sfx_swordSounds;
@@ -37,6 +39,7 @@ public class Player : Pawn
 
     [HideInInspector]public Rigidbody2D body;
     public float moveSpeed;
+    public float maxFallSpeed = .1F;
     public float invincibilityTime = 1.2F;
 
     [HideInInspector]public BoxCollider2D boxCollider2D;
@@ -71,13 +74,23 @@ public class Player : Pawn
 
     private bool tbc = false;
 
+    static public bool IsMovesetLocked(PState move) => _movesetLocks.Contains(move);
+    static private List<PState> _movesetLocks = new List<PState>(){
+        PState.G_AtkSide2,
+        PState.A_AtkUp,
+        PState.A_AtkDown,
+        PState.G_AtkTwist,
+        PState.G_Rockclimbing
+    };
 
-    //for attacking
-    //[SerializeField] private GameObject leftAttackHitbox;
-    [SerializeField] private GameObject rightAttackHitbox;
-    [SerializeField] private GameObject spinAttackHitbox;
-    [SerializeField] private GameObject upAttackHitbox;
-    [SerializeField] private GameObject downAttackHitbox;
+
+    // For attacking
+    [SerializeField] private GameObject atkboxSide;
+    [SerializeField] private GameObject atkboxTwist;
+    [SerializeField] private GameObject atkboxUp;
+    [SerializeField] private GameObject atkboxDown;
+    [SerializeField] private GameObject atkboxAirNeutral;
+
     private bool isHitting = false;
     public float hitTime;
     public float hitCooldown;   // should be less than hit time
@@ -104,7 +117,7 @@ public class Player : Pawn
 
     private Vector3 checkpoint;
 
-    public bool IsDownSlash => downAttackHitbox.activeSelf;
+    public bool IsDownSlash => atkboxDown.activeSelf;
     bool isGrounded;
     bool isHittingCeiling;
     bool isHittingRightWall;
@@ -112,9 +125,7 @@ public class Player : Pawn
     // Start is called before the first frame update
 
     bool canAerialAttack = false;
-
     bool PhysicsPaused => body.constraints == RigidbodyConstraints2D.FreezeAll;
-
     float hurtTimeStamp = 0;
     private Timer jumpTimer;
 
@@ -145,10 +156,12 @@ public class Player : Pawn
         body.gravityScale = originalGravityScale;
         body.velocity = Vector2.zero;
 
-        upAttackHitbox.SetActive(false);
-        downAttackHitbox.SetActive(false);
-        rightAttackHitbox.SetActive(false);
-        spinAttackHitbox.SetActive(false);
+        atkboxUp.SetActive(false);
+        atkboxDown.SetActive(false);
+        atkboxSide.SetActive(false);
+        atkboxTwist.SetActive(false);
+        atkboxAirNeutral.SetActive(false);
+
         animator.PlayDefault();
         hurtTimeStamp = -invincibilityTime;
 
@@ -207,13 +220,13 @@ public class Player : Pawn
 
         if (isGrounded)
         {
-            if (jumpTimer != null && jumpTimer.Done) jumpTimer.Cancel();
+            if (jumpTimer != null && jumpTimer.done) jumpTimer.Cancel();
             
-            if (state == PState.A_SwordDown)   // if is falling fast
+            if (state == PState.A_AtkDown)   // if is falling fast
             {
-                CameraController.Instance.VertShake(6);          // shake screen
+                Game.VertShake(8);          // shake screen
                 DoPhysicsPause(.4F);
-                downAttackHitbox.SetActive(false);
+                atkboxDown.SetActive(false);
                 DoInputAttackPause(.4F);
                 Timer.Set(.4F, () => state = PState.Unassigned);
                 state = PState.A2G_SwordLand;
@@ -225,14 +238,13 @@ public class Player : Pawn
             
             if (!wasGrounded && body.velocity.y < 0)    // check if moving down
             {                
-                upAttackHitbox.SetActive(false);
-                body.velocity = new Vector2(body.velocity.x, 0);   
-                SnapToPixel();             
+                atkboxUp.SetActive(false);
+                body.velocity = new Vector2(body.velocity.x, 0);
             }
         }
         else    // not grounded
         {
-            if (body.velocity.y < 0 && state != PState.A_SwordDown)
+            if (body.velocity.y < 0 && state != PState.A_AtkDown)
                 state = PState.Fall;
 
             if (wasGrounded)        // only set as unassigned if the player was JUST on the ground
@@ -243,11 +255,11 @@ public class Player : Pawn
 
         if (inputMovePaused)
         {
-            if (spinAttackHitbox.activeSelf)
+            if (atkboxTwist.activeSelf)
             {
                 body.velocity = new Vector2(FacingDirection * 3.0F, body.velocity.y);
             }
-            if (rightAttackHitbox.activeSelf && isGrounded)
+            if (atkboxSide.activeSelf && isGrounded)
             {
                 if (Time.time - hitTimeStamp > .15F)
                 {
@@ -257,7 +269,7 @@ public class Player : Pawn
         }
         else
         {
-            if (!spinAttackHitbox.activeSelf)
+            if (!atkboxTwist.activeSelf)
                 body.velocity = new Vector2(0, body.velocity.y);
 
             if (PlayerInput.IsPressingLeft())
@@ -269,10 +281,6 @@ public class Player : Pawn
             {
                 body.velocity = new Vector2(moveSpeed, body.velocity.y);
                 this.transform.rotation = new Quaternion(0f, 0f, this.transform.rotation.z, this.transform.rotation.w);
-            }
-            else
-            {
-                SnapToPixel();
             }
 
             if (PlayerInput.IsPressingDown())
@@ -292,7 +300,6 @@ public class Player : Pawn
                 jumpTimer = Timer.Set(jumpTime, () =>
                 {
                     isJumping = false;
-                    Debug.Log("jump height:  " + (transform.position.y - startY));
                 });
                 SoundSystem.PlaySfx(sfx_jump, 2);
             }
@@ -302,7 +309,7 @@ public class Player : Pawn
                 body.velocity = new Vector2(body.velocity.x, jumpSpeed);
                 if (isHittingCeiling)
                 {
-                    if(jumpTimer != null && jumpTimer.Done) jumpTimer.Cancel();
+                    if(jumpTimer != null && jumpTimer.done) jumpTimer.Cancel();
                     isJumping = false;
                 }
             }
@@ -315,6 +322,9 @@ public class Player : Pawn
 
         if (onRockwall && body.velocity.x != 0)
             body.velocity = new Vector2(Mathf.Sign(body.velocity.x) * shimmySpeed, 0);
+
+        if (state == PState.Fall && body.velocity.y < -maxFallSpeed)
+            body.velocity = new Vector2(body.velocity.x, -maxFallSpeed);
 
         AttackInputs();
 
@@ -339,7 +349,7 @@ public class Player : Pawn
         {
             state = PState.Idle;
             if (onRockwall)
-                state = PState.G_RockclimbingIdle;
+                state = PState.G_Rockclimbing;
         }
         else
         {
@@ -359,12 +369,12 @@ public class Player : Pawn
 
     bool IsAttackState() => AttackStates.Contains(state);
 
-    public void SnapToPixel()
+    public void SnapToPixel()       // NOTE: This function created a lotta collision jank. So I removed it. It should still work but be careful when it's called
     {
         Vector3 pos = transform.position;
         pos.x = Mathf.Round(pos.x / Game.PIXEL) * Game.PIXEL;
         pos.y = Mathf.Floor(pos.y / Game.PIXEL) * Game.PIXEL;
-        transform.position = pos;
+        body.MovePosition(pos);
     }
 
     public void SetGrounded(bool value, string type)
@@ -373,7 +383,8 @@ public class Player : Pawn
         switch (type)
         {
             case "Rockwall":
-                onRockwall = value;
+                if (IsMovesetLocked(PState.G_Rockclimbing))
+                    onRockwall = value;
                 break;
         }
     }
@@ -400,7 +411,6 @@ public class Player : Pawn
             Vector3 pos = transform.position;
             pos.y = other.collider.bounds.center.y + 1;
             transform.position = pos;
-            SnapToPixel();
         }            
     }
 
@@ -418,7 +428,7 @@ public class Player : Pawn
                 animator.Play(AnimMode.Looped, "walk");
                 break;
             case PState.Duck:
-                animator.Play(AnimMode.Hang, "duck");
+                animator.Play(AnimMode.Looped, "duck");
                 break;
             case PState.Jump:
                 animator.Play(AnimMode.Hang, "jump");
@@ -428,28 +438,28 @@ public class Player : Pawn
                 break;
 
                 
-            case PState.G_SwordSide1:
+            case PState.G_AtkSide1:
                 animator.Play(AnimMode.Once, "slash 1", () => state = PState.Unassigned);
                 break;
-            case PState.G_SwordSide2:
+            case PState.G_AtkSide2:
                 animator.Play(AnimMode.Once, "slash 2", () => state = PState.Unassigned);
                 break;
-            case PState.G_SwordTwist:
+            case PState.G_AtkTwist:
                 animator.Play(AnimMode.Looped, "spin");
                 break;
-            case PState.G_SwordUp:
+            case PState.G_AtkUp:
                 animator.Play(AnimMode.Once, "upslash ground", () => state = PState.Unassigned);
                 break;
 
 
-            case PState.A_SwordDown:
+            case PState.A_AtkDown:
                 animator.Play(AnimMode.Hang, "downslash");
                 break;
-            case PState.A_SwordUp:
+            case PState.A_AtkUp:
                 animator.Play(AnimMode.Hang, "upslash air");
                 break;
 
-            case PState.G_RockclimbingIdle:
+            case PState.G_Rockclimbing:
                 animator.Play(AnimMode.Looped, "duck");
                 break;
             case PState.G_RockclimbingShimmy:
@@ -520,78 +530,86 @@ public class Player : Pawn
         }
     }
 
-    private IEnumerator Hit(int hitBoxIndex)
+    private IEnumerator Attack(PState atkState)
     {
-
         isHitting = true;       //set isHitting to true.
 
         float hitLengthMod = 1.0F;
 
-        upAttackHitbox.SetActive(false);
-        downAttackHitbox.SetActive(false);
-        rightAttackHitbox.SetActive(false);
-        spinAttackHitbox.SetActive(false);
+        atkboxUp.SetActive(false);
+        atkboxDown.SetActive(false);
+        atkboxSide.SetActive(false);
+        atkboxTwist.SetActive(false);
+        atkboxAirNeutral.SetActive(false);
             
-        switch (hitBoxIndex)
+        switch (atkState)
         {
-            case 1:
-                // Upwards attack
-                upAttackHitbox.SetActive(true);
+            case PState.A_AtkUp:
+            case PState.G_AtkUp:
+                atkboxUp.SetActive(true);
                 if (!isGrounded)
                     hitLengthMod = 1.2F;
                 else
                     hitLengthMod = .85F;
                 break;
-            case 2:
-                //Downwards attack
-                downAttackHitbox.SetActive(true);
-                hitLengthMod = 500;//for down attacks we want the hitbox active for as long as possible
+            case PState.A_AtkDown:
+                atkboxDown.SetActive(true);
+                hitLengthMod = 500;     //for down attacks we want the hitbox active for as long as possible
                 break;
-            case 3:
-                //Spin attack
-                //take the leftAttackHitBox and turn that into the spin attack that hits both the left and the right of the player
-                spinAttackHitbox.SetActive(true);
+            case PState.G_AtkTwist:                
+                atkboxTwist.SetActive(true);
                 hitLengthMod = 2;
                 break;
-            case 4:
-                //Right attack
-                rightAttackHitbox.SetActive(true);
-
+            case PState.A_AtkNeutral:
+                atkboxAirNeutral.SetActive(true);
+                hitLengthMod = 1;
                 break;
-            default:
-                Debug.LogError("AN ERROR HAS OCCURRED WHILE TRYING TO ATTACK");
-            // Statements to Execute if No Case Matches
-            break;
+            case PState.G_AtkSide1:
+            case PState.G_AtkSide2:
+            case PState.G_AtkSide3:
+            case PState.A_AtkSide:
+                atkboxSide.SetActive(true);
+                break;
         }
 
 
 
         yield return new WaitForSeconds(hitTime * hitLengthMod);   //wait the established amount of seconds.
 
-        switch (hitBoxIndex)
+        switch (atkState)
         {
-            case 1:
-                // Upwards attack
-                upAttackHitbox.SetActive(false);
+            case PState.A_AtkUp:
+            case PState.G_AtkUp:
+                atkboxUp.SetActive(false);
                 break;
-            case 2:
-                //Downwards attack
-                downAttackHitbox.SetActive(false);
+            case PState.A_AtkDown:
+                atkboxDown.SetActive(false);
                 break;
-            case 3:
-                //Spin attack
-                spinAttackHitbox.SetActive(false);                
+            case PState.G_AtkTwist:
+                atkboxTwist.SetActive(false);                
                 break;
-            case 4:
-                //Right attack
-                rightAttackHitbox.SetActive(false);
+            case PState.A_AtkNeutral:
+                atkboxAirNeutral.SetActive(false);
                 break;
-            default:
-                Debug.LogError("AN ERROR HAS OCCURRED WHILE TRYING TO ATTACK");
-                // Statements to Execute if No Case Matches
+            case PState.G_AtkSide1:
+            case PState.G_AtkSide2:
+            case PState.G_AtkSide3:
+            case PState.A_AtkSide:
+                atkboxSide.SetActive(false);
                 break;
         }
         isHitting = false;                          //set isHitting to false.
+    }
+
+    public void AttackFeedback(Vector2 force, Vector2 direction)
+    {
+        float newVelocityX = force.x == 0 ? body.velocity.x : force.x * 12;
+        float newVelocityY = force.y == 0 ? body.velocity.y : force.y * 12;
+
+        body.velocity = new Vector2(newVelocityX, newVelocityY); 
+        
+        Game.VertShake(2);
+        Game.FreezeFrame(Game.FRAME_TIME * 6);
     }
 
 
@@ -660,13 +678,12 @@ public class Player : Pawn
 
     IEnumerator PausePhysics(float duration)
     {
-        Vector2 velocity = body.velocity;
+        Vector2 oldVelocity = body.velocity;
         body.constraints = RigidbodyConstraints2D.FreezeAll;
         yield return new WaitForSeconds(duration);
         body.constraints = RigidbodyConstraints2D.FreezeRotation;
         pausePhysicsCoroutine = null;
-        body.velocity = velocity;
-        SnapToPixel();
+        body.velocity = oldVelocity;
         yield break;
     }
 
@@ -676,7 +693,6 @@ public class Player : Pawn
         body.velocity = Vector2.zero;
         yield return new WaitForSeconds(duration);
         inputMovePaused = false;
-        SnapToPixel();
         yield break;
     }
 
@@ -685,7 +701,6 @@ public class Player : Pawn
         inputAttackPaused = true;
         yield return new WaitForSeconds(duration);
         inputAttackPaused = false;
-        SnapToPixel();
         yield break;
     }
 
@@ -713,7 +728,7 @@ public class Player : Pawn
             else
             {
                 DoInputMovePause(0.001F);
-                body.velocity = new Vector2(FacingDirection * 4F, body.velocity.y);
+                body.velocity = new Vector2(FacingDirection * 2F, body.velocity.y);
             }
         }
         else
@@ -724,7 +739,7 @@ public class Player : Pawn
             yield return new WaitForEndOfFrame();
             if (PlayerInput.IsPressingDown() && !isGrounded)
                 lastInputDirection = Vector2.down;
-            else if (PlayerInput.IsPressingUp() && !upAttackHitbox.activeSelf)
+            else if (PlayerInput.IsPressingUp() && !atkboxUp.activeSelf)
                 lastInputDirection = Vector2.up;
             else if (PlayerInput.IsPressingLeft())
                 lastInputDirection = Vector2.left;
@@ -739,14 +754,146 @@ public class Player : Pawn
             animator.PlayDefault();
 
 
+        PState executeState = PState.Unassigned;
+
         if (lastInputDirection == Vector2.down)
         {
             if (isGrounded)
             {
-
+                // todo: duck stab
             }
             else
             {
+                executeState = PState.A_AtkDown;
+            }
+        }
+        else if (lastInputDirection == Vector2.up)
+        {
+            if (isGrounded)
+            {
+                executeState = PState.G_AtkUp;
+            }
+            else
+            {
+                executeState = PState.A_AtkUp;
+            }
+        }
+        else
+        {
+            if (isGrounded)
+            {
+                if (state == PState.G_AtkSide1)
+                    executeState = PState.G_AtkSide2;
+                else if (state == PState.G_AtkSide2)
+                    executeState = PState.G_AtkTwist;
+                else if (state != PState.G_AtkTwist)
+                    executeState = PState.G_AtkSide1;
+            }
+            else
+            {
+               executeState = PState.A_AtkNeutral;
+            }
+        }
+
+        if (IsMovesetLocked(executeState))
+            switch (executeState)
+            {
+                case PState.A_AtkDown:
+                case PState.A_AtkUp:
+                    executeState = PState.A_AtkNeutral;
+                    break;
+                case PState.G_AtkSide2:
+                case PState.G_AtkTwist:
+                case PState.G_AtkUp:
+                    executeState = PState.G_AtkSide1;
+                    break;
+                case PState.G_AtkSide1:
+                case PState.A_AtkNeutral:
+                    executeState = PState.Unassigned;
+                    break;
+            }
+
+        switch (executeState)
+        {
+            case PState.G_AtkSide1:                       
+                SoundSystem.PlaySfx(sfx_swordSounds[0], 4);   //play attack sfx
+                DoPhysicsPause(.08F);
+                DoInputMovePause(.3F);
+                body.velocity = Vector2.zero;
+                if (hitCoroutine != null)
+                    StopCoroutine(hitCoroutine);
+                state = PState.G_AtkSide1;
+                hitCoroutine = StartCoroutine(Attack(state));
+                comboTimeStamp = Time.time;
+                hitTimeStamp = Time.time;
+                break;
+
+            case PState.G_AtkSide2:
+                if (IsMovesetLocked(PState.G_AtkSide2))
+                {
+                    attackSequenceCoroutine= null;
+                    yield break;
+                }
+                SoundSystem.PlaySfx(sfx_swordSounds[1], 4);   //play attack sfx
+                DoPhysicsPause(.08F);
+                DoInputMovePause(.3F);
+                body.velocity = Vector2.zero;
+                if (hitCoroutine != null)
+                    StopCoroutine(hitCoroutine);
+                state = PState.G_AtkSide2;
+                hitCoroutine = StartCoroutine(Attack(state));
+                comboTimeStamp = Time.time;
+                hitTimeStamp = Time.time;
+                break;
+
+            case PState.G_AtkTwist: //do spin attack here and reset the other trigger here
+                if (IsMovesetLocked(PState.G_AtkTwist))
+                {
+                    attackSequenceCoroutine= null;
+                    yield break;
+                }
+                SoundSystem.PlaySfx(sfx_swordSounds[3], 4);
+                DoInputMovePause(.33F);
+                DoInputAttackPause(.66F);
+                if (hitCoroutine != null)
+                    StopCoroutine(hitCoroutine);
+                state = PState.G_AtkTwist;
+                hitCoroutine = StartCoroutine(Attack(state));
+                Timer.Set(.5F, () => state = PState.Unassigned);
+                comboTimeStamp = Time.time;
+                hitTimeStamp = Time.time;
+                break;
+
+            case PState.A_AtkNeutral:
+                state = PState.A_AtkNeutral;
+                if (hitCoroutine != null)
+                    StopCoroutine(hitCoroutine);
+                hitCoroutine = StartCoroutine(Attack(PState.A_AtkNeutral));
+                break;
+
+            case PState.G_AtkUp:
+                SoundSystem.PlaySfx(sfx_swordSounds[0], 4);   //play attack sfx
+                DoPhysicsPause(.12F);
+                DoInputMovePause(.3F);
+                hitTimeStamp = Time.time;
+                state = PState.G_AtkUp;
+                SoundSystem.PlaySfx(sfx_swordSounds[0], 4);
+                if (hitCoroutine != null)
+                    StopCoroutine(hitCoroutine);
+                hitCoroutine = StartCoroutine(Attack(state));
+                break;
+
+            case PState.A_AtkUp:
+                body.velocity = Vector3.up * 15;
+                body.gravityScale = originalGravityScale * .97F;
+                state = PState.A_AtkUp;
+                SoundSystem.PlaySfx(sfx_swordSounds[0], 4);
+                if (hitCoroutine != null)
+                    StopCoroutine(hitCoroutine);
+                hitCoroutine = StartCoroutine(Attack(state));
+                break;
+
+            case PState.A_AtkDown:
                 SoundSystem.PlaySfx(sfx_swordSounds[0], 4);   //play attack sfx
                 
                 body.velocity = Vector3.down * 38;
@@ -754,80 +901,10 @@ public class Player : Pawn
                 body.gravityScale = 30;
                 if (hitCoroutine != null)
                     StopCoroutine(hitCoroutine);
-                hitCoroutine = StartCoroutine(Hit(2));
-                state = PState.A_SwordDown;
-            }
-        }
-        else if (lastInputDirection == Vector2.up)
-        {
-            if (isGrounded)
-            {
-                SoundSystem.PlaySfx(sfx_swordSounds[0], 4);   //play attack sfx
-                DoPhysicsPause(.12F);
-                DoInputMovePause(.3F);
-                hitTimeStamp = Time.time;
-
-                state = PState.G_SwordUp;
-            }
-            else
-            {
-                body.velocity = Vector3.up * 15;
-                body.gravityScale = originalGravityScale * .97F;
-                state = PState.A_SwordUp;
-            }
-
-            SoundSystem.PlaySfx(sfx_swordSounds[0], 4);
-            if (hitCoroutine != null)
-                StopCoroutine(hitCoroutine);
-            hitCoroutine = StartCoroutine(Hit(1));
-        }
-        else
-        {
-            if (isGrounded)
-            {
-                switch (state)
-                {
-                    default:
-                        if (state == PState.G_SwordTwist)  break;
-
-                        SoundSystem.PlaySfx(sfx_swordSounds[0], 4);   //play attack sfx
-                        DoPhysicsPause(.08F);
-                        DoInputMovePause(.3F);
-                        body.velocity = Vector2.zero;
-                        if (hitCoroutine != null)
-                            StopCoroutine(hitCoroutine);
-                        hitCoroutine = StartCoroutine(Hit(4));
-                        state = PState.G_SwordSide1;
-                        break;
-                    case PState.G_SwordSide1:
-                        SoundSystem.PlaySfx(sfx_swordSounds[1], 4);   //play attack sfx
-                        DoPhysicsPause(.08F);
-                        DoInputMovePause(.3F);
-                        body.velocity = Vector2.zero;
-                        if (hitCoroutine != null)
-                            StopCoroutine(hitCoroutine);
-                        hitCoroutine = StartCoroutine(Hit(4));
-                        state = PState.G_SwordSide2;
-                        break;
-                    case PState.G_SwordSide2: //do spin attack here and reset the other trigger here
-                        SoundSystem.PlaySfx(sfx_swordSounds[3], 4);
-                        DoInputMovePause(.33F);
-                        DoInputAttackPause(.66F);
-                        if (hitCoroutine != null)
-                            StopCoroutine(hitCoroutine);
-                        hitCoroutine = StartCoroutine(Hit(3));
-                        state = PState.G_SwordTwist;
-                        Timer.Set(.5F, () => state = PState.Unassigned);
-                        break;
-                }
-                comboTimeStamp = Time.time;
-                hitTimeStamp = Time.time;
-            }
-            else
-            {
-                // default aerial
-            }
-        }
+                state = PState.A_AtkDown;
+                hitCoroutine = StartCoroutine(Attack(state));
+                break;
+        }        
 
         attackSequenceCoroutine = null;
         yield break;

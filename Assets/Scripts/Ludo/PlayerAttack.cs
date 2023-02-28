@@ -5,7 +5,10 @@ using UnityEngine;
 public class PlayerAttack : MonoBehaviour
 {
     public Vector2 hitDirection = Vector2.zero;
+    public bool relativeToFacingDir = false;
     public bool ignoreY = false;
+    public Vector2 playerFeedbackDirection = Vector2.zero;
+
     void OnTriggerStay2D(Collider2D other)
     {
         if (other.gameObject.tag == "Enemy")
@@ -26,7 +29,12 @@ public class PlayerAttack : MonoBehaviour
         Vector2 hitDirectionModified = hitDirection;
 
         if (hitDirectionModified.x != 0)
-            hitDirectionModified.x = Mathf.Sign(enemyCollider.transform.position.x - Player.Position.x);
+        {
+            if (relativeToFacingDir)
+                hitDirectionModified.x = Player.FacingDirection * Mathf.Sign(hitDirection.x);
+            else
+                hitDirectionModified.x = Mathf.Sign(enemyCollider.transform.position.x - Player.Position.x) * Mathf.Sign(hitDirection.x);
+        }
         else if (hitDirectionModified == Vector2.zero)
             hitDirectionModified = (enemyCollider.transform.position - Player.Position).normalized;
             
@@ -34,6 +42,8 @@ public class PlayerAttack : MonoBehaviour
             hitDirectionModified.y = 0;            
 
         hitDirectionModified = Game.RestrictDiagonals(hitDirectionModified);
-        enemyCollider.GetComponentInChildren<PawnEnemy>().TakeDamage(hitDirectionModified);
+        bool attackSuccess = enemyCollider.GetComponentInChildren<PawnEnemy>().TakeDamage(hitDirectionModified);
+        if (attackSuccess)
+            Player.Instance.AttackFeedback(playerFeedbackDirection, hitDirectionModified);
     }
 }

@@ -15,6 +15,9 @@ public class Game : MonoBehaviour
     public const float WIDTH_WORLD = WIDTH * PIXEL;
     public const float HEIGHT_WORLD = HEIGHT * PIXEL;
 
+    public const float TICK_TIME = .0167F;
+    public const float FRAME_TIME = .022F;
+
 
     /*=======================*\
     |*  INSPECTOR VARIABLES  *|
@@ -30,10 +33,15 @@ public class Game : MonoBehaviour
     public static int litCandlesCount = 0;
     public static int lives = 1;
     public static bool isPaused;
+    private static float _unpausedRealtime;
+    public static float unpausedRealtime => _unpausedRealtime;
     public static bool gameStarted;
     public static List<SpriteSimulator> simulatedSprites;    
     private static List<SpriteSimulator>[] scanlines;
     private static int[] scanlineSimTotal;
+
+    private static bool _isFreezeFraming;
+    public static bool isFreezeFraming => _isFreezeFraming;
 
     public static string debugText;
 
@@ -54,6 +62,7 @@ public class Game : MonoBehaviour
     void Start()
     {
         Awake();
+        _unpausedRealtime = 0;
         Timer.AllTimersInit();
 
         if (doTitle)
@@ -70,10 +79,13 @@ public class Game : MonoBehaviour
         }
 
         isPaused = false;
+        _isFreezeFraming = false;
         scanlines = new List<SpriteSimulator>[(int)Mathf.RoundToInt(HEIGHT / 16.0F)];
         scanlineSimTotal = new int[scanlines.Length];
         for (int i = 0; i < scanlines.Length; i++)
             scanlines[i] = new List<SpriteSimulator>();
+
+        Time.timeScale = 1;
     }
 
     static public void Reset()
@@ -142,6 +154,18 @@ public class Game : MonoBehaviour
         SoundSystem.Unpause();
     }
 
+    static public void FreezeFrame(float secondsToWait)
+    {
+        if (isFreezeFraming)    return;
+        float oldTimescale = Time.timeScale;
+        _isFreezeFraming = true;
+        Time.timeScale = 0;
+        Timer.SetRealtime(secondsToWait, () => {
+            Time.timeScale = oldTimescale;
+            _isFreezeFraming = false;
+        });
+    }
+
     IEnumerator GameGo()
     {
         if (HUD.Instance)
@@ -192,7 +216,9 @@ public class Game : MonoBehaviour
 
     void Update()
     {
-        Timer.UpdateAll();  // update all timer checks
+        if (!isPaused)
+            _unpausedRealtime += Time.unscaledDeltaTime;
+        Timer.Update();  // update all timer checks
 
 
         if (!gameStarted && !transitiontoGame)
@@ -257,8 +283,6 @@ public class Game : MonoBehaviour
             }
         }
 
-        Time.timeScale = 1F;
-
         for (int y = 0; y < scanlines.Length; y++)
         {
             if (scanlineSimTotal[y] <= 10)
@@ -284,6 +308,8 @@ public class Game : MonoBehaviour
             scanline.Remove(sim);
     }
 
+    static public void HorShake(int pixels) => CameraController.Instance.HorShake(pixels);
+    static public void VertShake(int pixels) => CameraController.Instance.VertShake(pixels);
 
     static public float PingPong(float time)
     {

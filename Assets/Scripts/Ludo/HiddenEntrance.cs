@@ -22,7 +22,6 @@ public class HiddenEntrance : MonoBehaviour
         foreach (Transform child in childs)
             child.tag = "Hidden";
 
-        //adjacentHiddenEntrances
         for (int i = 0; i < adjacentHiddenEntrances.Count; i++)
         {
 
@@ -93,7 +92,7 @@ public class HiddenEntrance : MonoBehaviour
 
         this.gameObject.SetActive(false);
         Instantiate<GameObject>(Resources.Load<GameObject>("Prefabs/FX-explosion")).transform.position = transform.position;
-        CameraController.Instance.VertShake(2);
+        Game.VertShake(2);
 
         yield break;
     }

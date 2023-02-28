@@ -19,7 +19,7 @@ public class CandleHandler : MonoBehaviour
     {
         if (animator.CurrentAnim == "open" && !animator.AtEnd)
         {
-            CameraController.Instance.VertShake(2);
+            Game.VertShake(2);
             Player.Instance.DoInputMovePause(.45F);
             Player.Instance.DoInputAttackPause(.45F);
             Player.Instance.animator.PlayDefault();

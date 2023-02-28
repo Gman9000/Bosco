@@ -16,6 +16,9 @@ public abstract class PawnEnemy : Pawn
     // CORE VARIABLES
     protected int currentHealth;                        // amount of health enemy currently has
 
+    private Timer moveTimerX;
+    private Timer moveTimerY;
+
 
     // COMPONENT REFERENCES
     protected Rigidbody2D body;
@@ -29,11 +32,11 @@ public abstract class PawnEnemy : Pawn
 
     protected System.Func<IEnumerator> stateIdle;
     protected System.Func<IEnumerator> statePrimary;
-    protected float KnockbackProgress => Mathf.Min(1, knockbackTimer.Progress);
+    protected float KnockbackProgress => Mathf.Min(1, knockbackTimer.progress);
     private Rect visionBox;
     private Timer invTimer;
     private Timer knockbackTimer;
-    public bool Invincible => invTimer != null && !invTimer.Done;
+    public bool Invincible => invTimer != null && !invTimer.done;
     protected Player playerTarget => Player.Instance;
     private Vector2 currentKnockback;                   // direction of the force of an attack that damages this pawn
     protected Vector2 positionWhenHit;                  // position in world space when the enemy was hit
@@ -77,6 +80,8 @@ public abstract class PawnEnemy : Pawn
         visionBox = new Rect(transform.position.x, transform.position.y, visionBoxSize.x, visionBoxSize.y);
         moveToX = null;
         moveToY = null;
+        moveTimerX = null;
+        moveTimerY = null;
 
         playerWasInView = false;
         wasKnockingBack = false;
@@ -98,7 +103,7 @@ public abstract class PawnEnemy : Pawn
         {
             // NOTE: leave this block and conditional as-is until we're done writing the structure of this class
         }
-        else if (knockbackTimer != null && knockbackTimer.Active)
+        else if (knockbackTimer != null && knockbackTimer.active)
         {
             SetState(null);
             Vector2 newPos = UpdateKnockback(positionWhenHit + currentKnockback.normalized * knockbackDistance);
@@ -151,8 +156,6 @@ public abstract class PawnEnemy : Pawn
                 float yDiff = transform.position.y - boxCollider2D.Bottom();
                 float contactY = groundCheck.hit.point.y + yDiff;
                 pos.y = contactY;
-                if (sprite.enabled)
-                    Debug.Log("down");
             }
             else
             {
@@ -207,16 +210,25 @@ public abstract class PawnEnemy : Pawn
 
     public void SetState(System.Func<IEnumerator> state)
     {
+        if (!gameObject.activeSelf)  return;
+
+        
         if (currentState != null)
             StopCoroutine(currentState);
+        moveToX = null;
+        moveToY = null;
+        if (moveTimerX != null)
+            moveTimerX.Cancel();
+        if (moveTimerY != null)
+            moveTimerY.Cancel();
         currentState = null;
         if (state != null)
             currentState = StartCoroutine(state());
     }
 
-    public void TakeDamage(Vector2 force)
+    public bool TakeDamage(Vector2 force)
     {
-        if (Invincible || currentHealth <= 0)  return;          // ignore this call if the enemy is already invincible
+        if (Invincible)  return false;          // ignore this call if the enemy is already invincible
 
         currentKnockback = force;
         facingDirection = (int)Mathf.Sign(-force.x);
@@ -229,12 +241,12 @@ public abstract class PawnEnemy : Pawn
         if (currentHealth <= 0)
         {
             StartCoroutine(DeathSequence());
-            return;
+            return true;
         }
 
-        invTimer = Timer.Set(invincibilityTime, () => {});
+        invTimer = Timer.Set(invincibilityTime);
 
-        if (knockbackTimer != null && knockbackTimer.Active)
+        if (knockbackTimer != null && knockbackTimer.active)
             knockbackTimer.Cancel();
         
         knockbackTimer = Timer.Set(knockbackTime, () => {
@@ -243,6 +255,7 @@ public abstract class PawnEnemy : Pawn
         });
 
         OnHit();
+        return true;
     }
 
     /*================================*\
@@ -284,12 +297,12 @@ public abstract class PawnEnemy : Pawn
 
     protected IEnumerator MoveTowardPositionX(float x, float duration)
     {
-        Timer moveTimer = Timer.Set(duration);
+        moveTimerX = Timer.Set(duration);
         float startX = transform.position.x;
 
-        while (!moveTimer.Done)
+        while (!moveTimerX.done)
         {
-            moveToX = startX + (x - startX) * moveTimer.Progress;
+            moveToX = startX + (x - startX) * moveTimerX.progress;
             yield return new WaitForEndOfFrame();
         }
         
@@ -298,12 +311,12 @@ public abstract class PawnEnemy : Pawn
 
     protected IEnumerator MoveTowardPositionY(float y, float duration)
     {
-        Timer moveTimer = Timer.Set(duration);
+        moveTimerY = Timer.Set(duration);
         float startY = transform.position.y;
 
-        while (!moveTimer.Done)
+        while (!moveTimerY.done)
         {
-            moveToX = startY + (y - startY) * moveTimer.Progress;
+            moveToY = startY + (y - startY) * moveTimerY.progress;
             yield return new WaitForEndOfFrame();
         }
         
