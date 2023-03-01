@@ -39,6 +39,8 @@ public class Player : Pawn
 
     [HideInInspector]public Rigidbody2D body;
     public float moveSpeed;
+    public float startFriction = 1;
+    public float stopFriction = 1;
     public float maxFallSpeed = .1F;
     public float invincibilityTime = 1.2F;
 
@@ -75,7 +77,7 @@ public class Player : Pawn
     private bool tbc = false;
 
     static public bool IsMovesetLocked(PState move) => _movesetLocks.Contains(move);
-    static private List<PState> _movesetLocks = new List<PState>(){
+    static private List<PState> _movesetLocks = new List<PState>() {
         PState.G_AtkSide2,
         PState.A_AtkUp,
         PState.A_AtkDown,
@@ -269,27 +271,46 @@ public class Player : Pawn
         }
         else
         {
-            if (!atkboxTwist.activeSelf)
-                body.velocity = new Vector2(0, body.velocity.y);
-
-            if (PlayerInput.IsPressingLeft())
+            if (PlayerInput.IsPressingDown())
             {
-                body.velocity = new Vector2(-moveSpeed, body.velocity.y);
+                if (isGrounded)
+                {
+                    float newVelX = body.velocity.x;
+                    newVelX -= Mathf.Sign(newVelX) * stopFriction * 2 * Game.relativeTime;
+                    if (Mathf.Sign(newVelX) == Mathf.Sign(body.velocity.x)) // checking the sign so the friction doesn't reverse movement direction
+                        body.velocity = new Vector2(newVelX, body.velocity.y);
+                    else
+                        body.velocity = new Vector2(0, body.velocity.y);
+                }
+
+                if (state == PState.Idle || state == PState.Walk)
+                    state = PState.Duck;
+            }
+            else if (PlayerInput.IsPressingLeft())
+            {
+                body.velocity = new Vector2(body.velocity.x - startFriction * Game.relativeTime, body.velocity.y);
+                if (body.velocity.x < -moveSpeed)
+                    body.velocity = new Vector2(-moveSpeed, body.velocity.y);
                 this.transform.rotation = new Quaternion(0f, 180f, this.transform.rotation.z, this.transform.rotation.w);                
             }
             else if (PlayerInput.IsPressingRight())
             {
-                body.velocity = new Vector2(moveSpeed, body.velocity.y);
+                body.velocity = new Vector2(body.velocity.x + startFriction * Game.relativeTime, body.velocity.y);
+                if (body.velocity.x > moveSpeed)
+                    body.velocity = new Vector2(moveSpeed, body.velocity.y);
                 this.transform.rotation = new Quaternion(0f, 0f, this.transform.rotation.z, this.transform.rotation.w);
             }
-
-            if (PlayerInput.IsPressingDown())
+            else if (!atkboxTwist.activeSelf)    // add friction
             {
-                body.velocity = new Vector2(0, body.velocity.y);
-                if (state == PState.Idle || state == PState.Walk)
-                    state = PState.Duck;
+                float newVelX = body.velocity.x;
+                newVelX -= Mathf.Sign(newVelX) * stopFriction * Game.relativeTime;
+                if (Mathf.Sign(newVelX) == Mathf.Sign(body.velocity.x)) // checking the sign so the friction doesn't reverse movement direction
+                    body.velocity = new Vector2(newVelX, body.velocity.y);
+                else
+                    body.velocity = new Vector2(0, body.velocity.y);
             }
-            else if (state == PState.Duck)
+
+            if (!PlayerInput.IsPressingDown() && state == PState.Duck)
                 state = PState.Unassigned;
 
             if (isGrounded && PlayerInput.HasPressedA())
@@ -609,7 +630,7 @@ public class Player : Pawn
         body.velocity = new Vector2(newVelocityX, newVelocityY); 
         
         Game.VertShake(2);
-        Game.FreezeFrame(Game.FRAME_TIME * 6);
+        Game.FreezeFrame(Game.FRAME_TIME * 4);
     }
 
 
@@ -728,7 +749,7 @@ public class Player : Pawn
             else
             {
                 DoInputMovePause(0.001F);
-                body.velocity = new Vector2(FacingDirection * 2F, body.velocity.y);
+                body.velocity = new Vector2(FacingDirection * 1.5F, body.velocity.y);
             }
         }
         else

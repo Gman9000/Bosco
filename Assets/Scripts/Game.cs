@@ -29,7 +29,8 @@ public class Game : MonoBehaviour
     |*  STATIC FIELDS  *|
     \*=================*/
     public static Game Instance;
-    public static float gameTime = 0.0F;    // the time counter used for game logic and custom movement functions
+    
+    public static float relativeTime => Time.deltaTime * 500;    // the time counter used for game logic and custom movement functions
     public static int litCandlesCount = 0;
     public static int lives = 1;
     public static bool isPaused;
@@ -254,9 +255,6 @@ public class Game : MonoBehaviour
             }
             return;
         }
-
-        gameTime += Time.deltaTime;
-
         for (int i = 0; i < scanlines.Length; i++)
             scanlines[i].Clear();
 

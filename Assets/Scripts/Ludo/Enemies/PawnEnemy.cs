@@ -85,7 +85,7 @@ public abstract class PawnEnemy : Pawn
 
         playerWasInView = false;
         wasKnockingBack = false;
-        SetState(statePrimary);
+        SetState(stateIdle);
     }
 
     public void Update()
@@ -327,6 +327,7 @@ public abstract class PawnEnemy : Pawn
     {
         while (currentHealth > 0)
         {
+            yield return new WaitUntil(() => IsGrounded);
             yield return MoveTowardPositionX(transform.position.x + xMove, moveDuration);
             yield return new WaitForSeconds(secondsToWait);
         }

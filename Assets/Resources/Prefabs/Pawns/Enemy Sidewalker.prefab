@@ -224,9 +224,9 @@ MonoBehaviour:
   invincibilityTime: 0.25
   knockbackTime: 0.2
   knockbackDistance: 1.2
-  fixedGravity: 0.25
-  visionBoxSize: {x: 10, y: 5}
+  fixedGravity: 0.2
+  visionBoxSize: {x: 1, y: 1}
   facingDirection: 1
   xMove: -1
   moveDuration: 0.5
-  moveWait: 0.3
+  moveWait: 0.15
