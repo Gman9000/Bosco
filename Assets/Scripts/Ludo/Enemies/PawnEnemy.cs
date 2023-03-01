@@ -36,7 +36,7 @@ public abstract class PawnEnemy : Pawn
     private Rect visionBox;
     private Timer invTimer;
     private Timer knockbackTimer;
-    public bool Invincible => invTimer != null && !invTimer.done;
+    public bool Invincible => (invTimer != null && !invTimer.done);
     protected Player playerTarget => Player.Instance;
     private Vector2 currentKnockback;                   // direction of the force of an attack that damages this pawn
     protected Vector2 positionWhenHit;                  // position in world space when the enemy was hit
@@ -202,7 +202,7 @@ public abstract class PawnEnemy : Pawn
 
     void FixedUpdate()
     {
-        if (Invincible)
+        if (Invincible && currentHealth > 0)
             sprite.color = sprite.color.a == 0 ? Color.white : new Color(0,0,0,0);
         else            
             sprite.color = Color.white;
@@ -274,7 +274,18 @@ public abstract class PawnEnemy : Pawn
 
     protected virtual IEnumerator DeathSequence()
     {
-        yield return new WaitForSeconds(.5F);
+        float timeStamp = Time.time;
+        int shakeTimes = 3;
+
+        for (int i = shakeTimes; i > 0; i--)
+        {
+            yield return new WaitForFixedUpdate();
+            Game.VertShake(2);
+            Game.FreezeFrame(Game.FRAME_TIME);
+        }
+        yield return new WaitUntil(() => Time.time - timeStamp > .5F);
+
+                
         gameObject.SetActive(false);
         yield break;
     }
