@@ -906,7 +906,7 @@ MonoBehaviour:
   hitDirection: {x: -1, y: -1}
   relativeToFacingDir: 1
   ignoreY: 0
-  playerFeedbackDirection: {x: 0, y: 1}
+  playerFeedbackDirection: {x: 0.75, y: 1}
 --- !u!1 &4817150734763265971
 GameObject:
   m_ObjectHideFlags: 0

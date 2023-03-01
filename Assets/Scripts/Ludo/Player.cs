@@ -624,7 +624,7 @@ public class Player : Pawn
 
     public void AttackFeedback(Vector2 force, Vector2 direction)
     {
-        float newVelocityX = force.x == 0 ? body.velocity.x : force.x * 12;
+        float newVelocityX = force.x == 0 ? body.velocity.x : force.x * 12 * FacingDirection;
         float newVelocityY = force.y == 0 ? body.velocity.y : force.y * 12;
 
         body.velocity = new Vector2(newVelocityX, newVelocityY); 
