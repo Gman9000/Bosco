@@ -50,11 +50,13 @@ public class Player : Pawn
 
     public PState state {
         get => _state;
-        set
+        private set
         {
             _state = value;
         }
     }
+
+    private PState lastAtk;
     
     //for jumping
     public float jumpSpeed;
@@ -147,6 +149,7 @@ public class Player : Pawn
     override public void Start()
     {
         state = PState.Idle;
+        lastAtk = PState.Unassigned;
         canAerialAttack = false;
         jumpTimer = null;
         inputAttackPaused = false;
@@ -435,7 +438,6 @@ public class Player : Pawn
         }            
     }
 
-
     void Animate()
     {
         if (IsHurting && inputMovePaused && inputAttackPaused)
@@ -457,7 +459,6 @@ public class Player : Pawn
             case PState.Fall:
                 animator.Play(AnimMode.Hang, "fall");
                 break;
-
                 
             case PState.G_AtkSide1:
                 animator.Play(AnimMode.Once, "slash 1", () => state = PState.Unassigned);
@@ -472,7 +473,6 @@ public class Player : Pawn
                 animator.Play(AnimMode.Once, "upslash ground", () => state = PState.Unassigned);
                 break;
 
-
             case PState.A_AtkDown:
                 animator.Play(AnimMode.Hang, "downslash");
                 break;
@@ -486,7 +486,6 @@ public class Player : Pawn
             case PState.G_RockclimbingShimmy:
                 animator.Play(AnimMode.Looped, "duck");
                 break;
-
 
             case PState.A2G_Land:
                 animator.Play(AnimMode.Once, "duck", () => state = PState.Unassigned);
@@ -542,17 +541,22 @@ public class Player : Pawn
     {
         if (PlayerInput.HasPressedB())
         {
-            if (Time.time - hitTimeStamp >= hitCooldown && !PhysicsPaused && !inputAttackPaused)
+            if (!PhysicsPaused && !inputAttackPaused)
             {
-                if (attackSequenceCoroutine != null)
-                    StopCoroutine(attackSequenceCoroutine);
-                attackSequenceCoroutine = StartCoroutine(AttackSequence());
+                PState executeState = GetAttack(GetInputVector());
+                if (executeState != lastAtk || Time.time - hitTimeStamp >= hitCooldown)
+                {
+                    if (attackSequenceCoroutine != null)
+                        StopCoroutine(attackSequenceCoroutine);                
+                    attackSequenceCoroutine = StartCoroutine(AttackSequence(executeState));
+                }
             }
         }
     }
 
     private IEnumerator Attack(PState atkState)
     {
+        lastAtk = atkState;
         isHitting = true;//set isHitting to true.
 
         float hitLengthMod = 1.0F;
@@ -627,7 +631,6 @@ public class Player : Pawn
         float newVelocityX = force.x == 0 ? body.velocity.x : force.x * 12 * FacingDirection;
         float newVelocityY = force.y == 0 ? body.velocity.y : force.y * 12;
 
-        Debug.Log(force.x);
         body.velocity = new Vector2(newVelocityX, newVelocityY);
         
         Game.VertShake(2);
@@ -700,7 +703,6 @@ public class Player : Pawn
 
     IEnumerator PausePhysics(float duration)
     {
-        yield break;
         Vector2 oldVelocity = body.velocity;
         body.constraints = RigidbodyConstraints2D.FreezeAll;
         yield return new WaitForSeconds(duration);
@@ -727,7 +729,20 @@ public class Player : Pawn
         yield break;
     }
 
-    IEnumerator AttackSequence()
+    Vector2 GetInputVector()
+    {
+        if (PlayerInput.IsPressingDown() && !isGrounded)
+            return Vector2.down;
+        else if (PlayerInput.IsPressingUp() && !atkboxUp.activeSelf)
+            return Vector2.up;
+        else if (PlayerInput.IsPressingLeft())
+            return Vector2.left;
+        else if (PlayerInput.IsPressingRight())
+            return Vector2.right;
+        return Vector2.zero;
+    }
+
+    IEnumerator AttackSequence(PState executeState)
     {
         if (!isGrounded)
         {
@@ -741,7 +756,7 @@ public class Player : Pawn
         }
 
         
-        Vector2 lastInputDirection = Vector2.zero;
+        /*Vector2 lastInputDirection = Vector2.zero;
         if (isGrounded)
         {
             if (PlayerInput.IsPressingUp())
@@ -751,11 +766,8 @@ public class Player : Pawn
             else
             {
                 DoInputMovePause(0.001F);
-                body.velocity = new Vector2(FacingDirection * 1.5F, body.velocity.y);
             }
         }
-        else
-            DoPhysicsPause(.08F);
 
         do
         {
@@ -770,15 +782,111 @@ public class Player : Pawn
                 lastInputDirection = Vector2.right;
 
         }
-        while ((PhysicsPaused && !isGrounded) || (inputMovePaused && isGrounded));
+        while ((PhysicsPaused && !isGrounded) || (inputMovePaused && isGrounded));*/
 
 
         if (isGrounded)
             animator.PlayDefault();
 
+        // cancel attack if cooldown is not completed AND it's the same attack
+        switch (executeState)
+        {
+            case PState.G_AtkSide1:                       
+                SoundSystem.PlaySfx(sfx_swordSounds[0], 4);//play attack sfx
+                DoInputMovePause(.3F);
+                body.velocity = new Vector2(FacingDirection * 1.5F, body.velocity.y);
+                if (hitCoroutine != null)
+                    StopCoroutine(hitCoroutine);
+                state = PState.G_AtkSide1;
+                hitCoroutine = StartCoroutine(Attack(state));
+                comboTimeStamp = Time.time;
+                hitTimeStamp = Time.time;
+                break;
 
+            case PState.G_AtkSide2:
+                SoundSystem.PlaySfx(sfx_swordSounds[1], 4);//play attack sfx
+                DoInputMovePause(.3F);
+                body.velocity = Vector2.zero;
+                if (hitCoroutine != null)
+                    StopCoroutine(hitCoroutine);
+                state = PState.G_AtkSide2;
+                hitCoroutine = StartCoroutine(Attack(state));
+                comboTimeStamp = Time.time;
+                hitTimeStamp = Time.time;
+                break;
+
+            case PState.G_AtkTwist: //do spin attack here and reset the other trigger here
+                SoundSystem.PlaySfx(sfx_swordSounds[3], 4);
+                DoInputMovePause(.33F);
+                DoInputAttackPause(.66F);
+                if (hitCoroutine != null)
+                    StopCoroutine(hitCoroutine);
+                state = PState.G_AtkTwist;
+                hitCoroutine = StartCoroutine(Attack(state));
+                Timer.Set(.5F, () => state = PState.Unassigned);
+                comboTimeStamp = Time.time;
+                hitTimeStamp = Time.time;
+                break;
+
+            case PState.G_AtkUp:
+                SoundSystem.PlaySfx(sfx_swordSounds[0], 4);//play attack sfx
+                DoInputMovePause(.3F);
+                hitTimeStamp = Time.time;
+                state = PState.G_AtkUp;
+                SoundSystem.PlaySfx(sfx_swordSounds[0], 4);
+                if (hitCoroutine != null)
+                    StopCoroutine(hitCoroutine);
+                hitCoroutine = StartCoroutine(Attack(state));
+                break;
+            
+            case PState.A_AtkNeutral:
+                SoundSystem.PlaySfx(sfx_swordSounds[0], 4);//play attack sfx
+                state = PState.A_AtkNeutral;
+                if (hitCoroutine != null)
+                    StopCoroutine(hitCoroutine);
+                hitCoroutine = StartCoroutine(Attack(PState.A_AtkNeutral));
+                break;
+            
+            case PState.A_AtkSide:
+                SoundSystem.PlaySfx(sfx_swordSounds[1], 4);//play attack sfx
+                state = PState.A_AtkSide;
+                body.velocity = new Vector2(0, body.velocity.y);
+                if (hitCoroutine != null)
+                    StopCoroutine(hitCoroutine);
+                hitCoroutine = StartCoroutine(Attack(PState.A_AtkSide));
+                break;
+
+            case PState.A_AtkUp:
+                SoundSystem.PlaySfx(sfx_swordSounds[0], 4);//play attack sfx
+                state = PState.A_AtkUp;
+                body.velocity = Vector3.up * 15;
+                body.gravityScale = originalGravityScale * .97F;
+                if (hitCoroutine != null)
+                    StopCoroutine(hitCoroutine);
+                hitCoroutine = StartCoroutine(Attack(state));
+                break;
+
+            case PState.A_AtkDown:
+                SoundSystem.PlaySfx(sfx_swordSounds[0], 4);//play attack sfx
+                
+                body.velocity = Vector3.down * 38;
+                DoInputAttackPause(.5F);
+                body.gravityScale = 30;
+                if (hitCoroutine != null)
+                    StopCoroutine(hitCoroutine);
+                state = PState.A_AtkDown;
+                hitCoroutine = StartCoroutine(Attack(state));
+                break;
+        }
+
+        attackSequenceCoroutine = null;
+        yield break;
+    }
+
+
+    PState GetAttack(Vector2 lastInputDirection)
+    {
         PState executeState = PState.Unassigned;
-
         if (lastInputDirection == Vector2.down)
         {
             if (isGrounded)
@@ -814,7 +922,10 @@ public class Player : Pawn
             }
             else
             {
-               executeState = PState.A_AtkNeutral;
+                if (lastInputDirection.x == 0)
+                    executeState = PState.A_AtkNeutral;
+                else
+                    executeState = PState.A_AtkSide;
             }
         }
 
@@ -822,111 +933,26 @@ public class Player : Pawn
             switch (executeState)
             {
                 case PState.A_AtkDown:
+                    if (!IsMovesetLocked(PState.A_AtkNeutral))
+                        executeState = PState.A_AtkNeutral;
+                    else
+                        executeState = PState.A_AtkSide;
+                    break;
                 case PState.A_AtkUp:
-                    executeState = PState.A_AtkNeutral;
+                case PState.A_AtkNeutral:
+                    executeState = PState.A_AtkSide;
                     break;
                 case PState.G_AtkSide2:
                 case PState.G_AtkTwist:
                 case PState.G_AtkUp:
                     executeState = PState.G_AtkSide1;
                     break;
-                case PState.G_AtkSide1:
-                case PState.A_AtkNeutral:
-                    executeState = PState.Unassigned;
-                    break;
             }
-
-        switch (executeState)
+        
+        if (IsMovesetLocked(executeState))  // STILL locked
         {
-            case PState.G_AtkSide1:                       
-                SoundSystem.PlaySfx(sfx_swordSounds[0], 4);//play attack sfx
-                DoInputMovePause(.3F);
-                body.velocity = new Vector2(FacingDirection * 1.5F, body.velocity.y);
-                if (hitCoroutine != null)
-                    StopCoroutine(hitCoroutine);
-                state = PState.G_AtkSide1;
-                hitCoroutine = StartCoroutine(Attack(state));
-                comboTimeStamp = Time.time;
-                hitTimeStamp = Time.time;
-                break;
-
-            case PState.G_AtkSide2:
-                if (IsMovesetLocked(PState.G_AtkSide2))
-                {
-                    attackSequenceCoroutine= null;
-                    yield break;
-                }
-                SoundSystem.PlaySfx(sfx_swordSounds[1], 4);//play attack sfx
-                DoInputMovePause(.3F);
-                body.velocity = Vector2.zero;
-                if (hitCoroutine != null)
-                    StopCoroutine(hitCoroutine);
-                state = PState.G_AtkSide2;
-                hitCoroutine = StartCoroutine(Attack(state));
-                comboTimeStamp = Time.time;
-                hitTimeStamp = Time.time;
-                break;
-
-            case PState.G_AtkTwist: //do spin attack here and reset the other trigger here
-                if (IsMovesetLocked(PState.G_AtkTwist))
-                {
-                    attackSequenceCoroutine= null;
-                    yield break;
-                }
-                SoundSystem.PlaySfx(sfx_swordSounds[3], 4);
-                DoInputMovePause(.33F);
-                DoInputAttackPause(.66F);
-                if (hitCoroutine != null)
-                    StopCoroutine(hitCoroutine);
-                state = PState.G_AtkTwist;
-                hitCoroutine = StartCoroutine(Attack(state));
-                Timer.Set(.5F, () => state = PState.Unassigned);
-                comboTimeStamp = Time.time;
-                hitTimeStamp = Time.time;
-                break;
-
-            case PState.A_AtkNeutral:
-                state = PState.A_AtkNeutral;
-                if (hitCoroutine != null)
-                    StopCoroutine(hitCoroutine);
-                hitCoroutine = StartCoroutine(Attack(PState.A_AtkNeutral));
-                break;
-
-            case PState.G_AtkUp:
-                SoundSystem.PlaySfx(sfx_swordSounds[0], 4);//play attack sfx
-                DoInputMovePause(.3F);
-                hitTimeStamp = Time.time;
-                state = PState.G_AtkUp;
-                SoundSystem.PlaySfx(sfx_swordSounds[0], 4);
-                if (hitCoroutine != null)
-                    StopCoroutine(hitCoroutine);
-                hitCoroutine = StartCoroutine(Attack(state));
-                break;
-
-            case PState.A_AtkUp:
-                body.velocity = Vector3.up * 15;
-                body.gravityScale = originalGravityScale * .97F;
-                state = PState.A_AtkUp;
-                SoundSystem.PlaySfx(sfx_swordSounds[0], 4);
-                if (hitCoroutine != null)
-                    StopCoroutine(hitCoroutine);
-                hitCoroutine = StartCoroutine(Attack(state));
-                break;
-
-            case PState.A_AtkDown:
-                SoundSystem.PlaySfx(sfx_swordSounds[0], 4);//play attack sfx
-                
-                body.velocity = Vector3.down * 38;
-                DoInputAttackPause(.5F);
-                body.gravityScale = 30;
-                if (hitCoroutine != null)
-                    StopCoroutine(hitCoroutine);
-                state = PState.A_AtkDown;
-                hitCoroutine = StartCoroutine(Attack(state));
-                break;
-        }        
-
-        attackSequenceCoroutine = null;
-        yield break;
+            executeState = PState.Unassigned;
+        }
+        return executeState;
     }
 }
