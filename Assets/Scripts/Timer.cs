@@ -74,7 +74,6 @@ public class Timer
                     timer._done = true;
                     allRealtimeTimers.Remove(timer);
                     Game.debugText = "";
-                    Debug.Log("sound");
                 }
             }
     }

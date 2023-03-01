@@ -543,7 +543,7 @@ MonoBehaviour:
   hitDirection: {x: 1, y: 0}
   relativeToFacingDir: 0
   ignoreY: 0
-  playerFeedbackDirection: {x: 0, y: 0}
+  playerFeedbackDirection: {x: -0.125, y: 0}
 --- !u!1 &2300325343626698286
 GameObject:
   m_ObjectHideFlags: 0

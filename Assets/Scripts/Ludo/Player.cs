@@ -35,7 +35,7 @@ public class Player : Pawn
     public AudioClip sfx_jump;
     public AudioClip sfx_hurt;
 
-    public static Player Instance { get; protected set; }
+    public static Player Instance { get;protected set;}
 
     [HideInInspector]public Rigidbody2D body;
     public float moveSpeed;
@@ -95,13 +95,13 @@ public class Player : Pawn
 
     private bool isHitting = false;
     public float hitTime;
-    public float hitCooldown;   // should be less than hit time
-    public float hitComboWindow;   // should be less than hit time
+    public float hitCooldown;// should be less than hit time
+    public float hitComboWindow;// should be less than hit time
 
 
     
-    private float hitTimeStamp = 0; // the time when the player attacked
-    private float comboTimeStamp = 0; // the time when the player attacked
+    private float hitTimeStamp = 0;// the time when the player attacked
+    private float comboTimeStamp = 0;// the time when the player attacked
 
     //health stuff
     public int maxhealth;
@@ -110,7 +110,7 @@ public class Player : Pawn
     Coroutine hitCoroutine = null;
     Coroutine pausePhysicsCoroutine = null;
     Coroutine pauseInputMoveCoroutine = null;
-    Coroutine pauseInputAttackCoroutine = null;  
+    Coroutine pauseInputAttackCoroutine = null;
     Coroutine attackSequenceCoroutine = null;
     public float deathTime;
 
@@ -174,7 +174,7 @@ public class Player : Pawn
         hitCoroutine = null;
         pausePhysicsCoroutine = null;
         pauseInputMoveCoroutine = null;
-        pauseInputAttackCoroutine = null;  
+        pauseInputAttackCoroutine = null;
         attackSequenceCoroutine = null;
     }
 
@@ -226,7 +226,7 @@ public class Player : Pawn
             
             if (state == PState.A_AtkDown)   // if is falling fast
             {
-                Game.VertShake(8);          // shake screen
+                Game.VertShake(8);// shake screen
                 DoPhysicsPause(.4F);
                 atkboxDown.SetActive(false);
                 DoInputAttackPause(.4F);
@@ -291,7 +291,7 @@ public class Player : Pawn
                 body.velocity = new Vector2(body.velocity.x - startFriction * Game.relativeTime, body.velocity.y);
                 if (body.velocity.x < -moveSpeed)
                     body.velocity = new Vector2(-moveSpeed, body.velocity.y);
-                this.transform.rotation = new Quaternion(0f, 180f, this.transform.rotation.z, this.transform.rotation.w);                
+                this.transform.rotation = new Quaternion(0f, 180f, this.transform.rotation.z, this.transform.rotation.w);
             }
             else if (PlayerInput.IsPressingRight())
             {
@@ -553,7 +553,7 @@ public class Player : Pawn
 
     private IEnumerator Attack(PState atkState)
     {
-        isHitting = true;       //set isHitting to true.
+        isHitting = true;//set isHitting to true.
 
         float hitLengthMod = 1.0F;
 
@@ -575,7 +575,7 @@ public class Player : Pawn
                 break;
             case PState.A_AtkDown:
                 atkboxDown.SetActive(true);
-                hitLengthMod = 500;     //for down attacks we want the hitbox active for as long as possible
+                hitLengthMod = 500;//for down attacks we want the hitbox active for as long as possible
                 break;
             case PState.G_AtkTwist:                
                 atkboxTwist.SetActive(true);
@@ -595,7 +595,7 @@ public class Player : Pawn
 
 
 
-        yield return new WaitForSeconds(hitTime * hitLengthMod);   //wait the established amount of seconds.
+        yield return new WaitForSeconds(hitTime * hitLengthMod);//wait the established amount of seconds.
 
         switch (atkState)
         {
@@ -607,7 +607,7 @@ public class Player : Pawn
                 atkboxDown.SetActive(false);
                 break;
             case PState.G_AtkTwist:
-                atkboxTwist.SetActive(false);                
+                atkboxTwist.SetActive(false);
                 break;
             case PState.A_AtkNeutral:
                 atkboxAirNeutral.SetActive(false);
@@ -619,7 +619,7 @@ public class Player : Pawn
                 atkboxSide.SetActive(false);
                 break;
         }
-        isHitting = false;                          //set isHitting to false.
+        isHitting = false;//set isHitting to false.
     }
 
     public void AttackFeedback(Vector2 force, Vector2 direction)
@@ -627,7 +627,8 @@ public class Player : Pawn
         float newVelocityX = force.x == 0 ? body.velocity.x : force.x * 12 * FacingDirection;
         float newVelocityY = force.y == 0 ? body.velocity.y : force.y * 12;
 
-        body.velocity = new Vector2(newVelocityX, newVelocityY); 
+        Debug.Log(force.x);
+        body.velocity = new Vector2(newVelocityX, newVelocityY);
         
         Game.VertShake(2);
         Game.FreezeFrame(Game.FRAME_TIME * 4);
@@ -673,7 +674,7 @@ public class Player : Pawn
         
         SoundSystem.Pause();
 
-        yield return new WaitForSeconds(2.5F);   //wait the established amount of seconds.
+        yield return new WaitForSeconds(2.5F);//wait the established amount of seconds.
 
         if (Game.lives > 0)
         {
@@ -699,6 +700,7 @@ public class Player : Pawn
 
     IEnumerator PausePhysics(float duration)
     {
+        yield break;
         Vector2 oldVelocity = body.velocity;
         body.constraints = RigidbodyConstraints2D.FreezeAll;
         yield return new WaitForSeconds(duration);
@@ -837,10 +839,9 @@ public class Player : Pawn
         switch (executeState)
         {
             case PState.G_AtkSide1:                       
-                SoundSystem.PlaySfx(sfx_swordSounds[0], 4);   //play attack sfx
-                DoPhysicsPause(.08F);
+                SoundSystem.PlaySfx(sfx_swordSounds[0], 4);//play attack sfx
                 DoInputMovePause(.3F);
-                body.velocity = Vector2.zero;
+                body.velocity = new Vector2(FacingDirection * 1.5F, body.velocity.y);
                 if (hitCoroutine != null)
                     StopCoroutine(hitCoroutine);
                 state = PState.G_AtkSide1;
@@ -855,8 +856,7 @@ public class Player : Pawn
                     attackSequenceCoroutine= null;
                     yield break;
                 }
-                SoundSystem.PlaySfx(sfx_swordSounds[1], 4);   //play attack sfx
-                DoPhysicsPause(.08F);
+                SoundSystem.PlaySfx(sfx_swordSounds[1], 4);//play attack sfx
                 DoInputMovePause(.3F);
                 body.velocity = Vector2.zero;
                 if (hitCoroutine != null)
@@ -893,8 +893,7 @@ public class Player : Pawn
                 break;
 
             case PState.G_AtkUp:
-                SoundSystem.PlaySfx(sfx_swordSounds[0], 4);   //play attack sfx
-                DoPhysicsPause(.12F);
+                SoundSystem.PlaySfx(sfx_swordSounds[0], 4);//play attack sfx
                 DoInputMovePause(.3F);
                 hitTimeStamp = Time.time;
                 state = PState.G_AtkUp;
@@ -915,7 +914,7 @@ public class Player : Pawn
                 break;
 
             case PState.A_AtkDown:
-                SoundSystem.PlaySfx(sfx_swordSounds[0], 4);   //play attack sfx
+                SoundSystem.PlaySfx(sfx_swordSounds[0], 4);//play attack sfx
                 
                 body.velocity = Vector3.down * 38;
                 DoInputAttackPause(.5F);
