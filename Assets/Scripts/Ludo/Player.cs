@@ -6,8 +6,8 @@ using UnityEngine;
 public enum PState {Unassigned, 
     Idle, Walk, Run, Duck,
 Jump, Fall, 
-G_AtkSide1, G_AtkSide2, G_AtkSide3, G_AtkTwist, G_AtkUp, 
-G_Rockclimbing, G_RockclimbingShimmy,
+G_AtkSide1, G_AtkSide2, G_AtkTwist, G_AtkUp, G_AtkLow,
+G_Rockclimb, G_RockclimbShimmy,
 A_AtkUp, A_AtkSide, A_AtkDown, A_AtkNeutral, A_AtkRoll, 
 A2G_Land, A2G_SwordLand,
 }
@@ -22,9 +22,9 @@ public class Player : Pawn
     public readonly List<PState> AttackStates = new List<PState>(){
         PState.G_AtkSide1,
         PState.G_AtkSide2,
-        PState.G_AtkSide3,
         PState.G_AtkTwist,
         PState.G_AtkUp,
+        PState.G_AtkLow,
         PState.A_AtkRoll,
         PState.A_AtkDown,
         PState.A_AtkUp,
@@ -84,7 +84,7 @@ public class Player : Pawn
         PState.A_AtkUp,
         PState.A_AtkDown,
         PState.G_AtkTwist,
-        PState.G_Rockclimbing
+        PState.G_Rockclimb
     };
 
 
@@ -92,6 +92,7 @@ public class Player : Pawn
     [SerializeField] private GameObject atkboxSide;
     [SerializeField] private GameObject atkboxTwist;
     [SerializeField] private GameObject atkboxUp;
+    [SerializeField] private GameObject atkboxLow;
     [SerializeField] private GameObject atkboxDown;
     [SerializeField] private GameObject atkboxAirNeutral;
 
@@ -373,13 +374,13 @@ public class Player : Pawn
         {
             state = PState.Idle;
             if (onRockwall)
-                state = PState.G_Rockclimbing;
+                state = PState.G_Rockclimb;
         }
         else
         {
             state = PState.Walk;
             if (onRockwall)
-                state = PState.G_RockclimbingShimmy;
+                state = PState.G_RockclimbShimmy;
         }
     }
 
@@ -407,7 +408,7 @@ public class Player : Pawn
         switch (type)
         {
             case "Rockwall":
-                if (IsMovesetLocked(PState.G_Rockclimbing))
+                if (IsMovesetLocked(PState.G_Rockclimb))
                     onRockwall = value;
                 break;
         }
@@ -453,6 +454,9 @@ public class Player : Pawn
             case PState.Duck:
                 animator.Play(AnimMode.Looped, "duck");
                 break;
+            case PState.G_AtkLow:
+                animator.Play(AnimMode.Once, "slash 2", () => state = PState.Unassigned);
+                break;
             case PState.Jump:
                 animator.Play(AnimMode.Hang, "jump");
                 break;
@@ -479,11 +483,14 @@ public class Player : Pawn
             case PState.A_AtkUp:
                 animator.Play(AnimMode.Hang, "upslash air");
                 break;
+            case PState.A_AtkSide:
+                animator.Play(AnimMode.Hang, "slash 1");
+                break;
 
-            case PState.G_Rockclimbing:
+            case PState.G_Rockclimb:
                 animator.Play(AnimMode.Looped, "duck");
                 break;
-            case PState.G_RockclimbingShimmy:
+            case PState.G_RockclimbShimmy:
                 animator.Play(AnimMode.Looped, "duck");
                 break;
 
@@ -543,8 +550,8 @@ public class Player : Pawn
         {
             if (!PhysicsPaused && !inputAttackPaused)
             {
-                PState executeState = GetAttack(GetInputVector());
-                if (executeState != lastAtk || Time.time - hitTimeStamp >= hitCooldown)
+                PState executeState = DetermineAttack(GetInputVector());
+                if (!IsAttackRepeat(executeState) || Time.time - hitTimeStamp >= hitCooldown) // cancel attack if cooldown is not completed AND it's the same attack
                 {
                     if (attackSequenceCoroutine != null)
                         StopCoroutine(attackSequenceCoroutine);                
@@ -554,7 +561,238 @@ public class Player : Pawn
         }
     }
 
-    private IEnumerator Attack(PState atkState)
+    Vector2 GetAttackDirection(PState atk)
+    {   
+        switch (atk)
+        {
+            case PState.G_AtkLow:
+            case PState.G_AtkSide2:
+            case PState.G_AtkTwist:
+            case PState.A_AtkSide:
+                return Vector2.right;
+            case PState.G_AtkUp:
+            case PState.A_AtkUp:
+                return Vector2.up;
+            case PState.A_AtkDown:
+            case PState.A_AtkNeutral:
+                return Vector2.down;
+            default:
+                return Vector3.zero;
+        }
+    }
+
+    // Determies if newAtk and the previous attack are considered the same move in terms of cooldown
+    bool IsAttackRepeat(PState atk) => GetAttackDirection(atk) == GetAttackDirection(lastAtk);
+
+    Vector2 GetInputVector()
+    {
+        if (PlayerInput.IsPressingDown())
+            return Vector2.down;
+        else if (PlayerInput.IsPressingUp() && !atkboxUp.activeSelf)
+            return Vector2.up;
+        else if (PlayerInput.IsPressingLeft())
+            return Vector2.left;
+        else if (PlayerInput.IsPressingRight())
+            return Vector2.right;
+        return Vector2.zero;
+    }
+
+    
+    PState DetermineAttack(Vector2 lastInputDirection)
+    {
+        PState executeState = PState.Unassigned;
+        if (lastInputDirection == Vector2.down)
+        {
+            if (isGrounded)
+            {
+                executeState = PState.G_AtkLow;
+            }
+            else
+            {
+                executeState = PState.A_AtkDown;
+            }
+        }
+        else if (lastInputDirection == Vector2.up)
+        {
+            if (isGrounded)
+            {
+                executeState = PState.G_AtkUp;
+            }
+            else
+            {
+                executeState = PState.A_AtkUp;
+            }
+        }
+        else
+        {
+            if (isGrounded)
+            {
+                if (state == PState.G_AtkSide1)
+                    executeState = PState.G_AtkSide2;
+                else if (state == PState.G_AtkSide2)
+                    executeState = PState.G_AtkTwist;
+                else if (state != PState.G_AtkTwist)
+                    executeState = PState.G_AtkSide1;
+            }
+            else
+            {
+                if (lastInputDirection.x == 0)
+                    executeState = PState.A_AtkNeutral;
+                else
+                    executeState = PState.A_AtkSide;
+            }
+        }
+
+        if (IsMovesetLocked(executeState))
+            switch (executeState)
+            {
+                case PState.A_AtkDown:
+                    if (!IsMovesetLocked(PState.A_AtkNeutral))
+                        executeState = PState.A_AtkNeutral;
+                    else
+                        executeState = PState.A_AtkSide;
+                    break;
+                case PState.A_AtkUp:
+                case PState.A_AtkNeutral:
+                    executeState = PState.A_AtkSide;
+                    break;
+                case PState.G_AtkSide2:
+                case PState.G_AtkTwist:
+                case PState.G_AtkUp:
+                    executeState = PState.G_AtkSide1;
+                    break;
+            }
+        
+        if (IsMovesetLocked(executeState))  // STILL locked
+        {
+            executeState = PState.Unassigned;
+        }
+        return executeState;
+    }
+
+    IEnumerator AttackSequence(PState executeState)
+    {
+        if (!isGrounded)
+        {
+            if (canAerialAttack)
+                canAerialAttack = false;
+            else
+            {
+                attackSequenceCoroutine = null;
+                yield break;
+            }
+        }
+
+
+        if (isGrounded)
+            animator.PlayDefault();
+
+        switch (executeState)
+        {
+            case PState.G_AtkSide1:                       
+                SoundSystem.PlaySfx(sfx_swordSounds[0], 4);//play attack sfx
+                DoInputMovePause(.3F);
+                body.velocity = new Vector2(FacingDirection * 1.5F, body.velocity.y);
+                if (hitCoroutine != null)
+                    StopCoroutine(hitCoroutine);
+                state = PState.G_AtkSide1;
+                hitCoroutine = StartCoroutine(DoAttack(state));
+                comboTimeStamp = Time.time;
+                hitTimeStamp = Time.time;
+                break;
+
+            case PState.G_AtkSide2:
+                SoundSystem.PlaySfx(sfx_swordSounds[1], 4);//play attack sfx
+                DoInputMovePause(.3F);
+                body.velocity = Vector2.zero;
+                if (hitCoroutine != null)
+                    StopCoroutine(hitCoroutine);
+                state = PState.G_AtkSide2;
+                hitCoroutine = StartCoroutine(DoAttack(state));
+                comboTimeStamp = Time.time;
+                hitTimeStamp = Time.time;
+                break;
+
+            case PState.G_AtkTwist: //do spin attack here and reset the other trigger here
+                SoundSystem.PlaySfx(sfx_swordSounds[3], 4);
+                DoInputMovePause(.33F);
+                DoInputAttackPause(.66F);
+                if (hitCoroutine != null)
+                    StopCoroutine(hitCoroutine);
+                state = PState.G_AtkTwist;
+                hitCoroutine = StartCoroutine(DoAttack(state));
+                Timer.Set(.5F, () => state = PState.Unassigned);
+                comboTimeStamp = Time.time;
+                hitTimeStamp = Time.time;
+                break;
+
+            case PState.G_AtkUp:
+                SoundSystem.PlaySfx(sfx_swordSounds[0], 4);//play attack sfx
+                DoInputMovePause(.3F);
+                hitTimeStamp = Time.time;
+                state = PState.G_AtkUp;
+                SoundSystem.PlaySfx(sfx_swordSounds[0], 4);
+                if (hitCoroutine != null)
+                    StopCoroutine(hitCoroutine);
+                hitCoroutine = StartCoroutine(DoAttack(state));
+                break;
+
+            case PState.G_AtkLow:
+                SoundSystem.PlaySfx(sfx_swordSounds[1], 4);//play attack sfx
+                DoInputMovePause(.3F);
+                body.velocity = new Vector2(FacingDirection * 1.5F, body.velocity.y);
+                if (hitCoroutine != null)
+                    StopCoroutine(hitCoroutine);
+                state = PState.G_AtkLow;
+                hitCoroutine = StartCoroutine(DoAttack(state));
+                hitTimeStamp = Time.time;
+                break;
+            
+            case PState.A_AtkNeutral:
+                SoundSystem.PlaySfx(sfx_swordSounds[0], 4);//play attack sfx
+                state = PState.A_AtkNeutral;
+                if (hitCoroutine != null)
+                    StopCoroutine(hitCoroutine);
+                hitCoroutine = StartCoroutine(DoAttack(PState.A_AtkNeutral));
+                break;
+            
+            case PState.A_AtkSide:
+                SoundSystem.PlaySfx(sfx_swordSounds[1], 4);//play attack sfx
+                state = PState.A_AtkSide;
+                body.velocity = new Vector2(0, body.velocity.y);
+                if (hitCoroutine != null)
+                    StopCoroutine(hitCoroutine);
+                hitCoroutine = StartCoroutine(DoAttack(PState.A_AtkSide));
+                break;
+
+            case PState.A_AtkUp:
+                SoundSystem.PlaySfx(sfx_swordSounds[0], 4);//play attack sfx
+                state = PState.A_AtkUp;
+                body.velocity = Vector3.up * 15;
+                body.gravityScale = originalGravityScale * .97F;
+                if (hitCoroutine != null)
+                    StopCoroutine(hitCoroutine);
+                hitCoroutine = StartCoroutine(DoAttack(state));
+                break;
+
+            case PState.A_AtkDown:
+                SoundSystem.PlaySfx(sfx_swordSounds[0], 4);//play attack sfx
+                
+                body.velocity = Vector3.down * 38;
+                DoInputAttackPause(.5F);
+                body.gravityScale = 30;
+                if (hitCoroutine != null)
+                    StopCoroutine(hitCoroutine);
+                state = PState.A_AtkDown;
+                hitCoroutine = StartCoroutine(DoAttack(state));
+                break;
+        }
+
+        attackSequenceCoroutine = null;
+        yield break;
+    }
+
+    private IEnumerator DoAttack(PState atkState)
     {
         lastAtk = atkState;
         isHitting = true;//set isHitting to true.
@@ -569,6 +807,11 @@ public class Player : Pawn
             
         switch (atkState)
         {
+            case PState.G_AtkSide1:
+            case PState.G_AtkSide2:
+            case PState.A_AtkSide:
+                atkboxSide.SetActive(true);
+                break;
             case PState.A_AtkUp:
             case PState.G_AtkUp:
                 atkboxUp.SetActive(true);
@@ -577,23 +820,20 @@ public class Player : Pawn
                 else
                     hitLengthMod = .85F;
                 break;
-            case PState.A_AtkDown:
-                atkboxDown.SetActive(true);
-                hitLengthMod = 500;//for down attacks we want the hitbox active for as long as possible
-                break;
             case PState.G_AtkTwist:                
                 atkboxTwist.SetActive(true);
                 hitLengthMod = 2;
+                break;
+            case PState.G_AtkLow:
+                atkboxLow.SetActive(true);
                 break;
             case PState.A_AtkNeutral:
                 atkboxAirNeutral.SetActive(true);
                 hitLengthMod = 1;
                 break;
-            case PState.G_AtkSide1:
-            case PState.G_AtkSide2:
-            case PState.G_AtkSide3:
-            case PState.A_AtkSide:
-                atkboxSide.SetActive(true);
+            case PState.A_AtkDown:
+                atkboxDown.SetActive(true);
+                hitLengthMod = 500;//for down attacks we want the hitbox active for as long as possible
                 break;
         }
 
@@ -618,9 +858,11 @@ public class Player : Pawn
                 break;
             case PState.G_AtkSide1:
             case PState.G_AtkSide2:
-            case PState.G_AtkSide3:
             case PState.A_AtkSide:
                 atkboxSide.SetActive(false);
+                break;
+            case PState.G_AtkLow:
+                atkboxLow.SetActive(false);
                 break;
         }
         isHitting = false;//set isHitting to false.
@@ -727,232 +969,5 @@ public class Player : Pawn
         yield return new WaitForSeconds(duration);
         inputAttackPaused = false;
         yield break;
-    }
-
-    Vector2 GetInputVector()
-    {
-        if (PlayerInput.IsPressingDown() && !isGrounded)
-            return Vector2.down;
-        else if (PlayerInput.IsPressingUp() && !atkboxUp.activeSelf)
-            return Vector2.up;
-        else if (PlayerInput.IsPressingLeft())
-            return Vector2.left;
-        else if (PlayerInput.IsPressingRight())
-            return Vector2.right;
-        return Vector2.zero;
-    }
-
-    IEnumerator AttackSequence(PState executeState)
-    {
-        if (!isGrounded)
-        {
-            if (canAerialAttack)
-                canAerialAttack = false;
-            else
-            {
-                attackSequenceCoroutine = null;
-                yield break;
-            }
-        }
-
-        
-        /*Vector2 lastInputDirection = Vector2.zero;
-        if (isGrounded)
-        {
-            if (PlayerInput.IsPressingUp())
-            {
-                DoInputMovePause(.08F);
-            }
-            else
-            {
-                DoInputMovePause(0.001F);
-            }
-        }
-
-        do
-        {
-            yield return new WaitForEndOfFrame();
-            if (PlayerInput.IsPressingDown() && !isGrounded)
-                lastInputDirection = Vector2.down;
-            else if (PlayerInput.IsPressingUp() && !atkboxUp.activeSelf)
-                lastInputDirection = Vector2.up;
-            else if (PlayerInput.IsPressingLeft())
-                lastInputDirection = Vector2.left;
-            else if (PlayerInput.IsPressingRight())
-                lastInputDirection = Vector2.right;
-
-        }
-        while ((PhysicsPaused && !isGrounded) || (inputMovePaused && isGrounded));*/
-
-
-        if (isGrounded)
-            animator.PlayDefault();
-
-        // cancel attack if cooldown is not completed AND it's the same attack
-        switch (executeState)
-        {
-            case PState.G_AtkSide1:                       
-                SoundSystem.PlaySfx(sfx_swordSounds[0], 4);//play attack sfx
-                DoInputMovePause(.3F);
-                body.velocity = new Vector2(FacingDirection * 1.5F, body.velocity.y);
-                if (hitCoroutine != null)
-                    StopCoroutine(hitCoroutine);
-                state = PState.G_AtkSide1;
-                hitCoroutine = StartCoroutine(Attack(state));
-                comboTimeStamp = Time.time;
-                hitTimeStamp = Time.time;
-                break;
-
-            case PState.G_AtkSide2:
-                SoundSystem.PlaySfx(sfx_swordSounds[1], 4);//play attack sfx
-                DoInputMovePause(.3F);
-                body.velocity = Vector2.zero;
-                if (hitCoroutine != null)
-                    StopCoroutine(hitCoroutine);
-                state = PState.G_AtkSide2;
-                hitCoroutine = StartCoroutine(Attack(state));
-                comboTimeStamp = Time.time;
-                hitTimeStamp = Time.time;
-                break;
-
-            case PState.G_AtkTwist: //do spin attack here and reset the other trigger here
-                SoundSystem.PlaySfx(sfx_swordSounds[3], 4);
-                DoInputMovePause(.33F);
-                DoInputAttackPause(.66F);
-                if (hitCoroutine != null)
-                    StopCoroutine(hitCoroutine);
-                state = PState.G_AtkTwist;
-                hitCoroutine = StartCoroutine(Attack(state));
-                Timer.Set(.5F, () => state = PState.Unassigned);
-                comboTimeStamp = Time.time;
-                hitTimeStamp = Time.time;
-                break;
-
-            case PState.G_AtkUp:
-                SoundSystem.PlaySfx(sfx_swordSounds[0], 4);//play attack sfx
-                DoInputMovePause(.3F);
-                hitTimeStamp = Time.time;
-                state = PState.G_AtkUp;
-                SoundSystem.PlaySfx(sfx_swordSounds[0], 4);
-                if (hitCoroutine != null)
-                    StopCoroutine(hitCoroutine);
-                hitCoroutine = StartCoroutine(Attack(state));
-                break;
-            
-            case PState.A_AtkNeutral:
-                SoundSystem.PlaySfx(sfx_swordSounds[0], 4);//play attack sfx
-                state = PState.A_AtkNeutral;
-                if (hitCoroutine != null)
-                    StopCoroutine(hitCoroutine);
-                hitCoroutine = StartCoroutine(Attack(PState.A_AtkNeutral));
-                break;
-            
-            case PState.A_AtkSide:
-                SoundSystem.PlaySfx(sfx_swordSounds[1], 4);//play attack sfx
-                state = PState.A_AtkSide;
-                body.velocity = new Vector2(0, body.velocity.y);
-                if (hitCoroutine != null)
-                    StopCoroutine(hitCoroutine);
-                hitCoroutine = StartCoroutine(Attack(PState.A_AtkSide));
-                break;
-
-            case PState.A_AtkUp:
-                SoundSystem.PlaySfx(sfx_swordSounds[0], 4);//play attack sfx
-                state = PState.A_AtkUp;
-                body.velocity = Vector3.up * 15;
-                body.gravityScale = originalGravityScale * .97F;
-                if (hitCoroutine != null)
-                    StopCoroutine(hitCoroutine);
-                hitCoroutine = StartCoroutine(Attack(state));
-                break;
-
-            case PState.A_AtkDown:
-                SoundSystem.PlaySfx(sfx_swordSounds[0], 4);//play attack sfx
-                
-                body.velocity = Vector3.down * 38;
-                DoInputAttackPause(.5F);
-                body.gravityScale = 30;
-                if (hitCoroutine != null)
-                    StopCoroutine(hitCoroutine);
-                state = PState.A_AtkDown;
-                hitCoroutine = StartCoroutine(Attack(state));
-                break;
-        }
-
-        attackSequenceCoroutine = null;
-        yield break;
-    }
-
-
-    PState GetAttack(Vector2 lastInputDirection)
-    {
-        PState executeState = PState.Unassigned;
-        if (lastInputDirection == Vector2.down)
-        {
-            if (isGrounded)
-            {
-                // todo: duck stab
-            }
-            else
-            {
-                executeState = PState.A_AtkDown;
-            }
-        }
-        else if (lastInputDirection == Vector2.up)
-        {
-            if (isGrounded)
-            {
-                executeState = PState.G_AtkUp;
-            }
-            else
-            {
-                executeState = PState.A_AtkUp;
-            }
-        }
-        else
-        {
-            if (isGrounded)
-            {
-                if (state == PState.G_AtkSide1)
-                    executeState = PState.G_AtkSide2;
-                else if (state == PState.G_AtkSide2)
-                    executeState = PState.G_AtkTwist;
-                else if (state != PState.G_AtkTwist)
-                    executeState = PState.G_AtkSide1;
-            }
-            else
-            {
-                if (lastInputDirection.x == 0)
-                    executeState = PState.A_AtkNeutral;
-                else
-                    executeState = PState.A_AtkSide;
-            }
-        }
-
-        if (IsMovesetLocked(executeState))
-            switch (executeState)
-            {
-                case PState.A_AtkDown:
-                    if (!IsMovesetLocked(PState.A_AtkNeutral))
-                        executeState = PState.A_AtkNeutral;
-                    else
-                        executeState = PState.A_AtkSide;
-                    break;
-                case PState.A_AtkUp:
-                case PState.A_AtkNeutral:
-                    executeState = PState.A_AtkSide;
-                    break;
-                case PState.G_AtkSide2:
-                case PState.G_AtkTwist:
-                case PState.G_AtkUp:
-                    executeState = PState.G_AtkSide1;
-                    break;
-            }
-        
-        if (IsMovesetLocked(executeState))  // STILL locked
-        {
-            executeState = PState.Unassigned;
-        }
-        return executeState;
     }
 }
