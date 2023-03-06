@@ -66,11 +66,6 @@ public class Player : Pawn
     public float originalGravityScale;
     public float shimmySpeed = 2;
     public float rockJumpSpeed = 5;
-
-    public Transform topLeftRaycast;
-    public Transform topRightRaycast;
-    public Transform bottomLeftRaycast;
-    public Transform bottomRightRaycast;
     public float rayCastMagnitude;
 
     private bool inputMovePaused = false;
@@ -197,7 +192,7 @@ public class Player : Pawn
         if (Game.isPaused)  return;
 
         bool wasGrounded = isGrounded;
-        HitInfo groundCheck = boxCollider2D.IsGrounded(bottomLeftRaycast.position, bottomRightRaycast.position, rayCastMagnitude);
+        HitInfo groundCheck = boxCollider2D.IsGrounded(rayCastMagnitude);
         if (groundCheck.layerName == "TwoWayPlatform")
         {
             if (body.velocity.y <= 0)
@@ -220,9 +215,9 @@ public class Player : Pawn
                 if (surfaceY > feetY) isGrounded = false;
         }
 
-        isHittingCeiling = boxCollider2D.IsHittingCeiling(topLeftRaycast.position, topRightRaycast.position, rayCastMagnitude);
-        isHittingRightWall = boxCollider2D.IsHittingRight(topRightRaycast.position, bottomRightRaycast.position, rayCastMagnitude);
-        isHittingLeftWall = boxCollider2D.IsHittingLeft(topLeftRaycast.position, bottomLeftRaycast.position, rayCastMagnitude);
+        isHittingCeiling = boxCollider2D.IsHittingCeiling(rayCastMagnitude);
+        isHittingRightWall = boxCollider2D.IsHittingRight(rayCastMagnitude);
+        isHittingLeftWall = boxCollider2D.IsHittingLeft(rayCastMagnitude);
 
         if (isGrounded)
         {
@@ -277,16 +272,6 @@ public class Player : Pawn
         {
             if (PlayerInput.IsPressingDown())
             {
-                if (isGrounded)
-                {
-                    float newVelX = body.velocity.x;
-                    newVelX -= Mathf.Sign(newVelX) * stopFriction * 2 * Game.relativeTime;
-                    if (Mathf.Sign(newVelX) == Mathf.Sign(body.velocity.x)) // checking the sign so the friction doesn't reverse movement direction
-                        body.velocity = new Vector2(newVelX, body.velocity.y);
-                    else
-                        body.velocity = new Vector2(0, body.velocity.y);
-                }
-
                 if (state == PState.Idle || state == PState.Walk)
                     state = PState.Duck;
             }
@@ -343,6 +328,16 @@ public class Player : Pawn
             {
                 isJumping = false;
             }
+        }
+
+        if (state == PState.Duck)
+        {
+            float newVelX = body.velocity.x;
+            newVelX -= Mathf.Sign(newVelX) * stopFriction * .5F * Game.relativeTime;
+            if (Mathf.Sign(newVelX) == Mathf.Sign(body.velocity.x)) // checking the sign so the friction doesn't reverse movement direction
+                body.velocity = new Vector2(newVelX, body.velocity.y);
+            else
+                body.velocity = new Vector2(0, body.velocity.y);
         }
 
         if (onRockwall && body.velocity.x != 0)
@@ -868,7 +863,7 @@ public class Player : Pawn
         isHitting = false;//set isHitting to false.
     }
 
-    public void AttackFeedback(Vector2 force, Vector2 direction)
+    public void AttackFeedback(Vector2 force, Vector2 direction, AtkBonusAbility ability)
     {
         float newVelocityX = force.x == 0 ? body.velocity.x : force.x * 12 * FacingDirection;
         float newVelocityY = force.y == 0 ? body.velocity.y : force.y * 12;
@@ -877,6 +872,13 @@ public class Player : Pawn
         
         Game.VertShake(2);
         Game.FreezeFrame(Game.FRAME_TIME * 4);
+
+        switch (ability)
+        {
+            case AtkBonusAbility.RenewAerialAttack:
+                canAerialAttack = true;
+                break;
+        }
     }
 
 
