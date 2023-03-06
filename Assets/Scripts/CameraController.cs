@@ -6,10 +6,6 @@ public class CameraController : MonoBehaviour
 {
     static public Rect viewRect;
     static public CameraController Instance;
-    private Rigidbody2D theRB;
-
-    public float smoothDampTime;
-
     public Vector2 followRectSize = new Vector2(11, 10);
 
     public Vector2 offset = Vector2.up * 2;
@@ -30,7 +26,6 @@ public class CameraController : MonoBehaviour
 
     void Start()
     {
-        theRB = GetComponent<Rigidbody2D>();
         moveTo = Vector2.zero;
         followRect = new Rect(Vector2.zero, followRectSize);
         hud = GetComponentInChildren<HUD>();

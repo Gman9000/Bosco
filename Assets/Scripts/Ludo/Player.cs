@@ -270,8 +270,15 @@ public class Player : Pawn
         }
         else
         {
-            if (PlayerInput.IsPressingDown())
+            if (PlayerInput.IsPressingDown() && isGrounded)
             {
+                float newVelX = body.velocity.x;
+                newVelX -= Mathf.Sign(newVelX) * stopFriction * .5F * Game.relativeTime;
+                if (Mathf.Sign(newVelX) == Mathf.Sign(body.velocity.x)) // checking the sign so the friction doesn't reverse movement direction
+                    body.velocity = new Vector2(newVelX, body.velocity.y);
+                else
+                    body.velocity = new Vector2(0, body.velocity.y);
+
                 if (state == PState.Idle || state == PState.Walk)
                     state = PState.Duck;
             }
@@ -328,16 +335,6 @@ public class Player : Pawn
             {
                 isJumping = false;
             }
-        }
-
-        if (state == PState.Duck)
-        {
-            float newVelX = body.velocity.x;
-            newVelX -= Mathf.Sign(newVelX) * stopFriction * .5F * Game.relativeTime;
-            if (Mathf.Sign(newVelX) == Mathf.Sign(body.velocity.x)) // checking the sign so the friction doesn't reverse movement direction
-                body.velocity = new Vector2(newVelX, body.velocity.y);
-            else
-                body.velocity = new Vector2(0, body.velocity.y);
         }
 
         if (onRockwall && body.velocity.x != 0)
