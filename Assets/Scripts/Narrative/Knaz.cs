@@ -26,6 +26,7 @@ public class Knaz : MonoBehaviour
         {
             transform.position += Vector3.down * Game.PIXEL * 20;
             yield return new WaitForFixedUpdate();
+            yield return null;
         }        
         transform.position = place;
         Game.VertShake(10);

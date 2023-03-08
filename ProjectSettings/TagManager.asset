@@ -29,9 +29,9 @@ TagManager:
   - Ground
   - Player
   - TwoWayPlatform
-  - EnemyMelee
-  - EnemyThrowing
-  - EnemyFlying
+  - Enemy
+  - 
+  - 
   - PlayerTarget
   - Hidden
   - Rockwall

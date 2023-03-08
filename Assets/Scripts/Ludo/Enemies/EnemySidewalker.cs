@@ -9,8 +9,28 @@ public class EnemySidewalker : PawnEnemy
     public float moveWait = .2F;
     override public void Start()
     {
-        stateIdle = new System.Func<IEnumerator>(() => Act_Inching(xMove, moveDuration, moveWait));
-        statePrimary = new System.Func<IEnumerator>(() => Act_Idle());
+        DefState(EState.Idle, () => StateIdle());
         base.Start();
-    }    
+    }
+
+    override protected void OnHit()
+    {
+        anim.Play(AnimMode.Looped, "hurt");
+    }
+
+    override protected IEnumerator DeathSequence()
+    {
+        anim.Play(AnimMode.Looped, "hurt");
+        yield return base.DeathSequence();
+    }
+
+    IEnumerator StateIdle()
+    {
+        while (true)
+            yield return Act_Inching(EState.Idle, xMove, moveDuration, moveWait, 
+            () => anim.Play(AnimMode.Looped, "move"),
+            () => anim.PlayDefault());
+
+        yield break;
+    }
 }

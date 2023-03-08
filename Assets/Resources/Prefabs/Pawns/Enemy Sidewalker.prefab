@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8908132406772710371}
   - component: {fileID: 8908132406772710368}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Sprite Object
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -96,7 +96,7 @@ GameObject:
   - component: {fileID: 8908132406921087028}
   - component: {fileID: 2303197840707037921}
   - component: {fileID: 8908132406921087030}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Enemy Sidewalker
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -132,9 +132,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   autoAnim: 0
   animations:
-  - name: idle
+  - name: move
     sheet: {fileID: 2800000, guid: 7b97bcbd7ff32ea44a7237b3f7f70008, type: 3}
-    delay: 0.18
+    delay: 0.1
     startFrame: 0
     endFrame: 1
     offset: {x: 0, y: 0}
@@ -144,6 +144,13 @@ MonoBehaviour:
     delay: 0.05
     startFrame: 2
     endFrame: 3
+    offset: {x: 0, y: 0}
+    celSize: {x: 16, y: 24}
+  - name: idle
+    sheet: {fileID: 2800000, guid: 7b97bcbd7ff32ea44a7237b3f7f70008, type: 3}
+    delay: 1
+    startFrame: 0
+    endFrame: 0
     offset: {x: 0, y: 0}
     celSize: {x: 16, y: 24}
   defaultAnimation: idle
@@ -156,18 +163,18 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8908132406921087024}
-  m_BodyType: 1
+  m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 0.0001
+  m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0
-  m_GravityScale: 0
-  m_Material: {fileID: 6200000, guid: 7f6ea08a41151504b911bd1d77c90b0e, type: 2}
+  m_GravityScale: 10
+  m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!61 &8908132406921087028
 BoxCollider2D:
@@ -179,7 +186,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 6200000, guid: 7f6ea08a41151504b911bd1d77c90b0e, type: 2}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: -0.25}
@@ -221,12 +228,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 3
-  invincibilityTime: 0.25
-  knockbackTime: 0.2
-  knockbackDistance: 1.2
-  fixedGravity: 0.2
+  invincibilityTime: 0.4
+  knockbackTime: 0.35
+  startFriction: 0.01
+  stopFriction: 0.01
+  weight: 4
+  maxFallSpeed: 6
   visionBoxSize: {x: 1, y: 1}
+  usesHiddenPlatform: 0
+  initFacingDirection: -1
   facingDirection: 1
-  xMove: -1
+  xMove: 2
   moveDuration: 0.5
-  moveWait: 0.15
+  moveWait: 0.5

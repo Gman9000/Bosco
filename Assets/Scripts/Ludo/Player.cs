@@ -140,6 +140,7 @@ public class Player : Pawn
         Instance = this;
 
         animator = GetComponent<SpriteAnimator>();
+        Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Enemy"));
     }
 
     override public void Start()
@@ -199,7 +200,7 @@ public class Player : Pawn
                 isGrounded = true;
             if (isGrounded && PlayerInput.IsPressingDown() && PlayerInput.HasPressedA())    // make shift fallthrough
                 isGrounded = false;
-            if (groundCheck.hit.collider.tag == "Rockwall" && !wasGrounded && !PassThroughPlatform.rockwallCondition)
+            if (groundCheck.hit.collider.tag == "Rockwall" && !wasGrounded && !TwoWayPlatform.rockwallCondition)
                 isGrounded = false;
         }
         else
@@ -829,8 +830,6 @@ public class Player : Pawn
                 break;
         }
 
-
-
         yield return new WaitForSeconds(hitTime * hitLengthMod);//wait the established amount of seconds.
 
         switch (atkState)
@@ -877,7 +876,6 @@ public class Player : Pawn
                 break;
         }
     }
-
 
     private void OnTriggerEnter2D(Collider2D other)
     {

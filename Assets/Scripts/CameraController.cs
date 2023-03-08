@@ -96,7 +96,6 @@ public class CameraController : MonoBehaviour
 
     IEnumerator ShakeSide(int pixels)
     {
-
         Transform playerSprite = Player.Instance.animator.Renderer.transform;
         
         Vector3 playerRootPos = playerSprite.localPosition;
@@ -110,7 +109,8 @@ public class CameraController : MonoBehaviour
             playerSprite.localPosition = playerRootPos;
             playerSprite.localPosition += rightMove;
             transform.position = (Vector3)moveTo + Vector3.back * 10;
-            transform.position += rightMove;            
+            transform.position += rightMove;    
+            yield return null;        
         }
         yield return new WaitForEndOfFrame();
 
@@ -121,6 +121,7 @@ public class CameraController : MonoBehaviour
         shakeCoroutine = null;
         yield break;
     }
+    
     IEnumerator ShakeUp(int pixels)
     {
 
@@ -138,8 +139,7 @@ public class CameraController : MonoBehaviour
             playerSprite.localPosition += upMove;
             transform.position = (Vector3)moveTo + Vector3.back * 10;
             transform.position += upMove;
-
-            
+            yield return null;
         }
         yield return new WaitForEndOfFrame();
 

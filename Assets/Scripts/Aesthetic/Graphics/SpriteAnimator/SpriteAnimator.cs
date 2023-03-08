@@ -102,7 +102,9 @@ public class SpriteAnimator : MonoBehaviour
                     yield return new WaitForSeconds(data[animName].delay);
                 else
                     yield return new WaitForSeconds(5.0F);
+                yield return null;
             }
+            yield return null;
         }
         while (mode == AnimMode.Looped && _frames.Count > 1);
 
@@ -113,7 +115,7 @@ public class SpriteAnimator : MonoBehaviour
             Resume(mode);
         }
         
-        yield return null;
+        yield break;
     }
 
     public void PlayDefault() => Play(AnimMode.Looped, getDefault());

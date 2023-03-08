@@ -2,23 +2,28 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum EState {None, Idle, Primary, Secondary};
+
 public abstract class PawnEnemy : Pawn
 {
     // INSPECTOR DEFINED VALUES
     public int maxHealth = 1;                           // amount of health enemy starts with
     public float invincibilityTime = .3F;               // time in seconds enemy is invincible
-    public float knockbackTime = .3F;                   // time in seconds enemy gets knocked back
-    public float knockbackDistance = .5F;               // knockback distance in Unity units
-    public float fixedGravity = 0;                      // the fixed downward to apply to this enemy. AKA "cheap gravity"
+    public float knockbackTime = .3F;                   // time in seconds enemy gets knocked back   
+    public float defaultStunTime = .1F;
+    public float startFriction = .05F;
+    public float stopFriction = .05F;
+    public float weight = 3;                            // the value that determines how much knockback force moves it
+    public float maxFallSpeed = 12;   
     public Vector2 visionBoxSize = new Vector2(10, 5);  // the bounds that a player must be inside to trigger non-idle state
+    public bool usesHiddenPlatform = false;
+    public int initFacingDirection = 1;
+
+    protected System.Func<bool> knockbackResetCondition;
 
 
     // CORE VARIABLES
     protected int currentHealth;                        // amount of health enemy currently has
-
-    private Timer moveTimerX;
-    private Timer moveTimerY;
-
 
     // COMPONENT REFERENCES
     protected Rigidbody2D body;
@@ -28,19 +33,23 @@ public abstract class PawnEnemy : Pawn
     protected SpriteSimulator simulator;
 
     // ENGINEERING VARIABLES
-    private Coroutine currentState;
-
-    protected System.Func<IEnumerator> stateIdle;
-    protected System.Func<IEnumerator> statePrimary;
+    protected EState currentState;
+    
+    protected Dictionary<EState, System.Func<IEnumerator>> states;
     protected float KnockbackProgress => Mathf.Min(1, knockbackTimer.progress);
     private Rect visionBox;
     private Timer invTimer;
     private Timer knockbackTimer;
+    private Timer stunTimer;
     public bool Invincible => (invTimer != null && !invTimer.done);
     protected Player playerTarget => Player.Instance;
     private Vector2 currentKnockback;                   // direction of the force of an attack that damages this pawn
     protected Vector2 positionWhenHit;                  // position in world space when the enemy was hit
     
+    
+    private float stunDuration;
+
+
     private bool _isGrounded;
     private bool _contactLeft;
     private bool _contactRight;
@@ -48,20 +57,20 @@ public abstract class PawnEnemy : Pawn
     public bool IsGrounded => _isGrounded;
 
     private bool playerWasInView;
-    
-    protected float? moveToX;
-    protected float? moveToY;
 
-    [HideInInspector]public int facingDirection = 1;
+    [HideInInspector]public int facingDirection;
 
     bool wasKnockingBack;
 
 
     void Awake()
     {
-        // These are default values to be overwritten in Start of children
-        stateIdle = new System.Func<IEnumerator>(() => Act_Idle());
-        statePrimary = new System.Func<IEnumerator>(() => Act_Idle());
+        knockbackResetCondition = () => IsGrounded;
+
+        states = new Dictionary<EState, System.Func<IEnumerator>>();
+
+        // These are default values to be overwritten in Start of children        
+        DefState(EState.Idle, () => Act_Idle(EState.Idle));
     }
     
     override public void Start()
@@ -72,20 +81,22 @@ public abstract class PawnEnemy : Pawn
         boxCollider2D = GetComponent<BoxCollider2D>();
         sprite = GetComponentInChildren<SpriteRenderer>();
         currentHealth = maxHealth;
-        currentState = null; // inits the enemy's state at
         _isGrounded = false;
         _contactUp = false;
         _contactLeft = false;
         _contactRight = false;
         visionBox = new Rect(transform.position.x, transform.position.y, visionBoxSize.x, visionBoxSize.y);
-        moveToX = null;
-        moveToY = null;
-        moveTimerX = null;
-        moveTimerY = null;
 
         playerWasInView = false;
         wasKnockingBack = false;
-        SetState(stateIdle);
+        facingDirection = initFacingDirection;
+        stunDuration = defaultStunTime;
+
+        knockbackTimer = null;
+        invTimer = null;
+        stunTimer= null;
+
+        SetState(EState.Idle);
     }
 
     public void Update()
@@ -94,10 +105,6 @@ public abstract class PawnEnemy : Pawn
         sprite.flipX = facingDirection < 0;
         visionBox.center = transform.position;     // update the center of the vision box to this pawn
 
-        PhysicsLogic(moveToX, moveToY);
-        moveToX = null;
-        moveToY = null;
-
         // UPDATE LOGIC
         if (currentHealth <= 0)
         {
@@ -105,24 +112,25 @@ public abstract class PawnEnemy : Pawn
         }
         else if (knockbackTimer != null && knockbackTimer.active)
         {
-            SetState(null);
-            Vector2 newPos = UpdateKnockback(positionWhenHit + currentKnockback.normalized * knockbackDistance);
-            moveToX = newPos.x;
-            moveToY = newPos.y;
+            SetState(EState.None);
+            body.velocity = currentKnockback;            
             wasKnockingBack = true;
-        }
-        else if (visionBox.Contains(Player.Position))   // normal behavior loop
-        {
-            if (!playerWasInView || wasKnockingBack)   // this could be a problem if switching from a state not covered by this condition check
-                SetState(statePrimary);
-            playerWasInView = true;
-            wasKnockingBack = false;
         }
         else
         {
-            if (playerWasInView || wasKnockingBack)    // this could be a problem if switching from a state not covered by this condition check
-                SetState(stateIdle);
-            playerWasInView = false;
+            if (visionBox.Contains(Player.Position) && states.ContainsKey(EState.Primary))   // normal behavior loop
+            {
+                if (currentState != EState.Primary)   // this could be a problem if switching from a state not covered by this condition check
+                    SetState(EState.Primary);
+                playerWasInView = true;
+            }
+            else
+            {
+                if (currentState != EState.Idle)    // this could be a problem if switching from a state not covered by this condition check
+                    SetState(EState.Idle);
+                playerWasInView = false;
+            }
+
             wasKnockingBack = false;
         }
 
@@ -130,74 +138,77 @@ public abstract class PawnEnemy : Pawn
         Debug.DrawLine(new Vector3(visionBox.x, visionBox.y), new Vector3(visionBox.x , visionBox.y + visionBox.height), Color.blue);
         Debug.DrawLine(new Vector3(visionBox.x + visionBox.width, visionBox.y + visionBox.height), new Vector3(visionBox.x + visionBox.width, visionBox.y), Color.blue);
         Debug.DrawLine(new Vector3(visionBox.x + visionBox.width, visionBox.y + visionBox.height), new Vector3(visionBox.x, visionBox.y + visionBox.height), Color.blue);
+
+
+        PhysicsPass();
     }
 
-    private void PhysicsLogic(float? x, float? y)
+    private void PhysicsPass()
     {
-        Vector3 newPos = new Vector2(x == null ? transform.position.x : (float)x, y == null ? transform.position.y : (float)y);
-        Vector2 motion = newPos - transform.position;
-
-        // COLLISION LOGIC        
-        HitInfo groundCheck = boxCollider2D.IsGrounded(.8F);
+        HitInfo groundCheck = boxCollider2D.IsGrounded(.99F);
         HitInfo upCheck = boxCollider2D.IsHittingCeiling(.8F);
         HitInfo leftCheck = boxCollider2D.IsHittingLeft(.8F);
         HitInfo rightCheck = boxCollider2D.IsHittingRight(.8F);
-        
+
+        _contactLeft = leftCheck;
+        _contactRight = rightCheck;
+        _contactUp = upCheck;
         _isGrounded = groundCheck;
-        if (!_isGrounded)
-            motion += Vector2.down * fixedGravity;
 
-        Vector2 pos = transform.position;
+        if (leftCheck)
+        {
+            if (body.velocity.x < 0)
+                body.velocity = new Vector2(0, body.velocity.y);
 
-        if (motion.y <= 0)
-        {
-            if (_isGrounded)
-            {
-                float yDiff = transform.position.y - boxCollider2D.Bottom();
-                float contactY = groundCheck.hit.point.y + yDiff;
-                pos.y = contactY;
-            }
-            else
-            {
-                pos.y += motion.y;
-            }
-        }    
-        else if (motion.y >= 0)
-        {
-            if (upCheck)
-            {
-                // move to contact
-            }
-            else
-            {
-                pos.y += motion.y;
-            }
+            if (currentKnockback.x < 0)
+                currentKnockback.x /= -2F;
         }
-        
-        if (motion.x <= 0)
+
+        if (rightCheck)
         {
-            if (leftCheck)
-            {
-                // move to contact
-            }
-            else
-            {
-                pos.x += motion.x;
-            }
+            if (body.velocity.x > 0)
+                body.velocity = new Vector2(0, body.velocity.y);
+            if (currentKnockback.x > 0)
+                currentKnockback.x /= -2F;
         }
-        else if (motion.x >= 0)
+
+        if (upCheck)
         {
-            if (rightCheck)
-            {
-                // move to contact
-            }
-            else
-            {
-                pos.x += motion.x;
-            }
+            if (body.velocity.y > 0)
+                body.velocity = new Vector2(body.velocity.x, 0);
+            if (currentKnockback.y > 0)
+                currentKnockback.y /= -2F;
         }
-        
-        body.MovePosition(pos);
+
+        if (groundCheck.layerName == "Ground")
+        {
+            if (body.velocity.y < 0)
+                body.velocity = new Vector2(body.velocity.x, 0);
+
+            if (currentKnockback.y < 0)
+                currentKnockback.y /= 2F;
+        }
+
+        if (groundCheck.layerName == "TwoWayPlatform")
+        {
+            if (body.velocity.y < 0 && usesHiddenPlatform && groundCheck.hit.collider.CompareTag("Rockwall"))
+                body.velocity = new Vector2(body.velocity.x, 0);
+
+            if (currentKnockback.y < 0)
+                currentKnockback.y /= 2F;
+        }
+
+        // friction
+        float newVelX = body.velocity.x;
+        newVelX -= Mathf.Sign(newVelX) * stopFriction * Game.relativeTime;
+        if (Mathf.Sign(newVelX) == Mathf.Sign(body.velocity.x)) // checking the sign so the friction doesn't reverse movement direction
+            body.velocity = new Vector2(newVelX, body.velocity.y);
+        else
+            body.velocity = new Vector2(0, body.velocity.y);
+
+        // movement restrictions
+        if (body.velocity.y < - maxFallSpeed)
+            body.velocity = new Vector2(body.velocity.x, -maxFallSpeed);
     }
 
     void FixedUpdate()
@@ -208,38 +219,42 @@ public abstract class PawnEnemy : Pawn
             sprite.color = Color.white;
     }
 
-    public void SetState(System.Func<IEnumerator> state)
+    public void DefState(EState stateID, System.Func<IEnumerator> loop)
+    {
+        if (states.ContainsKey(stateID))
+            states.Remove(stateID);
+
+        states.Add(stateID, loop);
+    }
+
+    public void SetState(EState stateID)
     {
         if (!gameObject.activeSelf)  return;
 
-        
-        if (currentState != null)
-            StopCoroutine(currentState);
-        moveToX = null;
-        moveToY = null;
-        if (moveTimerX != null)
-            moveTimerX.Cancel();
-        if (moveTimerY != null)
-            moveTimerY.Cancel();
-        currentState = null;
-        if (state != null)
-            currentState = StartCoroutine(state());
+        if (stateID != EState.None && currentHealth > 0)
+        {
+            StartCoroutine(states[stateID]());
+        }
+
+        currentState = stateID;
     }
 
-    public bool TakeDamage(Vector2 force)
+    public bool TakeDamage(Vector2 force, float stunFactor = 1)
     {
         if (Invincible)  return false;          // ignore this call if the enemy is already invincible
 
-        currentKnockback = force;
+        currentKnockback = GetKnockback(force * Mathf.Max(0, 10 - weight));
         facingDirection = (int)Mathf.Sign(-force.x);
         if (_isGrounded && force.y < 0)
             currentKnockback.y = 0;
         
         positionWhenHit = transform.position;
+        stunDuration = defaultStunTime * stunFactor;
         currentHealth--;
 
         if (currentHealth <= 0)
         {
+            StopAllCoroutines();
             StartCoroutine(DeathSequence());
             return true;
         }
@@ -248,10 +263,11 @@ public abstract class PawnEnemy : Pawn
 
         if (knockbackTimer != null && knockbackTimer.active)
             knockbackTimer.Cancel();
-        
+
+        SetState(EState.None);
+
         knockbackTimer = Timer.Set(knockbackTime, () => {
             currentKnockback = Vector2.zero;
-            SetState(stateIdle);
         });
 
         OnHit();
@@ -264,12 +280,15 @@ public abstract class PawnEnemy : Pawn
 
     protected virtual void OnHit() {}      // called first frame of being hit
 
-    protected virtual Vector2 UpdateKnockback(Vector2 moveToPoint)
+       
+    protected virtual Vector2 GetKnockback(Vector2 velocity)
     {
-        Vector2 upness = Vector2.up * 1F;
-        if (moveToPoint.y < positionWhenHit.y)
+        Vector2 upness = Vector2.up * Mathf.Max(0, 10 - weight);
+
+        if (body.gravityScale == 0)
             upness = Vector2.zero;
-        return positionWhenHit + (moveToPoint + upness - positionWhenHit) * KnockbackProgress;
+
+        return velocity + upness;
     }
 
     protected virtual IEnumerator DeathSequence()
@@ -279,9 +298,10 @@ public abstract class PawnEnemy : Pawn
 
         for (int i = shakeTimes; i > 0; i--)
         {
-            yield return new WaitForFixedUpdate();
+            yield return new WaitForEndOfFrame();
             Game.VertShake(2);
             Game.FreezeFrame(Game.FRAME_TIME);
+            yield return null;
         }
         yield return new WaitUntil(() => Time.time - timeStamp > .5F);
 
@@ -306,52 +326,75 @@ public abstract class PawnEnemy : Pawn
     |*  ENEMY ACTION TOOLSET  *|
     \*========================*/
 
-    protected IEnumerator MoveTowardPositionX(float x, float duration)
+    protected IEnumerator Act_Inching(EState stateID, float xSpeed, float moveDuration, float pauseDuration, System.Action onMove = null, System.Action onStill = null)
     {
-        moveTimerX = Timer.Set(duration);
-        float startX = transform.position.x;
+        float timeStamp = Time.time;
+        bool isMoving = true;
+        float duration = moveDuration;
 
-        while (!moveTimerX.done)
+        while (currentState == stateID)
         {
-            moveToX = startX + (x - startX) * moveTimerX.progress;
-            yield return new WaitForEndOfFrame();
+            if (IsGrounded)
+            {
+                bool lastIsMoving = isMoving;
+
+
+                int lastFacingDirection = facingDirection;
+
+                if (_contactLeft)
+                    facingDirection = 1;
+                else if (_contactRight)
+                    facingDirection = -1;    
+
+                if (facingDirection != lastFacingDirection)
+                {
+                    isMoving = true;
+                    timeStamp = Time.time;
+                    duration = moveDuration / 2;
+                }
+                
+                if (isMoving)
+                {
+                    if (Time.time - timeStamp >= duration)
+                    {
+                        isMoving = false;
+                        timeStamp = Time.time;
+                        duration = pauseDuration;
+                    }                        
+                    
+                    body.velocity = new Vector2(xSpeed * facingDirection, body.velocity.y);                    
+                }
+                else
+                {
+                    if (Time.time - timeStamp >= duration)
+                    {
+                        isMoving = true;
+                        timeStamp = Time.time;
+                        duration = moveDuration;
+                    }
+                }
+
+
+
+                if (Mathf.Abs(body.velocity.x) > 1 && onMove != null)
+                    onMove();
+                else if (onStill != null)
+                    onStill();
+            }
+            yield return new WaitForFixedUpdate();
+            yield return null;
+
+            if (currentState != stateID)
+                yield break;
         }
-        
+
         yield break;
     }
 
-    protected IEnumerator MoveTowardPositionY(float y, float duration)
-    {
-        moveTimerY = Timer.Set(duration);
-        float startY = transform.position.y;
-
-        while (!moveTimerY.done)
-        {
-            moveToY = startY + (y - startY) * moveTimerY.progress;
-            yield return new WaitForEndOfFrame();
-        }
-        
-        yield break;
-    }
-
-    protected IEnumerator Act_Inching(float xMove, float moveDuration, float secondsToWait = .2F)
-    {
-        while (currentHealth > 0)
-        {
-            yield return new WaitUntil(() => IsGrounded);
-            yield return MoveTowardPositionX(transform.position.x + xMove, moveDuration);
-            yield return new WaitForSeconds(secondsToWait);
-        }
-
-        currentState = null;
-        yield break;
-    }
-
-    protected IEnumerator Act_Idle()
+    protected IEnumerator Act_Idle(EState stateID)
     {
         anim.PlayDefault();
-        yield return new WaitUntil(() => currentState == null);
-        currentState = null;
+        yield return new WaitUntil(() => currentState != stateID);
         yield break;
     }
 }

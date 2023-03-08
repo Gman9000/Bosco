@@ -83,4 +83,19 @@ public class Timer
         _done = true;
         allTimers.Remove(this);
     }
+
+    public static implicit operator bool(Timer a)
+    {
+        return a != null && a.active;
+    }
+
+    override public bool Equals(object o)
+    {
+        return base.Equals(o);
+    }
+
+    public override int GetHashCode()
+    {
+        return base.GetHashCode();
+    }
 }

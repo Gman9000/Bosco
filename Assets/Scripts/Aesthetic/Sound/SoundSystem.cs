@@ -59,8 +59,10 @@ public class SoundSystem : MonoBehaviour
             foreach (SoundChannel channel in Instance.channels) 
             {
                 channel.src.volume *= volChange;
+                yield return null;
             }
             yield return new WaitForSeconds(.8F);
+            yield return null;
         }
 
         foreach (SoundChannel channel in Instance.channels) 
@@ -79,7 +81,10 @@ public class SoundSystem : MonoBehaviour
     {
         yield return new WaitUntil(() => SoundSystem.songPositionTime >= song[0].length - .01F || (!Instance.channels[0].src.isPlaying && bgmMode));
         for (int i = 0; i < 4; i++)
+        {
             PlayBgm(song, loop, false);
+            yield return null;
+        }
         yield break;
     }
 
