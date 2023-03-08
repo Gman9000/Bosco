@@ -19,6 +19,8 @@ public abstract class PawnEnemy : Pawn
     public bool usesHiddenPlatform = false;
     public int initFacingDirection = 1;
 
+    private Vector2 separatorForce;
+
     protected System.Func<bool> knockbackResetCondition;
 
 
@@ -91,10 +93,11 @@ public abstract class PawnEnemy : Pawn
         wasKnockingBack = false;
         facingDirection = initFacingDirection;
         stunDuration = defaultStunTime;
+        separatorForce = Vector2.zero;
 
         knockbackTimer = null;
         invTimer = null;
-        stunTimer= null;
+        stunTimer = null;
 
         SetState(EState.Idle);
     }
@@ -160,6 +163,16 @@ public abstract class PawnEnemy : Pawn
         _contactRight = rightCheck;
         _contactUp = upCheck;
         _isGrounded = groundCheck;
+
+        float vx = body.velocity.x;
+        float vy = body.velocity.y;
+
+        if (Mathf.Abs(vx) < Mathf.Abs(separatorForce.x))
+            vx = separatorForce.x;
+        if (Mathf.Abs(vy) < Mathf.Abs(separatorForce.y))
+            vy = separatorForce.y;
+
+        body.velocity = new Vector2(vx, vy);
 
         if (leftCheck)
         {
@@ -333,6 +346,23 @@ public abstract class PawnEnemy : Pawn
         }
     }
 
+    private void OnCollisionStay2D(Collision2D other)
+    {
+        if (other.gameObject.CompareTag("Enemy"))
+        {
+            float xDiff = transform.position.x - other.transform.position.x;
+            separatorForce.x = xDiff * 2.0F;
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D other)
+    {
+        if (other.gameObject.CompareTag("Enemy"))
+        {
+            separatorForce.x = 0F;
+        }
+    }
+
     /*========================*\
     |*  ENEMY ACTION TOOLSET  *|
     \*========================*/
@@ -356,7 +386,7 @@ public abstract class PawnEnemy : Pawn
                     facingDirection = 1;
                 else if (_contactRight)
                     facingDirection = -1;
-                    
+
                 if (isMoving)
                 {
                     if (Time.time - timeStamp >= duration)
