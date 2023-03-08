@@ -5,7 +5,9 @@ using UnityEngine;
 
 public enum PState {Unassigned, 
     Idle, Walk, Run, Duck,
-Jump, Fall, 
+Jump, Fall,
+LadderIdle, LadderMove,
+FenceIdle,FenceMove,
 G_AtkSide1, G_AtkSide2, G_AtkTwist, G_AtkUp, G_AtkLow,
 G_Rockclimb, G_RockclimbShimmy,
 A_AtkUp, A_AtkSide, A_AtkDown, A_AtkNeutral, A_AtkRoll, 
@@ -57,7 +59,7 @@ public class Player : Pawn
     }
 
     private PState lastAtk;
-    
+    private PState lastState;
     //for jumping
     public float jumpSpeed;
     public float jumpTime;
@@ -91,7 +93,6 @@ public class Player : Pawn
     [SerializeField] private GameObject atkboxDown;
     [SerializeField] private GameObject atkboxAirNeutral;
 
-    private bool isHitting = false;
     public float hitTime;
     public float hitCooldown;// should be less than hit time
     public float hitComboWindow;// should be less than hit time
@@ -130,7 +131,12 @@ public class Player : Pawn
     private Timer jumpTimer;
 
     [HideInInspector]public bool onRockwall;
-
+    // for ladder fence checks
+    public bool climbMode => state == PState.FenceIdle || state == PState.FenceMove || 
+        state == PState.LadderIdle || state == PState.LadderMove;
+    bool canLadder;
+    bool canFence;
+    float ladderX;
     void Awake()
     {
         currentHealth = maxhealth;
@@ -144,6 +150,9 @@ public class Player : Pawn
 
     override public void Start()
     {
+        lastState = PState.Unassigned;
+        canLadder = false;
+        canFence = false;
         state = PState.Idle;
         lastAtk = PState.Unassigned;
         canAerialAttack = false;
@@ -243,15 +252,15 @@ public class Player : Pawn
                 body.velocity = new Vector2(body.velocity.x, 0);
             }
         }
-        else    // not grounded
+        else if (!climbMode)  // not grounded
         {
-            if (body.velocity.y < 0 && state != PState.A_AtkDown)
-                state = PState.Fall;
+                if (body.velocity.y < 0 && state != PState.A_AtkDown)
+                    state = PState.Fall;
 
-            if (wasGrounded)        // only set as unassigned if the player was JUST on the ground
-            {
-                state = PState.Unassigned;
-            }
+                if (wasGrounded)        // only set as unassigned if the player was JUST on the ground
+                {
+                    state = PState.Unassigned;
+                }
         }
 
         if (inputMovePaused)
@@ -305,6 +314,66 @@ public class Player : Pawn
                 else
                     body.velocity = new Vector2(0, body.velocity.y);
             }
+            if (PlayerInput.IsPressingUp() || PlayerInput.IsPressingDown())
+            {
+                if (canLadder)
+                {
+                    state = PState.LadderIdle;
+                    if (lastState != PState.LadderIdle)
+                    {
+                        transform.position = new Vector3(ladderX, transform.position.y, transform.position.z);
+                            //body.MovePosition(new Vector2(ladderX, body.position.y));
+                    }
+                }
+                else if (canFence)
+                {
+                    state = PState.FenceIdle;
+                }
+            }
+            if (state == PState.LadderIdle || state == PState.LadderMove)
+            {
+                body.gravityScale = 0f;
+                body.velocity = new Vector2(0f, 0f);
+                state = PState.LadderIdle;
+                if (PlayerInput.IsPressingUp())
+                {
+                    state = PState.LadderMove;
+                    body.velocity = new Vector2(0f, moveSpeed);
+                }
+                if (PlayerInput.IsPressingDown())
+                {
+                    state = PState.LadderMove;
+                    body.velocity = new Vector2(0f, -moveSpeed);
+                }
+                if (!canLadder)
+                {
+                    state = PState.Unassigned;
+                    body.gravityScale = originalGravityScale;
+                }
+            }
+
+            if (state == PState.FenceIdle || state == PState.FenceMove)
+            {
+                body.gravityScale = 0f;
+                body.velocity = new Vector2(body.velocity.x, 0f);
+                state = PState.FenceIdle;
+                if (PlayerInput.IsPressingUp())
+                {
+                    state = PState.FenceMove;
+                    body.velocity = new Vector2(body.velocity.x, moveSpeed);
+                }
+                if (PlayerInput.IsPressingDown())
+                {
+                    state = PState.FenceMove;
+                    body.velocity = new Vector2(body.velocity.x, -moveSpeed);
+                }
+                if (!canFence)
+                {
+                    state = PState.Unassigned;
+                    body.gravityScale = originalGravityScale;
+                }
+            }
+
 
             if (!PlayerInput.IsPressingDown() && state == PState.Duck)
                 state = PState.Unassigned;
@@ -358,6 +427,7 @@ public class Player : Pawn
 
         if (currentHealth > 0)
             Animate();
+        lastState = state;
     }
 
     void SetStateFromHorizontal()
@@ -595,44 +665,57 @@ public class Player : Pawn
         PState executeState = PState.Unassigned;
         if (lastInputDirection == Vector2.down)
         {
-            if (isGrounded)
+            if (!climbMode)
             {
-                executeState = PState.G_AtkLow;
-            }
-            else
-            {
-                executeState = PState.A_AtkDown;
+                if (isGrounded)
+                {
+                    executeState = PState.G_AtkLow;
+                }
+                else
+                {
+                    executeState = PState.A_AtkDown;
+                }
             }
         }
         else if (lastInputDirection == Vector2.up)
         {
-            if (isGrounded)
+            if (!climbMode)
             {
-                executeState = PState.G_AtkUp;
-            }
-            else
-            {
-                executeState = PState.A_AtkUp;
+                if (isGrounded)
+                {
+                    executeState = PState.G_AtkUp;
+                }
+                else
+                {
+                    executeState = PState.A_AtkUp;
+                }
             }
         }
         else
         {
             if (isGrounded)
             {
-                if (state == PState.G_AtkSide1)
-                    executeState = PState.G_AtkSide2;
-                else if (state == PState.G_AtkSide2)
-                    executeState = PState.G_AtkTwist;
-                else if (state != PState.G_AtkTwist)
-                    executeState = PState.G_AtkSide1;
+                if (!climbMode)
+                {
+                    if (state == PState.G_AtkSide1)
+                        executeState = PState.G_AtkSide2;
+                    else if (state == PState.G_AtkSide2)
+                        executeState = PState.G_AtkTwist;
+                    else if (state != PState.G_AtkTwist)
+                        executeState = PState.G_AtkSide1;
+                }
             }
             else
             {
-                if (lastInputDirection.x == 0)
-                    executeState = PState.A_AtkNeutral;
-                else
-                    executeState = PState.A_AtkSide;
+                if (!climbMode)
+                {
+                    if (lastInputDirection.x == 0)
+                        executeState = PState.A_AtkNeutral;
+                    else
+                        executeState = PState.A_AtkSide;
+                }
             }
+            
         }
 
         if (IsMovesetLocked(executeState))
@@ -787,7 +870,6 @@ public class Player : Pawn
     private IEnumerator DoAttack(PState atkState)
     {
         lastAtk = atkState;
-        isHitting = true;//set isHitting to true.
 
         float hitLengthMod = 1.0F;
 
@@ -857,7 +939,6 @@ public class Player : Pawn
                 atkboxLow.SetActive(false);
                 break;
         }
-        isHitting = false;//set isHitting to false.
     }
 
     public void AttackFeedback(Vector2 force, Vector2 direction, AtkBonusAbility ability)
@@ -881,6 +962,18 @@ public class Player : Pawn
 
     private void OnTriggerEnter2D(Collider2D other)
     {
+        if (other.CompareTag("Ladder"))
+        {
+            canLadder = true;
+            ladderX = other.bounds.center.x;
+
+        }
+        if (other.CompareTag("Fence"))
+        {
+            canFence = true;
+
+        }
+
         if (other.CompareTag("Reset"))
         {
             this.gameObject.transform.position = checkpoint;
@@ -902,6 +995,27 @@ public class Player : Pawn
         if (other.gameObject.CompareTag("Door") && PlayerInput.IsPressingUp() && CandleHandler.canUseDoor)
         {
             transform.position = new Vector3(199.5F, 100, transform.position.z);
+        }
+
+        if (other.CompareTag("Ladder"))
+        {
+            canLadder = true;
+            ladderX = other.bounds.center.x;
+        }
+        if (other.CompareTag("Fence"))
+        {
+            canFence = true;
+        }
+    }
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.CompareTag("Ladder"))
+        {
+            canLadder = false;
+        }
+        if (other.CompareTag("Fence"))
+        {
+            canFence = false;
         }
     }
 
