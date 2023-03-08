@@ -110,28 +110,34 @@ public abstract class PawnEnemy : Pawn
         {
             // NOTE: leave this block and conditional as-is until we're done writing the structure of this class
         }
-        else if (knockbackTimer != null && knockbackTimer.active)
+        else if (knockbackTimer)
         {
             SetState(EState.None);
             body.velocity = currentKnockback;            
             wasKnockingBack = true;
         }
-        else
+        else if (wasKnockingBack && knockbackResetCondition())
         {
-            if (visionBox.Contains(Player.Position) && states.ContainsKey(EState.Primary))   // normal behavior loop
+            ApplyFriction(2);   // extra friction
+            if (!stunTimer)
             {
-                if (currentState != EState.Primary)   // this could be a problem if switching from a state not covered by this condition check
-                    SetState(EState.Primary);
-                playerWasInView = true;
-            }
-            else
-            {
-                if (currentState != EState.Idle)    // this could be a problem if switching from a state not covered by this condition check
-                    SetState(EState.Idle);
-                playerWasInView = false;
-            }
-
-            wasKnockingBack = false;
+                currentKnockback = Vector2.zero;
+                stunTimer = Timer.Set(stunDuration, () => {
+                    if (visionBox.Contains(Player.Position) && states.ContainsKey(EState.Primary))   // normal behavior loop
+                    {
+                        if (currentState != EState.Primary)   // this could be a problem if switching from a state not covered by this condition check
+                            SetState(EState.Primary);
+                        playerWasInView = true;
+                    }
+                    else
+                    {
+                        if (currentState != EState.Idle)    // this could be a problem if switching from a state not covered by this condition check
+                            SetState(EState.Idle);
+                        playerWasInView = false;
+                    }
+                    wasKnockingBack = false;
+                });
+            }            
         }
 
         Debug.DrawLine(new Vector3(visionBox.x, visionBox.y), new Vector3(visionBox.x + visionBox.width, visionBox.y ),Color.blue);
@@ -199,12 +205,7 @@ public abstract class PawnEnemy : Pawn
         }
 
         // friction
-        float newVelX = body.velocity.x;
-        newVelX -= Mathf.Sign(newVelX) * stopFriction * Game.relativeTime;
-        if (Mathf.Sign(newVelX) == Mathf.Sign(body.velocity.x)) // checking the sign so the friction doesn't reverse movement direction
-            body.velocity = new Vector2(newVelX, body.velocity.y);
-        else
-            body.velocity = new Vector2(0, body.velocity.y);
+        ApplyFriction(1);
 
         // movement restrictions
         if (body.velocity.y < - maxFallSpeed)
@@ -225,6 +226,16 @@ public abstract class PawnEnemy : Pawn
             states.Remove(stateID);
 
         states.Add(stateID, loop);
+    }
+
+    public void ApplyFriction(float frictionFactor)
+    {
+        float newVelX = body.velocity.x;
+        newVelX -= Mathf.Sign(newVelX) * stopFriction * frictionFactor * Game.relativeTime;
+        if (Mathf.Sign(newVelX) == Mathf.Sign(body.velocity.x)) // checking the sign so the friction doesn't reverse movement direction
+            body.velocity = new Vector2(newVelX, body.velocity.y);
+        else
+            body.velocity = new Vector2(0, body.velocity.y);
     }
 
     public void SetState(EState stateID)
@@ -344,15 +355,8 @@ public abstract class PawnEnemy : Pawn
                 if (_contactLeft)
                     facingDirection = 1;
                 else if (_contactRight)
-                    facingDirection = -1;    
-
-                if (facingDirection != lastFacingDirection)
-                {
-                    isMoving = true;
-                    timeStamp = Time.time;
-                    duration = moveDuration / 2;
-                }
-                
+                    facingDirection = -1;
+                    
                 if (isMoving)
                 {
                     if (Time.time - timeStamp >= duration)

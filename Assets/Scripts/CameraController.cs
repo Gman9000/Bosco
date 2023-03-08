@@ -29,6 +29,7 @@ public class CameraController : MonoBehaviour
         moveTo = Vector2.zero;
         followRect = new Rect(Vector2.zero, followRectSize);
         hud = GetComponentInChildren<HUD>();
+        shakeCoroutine = StartCoroutine(ShakeUp(5));
     }
 
     void Update()
@@ -139,7 +140,6 @@ public class CameraController : MonoBehaviour
             playerSprite.localPosition += upMove;
             transform.position = (Vector3)moveTo + Vector3.back * 10;
             transform.position += upMove;
-            yield return null;
         }
         yield return new WaitForEndOfFrame();
 

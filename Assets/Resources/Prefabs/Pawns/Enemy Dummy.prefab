@@ -133,9 +133,11 @@ MonoBehaviour:
   maxHealth: 325
   invincibilityTime: 0.25
   knockbackTime: 0.2
+  defaultStunTime: 0.1
+  startFriction: 0.05
   stopFriction: 0.05
   weight: 5
-  maxFallSpeed: 12
+  maxFallSpeed: 11
   visionBoxSize: {x: 10, y: 5}
   usesHiddenPlatform: 0
   initFacingDirection: 1

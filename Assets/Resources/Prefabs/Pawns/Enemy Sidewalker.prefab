@@ -111,7 +111,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8908132406921087024}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 47.562916, y: 28.509518, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 8908132406772710371}
@@ -230,11 +230,12 @@ MonoBehaviour:
   maxHealth: 3
   invincibilityTime: 0.4
   knockbackTime: 0.35
+  defaultStunTime: 0.2
   startFriction: 0.01
-  stopFriction: 0.01
-  weight: 4
-  maxFallSpeed: 6
-  visionBoxSize: {x: 1, y: 1}
+  stopFriction: 0.025
+  weight: 5
+  maxFallSpeed: 11
+  visionBoxSize: {x: 0, y: 0}
   usesHiddenPlatform: 0
   initFacingDirection: -1
   facingDirection: 1

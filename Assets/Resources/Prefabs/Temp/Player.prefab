@@ -141,7 +141,7 @@ MonoBehaviour:
   moveSpeed: 5
   startFriction: 0.05
   stopFriction: 0.04
-  maxFallSpeed: 12
+  maxFallSpeed: 11
   invincibilityTime: 1.2
   boxCollider2D: {fileID: 0}
   jumpSpeed: 8
@@ -784,7 +784,7 @@ MonoBehaviour:
   hitDirection: {x: -1, y: -1}
   relativeToFacingDir: 1
   ignoreY: 0
-  playerFeedbackDirection: {x: 0.75, y: 1}
+  playerFeedbackDirection: {x: 0.75, y: 1.2}
   bonusAbility: 1
 --- !u!1 &4817150734763265971
 GameObject:

@@ -27,10 +27,11 @@ public class EnemySidewalker : PawnEnemy
     IEnumerator StateIdle()
     {
         while (true)
+        {
             yield return Act_Inching(EState.Idle, xMove, moveDuration, moveWait, 
             () => anim.Play(AnimMode.Looped, "move"),
             () => anim.PlayDefault());
-
-        yield break;
+            yield return null;
+        }
     }
 }
