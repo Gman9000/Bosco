@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2300325342526230443}
   - component: {fileID: 3057281320778646182}
   m_Layer: 0
-  m_Name: G_AtkboxTwist
+  m_Name: AtkboxTwist
   m_TagString: PlayerAttack
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -142,7 +142,7 @@ MonoBehaviour:
   startFriction: 0.05
   stopFriction: 0.04
   maxFallSpeed: 11
-  invincibilityTime: 1.2
+  hurtDuration: 1.2
   boxCollider2D: {fileID: 0}
   jumpSpeed: 8
   jumpTime: 0.3
@@ -150,16 +150,22 @@ MonoBehaviour:
   shimmySpeed: 3
   rockJumpSpeed: 5
   rayCastMagnitude: 0.75
-  atkboxSide: {fileID: 2300325343604811668}
-  atkboxTwist: {fileID: 2300325342526230441}
-  atkboxUp: {fileID: 2300325343626698286}
-  atkboxLow: {fileID: 9140672807488527824}
-  atkboxDown: {fileID: 2300325344128519419}
-  atkboxAirNeutral: {fileID: 4165955310493258514}
+  attackBoxes:
+    m_keys: 0700000008000000090000000a0000000c0000000b0000000d0000000e0000000f000000
+    m_values:
+    - {fileID: 2300325343604811668}
+    - {fileID: 2300325343604811668}
+    - {fileID: 2300325342526230441}
+    - {fileID: 2300325343626698286}
+    - {fileID: 2300325343626698286}
+    - {fileID: 9140672807488527824}
+    - {fileID: 2300325343604811668}
+    - {fileID: 2300325344128519419}
+    - {fileID: 4165955310493258514}
   hitTime: 0.1
   hitCooldown: 0.4
   hitComboWindow: 0.3
-  maxhealth: 3
+  maxHealth: 5
   deathTime: 0.8
   animator: {fileID: 0}
   onRockwall: 0
@@ -222,7 +228,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 091eed1e20141d24eb85e659c3f23963, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoAnim: 1
+  autoAnim: 0
   animations:
   - name: idle
     sheet: {fileID: 2800000, guid: 06a60da35cac74e49a90195acc3ba6f6, type: 3}
@@ -294,12 +300,12 @@ MonoBehaviour:
     endFrame: -1
     offset: {x: 2, y: 0}
     celSize: {x: 24, y: 24}
-  - name: somersault
+  - name: roll
     sheet: {fileID: 2800000, guid: d319c5ea37d770047afc4cec57a2cc43, type: 3}
-    delay: 0.02
+    delay: 0.03
     startFrame: 0
     endFrame: -1
-    offset: {x: -4, y: 0}
+    offset: {x: -8, y: -8}
     celSize: {x: 32, y: 32}
   - name: spin
     sheet: {fileID: 2800000, guid: 6f704a042ae8a4a41bd3264629f38c82, type: 3}
@@ -321,7 +327,7 @@ MonoBehaviour:
     startFrame: 0
     endFrame: -1
     offset: {x: 2, y: 0}
-    celSize: {x: 16, y: 16}
+    celSize: {x: 24, y: 16}
   - name: die
     sheet: {fileID: 2800000, guid: f6696cd1f69b3504ba1b7a3417a7f066, type: 3}
     delay: 0.1
@@ -356,7 +362,7 @@ GameObject:
   - component: {fileID: 2300325343604811670}
   - component: {fileID: 3858792447231744483}
   m_Layer: 0
-  m_Name: G_AtkboxSide
+  m_Name: AtkboxSide
   m_TagString: PlayerAttack
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -432,7 +438,7 @@ GameObject:
   - component: {fileID: 2300325343626698280}
   - component: {fileID: 3202877232657178549}
   m_Layer: 0
-  m_Name: G_AtkboxUp
+  m_Name: AtkboxUp
   m_TagString: PlayerAttack
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -508,7 +514,7 @@ GameObject:
   - component: {fileID: 2300325344128519413}
   - component: {fileID: 7836368372836496547}
   m_Layer: 0
-  m_Name: A_AtkboxDown
+  m_Name: AtkboxDown
   m_TagString: PlayerAttack
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -722,7 +728,7 @@ GameObject:
   - component: {fileID: 6968960746999178535}
   - component: {fileID: 4287763626929766069}
   m_Layer: 0
-  m_Name: A_AtkboxNeutral
+  m_Name: AtkboxNeutral
   m_TagString: PlayerAttack
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -756,7 +762,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.26, y: -0.25}
+  m_Offset: {x: 0.26, y: -0.067724794}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -767,7 +773,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.24, y: 0.85}
+  m_Size: {x: 1.24, y: 0.4854496}
   m_EdgeRadius: 0
 --- !u!114 &4287763626929766069
 MonoBehaviour:
@@ -1126,7 +1132,7 @@ GameObject:
   - component: {fileID: 2181709489766396093}
   - component: {fileID: 1662301848767705691}
   m_Layer: 0
-  m_Name: G_AtkboxLow
+  m_Name: AtkboxLow
   m_TagString: PlayerAttack
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

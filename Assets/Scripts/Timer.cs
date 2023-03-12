@@ -40,7 +40,6 @@ public class Timer
     {
         Timer timer = new Timer(duration, onComplete, true);
         allRealtimeTimers.Add(timer);
-        Game.debugText = "FREEZE FRAME!";
         return timer;
 
     }
@@ -73,7 +72,6 @@ public class Timer
                     timer.onComplete();
                     timer._done = true;
                     allRealtimeTimers.Remove(timer);
-                    Game.debugText = "";
                 }
             }
     }

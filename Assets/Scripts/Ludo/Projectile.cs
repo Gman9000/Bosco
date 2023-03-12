@@ -33,7 +33,7 @@ public class Projectile : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            Player.Instance.TakeDamage();
+            Player.Instance.OnHurt();
             Destroy(this.gameObject);
         }
     }

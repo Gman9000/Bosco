@@ -16,6 +16,7 @@ public class SpriteAnimator : MonoBehaviour
     private SpriteRenderer _renderer;
     public SpriteRenderer Renderer => _renderer;
 
+    private Color startColor;
     public GetAnim getDefault;
 
     private GameObject _renObj;
@@ -73,6 +74,7 @@ public class SpriteAnimator : MonoBehaviour
             Play(AnimMode.Looped, defaultAnimation);
 
         getDefault = () => defaultAnimation;
+        startColor = Renderer.color;
     }
 
     public void Reset()
@@ -89,7 +91,11 @@ public class SpriteAnimator : MonoBehaviour
     IEnumerator Animate(string animName, AnimMode mode)
     {
         if (_renObj.transform != this.transform)
+        {
             _renObj.transform.localPosition = new Vector2(data[animName].offset.x * Game.PIXEL, data[animName].offset.y * Game.PIXEL);
+            if (data[animName].offset.x == 400)
+                Debug.Log(animName);
+        }
 
         do
         {
@@ -174,5 +180,21 @@ public class SpriteAnimator : MonoBehaviour
         _currentMode = mode;
         _currentAnim = animName;
         _animatorCoroutine = StartCoroutine(Animate(animName, mode));
+    }
+
+    public void SetVisible(bool value)
+    {
+        if (value)
+            Renderer.color = startColor;
+        else
+            Renderer.color = new Color(0,0,0,0);
+    }
+
+    public void ToggleVisible()
+    {
+        if (Renderer.color.a == 0)
+            SetVisible(true);
+        else
+            SetVisible(false);
     }
 }

@@ -228,9 +228,9 @@ public abstract class PawnEnemy : Pawn
     void FixedUpdate()
     {
         if (Invincible && currentHealth > 0)
-            sprite.color = sprite.color.a == 0 ? Color.white : new Color(0,0,0,0);
+            anim.ToggleVisible();
         else            
-            sprite.color = Color.white;
+            anim.SetVisible(true);
     }
 
     public void DefState(EState stateID, System.Func<IEnumerator> loop)
@@ -303,7 +303,6 @@ public abstract class PawnEnemy : Pawn
     \*================================*/
 
     protected virtual void OnHit() {}      // called first frame of being hit
-
        
     protected virtual Vector2 GetKnockback(Vector2 velocity)
     {
@@ -342,7 +341,7 @@ public abstract class PawnEnemy : Pawn
     {
         if (other.CompareTag("PlayerTarget") && !Invincible)
         {
-            Player.Instance.TakeDamage();
+            Player.Instance.OnHurt();
         }
     }
 

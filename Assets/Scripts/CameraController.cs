@@ -97,9 +97,6 @@ public class CameraController : MonoBehaviour
 
     IEnumerator ShakeSide(int pixels)
     {
-        Transform playerSprite = Player.Instance.animator.Renderer.transform;
-        
-        Vector3 playerRootPos = playerSprite.localPosition;
 
         for (int i = pixels; i > 0; i--)
         {
@@ -107,8 +104,6 @@ public class CameraController : MonoBehaviour
             yield return new WaitForSecondsRealtime(Game.TICK_TIME);
             yield return new WaitUntil(() => !Game.isPaused);
             Vector3 rightMove = Vector3.right * i * (i % 2 == 0 ? 1 : -1) * Game.PIXEL;
-            playerSprite.localPosition = playerRootPos;
-            playerSprite.localPosition += rightMove;
             transform.position = (Vector3)moveTo + Vector3.back * 10;
             transform.position += rightMove;    
             yield return null;        
@@ -116,7 +111,6 @@ public class CameraController : MonoBehaviour
         yield return new WaitForEndOfFrame();
 
         CalcMovePos();
-        playerSprite.localPosition = playerRootPos;
         transform.position = (Vector3)moveTo + Vector3.back * 10;
 
         shakeCoroutine = null;
@@ -127,8 +121,6 @@ public class CameraController : MonoBehaviour
     {
 
         Transform playerSprite = Player.Instance.animator.Renderer.transform;
-        
-        Vector3 playerRootPos = playerSprite.localPosition;
 
         for (int i = pixels; i > 0; i--)
         {
@@ -136,15 +128,12 @@ public class CameraController : MonoBehaviour
             yield return new WaitForSecondsRealtime(Game.TICK_TIME);
             yield return new WaitUntil(() => !Game.isPaused);
             Vector3 upMove = Vector3.up * i * (i % 2 == 0 ? 1 : -1) * Game.PIXEL;
-            playerSprite.localPosition = playerRootPos;
-            playerSprite.localPosition += upMove;
             transform.position = (Vector3)moveTo + Vector3.back * 10;
             transform.position += upMove;
         }
         yield return new WaitForEndOfFrame();
 
         CalcMovePos();
-        playerSprite.localPosition = playerRootPos;
         transform.position = (Vector3)moveTo + Vector3.back * 10;
 
         shakeCoroutine = null;

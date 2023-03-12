@@ -14,14 +14,14 @@ public class PlayerAttack : MonoBehaviour
 
     void OnTriggerStay2D(Collider2D other)
     {
-        if (other.gameObject.tag == "Enemy")
+        if (other.gameObject.tag == "Enemy" && gameObject.activeSelf)
         {
             HitEnemy(other);
         }
     }
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.tag == "Enemy")
+        if (other.gameObject.tag == "Enemy" && gameObject.activeSelf)
         {
             HitEnemy(other);
         }

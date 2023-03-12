@@ -31,8 +31,8 @@ public class Game : MonoBehaviour
     public static Game Instance;
     
     public static float relativeTime => Time.deltaTime * 500;    // the time counter used for game logic and custom movement functions
-    public static int litCandlesCount = 0;
-    public static int lives = 1;
+    public static int litCandlesCount;
+    public static int lives;
     public static bool isPaused;
     private static float _unpausedRealtime;
     public static float unpausedRealtime => _unpausedRealtime;
@@ -63,6 +63,8 @@ public class Game : MonoBehaviour
     void Start()
     {
         Awake();
+        litCandlesCount = 0;
+        lives = 3;
         _unpausedRealtime = 0;
         Timer.AllTimersInit();
 
