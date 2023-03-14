@@ -154,7 +154,7 @@ public abstract class PawnEnemy : Pawn
 
     private void PhysicsPass()
     {
-        HitInfo groundCheck = boxCollider2D.IsGrounded(.99F);
+        HitInfo groundCheck = boxCollider2D.IsGrounded(.99F, new[]{"Ground", "Hidden"});
         HitInfo upCheck = boxCollider2D.IsHittingCeiling(.8F);
         HitInfo leftCheck = boxCollider2D.IsHittingLeft(.8F);
         HitInfo rightCheck = boxCollider2D.IsHittingRight(.8F);
@@ -263,7 +263,7 @@ public abstract class PawnEnemy : Pawn
         currentState = stateID;
     }
 
-    public bool TakeDamage(Vector2 force, float stunFactor = 1)
+    public bool OnHurt(Vector2 force, float stunFactor = 1)
     {
         if (Invincible)  return false;          // ignore this call if the enemy is already invincible
 
@@ -349,8 +349,11 @@ public abstract class PawnEnemy : Pawn
     {
         if (other.gameObject.CompareTag("Enemy"))
         {
-            float xDiff = transform.position.x - other.transform.position.x;
-            separatorForce.x = xDiff * 2.0F;
+            Vector2 diff = transform.position - other.transform.position;
+            separatorForce.x = diff.x * 2.0F;
+            if (Mathf.Abs(separatorForce.x) < 4)
+                separatorForce.x = Mathf.Sign(separatorForce.x) * 4;
+            separatorForce.y = diff.y * 6.0F;
         }
     }
 
@@ -358,7 +361,7 @@ public abstract class PawnEnemy : Pawn
     {
         if (other.gameObject.CompareTag("Enemy"))
         {
-            separatorForce.x = 0F;
+            separatorForce = Vector2.zero;
         }
     }
 

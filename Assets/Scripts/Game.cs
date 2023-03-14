@@ -18,6 +18,8 @@ public class Game : MonoBehaviour
     public const float TICK_TIME = .0167F;
     public const float FRAME_TIME = .022F;
 
+    private int fixedUpdateCounter = 0;
+
 
     /*=======================*\
     |*  INSPECTOR VARIABLES  *|
@@ -215,6 +217,57 @@ public class Game : MonoBehaviour
         {
             SoundSystem.DoFade(.01F);
         }
+
+
+        // scanline logic
+        for (int i = 0; i < scanlines.Length; i++)
+            scanlines[i].Clear();
+        for (int i = 0; i < scanlineSimTotal.Length; i++)
+            scanlineSimTotal[i] = 0;        
+        foreach (SpriteSimulator sim in simulatedSprites)
+        {
+            float x = sim.SpritePos.x - Camera.main.transform.position.x;
+            float y = sim.SpritePos.y - Camera.main.transform.position.y + (HEIGHT * PIXEL) / 2.0F;
+
+            int scanlineIndex = Mathf.FloorToInt(y / (16.0F * PIXEL));
+
+            if (scanlineIndex > 0 && scanlineIndex < scanlines.Length && Mathf.Abs(x) < WIDTH * PIXEL / 2.0F)
+            {
+                scanlineSimTotal[scanlineIndex] += sim.tilevalue;
+                scanlines[scanlineIndex].Add(sim);
+                sim.SetOutOfView(false);
+            }
+            else
+            {
+                sim.SetOutOfView(true);
+            }
+        }
+
+
+        // simulate sprite flicker
+        if (Time.timeScale > 0)
+        {
+            Time.timeScale = 1;
+            for (int y = 0; y < scanlines.Length; y++)
+            {
+                if (scanlineSimTotal[y] <= 10)
+                {
+                    foreach (SpriteSimulator sim in scanlines[y])
+                        sim.Flash(true);
+                }
+                else
+                {
+                    for (int x = 0; x < scanlines[y].Count; x++)
+                    {
+                        scanlines[y][x].Flash(fixedUpdateCounter % 2 != x % 2);
+                        Time.timeScale *= .86F;
+                    }
+                }
+            }
+        }
+
+
+        fixedUpdateCounter++;
     }
 
     void Update()
@@ -256,48 +309,6 @@ public class Game : MonoBehaviour
                 Unpause();
             }
             return;
-        }
-        for (int i = 0; i < scanlines.Length; i++)
-            scanlines[i].Clear();
-
-
-        for (int i = 0; i < scanlineSimTotal.Length; i++)
-            scanlineSimTotal[i] = 0;
-        
-        foreach (SpriteSimulator sim in simulatedSprites)
-        {
-            float x = sim.SpritePos.x - Camera.main.transform.position.x;
-            float y = sim.SpritePos.y - Camera.main.transform.position.y + (HEIGHT * PIXEL) / 2.0F;
-
-            int scanlineIndex = Mathf.FloorToInt(y / (16.0F * PIXEL));
-
-            if (scanlineIndex > 0 && scanlineIndex < scanlines.Length && Mathf.Abs(x) < WIDTH * PIXEL / 2.0F)
-            {
-                scanlineSimTotal[scanlineIndex] += sim.tilevalue;
-                scanlines[scanlineIndex].Add(sim);
-                sim.SetOutOfView(false);
-            }
-            else
-            {
-                sim.SetOutOfView(true);
-            }
-        }
-
-        for (int y = 0; y < scanlines.Length; y++)
-        {
-            if (scanlineSimTotal[y] <= 10)
-            {
-                foreach (SpriteSimulator sim in scanlines[y])
-                    sim.Flash(true);
-            }
-            else
-            {
-                for (int x = 0; x < scanlines[y].Count; x++)
-                {
-                    scanlines[y][x].Flash((Time.frameCount) % 2 != x % 2);
-                    Time.timeScale *= .95F;
-                }
-            }
         }
     }
 

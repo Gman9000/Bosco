@@ -192,7 +192,7 @@ public class Player : Pawn
         if (Game.isPaused)  return;
 
         bool wasGrounded = isGrounded;
-        HitInfo groundCheck = boxCollider2D.IsGrounded(rayCastMagnitude);
+        HitInfo groundCheck = boxCollider2D.IsGrounded(rayCastMagnitude, new[]{"Ground", "Hidden", "TwoWayPlatform"});
         if (groundCheck.layerName == "TwoWayPlatform")
         {
             if (body.velocity.y <= 0)

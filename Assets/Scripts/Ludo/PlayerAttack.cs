@@ -45,7 +45,7 @@ public class PlayerAttack : MonoBehaviour
             hitDirectionModified.y = 0;            
 
         hitDirectionModified = Game.RestrictDiagonals(hitDirectionModified);
-        bool attackSuccess = enemyCollider.GetComponentInChildren<PawnEnemy>().TakeDamage(hitDirectionModified);
+        bool attackSuccess = enemyCollider.GetComponentInChildren<PawnEnemy>().OnHurt(hitDirectionModified);
         if (attackSuccess)
         {
             Player.Instance.AttackFeedback(playerFeedbackDirection, hitDirectionModified, bonusAbility);
