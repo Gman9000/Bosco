@@ -110,7 +110,7 @@ public class Game : MonoBehaviour
         GUIStyle style = new GUIStyle();
         style.fontSize = 108;
         style.normal.textColor = Color.green;
-        GUI.Label(new Rect(0, 0, 400, 300), debugText, style);
+        GUI.Label(new Rect(0, 0, 200, 100), debugText, style);
     }
 
     public void ShowTitle()

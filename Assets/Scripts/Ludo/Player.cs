@@ -210,7 +210,7 @@ public class Player : Pawn
         }
         
         //GMAN REMEMBER TO COMMENT THIS LATER
-        if (isGrounded && (groundCheck.layerName == "TwoWayPlatform") && !wasGrounded)
+        if (isGrounded && groundCheck.layerName == "TwoWayPlatform" && !wasGrounded)
         {
             float feetY = boxCollider2D.Bottom();
             float surfaceY = groundCheck.hit.collider.bounds.Top();
@@ -442,6 +442,8 @@ public class Player : Pawn
 
         if (HUD.Instance)
             HUD.Instance.Flash(animator.Renderer.color.a == 1, "Main Text Layer", "BG");
+
+        Game.debugText = "HP: " + Hp;
     }
 
     void OnCollisionEnter2D(Collision2D other)

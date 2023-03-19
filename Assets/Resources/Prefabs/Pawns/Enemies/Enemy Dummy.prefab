@@ -139,7 +139,7 @@ MonoBehaviour:
   weight: 5
   maxFallSpeed: 11
   visionBoxSize: {x: 10, y: 5}
-  usesHiddenPlatform: 0
+  usesRockwalls: 0
   initFacingDirection: 1
   facingDirection: 1
 --- !u!114 &2721580418243574740

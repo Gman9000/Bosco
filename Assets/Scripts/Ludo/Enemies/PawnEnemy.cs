@@ -16,7 +16,7 @@ public abstract class PawnEnemy : Pawn
     public float weight = 3;                            // the value that determines how much knockback force moves it
     public float maxFallSpeed = 12;   
     public Vector2 visionBoxSize = new Vector2(10, 5);  // the bounds that a player must be inside to trigger non-idle state
-    public bool usesHiddenPlatform = false;
+    public bool usesRockwalls = false;
     public int initFacingDirection = 1;
 
     private Vector2 separatorForce;
@@ -99,6 +99,8 @@ public abstract class PawnEnemy : Pawn
         invTimer = null;
         stunTimer = null;
 
+        gameObject.layer = LayerMask.NameToLayer("Enemy");
+
         SetState(EState.Idle);
     }
 
@@ -154,7 +156,7 @@ public abstract class PawnEnemy : Pawn
 
     private void PhysicsPass()
     {
-        HitInfo groundCheck = boxCollider2D.IsGrounded(.99F, new[]{"Ground", "Hidden"});
+        HitInfo groundCheck = boxCollider2D.IsGrounded(.99F, new[]{"Ground", "TwoWayPlatform", "Hidden"});
         HitInfo upCheck = boxCollider2D.IsHittingCeiling(.8F);
         HitInfo leftCheck = boxCollider2D.IsHittingLeft(.8F);
         HitInfo rightCheck = boxCollider2D.IsHittingRight(.8F);
@@ -210,11 +212,23 @@ public abstract class PawnEnemy : Pawn
 
         if (groundCheck.layerName == "TwoWayPlatform")
         {
-            if (body.velocity.y < 0 && usesHiddenPlatform && groundCheck.hit.collider.CompareTag("Rockwall"))
-                body.velocity = new Vector2(body.velocity.x, 0);
+            if (usesRockwalls || !groundCheck.hit.collider.CompareTag("Rockwall"))
+            {
+                if (body.velocity.y < 0)
+                    body.velocity = new Vector2(body.velocity.x, 0);
 
-            if (currentKnockback.y < 0)
-                currentKnockback.y /= 2F;
+                if (currentKnockback.y < 0)
+                    currentKnockback.y /= 2F;
+            }
+            else if (gameObject.layer == LayerMask.NameToLayer("Enemy"))    // if this object isn't supposed to colleide with rockwalls, temporarily change layer to ignore collision with it
+            {
+                gameObject.layer = LayerMask.NameToLayer("EnemyBypass");
+                Debug.Log(LayerMask.LayerToName(gameObject.layer));
+                _isGrounded = false;
+                Timer.Set(.41F, () => {
+                    gameObject.layer = LayerMask.NameToLayer("Enemy");
+                });
+            }
         }
 
         // friction

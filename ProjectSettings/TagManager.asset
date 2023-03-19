@@ -30,11 +30,11 @@ TagManager:
   - Player
   - TwoWayPlatform
   - Enemy
-  - 
+  - EnemyBypass
   - 
   - PlayerTarget
   - Hidden
-  - Rockwall
+  - 
   - 
   - 
   - 
