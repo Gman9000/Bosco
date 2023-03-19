@@ -225,7 +225,7 @@ public abstract class PawnEnemy : Pawn
                 gameObject.layer = LayerMask.NameToLayer("EnemyBypass");
                 Debug.Log(LayerMask.LayerToName(gameObject.layer));
                 _isGrounded = false;
-                Timer.Set(.41F, () => {
+                Timer.Set(.1F, () => {
                     gameObject.layer = LayerMask.NameToLayer("Enemy");
                 });
             }

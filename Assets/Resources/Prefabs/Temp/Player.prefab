@@ -165,6 +165,7 @@ GameObject:
   - component: {fileID: 2300325343495513338}
   - component: {fileID: 3056626077748400874}
   - component: {fileID: 3642954123390759809}
+  - component: {fileID: 530519560898997514}
   m_Layer: 7
   m_Name: Player
   m_TagString: Player
@@ -241,7 +242,7 @@ MonoBehaviour:
     - {fileID: 2300325344128519419}
     - {fileID: 1719355864364153116}
   hitTime: 0.1
-  hitCooldown: 0.4
+  hitCooldown: 0.3
   hitComboWindow: 0.3
   maxHealth: 5
   deathTime: 0.8
@@ -428,6 +429,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tilevalue: 4
+--- !u!114 &530519560898997514
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2300325343495513336}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48b836636af5cc54fa9b37ba392da561, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lit: 0
+  strength: 7
+  initOn: 1
+  doesShimmer: 1
 --- !u!1 &2300325343604811668
 GameObject:
   m_ObjectHideFlags: 0

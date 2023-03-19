@@ -274,7 +274,7 @@ public class Player : Pawn
         {
             if (PlayerInput.IsPressingDown() && isGrounded)
             {
-                ApplyStopFriction(.5F);
+                ApplyStopFriction(stopFriction * .5F);
 
                 if (state == PState.Idle || state == PState.Walk)
                     state = PState.Duck;
