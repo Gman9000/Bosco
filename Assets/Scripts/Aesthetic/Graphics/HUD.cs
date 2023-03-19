@@ -57,6 +57,8 @@ public class HUD : MonoBehaviour
                 renderers["hp " + i].gameObject.SetActive(true);
             }
         }
+
+        Game.debugText = "HP: " + Player.Hp;
     }
 
     void Update()

@@ -40,6 +40,8 @@ public class Player : Pawn
     public float moveSpeed;
     public float startFriction = 1;
     public float stopFriction = 1;
+    public float startFrictionAir = .4F;
+    public float stopFrictionAir = .4F;
     public float maxFallSpeed = .1F;
     public float hurtDuration = 1.2F;
 
@@ -272,38 +274,25 @@ public class Player : Pawn
         {
             if (PlayerInput.IsPressingDown() && isGrounded)
             {
-                float newVelX = body.velocity.x;
-                newVelX -= Mathf.Sign(newVelX) * stopFriction * .5F * Game.relativeTime;
-                if (Mathf.Sign(newVelX) == Mathf.Sign(body.velocity.x)) // checking the sign so the friction doesn't reverse movement direction
-                    body.velocity = new Vector2(newVelX, body.velocity.y);
-                else
-                    body.velocity = new Vector2(0, body.velocity.y);
+                ApplyStopFriction(.5F);
 
                 if (state == PState.Idle || state == PState.Walk)
                     state = PState.Duck;
             }
             else if (PlayerInput.IsPressingLeft())
             {
-                body.velocity = new Vector2(body.velocity.x - startFriction * Game.relativeTime, body.velocity.y);
-                if (body.velocity.x < -moveSpeed)
-                    body.velocity = new Vector2(-moveSpeed, body.velocity.y);
-                this.transform.rotation = new Quaternion(0f, 180f, this.transform.rotation.z, this.transform.rotation.w);
+                MoveWithFriction(isGrounded ? -startFriction : -startFrictionAir);
             }
             else if (PlayerInput.IsPressingRight())
             {
-                body.velocity = new Vector2(body.velocity.x + startFriction * Game.relativeTime, body.velocity.y);
-                if (body.velocity.x > moveSpeed)
-                    body.velocity = new Vector2(moveSpeed, body.velocity.y);
-                this.transform.rotation = new Quaternion(0f, 0f, this.transform.rotation.z, this.transform.rotation.w);
+                MoveWithFriction(isGrounded ? startFriction : startFrictionAir);
             }
             else if (!IsAtkActive(PState.G_AtkTwist))    // add friction
             {
-                float newVelX = body.velocity.x;
-                newVelX -= Mathf.Sign(newVelX) * stopFriction * Game.relativeTime;
-                if (Mathf.Sign(newVelX) == Mathf.Sign(body.velocity.x)) // checking the sign so the friction doesn't reverse movement direction
-                    body.velocity = new Vector2(newVelX, body.velocity.y);
+                if (isGrounded)
+                    ApplyStopFriction(stopFriction);
                 else
-                    body.velocity = new Vector2(0, body.velocity.y);
+                    ApplyStopFriction(stopFrictionAir);
             }
 
             if (!PlayerInput.IsPressingDown() && state == PState.Duck)
@@ -358,6 +347,33 @@ public class Player : Pawn
 
         if (currentHealth > 0)
             Animate();
+    }
+
+    public void ApplyStopFriction(float multiplier)
+    {
+        float newVelX = body.velocity.x;
+        newVelX -= Mathf.Sign(newVelX) * multiplier * Game.relativeTime;
+        if (Mathf.Sign(newVelX) == Mathf.Sign(body.velocity.x)) // checking the sign so the friction doesn't reverse movement direction
+            body.velocity = new Vector2(newVelX, body.velocity.y);
+        else
+            body.velocity = new Vector2(0, body.velocity.y);
+    }
+
+    public void MoveWithFriction(float multiplier)
+    {
+        body.velocity = new Vector2(body.velocity.x + multiplier * Game.relativeTime, body.velocity.y);
+        if (multiplier > 0)
+        {
+            if (body.velocity.x > moveSpeed)
+                body.velocity = new Vector2(moveSpeed, body.velocity.y);
+            transform.rotation = new Quaternion(0F, 0F, transform.rotation.z, transform.rotation.w);
+        }
+        else
+        {
+            if (body.velocity.x < -moveSpeed)
+                body.velocity = new Vector2(-moveSpeed, body.velocity.y);
+            transform.rotation = new Quaternion(0F, 180F, transform.rotation.z, transform.rotation.w);
+        }        
     }
 
     void SetStateFromHorizontal()

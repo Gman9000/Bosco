@@ -107,8 +107,10 @@ public class Game : MonoBehaviour
 #endif
     void OnGUI()
     {
-        GUI.color = Color.green;
-        GUI.Label(new Rect(0, 0, 200, 100), debugText);
+        GUIStyle style = new GUIStyle();
+        style.fontSize = 108;
+        style.normal.textColor = Color.green;
+        GUI.Label(new Rect(0, 0, 400, 300), debugText, style);
     }
 
     public void ShowTitle()
@@ -250,7 +252,7 @@ public class Game : MonoBehaviour
             Time.timeScale = 1;
             for (int y = 0; y < scanlines.Length; y++)
             {
-                if (scanlineSimTotal[y] <= 10)
+                if (scanlineSimTotal[y] <= SpriteSimulator.SCANLINE_LIMIT || !SpriteSimulator.flashOnLimit)
                 {
                     foreach (SpriteSimulator sim in scanlines[y])
                         sim.Flash(true);
