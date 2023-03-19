@@ -17,7 +17,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &5370621472578995663
 Transform:
   m_ObjectHideFlags: 0
@@ -46,7 +46,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.21792126, y: -0.20465374}
+  m_Offset: {x: -0.21792126, y: -0.2436088}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -57,7 +57,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.0148525, y: 0.38389397}
+  m_Size: {x: 1.0148525, y: 0.4618041}
   m_EdgeRadius: 0
 --- !u!114 &7079724230225316951
 MonoBehaviour:
@@ -71,7 +71,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 744f15115d8496b4f90d439335b7ce83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hitDirection: {x: -1, y: -1}
+  hitDirection: {x: -0.4, y: 0}
   relativeToFacingDir: 1
   ignoreY: 0
   playerFeedbackDirection: {x: 0.55, y: 1.25}
@@ -244,6 +244,7 @@ MonoBehaviour:
   hitTime: 0.1
   hitCooldown: 0.3
   hitComboWindow: 0.3
+  doubleTapWindow: 0.1
   maxHealth: 5
   deathTime: 0.8
   animator: {fileID: 0}

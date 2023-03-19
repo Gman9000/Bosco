@@ -281,7 +281,7 @@ public class Game : MonoBehaviour
 
         if (!gameStarted && !transitiontoGame)
         {
-            if (PlayerInput.HasPressedStart())
+            if (PlayerInput.Pressed(Button.Start))
             {
                 StartCoroutine(GameGo());   
                 transitiontoGame = true;             
@@ -305,7 +305,7 @@ public class Game : MonoBehaviour
 
         if (isPaused)
         {            
-            if (PlayerInput.HasPressedSelect() )
+            if (PlayerInput.Pressed(Button.Select) )
             {
                 Player.Instance.ResetToLastCheckPoint();
                 Unpause();

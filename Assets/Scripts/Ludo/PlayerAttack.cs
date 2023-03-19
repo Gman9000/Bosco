@@ -34,9 +34,9 @@ public class PlayerAttack : MonoBehaviour
         if (hitDirectionModified.x != 0)
         {
             if (relativeToFacingDir)
-                hitDirectionModified.x = Player.FacingDirection * Mathf.Sign(hitDirection.x);
+                hitDirectionModified.x = Player.FacingDirection * hitDirection.x;
             else
-                hitDirectionModified.x = Mathf.Sign(enemyCollider.transform.position.x - Player.Position.x) * Mathf.Sign(hitDirection.x);
+                hitDirectionModified.x = Mathf.Sign(enemyCollider.transform.position.x - Player.Position.x) * hitDirection.x;
         }
         else if (hitDirectionModified == Vector2.zero)
             hitDirectionModified = (enemyCollider.transform.position - Player.Position).normalized;
@@ -44,7 +44,7 @@ public class PlayerAttack : MonoBehaviour
         if (ignoreY)
             hitDirectionModified.y = 0;            
 
-        hitDirectionModified = Game.RestrictDiagonals(hitDirectionModified);
+        hitDirectionModified = Game.RestrictDiagonals(hitDirectionModified) * hitDirection.magnitude;
         bool attackSuccess = enemyCollider.GetComponentInChildren<PawnEnemy>().OnHurt(hitDirectionModified);
         if (attackSuccess)
         {

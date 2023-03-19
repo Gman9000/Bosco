@@ -6,7 +6,7 @@ public class TwoWayPlatform : MonoBehaviour
 {
     private const float FALLTHROUGH_TIME = .15F;
 
-    static public bool rockwallCondition => PlayerInput.IsPressingDown() && !Player.Instance.IsDownSlash && !Player.IsMovesetLocked(PState.G_Rockclimb);
+    static public bool rockwallCondition => PlayerInput.Held(Button.Down) && !Player.Instance.IsDownSlash && !Player.IsMovesetLocked(PState.G_Rockclimb);
     public bool isRockwall = false;
 
     private BoxCollider2D boxCollider;
@@ -80,7 +80,7 @@ public class TwoWayPlatform : MonoBehaviour
             }
         }
         
-        if (playerOnPlatform && PlayerInput.IsPressingDown() && PlayerInput.HasPressedA())
+        if (playerOnPlatform && PlayerInput.Held(Button.Down) && PlayerInput.Pressed(Button.B))
         {
             Physics2D.IgnoreCollision(Player.Instance.boxCollider2D, boxCollider, true);
             StartCoroutine(EnableCollision());

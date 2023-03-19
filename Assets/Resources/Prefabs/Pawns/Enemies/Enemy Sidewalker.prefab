@@ -228,15 +228,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 3
-  invincibilityTime: 0.4
-  knockbackTime: 0.35
-  defaultStunTime: 0.2
-  startFriction: 0.01
-  stopFriction: 0.025
-  weight: 5
+  invincibilityTime: 0.25
+  knockbackTime: 0.2
+  defaultStunTime: 0.1
+  startFriction: 0.05
+  stopFriction: 0.05
+  weight: 4
   maxFallSpeed: 11
   visionBoxSize: {x: 0, y: 0}
-  usesHiddenPlatform: 0
+  usesRockwalls: 0
   initFacingDirection: -1
   facingDirection: 1
   xMove: 2

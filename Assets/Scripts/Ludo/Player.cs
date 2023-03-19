@@ -34,7 +34,7 @@ public class Player : Pawn
     public AudioClip[] sfx_swordSounds;
     public AudioClip sfx_jump;
     public AudioClip sfx_hurt;
-    public static Player Instance { get;protected set;}
+    public static Player Instance { get; protected set;}
 
     [HideInInspector]public Rigidbody2D body;
     public float moveSpeed;
@@ -88,13 +88,15 @@ public class Player : Pawn
 
     private bool isHitting = false;
     public float hitTime;
-    public float hitCooldown;// should be less than hit time
-    public float hitComboWindow;// should be less than hit time
+    public float hitCooldown;               // should be less than hit time
+    public float hitComboWindow;            // should be less than hit time
+
+    public float doubleTapWindow = .1F;     // the time window in seconds for any double-tap input
 
 
     
-    private float hitTimeStamp = 0;// the time when the player attacked // needs to be redone to be modular and good-feeling and knockback logic etc
-    private float comboTimeStamp = 0;// the time when the player attacked
+    private float hitTimeStamp = 0;         // the time when the player attacked // needs to be redone to be modular and good-feeling and knockback logic etc
+    private float comboTimeStamp = 0;       // the time when the player attacked
 
     //health stuff
     public int maxHealth = 5;
@@ -125,6 +127,8 @@ public class Player : Pawn
     private bool isHurting;
 
     private Timer jumpTimer;
+
+    //private Dictionary<>
 
     [HideInInspector]public bool onRockwall;
 
@@ -183,7 +187,7 @@ public class Player : Pawn
     {
         if (!Game.gameStarted || tbc)  return;
         
-        if (PlayerInput.HasPressedStart())
+        if (PlayerInput.Pressed(Button.Start))
         {
             if (Game.isPaused)
                 Game.Unpause();
@@ -199,7 +203,7 @@ public class Player : Pawn
         {
             if (body.velocity.y <= 0)
                 isGrounded = true;
-            if (isGrounded && PlayerInput.IsPressingDown() && PlayerInput.HasPressedA())    // make shift fallthrough
+            if (isGrounded && PlayerInput.Held(Button.Down) && PlayerInput.Pressed(Button.A))    // make shift fallthrough
                 isGrounded = false;
             if (groundCheck.hit.collider.tag == "Rockwall" && !wasGrounded && !TwoWayPlatform.rockwallCondition)
                 isGrounded = false;
@@ -272,18 +276,18 @@ public class Player : Pawn
         }
         else
         {
-            if (PlayerInput.IsPressingDown() && isGrounded)
+            if (PlayerInput.Held(Button.Down) && isGrounded)
             {
                 ApplyStopFriction(stopFriction * .5F);
 
                 if (state == PState.Idle || state == PState.Walk)
                     state = PState.Duck;
             }
-            else if (PlayerInput.IsPressingLeft())
+            else if (PlayerInput.Held(Button.Left))
             {
                 MoveWithFriction(isGrounded ? -startFriction : -startFrictionAir);
             }
-            else if (PlayerInput.IsPressingRight())
+            else if (PlayerInput.Held(Button.Right))
             {
                 MoveWithFriction(isGrounded ? startFriction : startFrictionAir);
             }
@@ -295,10 +299,10 @@ public class Player : Pawn
                     ApplyStopFriction(stopFrictionAir);
             }
 
-            if (!PlayerInput.IsPressingDown() && state == PState.Duck)
+            if (!PlayerInput.Held(Button.Down) && state == PState.Duck)
                 state = PState.Unassigned;
 
-            if (isGrounded && PlayerInput.HasPressedA())
+            if (isGrounded && PlayerInput.Pressed(Button.A))
             {
                 isJumping = true;
                 body.velocity = new Vector2(body.velocity.x, jumpSpeed);
@@ -310,7 +314,7 @@ public class Player : Pawn
                 SoundSystem.PlaySfx(sfx_jump, 2);
             }
 
-            if (isJumping && PlayerInput.HasHeldA())
+            if (isJumping && PlayerInput.Held(Button.A))
             {
                 body.velocity = new Vector2(body.velocity.x, jumpSpeed);
                 if (isHittingCeiling)
@@ -320,7 +324,7 @@ public class Player : Pawn
                 }
             }
 
-            if (PlayerInput.HasReleasedA())
+            if (PlayerInput.Released(Button.A))
             {
                 isJumping = false;
             }
@@ -599,7 +603,7 @@ public class Player : Pawn
 
     private void AttackInputs()
     {
-        if (PlayerInput.HasPressedB())
+        if (PlayerInput.Pressed(Button.B))
         {
             if (!PhysicsPaused && !inputAttackPaused)
             {
@@ -645,13 +649,13 @@ public class Player : Pawn
 
     Vector2 GetInputVector()
     {
-        if (PlayerInput.IsPressingDown())
+        if (PlayerInput.Held(Button.Down))
             return Vector2.down;
-        else if (PlayerInput.IsPressingUp())
+        else if (PlayerInput.Held(Button.Up))
             return Vector2.up;
-        else if (PlayerInput.IsPressingLeft())
+        else if (PlayerInput.Held(Button.Left))
             return Vector2.left;
-        else if (PlayerInput.IsPressingRight())
+        else if (PlayerInput.Held(Button.Right))
             return Vector2.right;
         return Vector2.zero;
     }
@@ -926,7 +930,7 @@ public class Player : Pawn
 
     private void OnTriggerStay2D(Collider2D other)
     {
-        if (other.gameObject.CompareTag("Door") && PlayerInput.IsPressingUp() && CandleHandler.canUseDoor)
+        if (other.gameObject.CompareTag("Door") && PlayerInput.Held(Button.Up) && CandleHandler.canUseDoor)
         {
             transform.position = new Vector3(199.5F, 100, transform.position.z);
         }
