@@ -311,6 +311,17 @@ public abstract class PawnEnemy : Pawn
         return true;
     }
 
+    public void RedirectKnockback(Vector2 direction)
+    {
+        if (!Player.redirectAttacks)    return;
+
+        if (direction.magnitude > 0)
+        {
+            if (!_isGrounded || direction.y >= 0)
+                currentKnockback = direction.normalized * currentKnockback.magnitude;
+        }
+    }
+
     /*================================*\
     |*  OVERRIDABLE UPDATE FUNCTIONS  *|
     \*================================*/

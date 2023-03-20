@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class HUD : MonoBehaviour
 {
-    static public HUD Instance;
+    public static HUD Instance;
     [HideInInspector] public Dictionary<string, SpriteRenderer> renderers = new Dictionary<string, SpriteRenderer>();
     [HideInInspector] public Dictionary<string, TMPro.TMP_Text> texts = new Dictionary<string, TMPro.TMP_Text>();
 
@@ -94,7 +94,7 @@ public class HUD : MonoBehaviour
                 txt.enabled = visible;
     }
 
-    static public void Write(string str)
+    public static void Write(string str)
     {
         TMPro.TMP_Text txt = Instance.texts["Main Text Layer"];
         txt.text = str;

@@ -95,7 +95,7 @@ public class Game : MonoBehaviour
         Time.timeScale = 1;
     }
 
-    static public void Reset()
+    public static void Reset()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
@@ -135,7 +135,7 @@ public class Game : MonoBehaviour
         }
     }
 
-    static public void Pause()
+    public static void Pause()
     {
         if (isPaused)   return;
         isPaused = true;
@@ -149,7 +149,7 @@ public class Game : MonoBehaviour
         SoundSystem.Pause();
     }
 
-    static public void Unpause()
+    public static void Unpause()
     {
         if (!isPaused)   return;
         isPaused = false;
@@ -163,7 +163,7 @@ public class Game : MonoBehaviour
         SoundSystem.Unpause();
     }
 
-    static public void FreezeFrame(float secondsToWait)
+    public static void FreezeFrame(float secondsToWait, System.Action onResume)
     {
         if (isFreezeFraming)    return;
         float oldTimescale = Time.timeScale;
@@ -172,7 +172,13 @@ public class Game : MonoBehaviour
         Timer.SetRealtime(secondsToWait, () => {
             Time.timeScale = oldTimescale;
             _isFreezeFraming = false;
+            onResume();
         });
+    }
+
+    public static void FreezeFrame(float secondsToWait)
+    {
+        FreezeFrame(secondsToWait, () => {});
     }
 
     IEnumerator GameGo()
@@ -316,17 +322,17 @@ public class Game : MonoBehaviour
         }
     }
 
-    static public void RemoveSimulatedSprite(SpriteSimulator sim)
+    public static void RemoveSimulatedSprite(SpriteSimulator sim)
     {
         simulatedSprites.Remove(sim);
         foreach (List<SpriteSimulator> scanline in scanlines)
             scanline.Remove(sim);
     }
 
-    static public void HorShake(int pixels) => CameraController.Instance.HorShake(pixels);
-    static public void VertShake(int pixels) => CameraController.Instance.VertShake(pixels);
+    public static void HorShake(int pixels) => CameraController.Instance.HorShake(pixels);
+    public static void VertShake(int pixels) => CameraController.Instance.VertShake(pixels);
 
-    static public float PingPong(float time)
+    public static float PingPong(float time)
     {
         if (time % 1.0F >= .4F)
             return 0;
@@ -336,7 +342,7 @@ public class Game : MonoBehaviour
             return -1;
     }
 
-    static public bool IsPointOnScreen(Vector2 point, float widthMargin, bool ignoreUp = false)
+    public static bool IsPointOnScreen(Vector2 point, float widthMargin, bool ignoreUp = false)
     {
         float x = point.x - Camera.main.transform.position.x;        
         float y = point.y - Camera.main.transform.position.y + scanlines.Length / 2.0F;
@@ -347,7 +353,7 @@ public class Game : MonoBehaviour
     }
 
 
-    static public Vector2 RestrictDiagonals(Vector2 direction, float subdivision = 2)
+    public static Vector2 RestrictDiagonals(Vector2 direction, float subdivision = 2)
     {
         Vector2 modifiedDirection = direction;
         modifiedDirection = (modifiedDirection).normalized * subdivision;

@@ -7,7 +7,7 @@ public static class ExtensionMethods
     /*=========*\
     |  Vector2  |
     \*=========*/
-    static public float Degrees(this Vector2 v) => Mathf.Atan2(v.y, v.x) * Mathf.Rad2Deg;
+    public static float Degrees(this Vector2 v) => Mathf.Atan2(v.y, v.x) * Mathf.Rad2Deg;
 
     /*========*\
     |  Bounds  |

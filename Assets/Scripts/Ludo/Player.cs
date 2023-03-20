@@ -13,11 +13,13 @@ G_Rockclimb, G_RockclimbShimmy
 
 public class Player : Pawn
 {
-    static public bool IsHurting => Instance.isHurting;
-    static public bool IsInvincible => Instance.invTimer;
-    static public int Hp => Instance.currentHealth;
-    static public int FacingDirection => (int)Instance.transform.rotation.y == 0 ? 1 : -1;
-    static public Vector3 Position => Instance.transform.position;
+    public static bool IsHurting => Instance.isHurting;
+    public static bool IsInvincible => Instance.invTimer;
+    public static int Hp => Instance.currentHealth;
+    public static int FacingDirection => (int)Instance.transform.rotation.y == 0 ? 1 : -1;
+    public static Vector3 Position => Instance.transform.position;
+
+    public static readonly bool redirectAttacks = false;        // a variable that toggles the mechanic idea of trajectory redirection
 
     public readonly List<PState> AttackStates = new List<PState>(){
         PState.G_AtkSide1,
@@ -73,10 +75,8 @@ public class Player : Pawn
     private bool inputMovePaused = false;
     private bool inputAttackPaused = false;
 
-    private bool tbc = false;
-
-    static public bool IsMovesetLocked(PState move) => _movesetLocks.Contains(move);
-    static private List<PState> _movesetLocks = new List<PState>() {
+    public static bool IsMovesetLocked(PState move) => _movesetLocks.Contains(move);
+    private static List<PState> _movesetLocks = new List<PState>() {
         PState.G_AtkSide2,
         PState.A_AtkUp,
         PState.A_AtkDown,
@@ -115,7 +115,9 @@ public class Player : Pawn
     private Vector3 checkpoint;
 
     public bool IsDownSlash => IsAtkActive(PState.A_AtkDown);
-    bool isGrounded;
+
+    public bool isGrounded => _isGrounded;
+    bool _isGrounded;
     bool isHittingCeiling;
     bool isHittingRightWall;
     bool isHittingLeftWall;
@@ -128,6 +130,8 @@ public class Player : Pawn
     private Timer jumpTimer;
 
     private bool runMode;
+    public static bool aimMode => Instance.hittingEnemyScript != null;
+    [HideInInspector]public PawnEnemy hittingEnemyScript;
     private Timer stopRunningTimer;
 
     [HideInInspector]public bool onRockwall;
@@ -176,8 +180,8 @@ public class Player : Pawn
         pauseInputAttackCoroutine = null;
         attackSequenceCoroutine = null;
 
-
         runMode = false;
+        hittingEnemyScript = null;
 
         if (invTimer)
             invTimer.Cancel();
@@ -191,7 +195,7 @@ public class Player : Pawn
 
     void Update()
     {
-        if (!Game.gameStarted || tbc)  return;
+        if (!Game.gameStarted)  return;
         
         if (PlayerInput.Pressed(Button.Start))
         {
@@ -200,38 +204,45 @@ public class Player : Pawn
             else
                 Game.Pause();
         }
-
         if (Game.isPaused)  return;
 
-        bool wasGrounded = isGrounded;
+
+        if (aimMode)
+        {
+            hittingEnemyScript.RedirectKnockback(PlayerInput.GetVectorDiagonal());
+        }
+
+        
+
+        bool wasGrounded = _isGrounded;
         HitInfo groundCheck = boxCollider2D.IsGrounded(rayCastMagnitude, new[]{"Ground", "Hidden", "TwoWayPlatform"});
         if (groundCheck.layerName == "TwoWayPlatform")
         {
             if (body.velocity.y <= 0)
-                isGrounded = true;
-            if (isGrounded && PlayerInput.Held(Button.Down) && PlayerInput.Pressed(Button.A))    // make shift fallthrough
-                isGrounded = false;
+                _isGrounded = true;
+            if (_isGrounded && PlayerInput.Held(Button.Down) && PlayerInput.Pressed(Button.A))    // make shift fallthrough
+                _isGrounded = false;
             if (groundCheck.hit.collider.tag == "Rockwall" && !wasGrounded && !TwoWayPlatform.rockwallCondition)
-                isGrounded = false;
+                _isGrounded = false;
         }
         else
         {
-            isGrounded = groundCheck;
+            _isGrounded = groundCheck;
         }
         
         //GMAN REMEMBER TO COMMENT THIS LATER
-        if (isGrounded && groundCheck.layerName == "TwoWayPlatform" && !wasGrounded)
+        if (_isGrounded && groundCheck.layerName == "TwoWayPlatform" && !wasGrounded)
         {
             float feetY = boxCollider2D.Bottom();
             float surfaceY = groundCheck.hit.collider.bounds.Top();
-                if (surfaceY > feetY) isGrounded = false;
+                if (surfaceY > feetY) _isGrounded = false;
         }
 
         isHittingCeiling = boxCollider2D.IsHittingCeiling(rayCastMagnitude);
         isHittingRightWall = boxCollider2D.IsHittingRight(rayCastMagnitude);
         isHittingLeftWall = boxCollider2D.IsHittingLeft(rayCastMagnitude);
 
-        if (isGrounded)
+        if (_isGrounded)
         {
             if (jumpTimer != null && jumpTimer.done) jumpTimer.Cancel();
             
@@ -271,7 +282,7 @@ public class Player : Pawn
             {
                 body.velocity = new Vector2(FacingDirection * 3.0F, body.velocity.y);
             }
-            if (IsAtkActive(PState.G_AtkSide1) && isGrounded)
+            if (IsAtkActive(PState.G_AtkSide1) && _isGrounded)
             {
                 if (Time.time - hitTimeStamp > .15F)
                 {
@@ -281,7 +292,7 @@ public class Player : Pawn
         }
         else
         {
-            if (isGrounded &&
+            if (_isGrounded &&
             ((PlayerInput.DidDoubleTap(Button.Left) && body.velocity.x < 0) ||
             (PlayerInput.DidDoubleTap(Button.Right) && body.velocity.x > 0)))
             {
@@ -304,7 +315,7 @@ public class Player : Pawn
                 }
             }
 
-            if (PlayerInput.Held(Button.Down) && isGrounded)
+            if (PlayerInput.Held(Button.Down) && _isGrounded)
             {
                 ApplyStopFriction(stopFriction * .5F);
 
@@ -313,15 +324,15 @@ public class Player : Pawn
             }
             else if (PlayerInput.Held(Button.Left))
             {
-                MoveWithFriction(isGrounded ? runMode ? -startFriction * 2 : -startFriction : -startFrictionAir);
+                MoveWithFriction(_isGrounded ? runMode ? -startFriction * 2 : -startFriction : -startFrictionAir);
             }
             else if (PlayerInput.Held(Button.Right))
             {
-                MoveWithFriction(isGrounded ? runMode ? startFriction * 2 : startFriction : startFrictionAir);
+                MoveWithFriction(_isGrounded ? runMode ? startFriction * 2 : startFriction : startFrictionAir);
             }
             else if (!IsAtkActive(PState.G_AtkTwist))    // add friction
             {
-                if (isGrounded)
+                if (_isGrounded)
                     ApplyStopFriction(stopFriction);
                 else
                     ApplyStopFriction(stopFrictionAir);
@@ -330,7 +341,7 @@ public class Player : Pawn
             if (!PlayerInput.Held(Button.Down) && state == PState.Duck)
                 state = PState.Unassigned;
 
-            if (isGrounded && PlayerInput.Pressed(Button.A))
+            if (_isGrounded && PlayerInput.Pressed(Button.A))
             {
                 isJumping = true;
                 body.velocity = new Vector2(body.velocity.x, jumpSpeed);
@@ -371,7 +382,7 @@ public class Player : Pawn
 
         if (state == PState.Unassigned)        // catch-all for unassigned states
         {
-            if (isGrounded)
+            if (_isGrounded)
                 SetStateFromHorizontal();
             else
                 SetStateFromVertical();
@@ -451,7 +462,7 @@ public class Player : Pawn
 
     public void SetGrounded(bool value, string type)
     {
-        isGrounded = value;
+        _isGrounded = value;
         switch (type)
         {
             case "Rockwall":
@@ -638,7 +649,7 @@ public class Player : Pawn
         {
             if (!PhysicsPaused && !inputAttackPaused)
             {
-                PState executeState = DetermineAttack(GetInputVector());
+                PState executeState = DetermineAttack(PlayerInput.GetVector());
                 if (!IsAttackRepeat(executeState) || Time.time - hitTimeStamp >= hitCooldown) // cancel attack if cooldown is not completed AND it's the same attack
                 {
                     if (attackSequenceCoroutine != null)
@@ -677,27 +688,13 @@ public class Player : Pawn
 
     // Determies if newAtk and the previous attack are considered the same move in terms of cooldown
     bool IsAttackRepeat(PState atk) => GetAttackDirection(atk) == GetAttackDirection(lastAtk);
-
-    Vector2 GetInputVector()
-    {
-        if (PlayerInput.Held(Button.Down))
-            return Vector2.down;
-        else if (PlayerInput.Held(Button.Up))
-            return Vector2.up;
-        else if (PlayerInput.Held(Button.Left))
-            return Vector2.left;
-        else if (PlayerInput.Held(Button.Right))
-            return Vector2.right;
-        return Vector2.zero;
-    }
-
     
     PState DetermineAttack(Vector2 lastInputDirection)
     {
         PState executeState = PState.Unassigned;
         if (lastInputDirection == Vector2.down)
         {
-            if (isGrounded)
+            if (_isGrounded)
             {
                 executeState = PState.G_AtkLow;
             }
@@ -708,7 +705,7 @@ public class Player : Pawn
         }
         else if (lastInputDirection == Vector2.up)
         {
-            if (isGrounded)
+            if (_isGrounded)
             {
                 executeState = PState.G_AtkUp;
             }
@@ -719,7 +716,7 @@ public class Player : Pawn
         }
         else
         {
-            if (isGrounded)
+            if (_isGrounded)
             {
                 if (state == PState.G_AtkSide1)
                     executeState = PState.G_AtkSide2;
@@ -766,7 +763,7 @@ public class Player : Pawn
 
     IEnumerator AttackSequence(PState executeState)
     {
-        if (!isGrounded)
+        if (!_isGrounded)
         {
             if (canAerialAttack)
                 canAerialAttack = false;
@@ -778,7 +775,7 @@ public class Player : Pawn
         }
 
 
-        if (isGrounded)
+        if (_isGrounded)
             animator.PlayDefault();
 
         switch (executeState)
@@ -895,7 +892,6 @@ public class Player : Pawn
         float hitLengthMod = 1.0F;
 
         DeactivateAllAtkboxes();
-
         attackBoxes[atkState].SetActive(true);
             
         switch (atkState)
@@ -927,9 +923,6 @@ public class Player : Pawn
         float newVelocityY = force.y == 0 ? body.velocity.y : force.y * 12;
 
         body.velocity = new Vector2(newVelocityX, newVelocityY);
-        
-        Game.VertShake(2);
-        Game.FreezeFrame(Game.FRAME_TIME * 4);
 
         switch (ability)
         {
@@ -953,7 +946,6 @@ public class Player : Pawn
             DoInputMovePause(100);
             DoInputAttackPause(100);
             DoPhysicsPause(100);
-            tbc = true;
             Knaz.DoScene();
             animator.PlayDefault();
         }

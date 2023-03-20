@@ -75,6 +75,34 @@ public class PlayerInput
         }
     }
 
+    public static Vector2 GetVector()
+    {
+        if (PlayerInput.Held(Button.Down))
+            return Vector2.down;
+        else if (PlayerInput.Held(Button.Up))
+            return Vector2.up;
+        else if (PlayerInput.Held(Button.Left))
+            return Vector2.left;
+        else if (PlayerInput.Held(Button.Right))
+            return Vector2.right;
+        return Vector2.zero;
+    }
+    public static Vector2 GetVectorDiagonal()
+    {
+        Vector2 value = Vector2.zero;
+
+        if (PlayerInput.Held(Button.Down))
+            value += Vector2.down;
+        if (PlayerInput.Held(Button.Up))
+            value += Vector2.up;
+        if (PlayerInput.Held(Button.Left))
+            value += Vector2.left;
+        if (PlayerInput.Held(Button.Right))
+            value += Vector2.right;
+
+        return value.normalized;
+    }
+
     public static bool DidDoubleTap(Button button) => doubleTappedButtons[(int)button];
 
     public static void Update()

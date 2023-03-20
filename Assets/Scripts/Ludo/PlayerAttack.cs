@@ -45,9 +45,16 @@ public class PlayerAttack : MonoBehaviour
             hitDirectionModified.y = 0;            
 
         hitDirectionModified = Game.RestrictDiagonals(hitDirectionModified) * hitDirection.magnitude;
-        bool attackSuccess = enemyCollider.GetComponentInChildren<PawnEnemy>().OnHurt(hitDirectionModified);
+        Player.Instance.hittingEnemyScript = enemyCollider.GetComponentInChildren<PawnEnemy>();
+
+        bool attackSuccess = Player.Instance.hittingEnemyScript.OnHurt(hitDirectionModified);
         if (attackSuccess)
         {
+            Game.VertShake(2);
+            if (Player.Instance.isGrounded)
+            Game.FreezeFrame(Game.FRAME_TIME * 4, () => {
+                Player.Instance.hittingEnemyScript = null;          
+            });
             Player.Instance.AttackFeedback(playerFeedbackDirection, hitDirectionModified, bonusAbility);
         }
     }

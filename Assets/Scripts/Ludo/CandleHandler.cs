@@ -8,7 +8,7 @@ public class CandleHandler : MonoBehaviour
 
     SpriteAnimator animator;
 
-    static public bool canUseDoor = false;
+    public static bool canUseDoor = false;
 
     void Awake()
     {

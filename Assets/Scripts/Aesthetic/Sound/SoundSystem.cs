@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class SoundSystem : MonoBehaviour
 {
-    static public SoundSystem Instance;
-    static public float songPositionTime => Instance.channels[0] != null ? Instance.channels[0].src.time : 0;
+    public static SoundSystem Instance;
+    public static float songPositionTime => Instance.channels[0] != null ? Instance.channels[0].src.time : 0;
     public AudioClip[] defaultSong = new AudioClip[4];
     public float defaultSongLoopPoint = 0;    // in seconds
     [HideInInspector]public SoundChannel[] channels;
@@ -27,7 +27,7 @@ public class SoundSystem : MonoBehaviour
             PlayBgm(defaultSong, defaultSongLoopPoint, true);*/
     }
 
-    static public void PlayBgm(AudioClip[] song, float loop, bool firstPlay)
+    public static void PlayBgm(AudioClip[] song, float loop, bool firstPlay)
     {
         if (song == null || song.Length < 4)   return;
 
@@ -44,7 +44,7 @@ public class SoundSystem : MonoBehaviour
         Instance.bgmMode = true;
     }
 
-    static public void DoFade(float volChange)
+    public static void DoFade(float volChange)
     {
         Instance.StartCoroutine(Instance.FadeOut(1.0F - volChange));
     }
@@ -88,19 +88,19 @@ public class SoundSystem : MonoBehaviour
         yield break;
     }
 
-    static public void Pause()
+    public static void Pause()
     {
         foreach (SoundChannel channel in Instance.channels)
             channel.src.Pause();
     }
 
-    static public void Unpause()
+    public static void Unpause()
     {
         foreach (SoundChannel channel in Instance.channels)
             channel.src.UnPause();
     }
 
-    static public void PlaySfx(AudioClip sound, int channelIndex)
+    public static void PlaySfx(AudioClip sound, int channelIndex)
     {
         if (channelIndex <= 1 || channelIndex > 4)
         {

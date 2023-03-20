@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class DarkHandler : MonoBehaviour
 {
-    static public DarkHandler Instance;
+    public static DarkHandler Instance;
     [HideInInspector]public List<LightSource> lights;
     Tilemap darkTiles;
     public bool darkOn = false;

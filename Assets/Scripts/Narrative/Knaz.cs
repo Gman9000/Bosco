@@ -15,7 +15,7 @@ public class Knaz : MonoBehaviour
     }
 
     
-    static public void DoScene()
+    public static void DoScene()
     {
         Instance.StartCoroutine(Instance.SceneTime());
     }

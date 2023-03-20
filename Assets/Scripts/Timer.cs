@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Timer
 {
-    static public List<Timer> allTimers;
-    static public List<Timer> allRealtimeTimers;
+    public static List<Timer> allTimers;
+    public static List<Timer> allRealtimeTimers;
 
     public float timeStamp;                 // the game-time at which
     protected System.Action onComplete;     // the function to call when the timer is done
@@ -29,16 +29,16 @@ public class Timer
         _done = false;
     }
 
-    static public Timer Set(float duration, System.Action onComplete)
+    public static Timer Set(float duration, System.Action onComplete)
     {
         Timer timer = new Timer(duration, onComplete, false);
         allTimers.Add(timer);
         return timer;
     }
 
-    static public Timer Set(float duration) => Set(duration, () => {});
+    public static Timer Set(float duration) => Set(duration, () => {});
 
-    static public Timer SetRealtime(float duration, System.Action onComplete)
+    public static Timer SetRealtime(float duration, System.Action onComplete)
     {
         Timer timer = new Timer(duration, onComplete, true);
         allRealtimeTimers.Add(timer);
@@ -46,13 +46,13 @@ public class Timer
 
     }
 
-    static public void AllTimersInit()
+    public static void AllTimersInit()
     {
         allTimers = new List<Timer>();
         allRealtimeTimers = new List<Timer>();
     }
 
-    static public void Update()
+    public static void Update()
     {
         for (int i = allTimers.Count - 1; i >= 0; i--)
         {

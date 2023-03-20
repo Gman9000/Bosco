@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    static public Rect viewRect;
-    static public CameraController Instance;
+    public static Rect viewRect;
+    public static CameraController Instance;
     public Vector2 followRectSize = new Vector2(11, 10);
 
     public Vector2 offset = Vector2.up * 2;

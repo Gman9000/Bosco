@@ -6,7 +6,7 @@ public class TwoWayPlatform : MonoBehaviour
 {
     private const float FALLTHROUGH_TIME = .15F;
 
-    static public bool rockwallCondition => PlayerInput.Held(Button.Down) && !Player.Instance.IsDownSlash && !Player.IsMovesetLocked(PState.G_Rockclimb);
+    public static bool rockwallCondition => PlayerInput.Held(Button.Down) && !Player.Instance.IsDownSlash && !Player.IsMovesetLocked(PState.G_Rockclimb);
     public bool isRockwall = false;
 
     private BoxCollider2D boxCollider;
