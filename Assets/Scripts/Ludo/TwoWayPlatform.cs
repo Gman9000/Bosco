@@ -80,7 +80,7 @@ public class TwoWayPlatform : MonoBehaviour
             }
         }
         
-        if (playerOnPlatform && PlayerInput.Held(Button.Down) && PlayerInput.Pressed(Button.B))
+        if (playerOnPlatform && PlayerInput.Held(Button.Down) && PlayerInput.Pressed(Button.A))
         {
             Physics2D.IgnoreCollision(Player.Instance.boxCollider2D, boxCollider, true);
             StartCoroutine(EnableCollision());
