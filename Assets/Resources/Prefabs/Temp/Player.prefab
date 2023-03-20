@@ -216,6 +216,7 @@ MonoBehaviour:
   sfx_hurt: {fileID: 8300000, guid: c737ec4897a09f040a4a78958d853fba, type: 3}
   body: {fileID: 0}
   moveSpeed: 5
+  runSpeed: 7
   startFriction: 0.05
   stopFriction: 0.04
   startFrictionAir: 0.04
@@ -244,7 +245,7 @@ MonoBehaviour:
   hitTime: 0.1
   hitCooldown: 0.3
   hitComboWindow: 0.3
-  doubleTapWindow: 0.1
+  doubleTapWindow: 0.14
   maxHealth: 5
   deathTime: 0.8
   animator: {fileID: 0}
@@ -413,8 +414,15 @@ MonoBehaviour:
     delay: 0.1
     startFrame: 0
     endFrame: -1
-    offset: {x: 2, y: 0}
+    offset: {x: 4, y: 0}
     celSize: {x: 32, y: 48}
+  - name: run
+    sheet: {fileID: 2800000, guid: 67527424b55921f4c966f29b3d68d593, type: 3}
+    delay: 0.03
+    startFrame: 0
+    endFrame: -1
+    offset: {x: 2, y: 0}
+    celSize: {x: 24, y: 24}
   defaultAnimation: idle
   indexOffset: 0
 --- !u!114 &3642954123390759809

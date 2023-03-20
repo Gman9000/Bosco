@@ -223,7 +223,6 @@ public abstract class PawnEnemy : Pawn
             else if (gameObject.layer == LayerMask.NameToLayer("Enemy"))    // if this object isn't supposed to colleide with rockwalls, temporarily change layer to ignore collision with it
             {
                 gameObject.layer = LayerMask.NameToLayer("EnemyBypass");
-                Debug.Log(LayerMask.LayerToName(gameObject.layer));
                 _isGrounded = false;
                 Timer.Set(.1F, () => {
                     gameObject.layer = LayerMask.NameToLayer("Enemy");
@@ -281,7 +280,6 @@ public abstract class PawnEnemy : Pawn
     {
         if (Invincible)  return false;          // ignore this call if the enemy is already invincible
 
-        Debug.Log(force.x);
         currentKnockback = GetKnockback(force * Mathf.Max(0, 10 - weight));
         facingDirection = (int)Mathf.Sign(-force.x);
         if (_isGrounded && force.y < 0)

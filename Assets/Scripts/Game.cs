@@ -60,6 +60,8 @@ public class Game : MonoBehaviour
         Instance = this;
         simulatedSprites = new List<SpriteSimulator>();
         transitiontoGame = false;
+        Timer.AllTimersInit();
+        PlayerInput.Init();
     }
 
     void Start()
@@ -277,7 +279,7 @@ public class Game : MonoBehaviour
         if (!isPaused)
             _unpausedRealtime += Time.unscaledDeltaTime;
         Timer.Update();  // update all timer checks
-
+        PlayerInput.Update();
 
         if (!gameStarted && !transitiontoGame)
         {

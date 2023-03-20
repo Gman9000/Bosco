@@ -13,7 +13,9 @@ public class Timer
     protected bool _done;
     public bool done => _done;
     public bool active => !done && progress != 0;
-    public float progress => Mathf.Min((Time.time - timeStamp) / duration, 1.0F);
+    public float progress => Mathf.Min(elapsed / duration, 1.0F);
+    
+    public float elapsed => Time.time - timeStamp;
 
     
     private Timer(float duration, System.Action onComplete, bool realtime)

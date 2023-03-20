@@ -8,8 +8,7 @@ public enum PState {Unassigned,
 Jump, Fall, 
 G_AtkSide1, G_AtkSide2, G_AtkTwist, G_AtkUp, G_AtkLow,
 A_AtkUp, A_AtkSide, A_AtkDown, A_AtkNeutral,
-G_Rockclimb, G_RockclimbShimmy,
-A2G_Land, A2G_SwordLand,
+G_Rockclimb, G_RockclimbShimmy
 }
 
 public class Player : Pawn
@@ -38,6 +37,7 @@ public class Player : Pawn
 
     [HideInInspector]public Rigidbody2D body;
     public float moveSpeed;
+    public float runSpeed;
     public float startFriction = 1;
     public float stopFriction = 1;
     public float startFrictionAir = .4F;
@@ -125,10 +125,10 @@ public class Player : Pawn
     bool PhysicsPaused => body.constraints == RigidbodyConstraints2D.FreezeAll;
     private Timer invTimer;
     private bool isHurting;
-
     private Timer jumpTimer;
 
-    //private Dictionary<>
+    private bool runMode;
+    private Timer stopRunningTimer;
 
     [HideInInspector]public bool onRockwall;
 
@@ -142,6 +142,8 @@ public class Player : Pawn
 
         animator = GetComponent<SpriteAnimator>();
         Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Enemy"));
+
+        
     }
 
     override public void Start()
@@ -175,10 +177,14 @@ public class Player : Pawn
         attackSequenceCoroutine = null;
 
 
+        runMode = false;
+
         if (invTimer)
             invTimer.Cancel();
         if (jumpTimer)
             jumpTimer.Cancel();
+        if (stopRunningTimer)
+            stopRunningTimer.Cancel();
 
         animator.SetVisible(true);
     }
@@ -236,7 +242,6 @@ public class Player : Pawn
                 attackBoxes[PState.A_AtkDown].SetActive(false);
                 DoInputAttackPause(.4F);
                 Timer.Set(.4F, () => state = PState.Unassigned);
-                state = PState.A2G_SwordLand;
             }
 
             body.gravityScale = originalGravityScale;
@@ -276,6 +281,29 @@ public class Player : Pawn
         }
         else
         {
+            if (isGrounded &&
+            ((PlayerInput.DidDoubleTap(Button.Left) && body.velocity.x < 0) ||
+            (PlayerInput.DidDoubleTap(Button.Right) && body.velocity.x > 0)))
+            {
+                runMode = true;
+                if (stopRunningTimer)
+                    stopRunningTimer.Cancel();
+            }
+            
+            if (runMode)
+            {
+                if (Mathf.Abs(body.velocity.x) < moveSpeed)
+                {
+                    if (!stopRunningTimer)
+                        stopRunningTimer = Timer.Set(.3F, () => {runMode = false;});
+                }
+                else
+                {
+                    if (stopRunningTimer)
+                        stopRunningTimer.Cancel();
+                }
+            }
+
             if (PlayerInput.Held(Button.Down) && isGrounded)
             {
                 ApplyStopFriction(stopFriction * .5F);
@@ -285,11 +313,11 @@ public class Player : Pawn
             }
             else if (PlayerInput.Held(Button.Left))
             {
-                MoveWithFriction(isGrounded ? -startFriction : -startFrictionAir);
+                MoveWithFriction(isGrounded ? runMode ? -startFriction * 2 : -startFriction : -startFrictionAir);
             }
             else if (PlayerInput.Held(Button.Right))
             {
-                MoveWithFriction(isGrounded ? startFriction : startFrictionAir);
+                MoveWithFriction(isGrounded ? runMode ? startFriction * 2 : startFriction : startFrictionAir);
             }
             else if (!IsAtkActive(PState.G_AtkTwist))    // add friction
             {
@@ -366,16 +394,19 @@ public class Player : Pawn
     public void MoveWithFriction(float multiplier)
     {
         body.velocity = new Vector2(body.velocity.x + multiplier * Game.relativeTime, body.velocity.y);
+
+        float topSpeed = runMode ? runSpeed : moveSpeed;
+        
         if (multiplier > 0)
         {
-            if (body.velocity.x > moveSpeed)
-                body.velocity = new Vector2(moveSpeed, body.velocity.y);
+            if (body.velocity.x > topSpeed)
+                body.velocity = new Vector2(topSpeed, body.velocity.y);
             transform.rotation = new Quaternion(0F, 0F, transform.rotation.z, transform.rotation.w);
         }
         else
         {
-            if (body.velocity.x < -moveSpeed)
-                body.velocity = new Vector2(-moveSpeed, body.velocity.y);
+            if (body.velocity.x < -topSpeed)
+                body.velocity = new Vector2(-topSpeed, body.velocity.y);
             transform.rotation = new Quaternion(0F, 180F, transform.rotation.z, transform.rotation.w);
         }        
     }
@@ -388,11 +419,15 @@ public class Player : Pawn
             if (onRockwall)
                 state = PState.G_Rockclimb;
         }
-        else
+        else if (Mathf.Abs(body.velocity.x) <= moveSpeed || onRockwall)
         {
             state = PState.Walk;
             if (onRockwall)
                 state = PState.G_RockclimbShimmy;
+        }
+        else
+        {
+            state = PState.Run;
         }
     }
 
@@ -476,6 +511,9 @@ public class Player : Pawn
             case PState.Walk:
                 animator.Play(AnimMode.Looped, "walk");
                 break;
+            case PState.Run:
+                animator.Play(AnimMode.Looped, "run");
+                break;
             case PState.Duck:
                 animator.Play(AnimMode.Looped, "duck");
                 break;
@@ -517,13 +555,6 @@ public class Player : Pawn
                 break;
             case PState.G_RockclimbShimmy:
                 animator.Play(AnimMode.Looped, "duck");
-                break;
-
-            case PState.A2G_Land:
-                animator.Play(AnimMode.Once, "duck", () => state = PState.Unassigned);
-                break;
-            case PState.A2G_SwordLand:
-                animator.Play(AnimMode.Hang, "downslash");
                 break;
         }
     }
@@ -823,7 +854,7 @@ public class Player : Pawn
             case PState.A_AtkSide:
                 SoundSystem.PlaySfx(sfx_swordSounds[1], 4);//play attack sfx
                 state = PState.A_AtkSide;
-                body.velocity = new Vector2(0, body.velocity.y);
+                //body.velocity = new Vector2(0, body.velocity.y);
                 if (doAttackCoroutine != null)
                     StopCoroutine(doAttackCoroutine);
                 doAttackCoroutine = StartCoroutine(DoAttack(PState.A_AtkSide));
