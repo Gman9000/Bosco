@@ -4,6 +4,11 @@ using UnityEngine;
 
 public static class ExtensionMethods
 {
+    /*=========*\
+    |  Vector2  |
+    \*=========*/
+    public static float Degrees(this Vector2 v) => Mathf.Atan2(v.y, v.x) * Mathf.Rad2Deg;
+
     /*========*\
     |  Bounds  |
     \*========*/
@@ -29,10 +34,10 @@ public static class ExtensionMethods
     //
     //  Raycasting
     //
-    public static HitInfo IsGrounded(this BoxCollider2D collider, Vector2 raycastA, Vector2 raycastB, float rayCastMagnitude)
+    public static HitInfo IsGrounded(this BoxCollider2D collider, Vector2 raycastA, Vector2 raycastB, float rayCastMagnitude, string[] layers)
     {
         //scale of player is same on x and y
-        int layerMask = LayerMask.GetMask("Ground", "Hidden", "TwoWayPlatform");
+        int layerMask = LayerMask.GetMask(layers);
 
         Debug.DrawRay(new Vector2(raycastA.x, raycastA.y), rayCastMagnitude * (collider.size.x / 2) * Vector2.down, Color.green);
         Debug.DrawRay(new Vector2(raycastB.x, raycastB.y), rayCastMagnitude * (collider.size.x / 2) * Vector2.down, Color.green);
@@ -47,7 +52,7 @@ public static class ExtensionMethods
             return new HitInfo();
     }
 
-    public static HitInfo IsGrounded(this BoxCollider2D collider, float raycastMagntiude)
+    public static HitInfo IsGrounded(this BoxCollider2D collider, float raycastMagntiude, string[] layers)
     {
         Vector2 leftCast = collider.bounds.center;
         Vector2 rightCast = collider.bounds.center;
@@ -57,7 +62,7 @@ public static class ExtensionMethods
         rightCast.x += collider.bounds.size.x / 2;
         rightCast.y = leftCast.y;
 
-        return IsGrounded(collider, leftCast, rightCast, raycastMagntiude);
+        return IsGrounded(collider, leftCast, rightCast, raycastMagntiude, layers);
     }
 
     public static HitInfo IsHittingCeiling(this BoxCollider2D collider, Vector2 raycastA, Vector2 raycastB, float rayCastMagnitude)

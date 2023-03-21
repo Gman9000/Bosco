@@ -18,6 +18,8 @@ public class Game : MonoBehaviour
     public const float TICK_TIME = .0167F;
     public const float FRAME_TIME = .022F;
 
+    private int fixedUpdateCounter = 0;
+
 
     /*=======================*\
     |*  INSPECTOR VARIABLES  *|
@@ -31,8 +33,8 @@ public class Game : MonoBehaviour
     public static Game Instance;
     
     public static float relativeTime => Time.deltaTime * 500;    // the time counter used for game logic and custom movement functions
-    public static int litCandlesCount = 0;
-    public static int lives = 1;
+    public static int litCandlesCount;
+    public static int lives;
     public static bool isPaused;
     private static float _unpausedRealtime;
     public static float unpausedRealtime => _unpausedRealtime;
@@ -58,11 +60,15 @@ public class Game : MonoBehaviour
         Instance = this;
         simulatedSprites = new List<SpriteSimulator>();
         transitiontoGame = false;
+        Timer.AllTimersInit();
+        PlayerInput.Init();
     }
 
     void Start()
     {
         Awake();
+        litCandlesCount = 0;
+        lives = 3;
         _unpausedRealtime = 0;
         Timer.AllTimersInit();
 
@@ -89,7 +95,7 @@ public class Game : MonoBehaviour
         Time.timeScale = 1;
     }
 
-    static public void Reset()
+    public static void Reset()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
@@ -103,8 +109,10 @@ public class Game : MonoBehaviour
 #endif
     void OnGUI()
     {
-        GUI.color = Color.green;
-        GUI.Label(new Rect(0, 0, 200, 100), debugText);
+        GUIStyle style = new GUIStyle();
+        style.fontSize = 108;
+        style.normal.textColor = Color.green;
+        GUI.Label(new Rect(0, 0, 200, 100), debugText, style);
     }
 
     public void ShowTitle()
@@ -127,7 +135,7 @@ public class Game : MonoBehaviour
         }
     }
 
-    static public void Pause()
+    public static void Pause()
     {
         if (isPaused)   return;
         isPaused = true;
@@ -141,7 +149,7 @@ public class Game : MonoBehaviour
         SoundSystem.Pause();
     }
 
-    static public void Unpause()
+    public static void Unpause()
     {
         if (!isPaused)   return;
         isPaused = false;
@@ -155,7 +163,7 @@ public class Game : MonoBehaviour
         SoundSystem.Unpause();
     }
 
-    static public void FreezeFrame(float secondsToWait)
+    public static void FreezeFrame(float secondsToWait, System.Action onResume)
     {
         if (isFreezeFraming)    return;
         float oldTimescale = Time.timeScale;
@@ -164,7 +172,13 @@ public class Game : MonoBehaviour
         Timer.SetRealtime(secondsToWait, () => {
             Time.timeScale = oldTimescale;
             _isFreezeFraming = false;
+            onResume();
         });
+    }
+
+    public static void FreezeFrame(float secondsToWait)
+    {
+        FreezeFrame(secondsToWait, () => {});
     }
 
     IEnumerator GameGo()
@@ -213,6 +227,57 @@ public class Game : MonoBehaviour
         {
             SoundSystem.DoFade(.01F);
         }
+
+
+        // scanline logic
+        for (int i = 0; i < scanlines.Length; i++)
+            scanlines[i].Clear();
+        for (int i = 0; i < scanlineSimTotal.Length; i++)
+            scanlineSimTotal[i] = 0;        
+        foreach (SpriteSimulator sim in simulatedSprites)
+        {
+            float x = sim.SpritePos.x - Camera.main.transform.position.x;
+            float y = sim.SpritePos.y - Camera.main.transform.position.y + (HEIGHT * PIXEL) / 2.0F;
+
+            int scanlineIndex = Mathf.FloorToInt(y / (16.0F * PIXEL));
+
+            if (scanlineIndex > 0 && scanlineIndex < scanlines.Length && Mathf.Abs(x) < WIDTH * PIXEL / 2.0F)
+            {
+                scanlineSimTotal[scanlineIndex] += sim.tilevalue;
+                scanlines[scanlineIndex].Add(sim);
+                sim.SetOutOfView(false);
+            }
+            else
+            {
+                sim.SetOutOfView(true);
+            }
+        }
+
+
+        // simulate sprite flicker
+        if (Time.timeScale > 0)
+        {
+            Time.timeScale = 1;
+            for (int y = 0; y < scanlines.Length; y++)
+            {
+                if (scanlineSimTotal[y] <= SpriteSimulator.SCANLINE_LIMIT || !SpriteSimulator.flashOnLimit)
+                {
+                    foreach (SpriteSimulator sim in scanlines[y])
+                        sim.Flash(true);
+                }
+                else
+                {
+                    for (int x = 0; x < scanlines[y].Count; x++)
+                    {
+                        scanlines[y][x].Flash(fixedUpdateCounter % 2 != x % 2);
+                        Time.timeScale *= .86F;
+                    }
+                }
+            }
+        }
+
+
+        fixedUpdateCounter++;
     }
 
     void Update()
@@ -220,11 +285,11 @@ public class Game : MonoBehaviour
         if (!isPaused)
             _unpausedRealtime += Time.unscaledDeltaTime;
         Timer.Update();  // update all timer checks
-
+        PlayerInput.Update();
 
         if (!gameStarted && !transitiontoGame)
         {
-            if (PlayerInput.HasPressedStart())
+            if (PlayerInput.Pressed(Button.Start))
             {
                 StartCoroutine(GameGo());   
                 transitiontoGame = true;             
@@ -248,68 +313,26 @@ public class Game : MonoBehaviour
 
         if (isPaused)
         {            
-            if (PlayerInput.HasPressedSelect() )
+            if (PlayerInput.Pressed(Button.Select) )
             {
                 Player.Instance.ResetToLastCheckPoint();
                 Unpause();
             }
             return;
         }
-        for (int i = 0; i < scanlines.Length; i++)
-            scanlines[i].Clear();
-
-
-        for (int i = 0; i < scanlineSimTotal.Length; i++)
-            scanlineSimTotal[i] = 0;
-        
-        foreach (SpriteSimulator sim in simulatedSprites)
-        {
-            float x = sim.SpritePos.x - Camera.main.transform.position.x;
-            float y = sim.SpritePos.y - Camera.main.transform.position.y + (HEIGHT * PIXEL) / 2.0F;
-
-            int scanlineIndex = Mathf.FloorToInt(y / (16.0F * PIXEL));
-
-            if (scanlineIndex > 0 && scanlineIndex < scanlines.Length && Mathf.Abs(x) < WIDTH * PIXEL / 2.0F)
-            {
-                scanlineSimTotal[scanlineIndex] += sim.tilevalue;
-                scanlines[scanlineIndex].Add(sim);
-                sim.SetOutOfView(false);
-            }
-            else
-            {
-                sim.SetOutOfView(true);
-            }
-        }
-
-        for (int y = 0; y < scanlines.Length; y++)
-        {
-            if (scanlineSimTotal[y] <= 10)
-            {
-                foreach (SpriteSimulator sim in scanlines[y])
-                    sim.Flash(true);
-            }
-            else
-            {
-                for (int x = 0; x < scanlines[y].Count; x++)
-                {
-                    scanlines[y][x].Flash((Time.frameCount) % 2 != x % 2);
-                    Time.timeScale *= .95F;
-                }
-            }
-        }
     }
 
-    static public void RemoveSimulatedSprite(SpriteSimulator sim)
+    public static void RemoveSimulatedSprite(SpriteSimulator sim)
     {
         simulatedSprites.Remove(sim);
         foreach (List<SpriteSimulator> scanline in scanlines)
             scanline.Remove(sim);
     }
 
-    static public void HorShake(int pixels) => CameraController.Instance.HorShake(pixels);
-    static public void VertShake(int pixels) => CameraController.Instance.VertShake(pixels);
+    public static void HorShake(int pixels) => CameraController.Instance.HorShake(pixels);
+    public static void VertShake(int pixels) => CameraController.Instance.VertShake(pixels);
 
-    static public float PingPong(float time)
+    public static float PingPong(float time)
     {
         if (time % 1.0F >= .4F)
             return 0;
@@ -319,7 +342,7 @@ public class Game : MonoBehaviour
             return -1;
     }
 
-    static public bool IsPointOnScreen(Vector2 point, float widthMargin, bool ignoreUp = false)
+    public static bool IsPointOnScreen(Vector2 point, float widthMargin, bool ignoreUp = false)
     {
         float x = point.x - Camera.main.transform.position.x;        
         float y = point.y - Camera.main.transform.position.y + scanlines.Length / 2.0F;
@@ -330,7 +353,7 @@ public class Game : MonoBehaviour
     }
 
 
-    static public Vector2 RestrictDiagonals(Vector2 direction, float subdivision = 2)
+    public static Vector2 RestrictDiagonals(Vector2 direction, float subdivision = 2)
     {
         Vector2 modifiedDirection = direction;
         modifiedDirection = (modifiedDirection).normalized * subdivision;

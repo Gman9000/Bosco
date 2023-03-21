@@ -2,12 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PassThroughPlatform : MonoBehaviour
+public class TwoWayPlatform : MonoBehaviour
 {
-    static public bool rockwallCondition => PlayerInput.IsPressingDown() && !Player.Instance.IsDownSlash && !Player.IsMovesetLocked(PState.G_Rockclimb);
+    private const float FALLTHROUGH_TIME = .15F;
+
+    public static bool rockwallCondition => PlayerInput.Held(Button.Down) && !Player.Instance.IsDownSlash && !Player.IsMovesetLocked(PState.G_Rockclimb);
     public bool isRockwall = false;
-    public float disableColliderTimer;
-    [SerializeField] private BoxCollider2D theCollider;
+
+    private BoxCollider2D boxCollider;
     private bool playerOnPlatform;
 
     private bool pauseCollisionChanges;
@@ -18,6 +20,11 @@ public class PassThroughPlatform : MonoBehaviour
         {
             GetComponent<SpriteRenderer>().enabled = false;
         }
+
+        boxCollider = GetComponent<BoxCollider2D>();
+
+        if (isRockwall)
+            gameObject.tag = "Rockwall";
     }
     
     void Start()
@@ -58,24 +65,24 @@ public class PassThroughPlatform : MonoBehaviour
 
         if (isRockwall)
         {
-            Physics2D.IgnoreCollision(Player.Instance.boxCollider2D, theCollider, true);
+            Physics2D.IgnoreCollision(Player.Instance.boxCollider2D, boxCollider, true);
             if (rockwallCondition || playerOnPlatform)
             {
                 BoxCollider2D otherCollider = Player.Instance.boxCollider2D;
-                float myTop = theCollider.Top();
+                float myTop = boxCollider.Top();
                 float playerBottom = otherCollider.Bottom();
 
                 if (myTop <= playerBottom + Game.PIXEL)
                 {
-                    Physics2D.IgnoreCollision(Player.Instance.boxCollider2D, theCollider, false);     
+                    Physics2D.IgnoreCollision(Player.Instance.boxCollider2D, boxCollider, false);     
                     
                 }
             }
         }
         
-        if (playerOnPlatform && PlayerInput.IsPressingDown() && PlayerInput.HasPressedA())
+        if (playerOnPlatform && PlayerInput.Held(Button.Down) && PlayerInput.Pressed(Button.A))
         {
-            Physics2D.IgnoreCollision(Player.Instance.boxCollider2D, theCollider, true);
+            Physics2D.IgnoreCollision(Player.Instance.boxCollider2D, boxCollider, true);
             StartCoroutine(EnableCollision());
         }
     }
@@ -83,9 +90,9 @@ public class PassThroughPlatform : MonoBehaviour
     private IEnumerator EnableCollision()
     {
         pauseCollisionChanges = true;
-        yield return new WaitForSeconds(disableColliderTimer);
+        yield return new WaitForSeconds(FALLTHROUGH_TIME);
         if (!isRockwall)
-            Physics2D.IgnoreCollision(Player.Instance.boxCollider2D, theCollider, false);
+            Physics2D.IgnoreCollision(Player.Instance.boxCollider2D, boxCollider, false);
         pauseCollisionChanges = false;
     }
 }

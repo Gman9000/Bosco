@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class SpriteSimulator : MonoBehaviour
 {
+    public const int SCANLINE_LIMIT         = 10;
+    static readonly public bool flashOnLimit = true;
+
+
     public int tilevalue = 1;
     SpriteRenderer ren;
 

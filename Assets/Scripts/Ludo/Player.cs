@@ -5,21 +5,21 @@ using UnityEngine;
 
 public enum PState {Unassigned, 
     Idle, Walk, Run, Duck,
-Jump, Fall,
-LadderIdle, LadderMove,
-FenceIdle,FenceMove,
+Jump, Fall, 
 G_AtkSide1, G_AtkSide2, G_AtkTwist, G_AtkUp, G_AtkLow,
-G_Rockclimb, G_RockclimbShimmy,
-A_AtkUp, A_AtkSide, A_AtkDown, A_AtkNeutral, A_AtkRoll, 
-A2G_Land, A2G_SwordLand,
+A_AtkUp, A_AtkSide, A_AtkDown, A_AtkNeutral,
+G_Rockclimb, G_RockclimbShimmy
 }
 
 public class Player : Pawn
 {
-    static public bool IsHurting => Time.time - Instance.hurtTimeStamp < Instance.invincibilityTime;
-    static public int Hp => Instance.currentHealth;
-    static public int FacingDirection => (int)Instance.transform.rotation.y == 0 ? 1 : -1;
-    static public Vector3 Position => Instance.transform.position;
+    public static bool IsHurting => Instance.isHurting;
+    public static bool IsInvincible => Instance.invTimer;
+    public static int Hp => Instance.currentHealth;
+    public static int FacingDirection => (int)Instance.transform.rotation.y == 0 ? 1 : -1;
+    public static Vector3 Position => Instance.transform.position;
+
+    public static readonly bool redirectAttacks = false;        // a variable that toggles the mechanic idea of trajectory redirection
 
     public readonly List<PState> AttackStates = new List<PState>(){
         PState.G_AtkSide1,
@@ -27,7 +27,6 @@ public class Player : Pawn
         PState.G_AtkTwist,
         PState.G_AtkUp,
         PState.G_AtkLow,
-        PState.A_AtkRoll,
         PState.A_AtkDown,
         PState.A_AtkUp,
         PState.A_AtkNeutral
@@ -36,19 +35,22 @@ public class Player : Pawn
     public AudioClip[] sfx_swordSounds;
     public AudioClip sfx_jump;
     public AudioClip sfx_hurt;
-
-    public static Player Instance { get;protected set;}
+    public static Player Instance { get; protected set;}
 
     [HideInInspector]public Rigidbody2D body;
     public float moveSpeed;
+    public float runSpeed;
     public float startFriction = 1;
     public float stopFriction = 1;
+    public float startFrictionAir = .4F;
+    public float stopFrictionAir = .4F;
     public float maxFallSpeed = .1F;
-    public float invincibilityTime = 1.2F;
+    public float hurtDuration = 1.2F;
 
     [HideInInspector]public BoxCollider2D boxCollider2D;
 
     private PState _state;
+    private string animationOverride;
 
     public PState state {
         get => _state;
@@ -59,7 +61,7 @@ public class Player : Pawn
     }
 
     private PState lastAtk;
-    private PState lastState;
+    
     //for jumping
     public float jumpSpeed;
     public float jumpTime;
@@ -73,10 +75,8 @@ public class Player : Pawn
     private bool inputMovePaused = false;
     private bool inputAttackPaused = false;
 
-    private bool tbc = false;
-
-    static public bool IsMovesetLocked(PState move) => _movesetLocks.Contains(move);
-    static private List<PState> _movesetLocks = new List<PState>() {
+    public static bool IsMovesetLocked(PState move) => _movesetLocks.Contains(move);
+    private static List<PState> _movesetLocks = new List<PState>() {
         PState.G_AtkSide2,
         PState.A_AtkUp,
         PState.A_AtkDown,
@@ -84,33 +84,29 @@ public class Player : Pawn
         PState.G_Rockclimb
     };
 
+    public AtkboxDictionary attackBoxes;
 
-    // For attacking
-    [SerializeField] private GameObject atkboxSide;
-    [SerializeField] private GameObject atkboxTwist;
-    [SerializeField] private GameObject atkboxUp;
-    [SerializeField] private GameObject atkboxLow;
-    [SerializeField] private GameObject atkboxDown;
-    [SerializeField] private GameObject atkboxAirNeutral;
-
+    private bool isHitting = false;
     public float hitTime;
-    public float hitCooldown;// should be less than hit time
-    public float hitComboWindow;// should be less than hit time
+    public float hitCooldown;               // should be less than hit time
+    public float hitComboWindow;            // should be less than hit time
+
+    public float doubleTapWindow = .1F;     // the time window in seconds for any double-tap input
 
 
     
-    private float hitTimeStamp = 0;// the time when the player attacked
-    private float comboTimeStamp = 0;// the time when the player attacked
+    private float hitTimeStamp = 0;         // the time when the player attacked // needs to be redone to be modular and good-feeling and knockback logic etc
+    private float comboTimeStamp = 0;       // the time when the player attacked
 
     //health stuff
-    public int maxhealth;
+    public int maxHealth = 5;
     private int currentHealth;
 
-    Coroutine hitCoroutine = null;
-    Coroutine pausePhysicsCoroutine = null;
-    Coroutine pauseInputMoveCoroutine = null;
-    Coroutine pauseInputAttackCoroutine = null;
-    Coroutine attackSequenceCoroutine = null;
+    Coroutine doAttackCoroutine;
+    Coroutine pausePhysicsCoroutine;
+    Coroutine pauseInputMoveCoroutine;
+    Coroutine pauseInputAttackCoroutine;
+    Coroutine attackSequenceCoroutine;
     public float deathTime;
 
 
@@ -118,117 +114,135 @@ public class Player : Pawn
 
     private Vector3 checkpoint;
 
-    public bool IsDownSlash => atkboxDown.activeSelf;
-    bool isGrounded;
+    public bool IsDownSlash => IsAtkActive(PState.A_AtkDown);
+
+    public bool isGrounded => _isGrounded;
+    bool _isGrounded;
     bool isHittingCeiling;
     bool isHittingRightWall;
     bool isHittingLeftWall;
     // Start is called before the first frame update
 
-    bool canAerialAttack = false;
+    bool canAerialAttack;
     bool PhysicsPaused => body.constraints == RigidbodyConstraints2D.FreezeAll;
-    float hurtTimeStamp = 0;
+    private Timer invTimer;
+    private bool isHurting;
     private Timer jumpTimer;
 
+    private bool runMode;
+    public static bool aimMode => Instance.hittingEnemyScript != null;
+    [HideInInspector]public PawnEnemy hittingEnemyScript;
+    private Timer stopRunningTimer;
+
     [HideInInspector]public bool onRockwall;
-    // for ladder fence checks
-    public bool climbMode => state == PState.FenceIdle || state == PState.FenceMove || 
-        state == PState.LadderIdle || state == PState.LadderMove;
-    bool canLadder;
-    bool canFence;
-    float ladderX;
+
     void Awake()
     {
-        currentHealth = maxhealth;
+        currentHealth = maxHealth;
         body = GetComponent<Rigidbody2D>();
         boxCollider2D = GetComponent<BoxCollider2D>();
         checkpoint = this.gameObject.transform.position;
         Instance = this;
 
         animator = GetComponent<SpriteAnimator>();
+        Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Enemy"));
+
+        
     }
 
     override public void Start()
     {
-        lastState = PState.Unassigned;
-        canLadder = false;
-        canFence = false;
+        isHurting = false;
         state = PState.Idle;
         lastAtk = PState.Unassigned;
         canAerialAttack = false;
-        jumpTimer = null;
         inputAttackPaused = false;
         inputMovePaused = false;
         onRockwall = false;
+        animationOverride = null;
 
         
         boxCollider2D.enabled = true;
         body.gravityScale = originalGravityScale;
         body.velocity = Vector2.zero;
 
-        atkboxUp.SetActive(false);
-        atkboxDown.SetActive(false);
-        atkboxSide.SetActive(false);
-        atkboxTwist.SetActive(false);
-        atkboxAirNeutral.SetActive(false);
+        DeactivateAllAtkboxes();
 
         animator.PlayDefault();
-        hurtTimeStamp = -invincibilityTime;
 
         body.constraints = RigidbodyConstraints2D.FreezeRotation;
 
         StopAllCoroutines();
 
-        hitCoroutine = null;
+        doAttackCoroutine = null;
         pausePhysicsCoroutine = null;
         pauseInputMoveCoroutine = null;
         pauseInputAttackCoroutine = null;
         attackSequenceCoroutine = null;
+
+        runMode = false;
+        hittingEnemyScript = null;
+
+        if (invTimer)
+            invTimer.Cancel();
+        if (jumpTimer)
+            jumpTimer.Cancel();
+        if (stopRunningTimer)
+            stopRunningTimer.Cancel();
+
+        animator.SetVisible(true);
     }
 
     void Update()
     {
-        if (!Game.gameStarted || tbc)  return;
+        if (!Game.gameStarted)  return;
         
-        if (PlayerInput.HasPressedStart())
+        if (PlayerInput.Pressed(Button.Start))
         {
             if (Game.isPaused)
                 Game.Unpause();
             else
                 Game.Pause();
         }
-
         if (Game.isPaused)  return;
 
-        bool wasGrounded = isGrounded;
-        HitInfo groundCheck = boxCollider2D.IsGrounded(rayCastMagnitude);
+
+        if (aimMode)
+        {
+            hittingEnemyScript.RedirectKnockback(PlayerInput.GetVectorDiagonal());
+        }
+
+        
+
+        bool wasGrounded = _isGrounded;
+        HitInfo groundCheck = boxCollider2D.IsGrounded(rayCastMagnitude, new[]{"Ground", "Hidden", "TwoWayPlatform"});
         if (groundCheck.layerName == "TwoWayPlatform")
         {
             if (body.velocity.y <= 0)
-                isGrounded = true;
-            if (isGrounded && PlayerInput.IsPressingDown() && PlayerInput.HasPressedA())    // make shift fallthrough
-                isGrounded = false;
-            if (groundCheck.hit.collider.tag == "Rockwall" && !wasGrounded && !PassThroughPlatform.rockwallCondition)
-                isGrounded = false;
+                _isGrounded = true;
+            if (_isGrounded && PlayerInput.Held(Button.Down) && PlayerInput.Pressed(Button.A))    // make shift fallthrough
+                _isGrounded = false;
+            if (groundCheck.hit.collider.tag == "Rockwall" && !wasGrounded && !TwoWayPlatform.rockwallCondition)
+                _isGrounded = false;
         }
         else
         {
-            isGrounded = groundCheck;
+            _isGrounded = groundCheck;
         }
         
         //GMAN REMEMBER TO COMMENT THIS LATER
-        if (isGrounded && (groundCheck.layerName == "TwoWayPlatform") && !wasGrounded)
+        if (_isGrounded && groundCheck.layerName == "TwoWayPlatform" && !wasGrounded)
         {
             float feetY = boxCollider2D.Bottom();
             float surfaceY = groundCheck.hit.collider.bounds.Top();
-                if (surfaceY > feetY) isGrounded = false;
+                if (surfaceY > feetY) _isGrounded = false;
         }
 
         isHittingCeiling = boxCollider2D.IsHittingCeiling(rayCastMagnitude);
         isHittingRightWall = boxCollider2D.IsHittingRight(rayCastMagnitude);
         isHittingLeftWall = boxCollider2D.IsHittingLeft(rayCastMagnitude);
 
-        if (isGrounded)
+        if (_isGrounded)
         {
             if (jumpTimer != null && jumpTimer.done) jumpTimer.Cancel();
             
@@ -236,10 +250,9 @@ public class Player : Pawn
             {
                 Game.VertShake(8);// shake screen
                 DoPhysicsPause(.4F);
-                atkboxDown.SetActive(false);
+                attackBoxes[PState.A_AtkDown].SetActive(false);
                 DoInputAttackPause(.4F);
                 Timer.Set(.4F, () => state = PState.Unassigned);
-                state = PState.A2G_SwordLand;
             }
 
             body.gravityScale = originalGravityScale;
@@ -248,28 +261,28 @@ public class Player : Pawn
             
             if (!wasGrounded && body.velocity.y < 0)    // check if moving down
             {                
-                atkboxUp.SetActive(false);
+                attackBoxes[PState.A_AtkUp].SetActive(false);
                 body.velocity = new Vector2(body.velocity.x, 0);
             }
         }
-        else if (!climbMode)  // not grounded
+        else    // not grounded
         {
-                if (body.velocity.y < 0 && state != PState.A_AtkDown)
-                    state = PState.Fall;
+            if (body.velocity.y < 0 && state != PState.A_AtkDown)
+                state = PState.Fall;
 
-                if (wasGrounded)        // only set as unassigned if the player was JUST on the ground
-                {
-                    state = PState.Unassigned;
-                }
+            if (wasGrounded)        // only set as unassigned if the player was JUST on the ground
+            {
+                state = PState.Unassigned;
+            }
         }
 
         if (inputMovePaused)
         {
-            if (atkboxTwist.activeSelf)
+            if (IsAtkActive(PState.G_AtkTwist))
             {
                 body.velocity = new Vector2(FacingDirection * 3.0F, body.velocity.y);
             }
-            if (atkboxSide.activeSelf && isGrounded)
+            if (IsAtkActive(PState.G_AtkSide1) && _isGrounded)
             {
                 if (Time.time - hitTimeStamp > .15F)
                 {
@@ -279,106 +292,56 @@ public class Player : Pawn
         }
         else
         {
-            if (PlayerInput.IsPressingDown() && isGrounded)
+            if (_isGrounded &&
+            ((PlayerInput.DidDoubleTap(Button.Left) && body.velocity.x < 0) ||
+            (PlayerInput.DidDoubleTap(Button.Right) && body.velocity.x > 0)))
             {
-                float newVelX = body.velocity.x;
-                newVelX -= Mathf.Sign(newVelX) * stopFriction * .5F * Game.relativeTime;
-                if (Mathf.Sign(newVelX) == Mathf.Sign(body.velocity.x)) // checking the sign so the friction doesn't reverse movement direction
-                    body.velocity = new Vector2(newVelX, body.velocity.y);
+                runMode = true;
+                if (stopRunningTimer)
+                    stopRunningTimer.Cancel();
+            }
+            
+            if (runMode)
+            {
+                if (Mathf.Abs(body.velocity.x) < moveSpeed)
+                {
+                    if (!stopRunningTimer)
+                        stopRunningTimer = Timer.Set(.3F, () => {runMode = false;});
+                }
                 else
-                    body.velocity = new Vector2(0, body.velocity.y);
+                {
+                    if (stopRunningTimer)
+                        stopRunningTimer.Cancel();
+                }
+            }
+
+            if (PlayerInput.Held(Button.Down) && _isGrounded)
+            {
+                ApplyStopFriction(stopFriction * .5F);
 
                 if (state == PState.Idle || state == PState.Walk)
                     state = PState.Duck;
             }
-            else if (PlayerInput.IsPressingLeft())
+            else if (PlayerInput.Held(Button.Left))
             {
-                body.velocity = new Vector2(body.velocity.x - startFriction * Game.relativeTime, body.velocity.y);
-                if (body.velocity.x < -moveSpeed)
-                    body.velocity = new Vector2(-moveSpeed, body.velocity.y);
-                this.transform.rotation = new Quaternion(0f, 180f, this.transform.rotation.z, this.transform.rotation.w);
+                MoveWithFriction(_isGrounded ? runMode ? -startFriction * 2 : -startFriction : -startFrictionAir);
             }
-            else if (PlayerInput.IsPressingRight())
+            else if (PlayerInput.Held(Button.Right))
             {
-                body.velocity = new Vector2(body.velocity.x + startFriction * Game.relativeTime, body.velocity.y);
-                if (body.velocity.x > moveSpeed)
-                    body.velocity = new Vector2(moveSpeed, body.velocity.y);
-                this.transform.rotation = new Quaternion(0f, 0f, this.transform.rotation.z, this.transform.rotation.w);
+                MoveWithFriction(_isGrounded ? runMode ? startFriction * 2 : startFriction : startFrictionAir);
             }
-            else if (!atkboxTwist.activeSelf)    // add friction
+            else if (!IsAtkActive(PState.G_AtkTwist))    // add friction
             {
-                float newVelX = body.velocity.x;
-                newVelX -= Mathf.Sign(newVelX) * stopFriction * Game.relativeTime;
-                if (Mathf.Sign(newVelX) == Mathf.Sign(body.velocity.x)) // checking the sign so the friction doesn't reverse movement direction
-                    body.velocity = new Vector2(newVelX, body.velocity.y);
+                if (_isGrounded)
+                    ApplyStopFriction(stopFriction);
                 else
-                    body.velocity = new Vector2(0, body.velocity.y);
-            }
-            if (PlayerInput.IsPressingUp() || PlayerInput.IsPressingDown())
-            {
-                if (canLadder)
-                {
-                    state = PState.LadderIdle;
-                    if (lastState != PState.LadderIdle)
-                    {
-                        transform.position = new Vector3(ladderX, transform.position.y, transform.position.z);
-                            //body.MovePosition(new Vector2(ladderX, body.position.y));
-                    }
-                }
-                else if (canFence)
-                {
-                    state = PState.FenceIdle;
-                }
-            }
-            if (state == PState.LadderIdle || state == PState.LadderMove)
-            {
-                body.gravityScale = 0f;
-                body.velocity = new Vector2(0f, 0f);
-                state = PState.LadderIdle;
-                if (PlayerInput.IsPressingUp())
-                {
-                    state = PState.LadderMove;
-                    body.velocity = new Vector2(0f, moveSpeed);
-                }
-                if (PlayerInput.IsPressingDown())
-                {
-                    state = PState.LadderMove;
-                    body.velocity = new Vector2(0f, -moveSpeed);
-                }
-                if (!canLadder)
-                {
-                    state = PState.Unassigned;
-                    body.gravityScale = originalGravityScale;
-                }
+                    ApplyStopFriction(stopFrictionAir);
             }
 
-            if (state == PState.FenceIdle || state == PState.FenceMove)
-            {
-                body.gravityScale = 0f;
-                body.velocity = new Vector2(body.velocity.x, 0f);
-                state = PState.FenceIdle;
-                if (PlayerInput.IsPressingUp())
-                {
-                    state = PState.FenceMove;
-                    body.velocity = new Vector2(body.velocity.x, moveSpeed);
-                }
-                if (PlayerInput.IsPressingDown())
-                {
-                    state = PState.FenceMove;
-                    body.velocity = new Vector2(body.velocity.x, -moveSpeed);
-                }
-                if (!canFence)
-                {
-                    state = PState.Unassigned;
-                    body.gravityScale = originalGravityScale;
-                }
-            }
-
-
-            if (!PlayerInput.IsPressingDown() && state == PState.Duck)
+            if (!PlayerInput.Held(Button.Down) && state == PState.Duck)
                 state = PState.Unassigned;
 
-            if (isGrounded && PlayerInput.HasPressedA())
+            if (_isGrounded && PlayerInput.Pressed(Button.A))
             {
                 isJumping = true;
                 body.velocity = new Vector2(body.velocity.x, jumpSpeed);
@@ -390,7 +353,7 @@ public class Player : Pawn
                 SoundSystem.PlaySfx(sfx_jump, 2);
             }
 
-            if (isJumping && PlayerInput.HasHeldA())
+            if (isJumping && PlayerInput.Held(Button.A))
             {
                 body.velocity = new Vector2(body.velocity.x, jumpSpeed);
                 if (isHittingCeiling)
@@ -400,7 +363,7 @@ public class Player : Pawn
                 }
             }
 
-            if (PlayerInput.HasReleasedA())
+            if (PlayerInput.Released(Button.A))
             {
                 isJumping = false;
             }
@@ -419,7 +382,7 @@ public class Player : Pawn
 
         if (state == PState.Unassigned)        // catch-all for unassigned states
         {
-            if (isGrounded)
+            if (_isGrounded)
                 SetStateFromHorizontal();
             else
                 SetStateFromVertical();
@@ -427,7 +390,36 @@ public class Player : Pawn
 
         if (currentHealth > 0)
             Animate();
-        lastState = state;
+    }
+
+    public void ApplyStopFriction(float multiplier)
+    {
+        float newVelX = body.velocity.x;
+        newVelX -= Mathf.Sign(newVelX) * multiplier * Game.relativeTime;
+        if (Mathf.Sign(newVelX) == Mathf.Sign(body.velocity.x)) // checking the sign so the friction doesn't reverse movement direction
+            body.velocity = new Vector2(newVelX, body.velocity.y);
+        else
+            body.velocity = new Vector2(0, body.velocity.y);
+    }
+
+    public void MoveWithFriction(float multiplier)
+    {
+        body.velocity = new Vector2(body.velocity.x + multiplier * Game.relativeTime, body.velocity.y);
+
+        float topSpeed = runMode ? runSpeed : moveSpeed;
+        
+        if (multiplier > 0)
+        {
+            if (body.velocity.x > topSpeed)
+                body.velocity = new Vector2(topSpeed, body.velocity.y);
+            transform.rotation = new Quaternion(0F, 0F, transform.rotation.z, transform.rotation.w);
+        }
+        else
+        {
+            if (body.velocity.x < -topSpeed)
+                body.velocity = new Vector2(-topSpeed, body.velocity.y);
+            transform.rotation = new Quaternion(0F, 180F, transform.rotation.z, transform.rotation.w);
+        }        
     }
 
     void SetStateFromHorizontal()
@@ -438,11 +430,15 @@ public class Player : Pawn
             if (onRockwall)
                 state = PState.G_Rockclimb;
         }
-        else
+        else if (Mathf.Abs(body.velocity.x) <= moveSpeed || onRockwall)
         {
             state = PState.Walk;
             if (onRockwall)
                 state = PState.G_RockclimbShimmy;
+        }
+        else
+        {
+            state = PState.Run;
         }
     }
 
@@ -466,7 +462,7 @@ public class Player : Pawn
 
     public void SetGrounded(bool value, string type)
     {
-        isGrounded = value;
+        _isGrounded = value;
         switch (type)
         {
             case "Rockwall":
@@ -476,19 +472,28 @@ public class Player : Pawn
         }
     }
 
+    public void SetInvTime(float seconds)
+    {
+        if (invTimer)
+            invTimer.Cancel();
+        invTimer = Timer.Set(seconds, () =>
+        {
+            isHurting = false;
+            animator.Renderer.color = Color.white;
+        });
+    }
+
     void FixedUpdate()
     {
-        if (Time.time - hurtTimeStamp < invincibilityTime)
+        if (invTimer)
         {
             animator.Renderer.color = animator.Renderer.color.a == 0 ? Color.white : new Color(0,0,0,0);
-        }
-        else
-        {
-            animator.Renderer.color = Color.white;
         }
 
         if (HUD.Instance)
             HUD.Instance.Flash(animator.Renderer.color.a == 1, "Main Text Layer", "BG");
+
+        Game.debugText = "HP: " + Hp;
     }
 
     void OnCollisionEnter2D(Collision2D other)
@@ -505,6 +510,10 @@ public class Player : Pawn
     {
         if (IsHurting && inputMovePaused && inputAttackPaused)
             animator.Play(AnimMode.Looped, "hurt");
+        else if (animationOverride != null)
+        {
+            animator.Play(AnimMode.Once, animationOverride, () => animationOverride = null);
+        }        
         else switch (state)
         {
             case PState.Idle:
@@ -512,6 +521,9 @@ public class Player : Pawn
                 break;
             case PState.Walk:
                 animator.Play(AnimMode.Looped, "walk");
+                break;
+            case PState.Run:
+                animator.Play(AnimMode.Looped, "run");
                 break;
             case PState.Duck:
                 animator.Play(AnimMode.Looped, "duck");
@@ -555,13 +567,6 @@ public class Player : Pawn
             case PState.G_RockclimbShimmy:
                 animator.Play(AnimMode.Looped, "duck");
                 break;
-
-            case PState.A2G_Land:
-                animator.Play(AnimMode.Once, "duck", () => state = PState.Unassigned);
-                break;
-            case PState.A2G_SwordLand:
-                animator.Play(AnimMode.Hang, "downslash");
-                break;
         }
     }
 
@@ -586,21 +591,53 @@ public class Player : Pawn
         pauseInputAttackCoroutine = StartCoroutine(PauseInputAttack(time));
     }
 
-    public void TakeDamage()
+    public void OnHurt()
     {
-        if (Time.time - hurtTimeStamp >= invincibilityTime && currentHealth > 0)
+        if (!invTimer && currentHealth > 0)
         {
-            hurtTimeStamp = Time.time;
+            isHurting = true;
             SoundSystem.PlaySfx(sfx_hurt, 3);
             
             currentHealth--;
+            DeactivateAllAtkboxes();
+
+            if (doAttackCoroutine != null)
+            {
+                StopCoroutine(doAttackCoroutine);
+                doAttackCoroutine = null;
+            }
+            if (attackSequenceCoroutine != null)
+            {
+                StopCoroutine(attackSequenceCoroutine);
+                attackSequenceCoroutine = null;
+            }
+
             DoInputMovePause(.25F);
             DoInputAttackPause(.25F);
             body.velocity = Vector2.up - (FacingDirection * Vector2.right * 5F);
 
+            invTimer = Timer.Set(hurtDuration, () => {
+                isHurting = false;
+                animator.Renderer.color = Color.white;
+            });
+
+            if (attackSequenceCoroutine != null)
+            {
+                StopCoroutine(attackSequenceCoroutine);
+                attackSequenceCoroutine = null;
+            }
+
+            if (doAttackCoroutine != null)
+            {
+                StopCoroutine(doAttackCoroutine);
+                doAttackCoroutine = null;
+            }
+
             if(currentHealth <= 0)
             {
                 //for now this is death
+                body.velocity = Vector2.zero;
+                StopAllCoroutines();
                 StartCoroutine(Die());
             }
         }
@@ -608,15 +645,15 @@ public class Player : Pawn
 
     private void AttackInputs()
     {
-        if (PlayerInput.HasPressedB())
+        if (PlayerInput.Pressed(Button.B))
         {
             if (!PhysicsPaused && !inputAttackPaused)
             {
-                PState executeState = DetermineAttack(GetInputVector());
+                PState executeState = DetermineAttack(PlayerInput.GetVector());
                 if (!IsAttackRepeat(executeState) || Time.time - hitTimeStamp >= hitCooldown) // cancel attack if cooldown is not completed AND it's the same attack
                 {
                     if (attackSequenceCoroutine != null)
-                        StopCoroutine(attackSequenceCoroutine);                
+                        StopCoroutine(attackSequenceCoroutine);
                     attackSequenceCoroutine = StartCoroutine(AttackSequence(executeState));
                 }
             }
@@ -627,10 +664,10 @@ public class Player : Pawn
     {   
         switch (atk)
         {
+            case PState.A_AtkSide:
             case PState.G_AtkLow:
             case PState.G_AtkSide2:
-            case PState.G_AtkTwist:
-            case PState.A_AtkSide:
+            case PState.G_AtkSide1:
                 return Vector2.right;
             case PState.G_AtkUp:
             case PState.A_AtkUp:
@@ -643,79 +680,58 @@ public class Player : Pawn
         }
     }
 
-    // Determies if newAtk and the previous attack are considered the same move in terms of cooldown
-    bool IsAttackRepeat(PState atk) => GetAttackDirection(atk) == GetAttackDirection(lastAtk);
-
-    Vector2 GetInputVector()
+    private void DeactivateAllAtkboxes()
     {
-        if (PlayerInput.IsPressingDown())
-            return Vector2.down;
-        else if (PlayerInput.IsPressingUp() && !atkboxUp.activeSelf)
-            return Vector2.up;
-        else if (PlayerInput.IsPressingLeft())
-            return Vector2.left;
-        else if (PlayerInput.IsPressingRight())
-            return Vector2.right;
-        return Vector2.zero;
+        foreach (GameObject atkbox in attackBoxes.Values)
+            atkbox.SetActive(false);
     }
 
+    // Determies if newAtk and the previous attack are considered the same move in terms of cooldown
+    bool IsAttackRepeat(PState atk) => GetAttackDirection(atk) == GetAttackDirection(lastAtk);
     
     PState DetermineAttack(Vector2 lastInputDirection)
     {
         PState executeState = PState.Unassigned;
         if (lastInputDirection == Vector2.down)
         {
-            if (!climbMode)
+            if (_isGrounded)
             {
-                if (isGrounded)
-                {
-                    executeState = PState.G_AtkLow;
-                }
-                else
-                {
-                    executeState = PState.A_AtkDown;
-                }
+                executeState = PState.G_AtkLow;
+            }
+            else
+            {
+                executeState = PState.A_AtkDown;
             }
         }
         else if (lastInputDirection == Vector2.up)
         {
-            if (!climbMode)
+            if (_isGrounded)
             {
-                if (isGrounded)
-                {
-                    executeState = PState.G_AtkUp;
-                }
-                else
-                {
-                    executeState = PState.A_AtkUp;
-                }
+                executeState = PState.G_AtkUp;
+            }
+            else
+            {
+                executeState = PState.A_AtkUp;
             }
         }
         else
         {
-            if (isGrounded)
+            if (_isGrounded)
             {
-                if (!climbMode)
-                {
-                    if (state == PState.G_AtkSide1)
-                        executeState = PState.G_AtkSide2;
-                    else if (state == PState.G_AtkSide2)
-                        executeState = PState.G_AtkTwist;
-                    else if (state != PState.G_AtkTwist)
-                        executeState = PState.G_AtkSide1;
-                }
+                if (state == PState.G_AtkSide1)
+                    executeState = PState.G_AtkSide2;
+                else if (state == PState.G_AtkSide2)
+                    executeState = PState.G_AtkTwist;
+                else if (state != PState.G_AtkTwist)
+                    executeState = PState.G_AtkSide1;
             }
             else
             {
-                if (!climbMode)
-                {
-                    if (lastInputDirection.x == 0)
-                        executeState = PState.A_AtkNeutral;
-                    else
-                        executeState = PState.A_AtkSide;
-                }
+                if (lastInputDirection.x == 0)
+                    executeState = PState.A_AtkNeutral;
+                else
+                    executeState = PState.A_AtkSide;
             }
-            
         }
 
         if (IsMovesetLocked(executeState))
@@ -747,7 +763,7 @@ public class Player : Pawn
 
     IEnumerator AttackSequence(PState executeState)
     {
-        if (!isGrounded)
+        if (!_isGrounded)
         {
             if (canAerialAttack)
                 canAerialAttack = false;
@@ -759,7 +775,7 @@ public class Player : Pawn
         }
 
 
-        if (isGrounded)
+        if (_isGrounded)
             animator.PlayDefault();
 
         switch (executeState)
@@ -768,10 +784,10 @@ public class Player : Pawn
                 SoundSystem.PlaySfx(sfx_swordSounds[0], 4);//play attack sfx
                 DoInputMovePause(.3F);
                 body.velocity = new Vector2(FacingDirection * 1.5F, body.velocity.y);
-                if (hitCoroutine != null)
-                    StopCoroutine(hitCoroutine);
+                if (doAttackCoroutine != null)
+                    StopCoroutine(doAttackCoroutine);
                 state = PState.G_AtkSide1;
-                hitCoroutine = StartCoroutine(DoAttack(state));
+                doAttackCoroutine = StartCoroutine(DoAttack(state));
                 comboTimeStamp = Time.time;
                 hitTimeStamp = Time.time;
                 break;
@@ -780,10 +796,10 @@ public class Player : Pawn
                 SoundSystem.PlaySfx(sfx_swordSounds[1], 4);//play attack sfx
                 DoInputMovePause(.3F);
                 body.velocity = Vector2.zero;
-                if (hitCoroutine != null)
-                    StopCoroutine(hitCoroutine);
+                if (doAttackCoroutine != null)
+                    StopCoroutine(doAttackCoroutine);
                 state = PState.G_AtkSide2;
-                hitCoroutine = StartCoroutine(DoAttack(state));
+                doAttackCoroutine = StartCoroutine(DoAttack(state));
                 comboTimeStamp = Time.time;
                 hitTimeStamp = Time.time;
                 break;
@@ -792,10 +808,10 @@ public class Player : Pawn
                 SoundSystem.PlaySfx(sfx_swordSounds[3], 4);
                 DoInputMovePause(.33F);
                 DoInputAttackPause(.66F);
-                if (hitCoroutine != null)
-                    StopCoroutine(hitCoroutine);
+                if (doAttackCoroutine != null)
+                    StopCoroutine(doAttackCoroutine);
                 state = PState.G_AtkTwist;
-                hitCoroutine = StartCoroutine(DoAttack(state));
+                doAttackCoroutine = StartCoroutine(DoAttack(state));
                 Timer.Set(.5F, () => state = PState.Unassigned);
                 comboTimeStamp = Time.time;
                 hitTimeStamp = Time.time;
@@ -807,37 +823,38 @@ public class Player : Pawn
                 hitTimeStamp = Time.time;
                 state = PState.G_AtkUp;
                 SoundSystem.PlaySfx(sfx_swordSounds[0], 4);
-                if (hitCoroutine != null)
-                    StopCoroutine(hitCoroutine);
-                hitCoroutine = StartCoroutine(DoAttack(state));
+                if (doAttackCoroutine != null)
+                    StopCoroutine(doAttackCoroutine);
+                doAttackCoroutine = StartCoroutine(DoAttack(state));
                 break;
 
             case PState.G_AtkLow:
                 SoundSystem.PlaySfx(sfx_swordSounds[1], 4);//play attack sfx
                 DoInputMovePause(.3F);
                 body.velocity = new Vector2(FacingDirection * 1.5F, body.velocity.y);
-                if (hitCoroutine != null)
-                    StopCoroutine(hitCoroutine);
+                if (doAttackCoroutine != null)
+                    StopCoroutine(doAttackCoroutine);
                 state = PState.G_AtkLow;
-                hitCoroutine = StartCoroutine(DoAttack(state));
+                doAttackCoroutine = StartCoroutine(DoAttack(state));
+                comboTimeStamp = Time.time;
                 hitTimeStamp = Time.time;
                 break;
             
             case PState.A_AtkNeutral:
                 SoundSystem.PlaySfx(sfx_swordSounds[0], 4);//play attack sfx
                 state = PState.A_AtkNeutral;
-                if (hitCoroutine != null)
-                    StopCoroutine(hitCoroutine);
-                hitCoroutine = StartCoroutine(DoAttack(PState.A_AtkNeutral));
+                if (doAttackCoroutine != null)
+                    StopCoroutine(doAttackCoroutine);
+                doAttackCoroutine = StartCoroutine(DoAttack(PState.A_AtkNeutral));
                 break;
             
             case PState.A_AtkSide:
                 SoundSystem.PlaySfx(sfx_swordSounds[1], 4);//play attack sfx
                 state = PState.A_AtkSide;
-                body.velocity = new Vector2(0, body.velocity.y);
-                if (hitCoroutine != null)
-                    StopCoroutine(hitCoroutine);
-                hitCoroutine = StartCoroutine(DoAttack(PState.A_AtkSide));
+                //body.velocity = new Vector2(0, body.velocity.y);
+                if (doAttackCoroutine != null)
+                    StopCoroutine(doAttackCoroutine);
+                doAttackCoroutine = StartCoroutine(DoAttack(PState.A_AtkSide));
                 break;
 
             case PState.A_AtkUp:
@@ -845,9 +862,9 @@ public class Player : Pawn
                 state = PState.A_AtkUp;
                 body.velocity = Vector3.up * 15;
                 body.gravityScale = originalGravityScale * .97F;
-                if (hitCoroutine != null)
-                    StopCoroutine(hitCoroutine);
-                hitCoroutine = StartCoroutine(DoAttack(state));
+                if (doAttackCoroutine != null)
+                    StopCoroutine(doAttackCoroutine);
+                doAttackCoroutine = StartCoroutine(DoAttack(state));
                 break;
 
             case PState.A_AtkDown:
@@ -856,10 +873,10 @@ public class Player : Pawn
                 body.velocity = Vector3.down * 38;
                 DoInputAttackPause(.5F);
                 body.gravityScale = 30;
-                if (hitCoroutine != null)
-                    StopCoroutine(hitCoroutine);
+                if (doAttackCoroutine != null)
+                    StopCoroutine(doAttackCoroutine);
                 state = PState.A_AtkDown;
-                hitCoroutine = StartCoroutine(DoAttack(state));
+                doAttackCoroutine = StartCoroutine(DoAttack(state));
                 break;
         }
 
@@ -870,75 +887,34 @@ public class Player : Pawn
     private IEnumerator DoAttack(PState atkState)
     {
         lastAtk = atkState;
+        isHitting = true;//set isHitting to true.
 
         float hitLengthMod = 1.0F;
 
-        atkboxUp.SetActive(false);
-        atkboxDown.SetActive(false);
-        atkboxSide.SetActive(false);
-        atkboxTwist.SetActive(false);
-        atkboxAirNeutral.SetActive(false);
+        DeactivateAllAtkboxes();
+        attackBoxes[atkState].SetActive(true);
             
         switch (atkState)
         {
-            case PState.G_AtkSide1:
-            case PState.G_AtkSide2:
-            case PState.A_AtkSide:
-                atkboxSide.SetActive(true);
-                break;
             case PState.A_AtkUp:
-            case PState.G_AtkUp:
-                atkboxUp.SetActive(true);
-                if (!isGrounded)
-                    hitLengthMod = 1.2F;
-                else
-                    hitLengthMod = .85F;
+                hitLengthMod = 1.2F;
                 break;
-            case PState.G_AtkTwist:                
-                atkboxTwist.SetActive(true);
+            case PState.G_AtkUp:
+                hitLengthMod = .85F;
+                break;
+            case PState.G_AtkTwist:         
                 hitLengthMod = 2;
                 break;
-            case PState.G_AtkLow:
-                atkboxLow.SetActive(true);
-                break;
-            case PState.A_AtkNeutral:
-                atkboxAirNeutral.SetActive(true);
-                hitLengthMod = 1;
-                break;
             case PState.A_AtkDown:
-                atkboxDown.SetActive(true);
-                hitLengthMod = 500;//for down attacks we want the hitbox active for as long as possible
+                hitLengthMod = 500; //for down attacks we want the hitbox active for as long as possible
                 break;
         }
-
-
 
         yield return new WaitForSeconds(hitTime * hitLengthMod);//wait the established amount of seconds.
 
-        switch (atkState)
-        {
-            case PState.A_AtkUp:
-            case PState.G_AtkUp:
-                atkboxUp.SetActive(false);
-                break;
-            case PState.A_AtkDown:
-                atkboxDown.SetActive(false);
-                break;
-            case PState.G_AtkTwist:
-                atkboxTwist.SetActive(false);
-                break;
-            case PState.A_AtkNeutral:
-                atkboxAirNeutral.SetActive(false);
-                break;
-            case PState.G_AtkSide1:
-            case PState.G_AtkSide2:
-            case PState.A_AtkSide:
-                atkboxSide.SetActive(false);
-                break;
-            case PState.G_AtkLow:
-                atkboxLow.SetActive(false);
-                break;
-        }
+        DeactivateAllAtkboxes();
+
+        isHitting = false;//set isHitting to false.
     }
 
     public void AttackFeedback(Vector2 force, Vector2 direction, AtkBonusAbility ability)
@@ -947,33 +923,19 @@ public class Player : Pawn
         float newVelocityY = force.y == 0 ? body.velocity.y : force.y * 12;
 
         body.velocity = new Vector2(newVelocityX, newVelocityY);
-        
-        Game.VertShake(2);
-        Game.FreezeFrame(Game.FRAME_TIME * 4);
 
         switch (ability)
         {
             case AtkBonusAbility.RenewAerialAttack:
                 canAerialAttack = true;
+                animationOverride = "roll";
+                SetInvTime(Game.FRAME_TIME * 2);
                 break;
         }
     }
 
-
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Ladder"))
-        {
-            canLadder = true;
-            ladderX = other.bounds.center.x;
-
-        }
-        if (other.CompareTag("Fence"))
-        {
-            canFence = true;
-
-        }
-
         if (other.CompareTag("Reset"))
         {
             this.gameObject.transform.position = checkpoint;
@@ -984,7 +946,6 @@ public class Player : Pawn
             DoInputMovePause(100);
             DoInputAttackPause(100);
             DoPhysicsPause(100);
-            tbc = true;
             Knaz.DoScene();
             animator.PlayDefault();
         }
@@ -992,30 +953,9 @@ public class Player : Pawn
 
     private void OnTriggerStay2D(Collider2D other)
     {
-        if (other.gameObject.CompareTag("Door") && PlayerInput.IsPressingUp() && CandleHandler.canUseDoor)
+        if (other.gameObject.CompareTag("Door") && PlayerInput.Held(Button.Up) && CandleHandler.canUseDoor)
         {
             transform.position = new Vector3(199.5F, 100, transform.position.z);
-        }
-
-        if (other.CompareTag("Ladder"))
-        {
-            canLadder = true;
-            ladderX = other.bounds.center.x;
-        }
-        if (other.CompareTag("Fence"))
-        {
-            canFence = true;
-        }
-    }
-    private void OnTriggerExit2D(Collider2D other)
-    {
-        if (other.CompareTag("Ladder"))
-        {
-            canLadder = false;
-        }
-        if (other.CompareTag("Fence"))
-        {
-            canFence = false;
         }
     }
 
@@ -1023,7 +963,7 @@ public class Player : Pawn
     {
         animator.Play(AnimMode.Looped, "hurt");
 
-        hurtTimeStamp = 0;
+        invTimer = Timer.Set(1000);
         DoInputAttackPause(30);
         DoInputMovePause(30);
 
@@ -1052,8 +992,14 @@ public class Player : Pawn
     public void ResetToLastCheckPoint()
     {
         this.gameObject.transform.position = checkpoint;
-        currentHealth = maxhealth;
+        currentHealth = maxHealth;
         Start();
+    }
+
+    private bool IsAtkActive(PState atk)
+    {
+        if (!attackBoxes.ContainsKey(atk)) return false;
+        return attackBoxes[atk].activeSelf;
     }
 
     IEnumerator PausePhysics(float duration)

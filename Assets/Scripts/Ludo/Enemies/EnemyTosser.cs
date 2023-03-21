@@ -126,17 +126,4 @@ public class EnemyTosser : PawnEnemy
         isShooting = false;
 
     }
-
-    /*//activate invincibilitie frames for enemy upon being hit
-    private IEnumerator invincible()
-    {        
-        float xDir = playerTarget.FacingRight ? 1 : -1;
-        body.velocity = xDir * Vector2.right * 10 + Vector2.up * .15F;
-        bounceDirection.x = xDir;
-
-        yield return new WaitForSeconds(0.5f);
-        primeToBounce = true;
-        body.velocity = Vector2.zero;
-
-    }*/
 }

@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    static public Rect viewRect;
-    static public CameraController Instance;
+    public static Rect viewRect;
+    public static CameraController Instance;
     public Vector2 followRectSize = new Vector2(11, 10);
 
     public Vector2 offset = Vector2.up * 2;
@@ -29,6 +29,7 @@ public class CameraController : MonoBehaviour
         moveTo = Vector2.zero;
         followRect = new Rect(Vector2.zero, followRectSize);
         hud = GetComponentInChildren<HUD>();
+        shakeCoroutine = StartCoroutine(ShakeUp(5));
     }
 
     void Update()
@@ -97,36 +98,29 @@ public class CameraController : MonoBehaviour
     IEnumerator ShakeSide(int pixels)
     {
 
-        Transform playerSprite = Player.Instance.animator.Renderer.transform;
-        
-        Vector3 playerRootPos = playerSprite.localPosition;
-
         for (int i = pixels; i > 0; i--)
         {
             CalcMovePos();
             yield return new WaitForSecondsRealtime(Game.TICK_TIME);
             yield return new WaitUntil(() => !Game.isPaused);
             Vector3 rightMove = Vector3.right * i * (i % 2 == 0 ? 1 : -1) * Game.PIXEL;
-            playerSprite.localPosition = playerRootPos;
-            playerSprite.localPosition += rightMove;
             transform.position = (Vector3)moveTo + Vector3.back * 10;
-            transform.position += rightMove;            
+            transform.position += rightMove;    
+            yield return null;        
         }
         yield return new WaitForEndOfFrame();
 
         CalcMovePos();
-        playerSprite.localPosition = playerRootPos;
         transform.position = (Vector3)moveTo + Vector3.back * 10;
 
         shakeCoroutine = null;
         yield break;
     }
+    
     IEnumerator ShakeUp(int pixels)
     {
 
         Transform playerSprite = Player.Instance.animator.Renderer.transform;
-        
-        Vector3 playerRootPos = playerSprite.localPosition;
 
         for (int i = pixels; i > 0; i--)
         {
@@ -134,17 +128,12 @@ public class CameraController : MonoBehaviour
             yield return new WaitForSecondsRealtime(Game.TICK_TIME);
             yield return new WaitUntil(() => !Game.isPaused);
             Vector3 upMove = Vector3.up * i * (i % 2 == 0 ? 1 : -1) * Game.PIXEL;
-            playerSprite.localPosition = playerRootPos;
-            playerSprite.localPosition += upMove;
             transform.position = (Vector3)moveTo + Vector3.back * 10;
             transform.position += upMove;
-
-            
         }
         yield return new WaitForEndOfFrame();
 
         CalcMovePos();
-        playerSprite.localPosition = playerRootPos;
         transform.position = (Vector3)moveTo + Vector3.back * 10;
 
         shakeCoroutine = null;

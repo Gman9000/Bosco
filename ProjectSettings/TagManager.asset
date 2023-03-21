@@ -31,12 +31,12 @@ TagManager:
   - Ground
   - Player
   - TwoWayPlatform
-  - EnemyMelee
-  - EnemyThrowing
-  - EnemyFlying
+  - Enemy
+  - EnemyBypass
+  - 
   - PlayerTarget
   - Hidden
-  - Rockwall
+  - 
   - 
   - 
   - 

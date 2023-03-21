@@ -14,14 +14,14 @@ public class PlayerAttack : MonoBehaviour
 
     void OnTriggerStay2D(Collider2D other)
     {
-        if (other.gameObject.tag == "Enemy")
+        if (other.gameObject.tag == "Enemy" && gameObject.activeSelf)
         {
             HitEnemy(other);
         }
     }
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.tag == "Enemy")
+        if (other.gameObject.tag == "Enemy" && gameObject.activeSelf)
         {
             HitEnemy(other);
         }
@@ -34,9 +34,9 @@ public class PlayerAttack : MonoBehaviour
         if (hitDirectionModified.x != 0)
         {
             if (relativeToFacingDir)
-                hitDirectionModified.x = Player.FacingDirection * Mathf.Sign(hitDirection.x);
+                hitDirectionModified.x = Player.FacingDirection * hitDirection.x;
             else
-                hitDirectionModified.x = Mathf.Sign(enemyCollider.transform.position.x - Player.Position.x) * Mathf.Sign(hitDirection.x);
+                hitDirectionModified.x = Mathf.Sign(enemyCollider.transform.position.x - Player.Position.x) * hitDirection.x;
         }
         else if (hitDirectionModified == Vector2.zero)
             hitDirectionModified = (enemyCollider.transform.position - Player.Position).normalized;
@@ -44,10 +44,17 @@ public class PlayerAttack : MonoBehaviour
         if (ignoreY)
             hitDirectionModified.y = 0;            
 
-        hitDirectionModified = Game.RestrictDiagonals(hitDirectionModified);
-        bool attackSuccess = enemyCollider.GetComponentInChildren<PawnEnemy>().TakeDamage(hitDirectionModified);
+        hitDirectionModified = Game.RestrictDiagonals(hitDirectionModified) * hitDirection.magnitude;
+        Player.Instance.hittingEnemyScript = enemyCollider.GetComponentInChildren<PawnEnemy>();
+
+        bool attackSuccess = Player.Instance.hittingEnemyScript.OnHurt(hitDirectionModified);
         if (attackSuccess)
         {
+            Game.VertShake(2);
+            if (Player.Instance.isGrounded)
+            Game.FreezeFrame(Game.FRAME_TIME * 4, () => {
+                Player.Instance.hittingEnemyScript = null;          
+            });
             Player.Instance.AttackFeedback(playerFeedbackDirection, hitDirectionModified, bonusAbility);
         }
     }
