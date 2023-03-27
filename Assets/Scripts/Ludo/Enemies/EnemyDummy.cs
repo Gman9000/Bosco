@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class EnemyDummy : PawnEnemy
 {
-    override protected void OnHit()
+    override protected void OnHurt()
     {
         anim.Play(AnimMode.Looped, "hurt");
     }

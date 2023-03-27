@@ -13,7 +13,7 @@ public class EnemySidewalker : PawnEnemy
         base.Start();
     }
 
-    override protected void OnHit()
+    override protected void OnHurt()
     {
         anim.Play(AnimMode.Looped, "hurt");
     }
