@@ -16,12 +16,15 @@ public abstract class PawnEnemy : Pawn
     public float weight = 3;                            // the value that determines how much knockback force moves it
     public float maxFallSpeed = 12;   
     public Vector2 visionBoxSize = new Vector2(10, 5);  // the bounds that a player must be inside to trigger non-idle state
+    public Vector2 visionBoxOffset = new Vector2(0, 0);
     public bool usesRockwalls = false;
     public int initFacingDirection = 1;
 
     private Vector2 separatorForce;
 
     protected System.Func<bool> knockbackResetCondition;
+    
+    public BoxCollider2D ledgeDetector;                 // the trigger collider that is used to detect ledges and turn around
 
 
     // CORE VARIABLES
@@ -44,7 +47,6 @@ public abstract class PawnEnemy : Pawn
     private Timer knockbackTimer;
     private Timer stunTimer;
     public bool Invincible => (invTimer != null && !invTimer.done);
-    protected Player playerTarget => Player.Instance;
     private Vector2 currentKnockback;                   // direction of the force of an attack that damages this pawn
     protected Vector2 positionWhenHit;                  // position in world space when the enemy was hit
     
@@ -60,9 +62,20 @@ public abstract class PawnEnemy : Pawn
 
     private bool playerWasInView;
 
+    protected bool isStunned;
+
+    protected bool frictionActive;
+
     [HideInInspector]public int facingDirection;
 
     bool wasKnockingBack;
+
+    protected Coroutine currentSequence;
+
+    private Timer playerAwarenessTimer;
+    public float playerAwarenessDuration = 5;       // amount of time before the enemy forgets they saw the player
+
+    private bool atLedge;
 
 
     void Awake()
@@ -87,7 +100,6 @@ public abstract class PawnEnemy : Pawn
         _contactUp = false;
         _contactLeft = false;
         _contactRight = false;
-        visionBox = new Rect(transform.position.x, transform.position.y, visionBoxSize.x, visionBoxSize.y);
 
         playerWasInView = false;
         wasKnockingBack = false;
@@ -96,10 +108,21 @@ public abstract class PawnEnemy : Pawn
         separatorForce = Vector2.zero;
 
         knockbackTimer = null;
+        playerAwarenessTimer = null;
         invTimer = null;
         stunTimer = null;
+        isStunned = false;
+
+        frictionActive = true;
+        atLedge = false;
 
         gameObject.layer = LayerMask.NameToLayer("Enemy");
+
+        StopAllCoroutines();
+
+        currentSequence = null;
+        visionBox = new Rect(transform.position.x, transform.position.y, visionBoxSize.x, visionBoxSize.y);
+
 
         SetState(EState.Idle);
     }
@@ -107,8 +130,8 @@ public abstract class PawnEnemy : Pawn
     public void Update()
     {
         // PRE-UPDATE LOGIC
-        sprite.flipX = facingDirection < 0;
-        visionBox.center = transform.position;     // update the center of the vision box to this pawn
+        transform.rotation = new Quaternion(0F, facingDirection > 0 ? 0 : 180F, transform.rotation.z, transform.rotation.w);
+        visionBox.center = (Vector2)transform.position + Vector2.right * visionBoxOffset.x * facingDirection + Vector2.up * visionBoxOffset.y;     // update the center of the vision box to this pawn
 
         // UPDATE LOGIC
         if (currentHealth <= 0)
@@ -120,29 +143,59 @@ public abstract class PawnEnemy : Pawn
             SetState(EState.None);
             body.velocity = currentKnockback;            
             wasKnockingBack = true;
+            isStunned = true;
         }
-        else if (wasKnockingBack && knockbackResetCondition())
+        else if (wasKnockingBack)
         {
-            ApplyFriction(2);   // extra friction
-            if (!stunTimer)
+            if (knockbackResetCondition())
             {
-                currentKnockback = Vector2.zero;
-                stunTimer = Timer.Set(stunDuration, () => {
-                    if (visionBox.Contains(Player.Position) && states.ContainsKey(EState.Primary))   // normal behavior loop
-                    {
-                        if (currentState != EState.Primary)   // this could be a problem if switching from a state not covered by this condition check
-                            SetState(EState.Primary);
-                        playerWasInView = true;
-                    }
-                    else
-                    {
-                        if (currentState != EState.Idle)    // this could be a problem if switching from a state not covered by this condition check
-                            SetState(EState.Idle);
-                        playerWasInView = false;
-                    }
-                    wasKnockingBack = false;
-                });
-            }            
+                ApplyFriction(2);   // extra friction
+                if (!stunTimer)
+                {
+                    currentKnockback = Vector2.zero;
+                    stunTimer = Timer.Set(stunDuration, () => {
+                        if (PrimaryStateCondition() || playerAwarenessTimer)   // normal behavior loop
+                        {   // this could be a problem if switching from a state not covered by this condition check
+                            if (currentState != EState.Primary)
+                            {
+                                SetState(EState.Primary);
+                                SetAware();
+                            }
+                            playerWasInView = true;
+                        }
+                        else
+                        {
+                            if (currentState != EState.Idle)    // this could be a problem if switching from a state not covered by this condition check
+                            {
+                                SetState(EState.Idle);
+                            }
+                            playerWasInView = false;
+                        }
+                        isStunned = false;
+                        wasKnockingBack = false;
+                    });
+                }
+            }       
+        }
+        else if (!isStunned)
+        {            
+            if (PrimaryStateCondition() || playerAwarenessTimer)
+            {
+                if (currentState != EState.Primary)
+                {
+                    SetState(EState.Primary);
+                    SetAware();
+                }
+                playerWasInView = true;
+            }
+            else
+            {
+                if (currentState != EState.Idle)
+                {
+                    SetState(EState.Idle);
+                }
+                playerWasInView = false;
+            }
         }
 
         Debug.DrawLine(new Vector3(visionBox.x, visionBox.y), new Vector3(visionBox.x + visionBox.width, visionBox.y ),Color.blue);
@@ -154,12 +207,28 @@ public abstract class PawnEnemy : Pawn
         PhysicsPass();
     }
 
+    protected bool PrimaryStateCondition() => visionBox.Contains(Player.Position) && states.ContainsKey(EState.Primary);
+
+    protected void SetAware()
+    {
+        if (playerAwarenessTimer)
+            playerAwarenessTimer.Cancel();
+        playerAwarenessTimer = Timer.Set(playerAwarenessDuration, () => {
+            if (currentState != EState.Idle)
+                SetState(EState.Idle);
+                Debug.Log("ass");
+        });
+    }
+
     private void PhysicsPass()
     {
         HitInfo groundCheck = boxCollider2D.IsGrounded(.99F, new[]{"Ground", "TwoWayPlatform", "Hidden"});
         HitInfo upCheck = boxCollider2D.IsHittingCeiling(.8F);
-        HitInfo leftCheck = boxCollider2D.IsHittingLeft(.8F);
-        HitInfo rightCheck = boxCollider2D.IsHittingRight(.8F);
+        HitInfo leftCheck = boxCollider2D.IsHittingLeft(1F);
+        HitInfo rightCheck = boxCollider2D.IsHittingRight(1F);
+
+        if (ledgeDetector)
+            atLedge = IsGrounded && !ledgeDetector.IsGrounded(1, new[]{"Ground", "TwoWayPlatform", "Hidden"});
 
         _contactLeft = leftCheck;
         _contactRight = rightCheck;
@@ -256,6 +325,8 @@ public abstract class PawnEnemy : Pawn
 
     public void ApplyFriction(float frictionFactor)
     {
+        if (!frictionActive)    return;
+
         float newVelX = body.velocity.x;
         newVelX -= Mathf.Sign(newVelX) * stopFriction * frictionFactor * Game.relativeTime;
         if (Mathf.Sign(newVelX) == Mathf.Sign(body.velocity.x)) // checking the sign so the friction doesn't reverse movement direction
@@ -267,16 +338,24 @@ public abstract class PawnEnemy : Pawn
     public void SetState(EState stateID)
     {
         if (!gameObject.activeSelf)  return;
+        //Debug.Log("butthammer : " + stateID);
+
+        if (currentSequence != null)
+        {
+            StopCoroutine(currentSequence);
+            currentSequence = null;
+        }
+
 
         if (stateID != EState.None && currentHealth > 0)
         {
-            StartCoroutine(states[stateID]());
+            currentSequence = StartCoroutine(states[stateID]());
         }
 
         currentState = stateID;
     }
 
-    public bool OnHurt(Vector2 force, float stunFactor = 1)
+    public bool OnHurt(Vector2 force, int damage, float stunFactor)
     {
         if (Invincible)  return false;          // ignore this call if the enemy is already invincible
 
@@ -287,7 +366,7 @@ public abstract class PawnEnemy : Pawn
         
         positionWhenHit = transform.position;
         stunDuration = defaultStunTime * stunFactor;
-        currentHealth--;
+        currentHealth -= damage;
 
         if (currentHealth <= 0)
         {
@@ -297,6 +376,7 @@ public abstract class PawnEnemy : Pawn
         }
 
         invTimer = Timer.Set(invincibilityTime);
+        SetAware();
 
         if (knockbackTimer != null && knockbackTimer.active)
             knockbackTimer.Cancel();
@@ -307,7 +387,7 @@ public abstract class PawnEnemy : Pawn
             currentKnockback = Vector2.zero;
         });
 
-        OnHit();
+        OnHurt();
         return true;
     }
 
@@ -326,7 +406,7 @@ public abstract class PawnEnemy : Pawn
     |*  OVERRIDABLE UPDATE FUNCTIONS  *|
     \*================================*/
 
-    protected virtual void OnHit() {}      // called first frame of being hit
+    protected virtual void OnHurt() {}      // called first frame of being hit
        
     protected virtual Vector2 GetKnockback(Vector2 velocity)
     {
@@ -393,21 +473,50 @@ public abstract class PawnEnemy : Pawn
     |*  ENEMY ACTION TOOLSET  *|
     \*========================*/
 
+    protected IEnumerator Act_Walk(EState stateID, float xSpeed)
+    {
+        frictionActive = false;
+
+        while (currentState == EState.Idle)
+        {
+            body.velocity = new Vector2(xSpeed * facingDirection, body.velocity.y);
+            yield return new WaitUntil(() => (_contactLeft && facingDirection < 0 ||
+                _contactRight && facingDirection > 0) ||
+                atLedge);
+            facingDirection = -facingDirection;
+        }
+
+        yield return null;
+    }
+
+    protected IEnumerator Act_WalkTowardPlayer(EState stateID, float xSpeed, float updateDelay)
+    {
+        frictionActive = false;
+        while (currentState == EState.Primary)
+        {
+            if (_contactRight)
+            Debug.Log("gggg");
+            facingDirection = (int)Mathf.Sign(Player.Position.x - transform.position.x);
+            body.velocity = new Vector2(xSpeed * facingDirection, body.velocity.y);
+            yield return new WaitForSeconds(updateDelay);   
+            yield return null;
+        }       
+
+        yield return null;
+    }
+    
     protected IEnumerator Act_Inching(EState stateID, float xSpeed, float moveDuration, float pauseDuration, System.Action onMove = null, System.Action onStill = null)
     {
         float timeStamp = Time.time;
         bool isMoving = true;
         float duration = moveDuration;
+        bool wasGrounded = IsGrounded;
+        frictionActive = true;
 
         while (currentState == stateID)
         {
             if (IsGrounded)
             {
-                bool lastIsMoving = isMoving;
-
-
-                int lastFacingDirection = facingDirection;
-
                 if (_contactLeft)
                     facingDirection = 1;
                 else if (_contactRight)
@@ -434,13 +543,17 @@ public abstract class PawnEnemy : Pawn
                     }
                 }
 
-
-
                 if (Mathf.Abs(body.velocity.x) > 1 && onMove != null)
                     onMove();
                 else if (onStill != null)
                     onStill();
             }
+            else if (wasGrounded)
+            {
+                facingDirection = -facingDirection;
+            }
+
+            wasGrounded = IsGrounded;
             yield return new WaitForFixedUpdate();
             yield return null;
 

@@ -6,6 +6,8 @@ using UnityEngine;
 public enum AtkBonusAbility {None, RenewAerialAttack}
 public class PlayerAttack : MonoBehaviour
 {
+    public int damage = 1;
+    public float stunFactor = 1;
     public Vector2 hitDirection = Vector2.zero;
     public bool relativeToFacingDir = false;
     public bool ignoreY = false;
@@ -47,7 +49,7 @@ public class PlayerAttack : MonoBehaviour
         hitDirectionModified = Game.RestrictDiagonals(hitDirectionModified) * hitDirection.magnitude;
         Player.Instance.hittingEnemyScript = enemyCollider.GetComponentInChildren<PawnEnemy>();
 
-        bool attackSuccess = Player.Instance.hittingEnemyScript.OnHurt(hitDirectionModified);
+        bool attackSuccess = Player.Instance.hittingEnemyScript.OnHurt(hitDirectionModified, damage, stunFactor);
         if (attackSuccess)
         {
             Game.VertShake(2);

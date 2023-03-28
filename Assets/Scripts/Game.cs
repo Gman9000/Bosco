@@ -46,7 +46,7 @@ public class Game : MonoBehaviour
     private static bool _isFreezeFraming;
     public static bool isFreezeFraming => _isFreezeFraming;
 
-    public static string debugText;
+    public static object debugText;
 
 
     /*================*\
@@ -112,7 +112,7 @@ public class Game : MonoBehaviour
         GUIStyle style = new GUIStyle();
         style.fontSize = 108;
         style.normal.textColor = Color.green;
-        GUI.Label(new Rect(0, 0, 200, 100), debugText, style);
+        GUI.Label(new Rect(0, 0, 200, 100), "" + debugText, style);
     }
 
     public void ShowTitle()
@@ -237,7 +237,7 @@ public class Game : MonoBehaviour
         foreach (SpriteSimulator sim in simulatedSprites)
         {
             float x = sim.SpritePos.x - Camera.main.transform.position.x;
-            float y = sim.SpritePos.y - Camera.main.transform.position.y + (HEIGHT * PIXEL) / 2.0F;
+            float y = sim.SpritePos.y - Camera.main.transform.position.y + (HEIGHT * PIXEL) / 2.0F + 1;
 
             int scanlineIndex = Mathf.FloorToInt(y / (16.0F * PIXEL));
 

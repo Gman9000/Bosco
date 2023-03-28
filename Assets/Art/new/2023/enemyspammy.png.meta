@@ -1,28 +1,16 @@
 fileFormatVersion: 2
-guid: de43ed0d01ff1f347b246fe3fe7bbffa
+guid: e3ce8f15eb4167d4f9f3b5accc656ee6
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -6778825604507015922
-    second: spiteknight_0
+      213: -2827361197402531725
+    second: enemyspammy_0
   - first:
-      213: -4627076893024291161
-    second: spiteknight_1
+      213: -4789938655478748975
+    second: enemyspammy_1
   - first:
-      213: 5102031953602964176
-    second: spiteknight_2
-  - first:
-      213: -4174006766803845921
-    second: spiteknight_3
-  - first:
-      213: -9062463210697488902
-    second: spiteknight_4
-  - first:
-      213: 3741443880946830471
-    second: spiteknight_5
-  - first:
-      213: -6713501607111763224
-    second: spiteknight_6
+      213: 6156993946218519358
+    second: enemyspammy_2
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -109,6 +97,18 @@ TextureImporter:
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
     buildTarget: WebGL
     maxTextureSize: 2048
     resizeAlgorithm: 0
@@ -124,13 +124,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: spiteknight_0
+      name: enemyspammy_0
       rect:
         serializedVersion: 2
-        x: 2
-        y: 44
-        width: 21
-        height: 13
+        x: 0
+        y: 0
+        width: 25
+        height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -138,20 +138,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e0569094706cce1a0800000000000000
-      internalID: -6778825604507015922
+      spriteID: 378591198f133c8d0800000000000000
+      internalID: -2827361197402531725
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: spiteknight_1
+      name: enemyspammy_1
       rect:
         serializedVersion: 2
-        x: 27
-        y: 44
-        width: 20
-        height: 14
+        x: 25
+        y: 0
+        width: 25
+        height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -159,20 +159,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7a67ed2c41259cfb0800000000000000
-      internalID: -4627076893024291161
+      spriteID: 1d8e648cb28b68db0800000000000000
+      internalID: -4789938655478748975
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: spiteknight_2
+      name: enemyspammy_2
       rect:
         serializedVersion: 2
-        x: 51
-        y: 44
-        width: 22
-        height: 14
+        x: 50
+        y: 0
+        width: 25
+        height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -180,92 +180,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 0da6233b70f0ec640800000000000000
-      internalID: 5102031953602964176
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: spiteknight_3
-      rect:
-        serializedVersion: 2
-        x: 2
-        y: 27
-        width: 23
-        height: 13
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: fdc749ed5f2f216c0800000000000000
-      internalID: -4174006766803845921
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: spiteknight_4
-      rect:
-        serializedVersion: 2
-        x: 2
-        y: 3
-        width: 21
-        height: 20
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: af5845099b9ab3280800000000000000
-      internalID: -9062463210697488902
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: spiteknight_5
-      rect:
-        serializedVersion: 2
-        x: 27
-        y: 2
-        width: 15
-        height: 18
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 78c05eef2674ce330800000000000000
-      internalID: 3741443880946830471
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: spiteknight_6
-      rect:
-        serializedVersion: 2
-        x: 46
-        y: 3
-        width: 22
-        height: 17
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 8ead615abd9d4d2a0800000000000000
-      internalID: -6713501607111763224
+      spriteID: e3bd5987f59027550800000000000000
+      internalID: 6156993946218519358
       vertices: []
       indices: 
       edges: []

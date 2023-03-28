@@ -19,8 +19,7 @@ TagManager:
   - Scene
   - TwoWayPlatform
   - Rockwall
-  - Ladder
-  - Fence
+  - Hazard
   layers:
   - Default
   - TransparentFX
