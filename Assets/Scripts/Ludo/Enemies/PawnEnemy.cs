@@ -347,7 +347,7 @@ public abstract class PawnEnemy : Pawn
         }
 
 
-        if (stateID != EState.None && currentHealth > 0)
+        if (states.ContainsKey(stateID) && stateID != EState.None && currentHealth > 0)
         {
             currentSequence = StartCoroutine(states[stateID]());
         }
