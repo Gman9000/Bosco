@@ -229,7 +229,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a9f727eabbac7944bf863561c925159, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 5
+  body: {fileID: 0}
+  boxCollider: {fileID: 0}
+  collidableTags: []
+  maxHealth: 3
   invincibilityTime: 0.3
   knockbackTime: 0.3
   defaultStunTime: 0.1

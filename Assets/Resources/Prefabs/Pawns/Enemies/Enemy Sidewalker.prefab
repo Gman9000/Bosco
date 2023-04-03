@@ -227,7 +227,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fad02d9252f6be64eb202f9c0ce2f431, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 3
+  body: {fileID: 0}
+  boxCollider: {fileID: 0}
+  collidableTags: []
+  maxHealth: 6
   invincibilityTime: 0.25
   knockbackTime: 0.2
   defaultStunTime: 0.1
@@ -236,9 +239,12 @@ MonoBehaviour:
   weight: 4
   maxFallSpeed: 11
   visionBoxSize: {x: 0, y: 0}
+  visionBoxOffset: {x: 0, y: 0}
   usesRockwalls: 0
   initFacingDirection: -1
+  ledgeDetector: {fileID: 0}
   facingDirection: 1
+  playerAwarenessDuration: 5
   xMove: 2
   moveDuration: 0.5
   moveWait: 0.5

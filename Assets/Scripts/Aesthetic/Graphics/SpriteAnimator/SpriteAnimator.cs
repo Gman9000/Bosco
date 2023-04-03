@@ -93,8 +93,6 @@ public class SpriteAnimator : MonoBehaviour
         if (_renObj.transform != this.transform)
         {
             _renObj.transform.localPosition = new Vector2(data[animName].offset.x * Game.PIXEL, data[animName].offset.y * Game.PIXEL);
-            if (data[animName].offset.x == 400)
-                Debug.Log(animName);
         }
 
         do

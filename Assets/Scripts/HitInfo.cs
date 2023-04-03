@@ -5,18 +5,21 @@ using UnityEngine;
 public struct HitInfo
 {
     public string layerName;
-    public RaycastHit2D hit;
+    public Collider2D collider;
+    public Vector2 contact;
 
-    public HitInfo(RaycastHit2D hit)
+    public HitInfo(Collider2D collider, Vector2 contact)
     {
-        this.layerName = LayerMask.LayerToName(hit.collider.gameObject.layer);
-        this.hit = hit;
+        this.layerName = LayerMask.LayerToName(collider.gameObject.layer);
+        this.collider = collider;
+        this.contact = contact;
     }
 
     public HitInfo(string layerName = null)
     {
         this.layerName = layerName;
-        this.hit = new RaycastHit2D();
+        this.collider = new Collider2D();
+        this.contact = new Vector2();
     }
 
     public static bool operator ==(HitInfo a, HitInfo b)
@@ -26,7 +29,7 @@ public struct HitInfo
 
     public static implicit operator bool(HitInfo a)
     {
-        return a.layerName != null && a.hit;
+        return a.layerName != null;
     }
     
     public static bool operator !=(HitInfo a, HitInfo b)
