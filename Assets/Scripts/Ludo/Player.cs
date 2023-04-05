@@ -36,8 +36,6 @@ public class Player : Pawn
     public AudioClip sfx_jump;
     public AudioClip sfx_hurt;
     public static Player Instance { get; protected set;}
-
-    [HideInInspector]public Rigidbody2D body;
     public float moveSpeed;
     public float runSpeed;
     public float startFriction = 1;
@@ -46,8 +44,6 @@ public class Player : Pawn
     public float stopFrictionAir = .4F;
     public float maxFallSpeed = .1F;
     public float hurtDuration = 1.2F;
-
-    [HideInInspector]public BoxCollider2D boxCollider2D;
 
     private PState _state;
     private string animationOverride;
@@ -109,7 +105,6 @@ public class Player : Pawn
     Coroutine attackSequenceCoroutine;
     public float deathTime;
 
-
     [HideInInspector]public SpriteAnimator animator;
 
     private Vector3 checkpoint;
@@ -136,22 +131,22 @@ public class Player : Pawn
 
     [HideInInspector]public bool onRockwall;
 
-    void Awake()
+    override public void Awake()
     {
-        currentHealth = maxHealth;
-        body = GetComponent<Rigidbody2D>();
-        boxCollider2D = GetComponent<BoxCollider2D>();
-        checkpoint = this.gameObject.transform.position;
-        Instance = this;
-
+        base.Awake();
         animator = GetComponent<SpriteAnimator>();
+        collidableTags.Add("Ground");
+        collidableTags.Add("Hidden");
+        collidableTags.Add("TwoWayPlatform");
         Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Enemy"));
-
-        
     }
 
     override public void Start()
     {
+        base.Start();
+        currentHealth = maxHealth;
+        checkpoint = this.gameObject.transform.position;
+        Instance = this;
         isHurting = false;
         state = PState.Idle;
         lastAtk = PState.Unassigned;
@@ -162,7 +157,7 @@ public class Player : Pawn
         animationOverride = null;
 
         
-        boxCollider2D.enabled = true;
+        boxCollider.enabled = true;
         body.gravityScale = originalGravityScale;
         body.velocity = Vector2.zero;
 
@@ -193,7 +188,7 @@ public class Player : Pawn
         animator.SetVisible(true);
     }
 
-    void Update()
+    override protected void Update()
     {
         if (!Game.gameStarted)  return;
         
@@ -206,6 +201,9 @@ public class Player : Pawn
         }
         if (Game.isPaused)  return;
 
+        base.Update();
+        
+
 
         if (aimMode)
         {
@@ -215,32 +213,32 @@ public class Player : Pawn
         
 
         bool wasGrounded = _isGrounded;
-        HitInfo groundCheck = boxCollider2D.IsGrounded(rayCastMagnitude, new[]{"Ground", "Hidden", "TwoWayPlatform"});
+        //HitInfo groundCheck = boxCollider2D.IsGrounded(rayCastMagnitude, new[]{"Ground", "Hidden", "TwoWayPlatform"});
+        
+        HitInfo groundCheck = GroundCheck(collidableTags);
+        _isGrounded = groundCheck;
+        
         if (groundCheck.layerName == "TwoWayPlatform")
         {
             if (body.velocity.y <= 0)
                 _isGrounded = true;
             if (_isGrounded && PlayerInput.Held(Button.Down) && PlayerInput.Pressed(Button.A))    // make shift fallthrough
                 _isGrounded = false;
-            if (groundCheck.hit.collider.tag == "Rockwall" && !wasGrounded && !TwoWayPlatform.rockwallCondition)
+            if (groundCheck.collider.tag == "Rockwall" && !wasGrounded && !TwoWayPlatform.rockwallCondition)
                 _isGrounded = false;
-        }
-        else
-        {
-            _isGrounded = groundCheck;
         }
         
         //GMAN REMEMBER TO COMMENT THIS LATER
         if (_isGrounded && groundCheck.layerName == "TwoWayPlatform" && !wasGrounded)
         {
-            float feetY = boxCollider2D.Bottom();
-            float surfaceY = groundCheck.hit.collider.bounds.Top();
+            float feetY = boxCollider.Bottom();
+            float surfaceY = groundCheck.collider.bounds.Top();
                 if (surfaceY > feetY) _isGrounded = false;
         }
 
-        isHittingCeiling = boxCollider2D.IsHittingCeiling(rayCastMagnitude);
-        isHittingRightWall = boxCollider2D.IsHittingRight(rayCastMagnitude);
-        isHittingLeftWall = boxCollider2D.IsHittingLeft(rayCastMagnitude);
+        isHittingCeiling = CeilingCheck(collidableTags);
+        isHittingRightWall = RightCheck(collidableTags);
+        isHittingLeftWall = LeftCheck(collidableTags);
 
         if (_isGrounded)
         {
@@ -419,7 +417,7 @@ public class Player : Pawn
             if (body.velocity.x < -topSpeed)
                 body.velocity = new Vector2(-topSpeed, body.velocity.y);
             transform.rotation = new Quaternion(0F, 180F, transform.rotation.z, transform.rotation.w);
-        }        
+        }
     }
 
     void SetStateFromHorizontal()
@@ -496,14 +494,16 @@ public class Player : Pawn
         Game.debugText = "HP: " + Hp;
     }
 
-    void OnCollisionEnter2D(Collision2D other)
+    override protected void OnCollisionStay2D(Collision2D other)
     {
         if (other.transform.childCount > 0 && other.transform.GetChild(0).CompareTag("Hidden") && other.contacts[0].normal.y > 0)
         {
             Vector3 pos = transform.position;
             pos.y = other.collider.bounds.center.y + 1;
             transform.position = pos;
-        }            
+        }
+
+        base.OnCollisionStay2D(other);
     }
 
     void Animate()
@@ -591,55 +591,55 @@ public class Player : Pawn
         pauseInputAttackCoroutine = StartCoroutine(PauseInputAttack(time));
     }
 
-    public void OnHurt()
+    public void InflictDamage(int damageAmount)
     {
-        if (!invTimer && currentHealth > 0)
+        if (invTimer || currentHealth <= 0 || isHurting)    return;
+
+
+        isHurting = true;
+        SoundSystem.PlaySfx(sfx_hurt, 3);
+        
+        currentHealth--;
+        DeactivateAllAtkboxes();
+
+        if (doAttackCoroutine != null)
         {
-            isHurting = true;
-            SoundSystem.PlaySfx(sfx_hurt, 3);
-            
-            currentHealth--;
-            DeactivateAllAtkboxes();
+            StopCoroutine(doAttackCoroutine);
+            doAttackCoroutine = null;
+        }
+        if (attackSequenceCoroutine != null)
+        {
+            StopCoroutine(attackSequenceCoroutine);
+            attackSequenceCoroutine = null;
+        }
 
-            if (doAttackCoroutine != null)
-            {
-                StopCoroutine(doAttackCoroutine);
-                doAttackCoroutine = null;
-            }
-            if (attackSequenceCoroutine != null)
-            {
-                StopCoroutine(attackSequenceCoroutine);
-                attackSequenceCoroutine = null;
-            }
+        DoInputMovePause(.25F);
+        DoInputAttackPause(.25F);
+        body.velocity = Vector2.up - (FacingDirection * Vector2.right * 5F);
 
-            DoInputMovePause(.25F);
-            DoInputAttackPause(.25F);
-            body.velocity = Vector2.up - (FacingDirection * Vector2.right * 5F);
+        invTimer = Timer.Set(hurtDuration, () => {
+            isHurting = false;
+            animator.Renderer.color = Color.white;
+        });
 
-            invTimer = Timer.Set(hurtDuration, () => {
-                isHurting = false;
-                animator.Renderer.color = Color.white;
-            });
+        if (attackSequenceCoroutine != null)
+        {
+            StopCoroutine(attackSequenceCoroutine);
+            attackSequenceCoroutine = null;
+        }
 
-            if (attackSequenceCoroutine != null)
-            {
-                StopCoroutine(attackSequenceCoroutine);
-                attackSequenceCoroutine = null;
-            }
+        if (doAttackCoroutine != null)
+        {
+            StopCoroutine(doAttackCoroutine);
+            doAttackCoroutine = null;
+        }
 
-            if (doAttackCoroutine != null)
-            {
-                StopCoroutine(doAttackCoroutine);
-                doAttackCoroutine = null;
-            }
-
-            if(currentHealth <= 0)
-            {
-                //for now this is death
-                body.velocity = Vector2.zero;
-                StopAllCoroutines();
-                StartCoroutine(Die());
-            }
+        if(currentHealth <= 0)
+        {
+            //for now this is death
+            body.velocity = Vector2.zero;
+            StopAllCoroutines();
+            StartCoroutine(Die());
         }
     }
 

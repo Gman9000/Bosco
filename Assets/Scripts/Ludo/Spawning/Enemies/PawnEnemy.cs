@@ -31,8 +31,6 @@ public abstract class PawnEnemy : Pawn
     protected int currentHealth;                        // amount of health enemy currently has
 
     // COMPONENT REFERENCES
-    protected Rigidbody2D body;
-    protected BoxCollider2D boxCollider2D;
     protected SpriteRenderer sprite;
     protected SpriteAnimator anim;
     protected SpriteSimulator simulator;
@@ -78,8 +76,13 @@ public abstract class PawnEnemy : Pawn
     private bool atLedge;
 
 
-    void Awake()
+    override public void Awake()
     {
+        base.Awake();
+        collidableTags.Add("Ground");
+        collidableTags.Add("Hidden");
+        collidableTags.Add("TwoWayPlatform");
+        
         knockbackResetCondition = () => IsGrounded;
 
         states = new Dictionary<EState, System.Func<IEnumerator>>();
@@ -92,8 +95,6 @@ public abstract class PawnEnemy : Pawn
     {
         anim = GetComponentInChildren<SpriteAnimator>();
         simulator = GetComponentInChildren<SpriteSimulator>();
-        body = GetComponent<Rigidbody2D>();
-        boxCollider2D = GetComponent<BoxCollider2D>();
         sprite = GetComponentInChildren<SpriteRenderer>();
         currentHealth = maxHealth;
         _isGrounded = false;
@@ -123,11 +124,12 @@ public abstract class PawnEnemy : Pawn
         currentSequence = null;
         visionBox = new Rect(transform.position.x, transform.position.y, visionBoxSize.x, visionBoxSize.y);
 
-
-        SetState(EState.Idle);
+        if (states.ContainsKey(EState.Idle))
+            SetState(EState.Idle);
+        base.Start();
     }
 
-    public void Update()
+    override protected void Update()
     {
         // PRE-UPDATE LOGIC
         transform.rotation = new Quaternion(0F, facingDirection > 0 ? 0 : 180F, transform.rotation.z, transform.rotation.w);
@@ -154,7 +156,7 @@ public abstract class PawnEnemy : Pawn
                 {
                     currentKnockback = Vector2.zero;
                     stunTimer = Timer.Set(stunDuration, () => {
-                        if (PrimaryStateCondition() || playerAwarenessTimer)   // normal behavior loop
+                        if (PrimaryStateCondition())   // normal behavior loop
                         {   // this could be a problem if switching from a state not covered by this condition check
                             if (currentState != EState.Primary)
                             {
@@ -163,7 +165,7 @@ public abstract class PawnEnemy : Pawn
                             }
                             playerWasInView = true;
                         }
-                        else
+                        else if (states.ContainsKey(EState.Idle))
                         {
                             if (currentState != EState.Idle)    // this could be a problem if switching from a state not covered by this condition check
                             {
@@ -179,7 +181,7 @@ public abstract class PawnEnemy : Pawn
         }
         else if (!isStunned)
         {            
-            if (PrimaryStateCondition() || playerAwarenessTimer)
+            if (PrimaryStateCondition())
             {
                 if (currentState != EState.Primary)
                 {
@@ -188,7 +190,7 @@ public abstract class PawnEnemy : Pawn
                 }
                 playerWasInView = true;
             }
-            else
+            else if (states.ContainsKey(EState.Idle))
             {
                 if (currentState != EState.Idle)
                 {
@@ -203,36 +205,36 @@ public abstract class PawnEnemy : Pawn
         Debug.DrawLine(new Vector3(visionBox.x + visionBox.width, visionBox.y + visionBox.height), new Vector3(visionBox.x + visionBox.width, visionBox.y), Color.blue);
         Debug.DrawLine(new Vector3(visionBox.x + visionBox.width, visionBox.y + visionBox.height), new Vector3(visionBox.x, visionBox.y + visionBox.height), Color.blue);
 
-
-        PhysicsPass();
+        base.Update();
     }
 
-    protected bool PrimaryStateCondition() => visionBox.Contains(Player.Position) && states.ContainsKey(EState.Primary);
+    protected bool PrimaryStateCondition() => states.ContainsKey(EState.Primary) && (visionBox.Contains(Player.Position) || playerAwarenessTimer);
 
     protected void SetAware()
     {
         if (playerAwarenessTimer)
             playerAwarenessTimer.Cancel();
         playerAwarenessTimer = Timer.Set(playerAwarenessDuration, () => {
-            if (currentState != EState.Idle)
+            if (currentState != EState.Idle && states.ContainsKey(EState.Idle))
                 SetState(EState.Idle);
-                Debug.Log("ass");
         });
     }
 
-    private void PhysicsPass()
+    override protected void PhysicsPass()
     {
-        HitInfo groundCheck = boxCollider2D.IsGrounded(.99F, new[]{"Ground", "TwoWayPlatform", "Hidden"});
-        HitInfo upCheck = boxCollider2D.IsHittingCeiling(.8F);
-        HitInfo leftCheck = boxCollider2D.IsHittingLeft(1F);
-        HitInfo rightCheck = boxCollider2D.IsHittingRight(1F);
+        base.PhysicsPass();
+
+        HitInfo groundCheck = boxCollider.IsGrounded(1, collidableTags.ToArray());
+        HitInfo ceilingCheck = CeilingCheck(collidableTags);
+        HitInfo leftCheck = LeftCheck(collidableTags);
+        HitInfo rightCheck = RightCheck(collidableTags);
 
         if (ledgeDetector)
             atLedge = IsGrounded && !ledgeDetector.IsGrounded(1, new[]{"Ground", "TwoWayPlatform", "Hidden"});
 
         _contactLeft = leftCheck;
         _contactRight = rightCheck;
-        _contactUp = upCheck;
+        _contactUp = ceilingCheck;
         _isGrounded = groundCheck;
 
         float vx = body.velocity.x;
@@ -251,7 +253,9 @@ public abstract class PawnEnemy : Pawn
                 body.velocity = new Vector2(0, body.velocity.y);
 
             if (currentKnockback.x < 0)
-                currentKnockback.x /= -2F;
+            {
+                currentKnockback.x *= -.5F;
+            }
         }
 
         if (rightCheck)
@@ -259,15 +263,19 @@ public abstract class PawnEnemy : Pawn
             if (body.velocity.x > 0)
                 body.velocity = new Vector2(0, body.velocity.y);
             if (currentKnockback.x > 0)
-                currentKnockback.x /= -2F;
+            {
+                currentKnockback.x *= -.5F;
+            }
         }
 
-        if (upCheck)
+        if (ceilingCheck)
         {
             if (body.velocity.y > 0)
                 body.velocity = new Vector2(body.velocity.x, 0);
             if (currentKnockback.y > 0)
-                currentKnockback.y /= -2F;
+            {
+                currentKnockback.y *= -.5F;
+            }
         }
 
         if (groundCheck.layerName == "Ground")
@@ -276,18 +284,18 @@ public abstract class PawnEnemy : Pawn
                 body.velocity = new Vector2(body.velocity.x, 0);
 
             if (currentKnockback.y < 0)
-                currentKnockback.y /= 2F;
+                currentKnockback.y *= -.5F;
         }
 
         if (groundCheck.layerName == "TwoWayPlatform")
         {
-            if (usesRockwalls || !groundCheck.hit.collider.CompareTag("Rockwall"))
+            if (usesRockwalls || !groundCheck.collider.CompareTag("Rockwall"))
             {
                 if (body.velocity.y < 0)
                     body.velocity = new Vector2(body.velocity.x, 0);
 
                 if (currentKnockback.y < 0)
-                    currentKnockback.y /= 2F;
+                    currentKnockback.y *= -.5F;
             }
             else if (gameObject.layer == LayerMask.NameToLayer("Enemy"))    // if this object isn't supposed to colleide with rockwalls, temporarily change layer to ignore collision with it
             {
@@ -338,7 +346,6 @@ public abstract class PawnEnemy : Pawn
     public void SetState(EState stateID)
     {
         if (!gameObject.activeSelf)  return;
-        //Debug.Log("butthammer : " + stateID);
 
         if (currentSequence != null)
         {
@@ -346,17 +353,21 @@ public abstract class PawnEnemy : Pawn
             currentSequence = null;
         }
 
-
-        if (states.ContainsKey(stateID) && stateID != EState.None && currentHealth > 0)
+        
+        if (stateID != EState.None && currentHealth > 0)
         {
-            currentSequence = StartCoroutine(states[stateID]());
+            if (states.ContainsKey(stateID))
+                currentSequence = StartCoroutine(states[stateID]());
+            else
+                Debug.LogError("Cannot set Enemy State to " + stateID + ", as it has not been defined for this subclass");
         }
+
 
         currentState = stateID;
     }
 
-    public bool OnHurt(Vector2 force, int damage, float stunFactor)
-    {
+    public bool InflictDamage(Vector2 force, int damage, float stunFactor)
+    {        
         if (Invincible)  return false;          // ignore this call if the enemy is already invincible
 
         currentKnockback = GetKnockback(force * Mathf.Max(0, 10 - weight));
@@ -375,19 +386,22 @@ public abstract class PawnEnemy : Pawn
             return true;
         }
 
+        SetState(EState.None);      
         invTimer = Timer.Set(invincibilityTime);
         SetAware();
+        
 
         if (knockbackTimer != null && knockbackTimer.active)
+        {
             knockbackTimer.Cancel();
-
-        SetState(EState.None);
+        }
 
         knockbackTimer = Timer.Set(knockbackTime, () => {
             currentKnockback = Vector2.zero;
         });
 
-        OnHurt();
+
+        OnHurt();        
         return true;
     }
 
@@ -443,13 +457,13 @@ public abstract class PawnEnemy : Pawn
 
     private void OnTriggerStay2D(Collider2D other)
     {
-        if (other.CompareTag("PlayerTarget") && !Invincible)
+        if (other.CompareTag("PlayerTarget") && !Invincible && currentHealth > 0)
         {
-            Player.Instance.OnHurt();
+            Player.Instance.InflictDamage(1);
         }
     }
 
-    private void OnCollisionStay2D(Collision2D other)
+    override protected void OnCollisionStay2D(Collision2D other)
     {
         if (other.gameObject.CompareTag("Enemy"))
         {
@@ -459,14 +473,18 @@ public abstract class PawnEnemy : Pawn
                 separatorForce.x = Mathf.Sign(separatorForce.x) * 4;
             separatorForce.y = diff.y * 6.0F;
         }
+
+        base.OnCollisionStay2D(other);
     }
 
-    private void OnCollisionExit2D(Collision2D other)
+    override protected void OnCollisionExit2D(Collision2D other)
     {
         if (other.gameObject.CompareTag("Enemy"))
         {
             separatorForce = Vector2.zero;
         }
+
+        base.OnCollisionExit2D(other);
     }
 
     /*========================*\
@@ -494,8 +512,6 @@ public abstract class PawnEnemy : Pawn
         frictionActive = false;
         while (currentState == EState.Primary)
         {
-            if (_contactRight)
-            Debug.Log("gggg");
             facingDirection = (int)Mathf.Sign(Player.Position.x - transform.position.x);
             body.velocity = new Vector2(xSpeed * facingDirection, body.velocity.y);
             yield return new WaitForSeconds(updateDelay);   
@@ -547,10 +563,6 @@ public abstract class PawnEnemy : Pawn
                     onMove();
                 else if (onStill != null)
                     onStill();
-            }
-            else if (wasGrounded)
-            {
-                facingDirection = -facingDirection;
             }
 
             wasGrounded = IsGrounded;

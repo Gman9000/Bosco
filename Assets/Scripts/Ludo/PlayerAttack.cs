@@ -49,7 +49,7 @@ public class PlayerAttack : MonoBehaviour
         hitDirectionModified = Game.RestrictDiagonals(hitDirectionModified) * hitDirection.magnitude;
         Player.Instance.hittingEnemyScript = enemyCollider.GetComponentInChildren<PawnEnemy>();
 
-        bool attackSuccess = Player.Instance.hittingEnemyScript.OnHurt(hitDirectionModified, damage, stunFactor);
+        bool attackSuccess = Player.Instance.hittingEnemyScript.InflictDamage(hitDirectionModified, damage, stunFactor);
         if (attackSuccess)
         {
             Game.VertShake(2);

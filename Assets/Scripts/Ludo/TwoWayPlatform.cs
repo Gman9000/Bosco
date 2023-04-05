@@ -65,16 +65,16 @@ public class TwoWayPlatform : MonoBehaviour
 
         if (isRockwall)
         {
-            Physics2D.IgnoreCollision(Player.Instance.boxCollider2D, boxCollider, true);
+            Physics2D.IgnoreCollision(Player.Instance.boxCollider, boxCollider, true);
             if (rockwallCondition || playerOnPlatform)
             {
-                BoxCollider2D otherCollider = Player.Instance.boxCollider2D;
+                BoxCollider2D otherCollider = Player.Instance.boxCollider;
                 float myTop = boxCollider.Top();
                 float playerBottom = otherCollider.Bottom();
 
                 if (myTop <= playerBottom + Game.PIXEL)
                 {
-                    Physics2D.IgnoreCollision(Player.Instance.boxCollider2D, boxCollider, false);     
+                    Physics2D.IgnoreCollision(Player.Instance.boxCollider, boxCollider, false);     
                     
                 }
             }
@@ -82,7 +82,7 @@ public class TwoWayPlatform : MonoBehaviour
         
         if (playerOnPlatform && PlayerInput.Held(Button.Down) && PlayerInput.Pressed(Button.A))
         {
-            Physics2D.IgnoreCollision(Player.Instance.boxCollider2D, boxCollider, true);
+            Physics2D.IgnoreCollision(Player.Instance.boxCollider, boxCollider, true);
             StartCoroutine(EnableCollision());
         }
     }
@@ -92,7 +92,7 @@ public class TwoWayPlatform : MonoBehaviour
         pauseCollisionChanges = true;
         yield return new WaitForSeconds(FALLTHROUGH_TIME);
         if (!isRockwall)
-            Physics2D.IgnoreCollision(Player.Instance.boxCollider2D, boxCollider, false);
+            Physics2D.IgnoreCollision(Player.Instance.boxCollider, boxCollider, false);
         pauseCollisionChanges = false;
     }
 }

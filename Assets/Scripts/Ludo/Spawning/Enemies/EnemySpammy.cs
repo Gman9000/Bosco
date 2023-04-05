@@ -23,7 +23,9 @@ public class EnemySpammy : PawnEnemy
 
     override protected IEnumerator DeathSequence()
     {
+        body.velocity = Vector2.zero;
         anim.Play(AnimMode.Looped, "hurt");
+        atkbox.SetActive(false);
         yield return base.DeathSequence();
     }
 

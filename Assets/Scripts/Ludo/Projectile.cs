@@ -6,6 +6,7 @@ public class Projectile : MonoBehaviour
 {
     private GameObject targetLocation;
     public float speed;
+    public int damage = 1;
     private Vector3 dirToPlayer;
     private Rigidbody2D theRB;
 
@@ -33,7 +34,7 @@ public class Projectile : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            Player.Instance.OnHurt();
+            Player.Instance.InflictDamage(damage);
             Destroy(this.gameObject);
         }
     }
