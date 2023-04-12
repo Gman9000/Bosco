@@ -81,7 +81,6 @@ public class Game : MonoBehaviour
         else
         {
             gameStarted = true;
-            HUD.Instance.renderers["Bosco Sprite"].gameObject.SetActive(false);
             HideTitle();
         }
 
@@ -93,6 +92,7 @@ public class Game : MonoBehaviour
             scanlines[i] = new List<SpriteSimulator>();
 
         Time.timeScale = 1;
+        SkitRunner.Init();
     }
 
     public static void Reset()
@@ -119,7 +119,7 @@ public class Game : MonoBehaviour
     {
         if (HUD.Instance)
         {
-            HUD.Instance.renderers["Title"].enabled = true;
+            //HUD.Instance.renderers["Title"].enabled = true;
             HUD.Write("\n\n\n\n\n\n\n     PRESS START!");
         }
     }
@@ -128,9 +128,9 @@ public class Game : MonoBehaviour
     {
         if (HUD.Instance)
         {
-            HUD.Instance.renderers["Title"].enabled = false;
+            /*HUD.Instance.renderers["Title"].enabled = false;
             HUD.Instance.texts["Credits"].gameObject.SetActive(false);
-            HUD.Instance.renderers["Bosco Sprite"].enabled = false;
+            HUD.Instance.renderers["Bosco Sprite"].enabled = false;*/
             HUD.Write(null);
         }
     }
@@ -147,6 +147,10 @@ public class Game : MonoBehaviour
         Time.timeScale = 0;        
         HUD.Write("\n\n\n\n\n      -paused-\n\n (Press R to reset)");
         SoundSystem.Pause();
+
+
+        // temp
+        SkitRunner.active = true;
     }
 
     public static void Unpause()
@@ -161,6 +165,9 @@ public class Game : MonoBehaviour
         Time.timeScale = 1.0F;
         HUD.Write(null);
         SoundSystem.Unpause();
+
+        // temp
+        SkitRunner.active = false;
     }
 
     public static void FreezeFrame(float secondsToWait, System.Action onResume)
@@ -185,17 +192,17 @@ public class Game : MonoBehaviour
     {
         if (HUD.Instance)
         {
-            HUD.Instance.texts["Credits"].gameObject.SetActive(false);
-            HUD.Instance.texts["Main Text Layer"].text = "\n\n\n\n\n\n\n      LET'S GO!!";
+            /*HUD.Instance.texts["Credits"].gameObject.SetActive(false);
+            HUD.Instance.texts["Main Text Layer"].text = "\n\n\n\n\n\n\n      LET'S GO!!";*/
         
 
             for (int i = 0; i < 16; i++)
             {
-                HUD.Instance.texts["Main Text Layer"].enabled = !HUD.Instance.texts["Main Text Layer"].enabled;
+                //HUD.Instance.texts["Main Text Layer"].enabled = !HUD.Instance.texts["Main Text Layer"].enabled;
                 yield return new WaitForSeconds(.044F);
             }
 
-            HUD.Instance.texts["Main Text Layer"].enabled = false;
+            //HUD.Instance.texts["Main Text Layer"].enabled = false;
         }
 
         yield return new WaitForSeconds(.15F);
@@ -203,7 +210,7 @@ public class Game : MonoBehaviour
 
         if (HUD.Instance)
         {
-            HUD.Instance.renderers["Bosco Sprite"].GetComponentInChildren<SpriteAnimator>().Play(AnimMode.Looped, "run");
+            /*HUD.Instance.renderers["Bosco Sprite"].GetComponentInChildren<SpriteAnimator>().Play(AnimMode.Looped, "run");
             while (Mathf.Abs(HUD.Instance.renderers["Bosco Sprite"].transform.localPosition.x) < WIDTH * PIXEL * .75F)
             {
                 HUD.Instance.renderers["Bosco Sprite"].transform.position += Vector3.right * PIXEL * 4;
@@ -211,7 +218,7 @@ public class Game : MonoBehaviour
             }
 
             if (HUD.Instance)
-                HUD.Instance.renderers["Bosco Sprite"].gameObject.SetActive(false);
+                HUD.Instance.renderers["Bosco Sprite"].gameObject.SetActive(false);*/
         }
         yield return new WaitForSeconds(1);
 
@@ -294,7 +301,7 @@ public class Game : MonoBehaviour
                 StartCoroutine(GameGo());   
                 transitiontoGame = true;             
             }
-            if (HUD.Instance)
+            /*if (HUD.Instance)
                 HUD.Instance.texts["Main Text Layer"].enabled = Time.time % 1F > .5F;
 
             string[] credit = new[]{
@@ -306,7 +313,7 @@ public class Game : MonoBehaviour
             };
 
             if (HUD.Instance)
-                HUD.Instance.texts["Credits"].text = credit[(int)(Time.time / 3) % 5];
+                HUD.Instance.texts["Credits"].text = credit[(int)(Time.time / 3) % 5];*/
 
             return;
         }

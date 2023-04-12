@@ -484,12 +484,7 @@ public class Player : Pawn
     void FixedUpdate()
     {
         if (invTimer)
-        {
             animator.Renderer.color = animator.Renderer.color.a == 0 ? Color.white : new Color(0,0,0,0);
-        }
-
-        if (HUD.Instance)
-            HUD.Instance.Flash(animator.Renderer.color.a == 1, "Main Text Layer", "BG");
 
         Game.debugText = "HP: " + Hp;
     }
