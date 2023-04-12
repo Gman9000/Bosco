@@ -61,7 +61,7 @@ public class HUD : MonoBehaviour
 
             texts["Dialogue Text"].enabled = true;
 
-            if (PlayerInput.Pressed(Button.B))      // skip dialogue
+            if (PlayerInput.Pressed(Button.A) || PlayerInput.Pressed(Button.B) )      // skip dialogue
                 SkitRunner.currentSkit.currentBeat.complete = true;
         }
         else
