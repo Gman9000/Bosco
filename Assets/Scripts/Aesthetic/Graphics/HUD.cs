@@ -48,9 +48,7 @@ public class HUD : MonoBehaviour
     {
         if (PlayerInput.Pressed(Button.Select))
         {
-            SkitRunner.active = true;
-            if (skitCoroutine == null)
-                skitCoroutine = StartCoroutine(SkitRunner.BeginSkit("Template"));
+            PerformSkit("Template");
         }
 
         if (SkitRunner.active)
@@ -79,6 +77,13 @@ public class HUD : MonoBehaviour
                 skitCoroutine = null;
             }
         }
+    }
+
+    public static void PerformSkit(string skitName)
+    {
+        SkitRunner.active = true;
+        if (Instance.skitCoroutine == null)
+            Instance.skitCoroutine = Instance.StartCoroutine(SkitRunner.BeginSkit(skitName));
     }
 
     public static void Write(string str)
