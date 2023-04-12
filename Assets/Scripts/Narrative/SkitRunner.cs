@@ -75,7 +75,7 @@ static public class SkitRunner
         data.beats[1].beatType = SkitBeatType.Dialogue;
         data.beats[1].readDelay = 2;
         data.beats[1].characterID = "Herringer";
-        data.beats[1].text = "That enchantment they sense,\nat places of grand importance,\nare creatures known as...";
+        data.beats[1].text = "That enchantment they sense,\nin places of grand importance,\nare creatures known as...";
 
         data.beats[2] = new SkitBeatData();
         data.beats[2].beatType = SkitBeatType.Dialogue;
