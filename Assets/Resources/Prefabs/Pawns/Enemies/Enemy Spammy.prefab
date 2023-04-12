@@ -139,21 +139,21 @@ MonoBehaviour:
     delay: 0.22
     startFrame: 0
     endFrame: -1
-    offset: {x: 0, y: 0}
+    offset: {x: 4, y: 0}
     celSize: {x: 24, y: 16}
   - name: attack
     sheet: {fileID: 2800000, guid: 282c0701e1be4e34ba89dad9fc2531d7, type: 3}
     delay: 0.03
     startFrame: 0
     endFrame: -1
-    offset: {x: 0, y: 0}
+    offset: {x: 4, y: 0}
     celSize: {x: 24, y: 24}
   - name: hurt
     sheet: {fileID: 2800000, guid: fe0970b59faf0ae458a0dbe36fcdc1cf, type: 3}
     delay: 0.05
     startFrame: 0
     endFrame: -1
-    offset: {x: 0, y: 0}
+    offset: {x: 4, y: 0}
     celSize: {x: 24, y: 16}
   defaultAnimation: walkk
   indexOffset: 0
@@ -191,7 +191,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.25, y: -0.125}
+  m_Offset: {x: 0, y: -0.125}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -351,6 +351,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e4b7c827126a1d4eac6da17951d8198, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damage: 1
 --- !u!61 &4702714128799050037
 BoxCollider2D:
   m_ObjectHideFlags: 0
