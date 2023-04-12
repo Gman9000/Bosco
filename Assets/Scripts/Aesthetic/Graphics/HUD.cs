@@ -62,6 +62,6 @@ public class HUD : MonoBehaviour
     {
         TMPro.TMP_Text txt = Instance.texts["Main Text Layer"];
         txt.text = str;
-        txt.enabled = str != null && str.Length > 0;        
+        txt.enabled = str != null && str.Length > 0;
     }
 }

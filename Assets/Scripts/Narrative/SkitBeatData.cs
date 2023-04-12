@@ -6,7 +6,7 @@ using System.Xml.Serialization;
 
 public enum SkitBeatType {Dialogue, Camera, PawnCall, ChoicePrompt}
 
-[XmlRoot]
+[XmlRoot("beat")]
 public class SkitBeatData
 {
     [XmlAttribute]
@@ -22,7 +22,7 @@ public class SkitBeatData
     public int emote;
 
     [XmlAttribute]
-    public float readDelay = 1.0F;
+    public float readDelay = Game.FRAME_TIME * 2;
 
     // xml end
 
@@ -32,7 +32,7 @@ public class SkitBeatData
 
     private string outputRichText = "";
 
-    public virtual IEnumerator Execute()
+    public IEnumerator Execute()
     {
         complete = false;
 
@@ -41,9 +41,9 @@ public class SkitBeatData
             case SkitBeatType.Dialogue:
                 for (int c = 0; c < text.Length; c++)
                 {
-                    outputRichText = text.Substring(0, c);
+                    outputRichText = text.Substring(0, c+1);
                     outputRichText += "<color=#00000000>";
-                    outputRichText += text.Substring(c);
+                    outputRichText += text.Substring(c+1);
                     outputRichText += "</color>";
                     SkitRunner.DialogueWrite(characterID, outputRichText);
                     yield return new WaitForSeconds(readDelay);
@@ -66,6 +66,7 @@ public class SkitBeatData
                 break;
         }
 
+        yield return null;
         complete = true;
         yield break;
     }

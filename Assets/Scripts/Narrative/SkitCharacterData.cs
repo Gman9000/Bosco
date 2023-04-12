@@ -4,7 +4,7 @@ using UnityEngine;
 using System.Xml;
 using System.Xml.Serialization;
 
-[XmlRoot]
+[XmlRoot("character")]
 public class SkitCharacterData
 {
     [XmlAttribute]
@@ -16,5 +16,5 @@ public class SkitCharacterData
     [XmlAttribute]
     public string color;
 
-    public string uniquePath => "pathgoeshere/" + id + "/";
+    public string uniquePath => Application.dataPath + "/Gamedata/Characters/" + id + "/";
 }

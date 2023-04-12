@@ -4,7 +4,7 @@ using UnityEngine;
 using System.Xml;
 using System.Xml.Serialization;
 
-[XmlRoot]
+[XmlRoot("skit")]
 public class SkitData
 {
     [XmlArray]
@@ -14,7 +14,7 @@ public class SkitData
     public string id;
     public IEnumerator ReadBeats()
     {
-        for (int i = 9; i < beats.Length; i++)
+        for (int i = 0; i < beats.Length; i++)
         {
             yield return beats[i].Execute();
             if (beats[i].beatType == SkitBeatType.Dialogue || beats[i].beatType == SkitBeatType.ChoicePrompt)

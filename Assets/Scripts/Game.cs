@@ -49,6 +49,9 @@ public class Game : MonoBehaviour
     public static object debugText;
 
 
+    private Coroutine skitCoroutine;
+
+
     /*================*\
     |*  LOCAL FIELDS  *|
     \*================*/
@@ -84,6 +87,8 @@ public class Game : MonoBehaviour
             HideTitle();
         }
 
+        skitCoroutine = null;
+
         isPaused = false;
         _isFreezeFraming = false;
         scanlines = new List<SpriteSimulator>[(int)Mathf.RoundToInt(HEIGHT / 16.0F)];
@@ -93,6 +98,8 @@ public class Game : MonoBehaviour
 
         Time.timeScale = 1;
         SkitRunner.Init();
+
+        SkitRunner.active = true;
     }
 
     public static void Reset()
@@ -147,10 +154,6 @@ public class Game : MonoBehaviour
         Time.timeScale = 0;        
         HUD.Write("\n\n\n\n\n      -paused-\n\n (Press R to reset)");
         SoundSystem.Pause();
-
-
-        // temp
-        SkitRunner.active = true;
     }
 
     public static void Unpause()
@@ -158,9 +161,7 @@ public class Game : MonoBehaviour
         if (!isPaused)   return;
         isPaused = false;
         foreach (SpriteSimulator sim in simulatedSprites)
-        {
             sim.Flash(true);
-        }
 
         Time.timeScale = 1.0F;
         HUD.Write(null);
@@ -192,34 +193,12 @@ public class Game : MonoBehaviour
     {
         if (HUD.Instance)
         {
-            /*HUD.Instance.texts["Credits"].gameObject.SetActive(false);
-            HUD.Instance.texts["Main Text Layer"].text = "\n\n\n\n\n\n\n      LET'S GO!!";*/
-        
-
             for (int i = 0; i < 16; i++)
             {
-                //HUD.Instance.texts["Main Text Layer"].enabled = !HUD.Instance.texts["Main Text Layer"].enabled;
                 yield return new WaitForSeconds(.044F);
-            }
-
-            //HUD.Instance.texts["Main Text Layer"].enabled = false;
+            }           
         }
 
-        yield return new WaitForSeconds(.15F);
-
-
-        if (HUD.Instance)
-        {
-            /*HUD.Instance.renderers["Bosco Sprite"].GetComponentInChildren<SpriteAnimator>().Play(AnimMode.Looped, "run");
-            while (Mathf.Abs(HUD.Instance.renderers["Bosco Sprite"].transform.localPosition.x) < WIDTH * PIXEL * .75F)
-            {
-                HUD.Instance.renderers["Bosco Sprite"].transform.position += Vector3.right * PIXEL * 4;
-                yield return new WaitForFixedUpdate();
-            }
-
-            if (HUD.Instance)
-                HUD.Instance.renderers["Bosco Sprite"].gameObject.SetActive(false);*/
-        }
         yield return new WaitForSeconds(1);
 
         gameStarted = true;
@@ -230,6 +209,11 @@ public class Game : MonoBehaviour
 
     void FixedUpdate()
     {
+
+
+
+
+
         if (Player.Position.x > 100)
         {
             SoundSystem.DoFade(.01F);
@@ -285,6 +269,18 @@ public class Game : MonoBehaviour
 
 
         fixedUpdateCounter++;
+
+
+
+        
+
+        if (PlayerInput.Pressed(Button.Select))
+        {
+            SkitRunner.active = true;
+            if (skitCoroutine == null)
+                skitCoroutine = StartCoroutine(SkitRunner.BeginSkit("Template"));
+        }
+
     }
 
     void Update()

@@ -13,7 +13,6 @@ static public class SkitRunner
     static public Dictionary<string, SkitCharacterData> characters;
     static public Dictionary<string, SkitData> skits;
     static public SkitData currentSkit;
-    static private Coroutine skitCoroutine;
     static private TMP_Text dialogueObject;
 
 
@@ -21,7 +20,6 @@ static public class SkitRunner
     {
         ReadCharacterDataAll();
         ReadSkitDataAll();
-        skitCoroutine = null;
         active = false;
         
         dialogueObject = HUD.Instance.texts["Dialogue Text"];
@@ -34,6 +32,7 @@ static public class SkitRunner
 
     static public void ReadCharacterDataAll()
     {
+        characters = new Dictionary<string, SkitCharacterData>();
         // todo: read all character data from xml
         
         // todo: put them all in a dictionary
@@ -41,9 +40,27 @@ static public class SkitRunner
 
     static public void ReadSkitDataAll()
     {
-        // todo: read all skit data from xml
+        skits = new Dictionary<string, SkitData>();
 
-        // todo: put them all in a dictionary
+        DirectoryInfo info = new DirectoryInfo(Application.dataPath + "/Gamedata/Skits/");
+        FileInfo[] files = info.GetFiles("*.skit");
+
+        string[] skitFilePaths = Directory.GetFiles(Application.dataPath + "/Gamedata/Skits/");
+        foreach (string skitFilePath in skitFilePaths)
+        {
+            for (int i = 0; i < files.Length; i++)
+            {
+                FileStream fs = files[i].OpenRead();
+                XmlSerializer serializer = new XmlSerializer(typeof(SkitData));
+                SkitData skitData = serializer.Deserialize(fs) as SkitData;
+                fs.Close();
+                if (skits.ContainsKey(skitData.id))
+                    skits.Remove(skitData.id);
+                skits.Add(skitData.id, skitData);
+            }
+        }
+
+        Debug.Log(skits["Template"].beats.Length);
     }
 
     static public void GenerateTemplate()
@@ -73,22 +90,17 @@ static public class SkitRunner
         data.beats[3].text = "May your path meet an end;\nAnd may your arm stay noble.\n- Herringer ca.525";
 
 
-        string pth = Application.dataPath + "/Skits/Template.skit";
+        string pth = Application.dataPath + "/Gamedata/Skits/Template.skit";
         XmlSerializer serializer = new XmlSerializer(typeof(SkitData));
         FileStream fs = new FileStream(pth, FileMode.Create);
         serializer.Serialize(fs, data);
         fs.Close();
     }
 
-    static public void BeginSkit(string skitID)
+    static public IEnumerator BeginSkit(string skitID)
     {
-        // TODO: Actually have data to read, otherwise it'll bust
-
-
         currentSkit = skits[skitID];
-        if (skitCoroutine == null)
-            Game.Instance.StopCoroutine(skitCoroutine);
-        skitCoroutine = Game.Instance.StartCoroutine(currentSkit.ReadBeats());
+        return currentSkit.ReadBeats();
     }
 
     static public void DialogueWrite(string characterID, string richtext)
