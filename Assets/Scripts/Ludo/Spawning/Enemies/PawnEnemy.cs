@@ -139,7 +139,8 @@ public abstract class PawnEnemy : Pawn
         if (Pawn.skitMode)
         {
             SetState(EState.None);
-            playerAwarenessTimer.Cancel();
+            if (playerAwarenessTimer)
+                playerAwarenessTimer.Cancel();
             playerWasInView = true;
             body.velocity = Vector2.zero;
             // tofo: handle skits
