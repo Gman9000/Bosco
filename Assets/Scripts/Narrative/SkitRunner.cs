@@ -69,7 +69,7 @@ static public class SkitRunner
         data.beats[0].beatType = SkitBeatType.Dialogue;
         data.beats[0].readDelay = 2;
         data.beats[0].characterID = "Herringer";
-        data.beats[0].text = "Items the living deem sacred,\nare cradled by beings unseen,\nthough not unfelt. ";
+        data.beats[0].text = "Items deemed sacred by the living,\nare cradled by beings unseen,\nthough not unfelt. ";
         
         data.beats[1] = new SkitBeatData();
         data.beats[1].beatType = SkitBeatType.Dialogue;
