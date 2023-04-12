@@ -51,7 +51,7 @@ public class SkitBeatData
                     outputRichText += "<color=#00000000>";
                     outputRichText += text.Substring(c+1);
                     outputRichText += "</color>";
-                    
+
                     if (complete)
                     {
                         SkitRunner.DialogueWrite(characterID, text);
@@ -66,7 +66,7 @@ public class SkitBeatData
                             {
                                 yield return new WaitForSeconds(readDelay * Game.FRAME_TIME * 5);     // extra delay
                             }
-                            else if (text[c] == ',' || text[c] == '.' || text[c] == ':' || text[c] == '?' || text[c] == '!')    // handle punctuation
+                            else if (text[c] == ',' || text[c] == '.' || text[c] == ':' || text[c] == ';' || text[c] == '?' || text[c] == '!')    // handle punctuation
                             {
                                 yield return new WaitForSeconds(readDelay * Game.FRAME_TIME * 5);     // extra delay
                             }
