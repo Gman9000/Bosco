@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <skit xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Template">
   <beats>
-    <SkitBeatData beatType="Dialogue" text="Items the living deem sacred,&#xA;are cradled by beings unseen,&#xA;yet not unfelt. " characterID="Herringer" emote="0" readDelay="2" punctuationPause="true" skippable="true">
+    <SkitBeatData beatType="Dialogue" text="Items the living deem sacred,&#xA;are cradled by beings unseen,&#xA;though not unfelt. " characterID="Herringer" emote="0" readDelay="2" punctuationPause="true" skippable="true">
       <complete>false</complete>
     </SkitBeatData>
-    <SkitBeatData beatType="Dialogue" text="That enchantment they sense,&#xA;at places of grand importance,&#xA;are creatures known as..." characterID="Herringer" emote="0" readDelay="2" punctuationPause="true" skippable="true">
+    <SkitBeatData beatType="Dialogue" text="That enchantment they sense,&#xA;in places of grand importance,&#xA;are creatures known as..." characterID="Herringer" emote="0" readDelay="2" punctuationPause="true" skippable="true">
       <complete>false</complete>
     </SkitBeatData>
     <SkitBeatData beatType="Dialogue" text="WISPS." characterID="Herringer" emote="0" readDelay="2" punctuationPause="true" skippable="true">
