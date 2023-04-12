@@ -4,7 +4,8 @@ using UnityEngine;
 
 public abstract class Pawn : MonoBehaviour
 {
-    protected Rect spawnerBounds;
+    static public bool skitMode = false;
+    protected Rect spawnerBounds;    
     public void SetBounds(Rect rect) => spawnerBounds = rect;
 
     protected List<Collider2D> hits;
@@ -32,11 +33,18 @@ public abstract class Pawn : MonoBehaviour
         hitsRight = new List<HitInfo>();
     }
 
-    protected virtual void Update()
+    private void Update()
     {
         if (Game.isPaused)  return;
 
         PhysicsPass();
+
+        ActionUpdate();
+    }
+
+    protected virtual void ActionUpdate()
+    {
+
     }
 
     protected virtual void PhysicsPass()

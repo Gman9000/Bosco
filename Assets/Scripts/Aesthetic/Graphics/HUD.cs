@@ -9,7 +9,7 @@ public class HUD : MonoBehaviour
     [HideInInspector] public Dictionary<string, TMPro.TMP_Text> texts = new Dictionary<string, TMPro.TMP_Text>();
 
     private bool flash;
-    private bool dialogueMode;
+    private Coroutine skitCoroutine;
 
     void Awake()
     {
@@ -36,7 +36,7 @@ public class HUD : MonoBehaviour
     void Start()
     {
         flash = true;
-        dialogueMode = false;
+        skitCoroutine = null;
     }
 
     void FixedUpdate()
@@ -46,15 +46,38 @@ public class HUD : MonoBehaviour
 
     void Update()
     {
+        if (PlayerInput.Pressed(Button.Select))
+        {
+            SkitRunner.active = true;
+            if (skitCoroutine == null)
+                skitCoroutine = StartCoroutine(SkitRunner.BeginSkit("Template"));
+        }
+
         if (SkitRunner.active)
         {
+            Pawn.skitMode = true;
             renderers["Dialogue Box"].enabled = true;            
-            texts["Dialogue Text"].enabled = true;            
+            renderers["Name Box"].enabled = true; 
+
+            texts["Dialogue Text"].enabled = true;
+
+            if (PlayerInput.Pressed(Button.B))      // skip dialogue
+                SkitRunner.currentSkit.currentBeat.complete = true;
         }
         else
-        {
+        { 
+            Pawn.skitMode = false;
+
             renderers["Dialogue Box"].enabled = false;
+            renderers["Name Box"].enabled = false;
+
             texts["Dialogue Text"].enabled = false;
+
+            if (skitCoroutine != null)
+            {
+                StopCoroutine(skitCoroutine);
+                skitCoroutine = null;
+            }
         }
     }
 

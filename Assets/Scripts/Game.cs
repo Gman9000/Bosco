@@ -25,7 +25,6 @@ public class Game : MonoBehaviour
     |*  INSPECTOR VARIABLES  *|
     \*=======================*/
 
-    public bool doTitle = false;
 
     /*=================*\
     |*  STATIC FIELDS  *|
@@ -49,9 +48,6 @@ public class Game : MonoBehaviour
     public static object debugText;
 
 
-    private Coroutine skitCoroutine;
-
-
     /*================*\
     |*  LOCAL FIELDS  *|
     \*================*/
@@ -68,26 +64,15 @@ public class Game : MonoBehaviour
     }
 
     void Start()
-    {
+    {       
         Awake();
         litCandlesCount = 0;
         lives = 3;
         _unpausedRealtime = 0;
         Timer.AllTimersInit();
+        Pawn.skitMode = false;
 
-        if (doTitle)
-        {
-            gameStarted = false;
-            ShowTitle();
-            transitiontoGame = false;
-        }
-        else
-        {
-            gameStarted = true;
-            HideTitle();
-        }
-
-        skitCoroutine = null;
+        gameStarted = true;
 
         isPaused = false;
         _isFreezeFraming = false;
@@ -98,8 +83,6 @@ public class Game : MonoBehaviour
 
         Time.timeScale = 1;
         SkitRunner.Init();
-
-        SkitRunner.active = true;
     }
 
     public static void Reset()
@@ -120,26 +103,6 @@ public class Game : MonoBehaviour
         style.fontSize = 108;
         style.normal.textColor = Color.green;
         GUI.Label(new Rect(0, 0, 200, 100), "" + debugText, style);
-    }
-
-    public void ShowTitle()
-    {
-        if (HUD.Instance)
-        {
-            //HUD.Instance.renderers["Title"].enabled = true;
-            HUD.Write("\n\n\n\n\n\n\n     PRESS START!");
-        }
-    }
-
-    public void HideTitle()
-    {
-        if (HUD.Instance)
-        {
-            /*HUD.Instance.renderers["Title"].enabled = false;
-            HUD.Instance.texts["Credits"].gameObject.SetActive(false);
-            HUD.Instance.renderers["Bosco Sprite"].enabled = false;*/
-            HUD.Write(null);
-        }
     }
 
     public static void Pause()
@@ -203,22 +166,15 @@ public class Game : MonoBehaviour
 
         gameStarted = true;
         SoundSystem.PlayBgm(SoundSystem.Instance.defaultSong, SoundSystem.Instance.defaultSongLoopPoint, true);
-        HideTitle();
         yield break;
     }
 
     void FixedUpdate()
     {
-
-
-
-
-
         if (Player.Position.x > 100)
         {
             SoundSystem.DoFade(.01F);
         }
-
 
         // scanline logic
         for (int i = 0; i < scanlines.Length; i++)
@@ -269,18 +225,6 @@ public class Game : MonoBehaviour
 
 
         fixedUpdateCounter++;
-
-
-
-        
-
-        if (PlayerInput.Pressed(Button.Select))
-        {
-            SkitRunner.active = true;
-            if (skitCoroutine == null)
-                skitCoroutine = StartCoroutine(SkitRunner.BeginSkit("Template"));
-        }
-
     }
 
     void Update()
