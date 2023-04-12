@@ -8,7 +8,9 @@ public enum PState {Unassigned,
 Jump, Fall, 
 G_AtkSide1, G_AtkSide2, G_AtkTwist, G_AtkUp, G_AtkLow,
 A_AtkUp, A_AtkSide, A_AtkDown, A_AtkNeutral,
-G_Rockclimb, G_RockclimbShimmy
+G_Rockclimb, G_RockclimbShimmy,
+LadderIdle, LadderMove,
+FenceIdle, FenceMove,
 }
 
 public class Player : Pawn
@@ -46,6 +48,7 @@ public class Player : Pawn
     public float hurtDuration = 1.2F;
 
     private PState _state;
+    private PState lastState;
     private string animationOverride;
 
     public PState state {
@@ -129,6 +132,13 @@ public class Player : Pawn
     [HideInInspector]public PawnEnemy hittingEnemyScript;
     private Timer stopRunningTimer;
 
+
+    public bool climbMode => state == PState.FenceIdle || state == PState.FenceMove ||
+        state == PState.LadderIdle || state == PState.LadderMove;
+    bool canLadder;
+    bool canFence;
+    float ladderX;
+
     [HideInInspector]public bool onRockwall;
 
     override public void Awake()
@@ -144,6 +154,9 @@ public class Player : Pawn
     override public void Start()
     {
         base.Start();
+        lastState = PState.Unassigned;
+        canLadder = false;
+        canFence = false;
         currentHealth = maxHealth;
         checkpoint = this.gameObject.transform.position;
         Instance = this;
@@ -263,7 +276,7 @@ public class Player : Pawn
                 body.velocity = new Vector2(body.velocity.x, 0);
             }
         }
-        else    // not grounded
+        else if (!climbMode)   // not grounded
         {
             if (body.velocity.y < 0 && state != PState.A_AtkDown)
                 state = PState.Fall;
@@ -290,6 +303,68 @@ public class Player : Pawn
         }
         else
         {
+            if (PlayerInput.Held(Button.Up) || PlayerInput.Held(Button.Down))
+            {
+                if (canLadder)
+                {
+                    state = PState.LadderIdle;
+                    Debug.Log("WE CAN LADDER");
+                    if (lastState != PState.LadderIdle)
+                    {
+                        transform.position = new Vector3(ladderX, transform.position.y, transform.position.z);
+                        //body.MovePosition(new Vector2(ladderX, body.position.y));
+                    }
+                }
+                else if (canFence)
+                {
+                    Debug.Log("WE CAN FENCE");
+                    state = PState.FenceIdle;
+                }
+            }
+            if (state == PState.LadderIdle || state == PState.LadderMove)
+            {
+                body.gravityScale = 0f;
+                body.velocity = new Vector2(0f, 0f);
+                state = PState.LadderIdle;
+                if (PlayerInput.Held(Button.Up))
+                {
+                    state = PState.LadderMove;
+                    body.velocity = new Vector2(0f, moveSpeed);
+                }
+                if (PlayerInput.Held(Button.Down))
+                {
+                    state = PState.LadderMove;
+                    body.velocity = new Vector2(0f, -moveSpeed);
+                }
+                if (!canLadder)
+                {
+                    state = PState.Unassigned;
+                    body.gravityScale = originalGravityScale;
+                }
+            }
+
+            if (state == PState.FenceIdle || state == PState.FenceMove)
+            {
+                body.gravityScale = 0f;
+                body.velocity = new Vector2(body.velocity.x, 0f);
+                state = PState.FenceIdle;
+                if (PlayerInput.Held(Button.Up))
+                {
+                    state = PState.FenceMove;
+                    body.velocity = new Vector2(body.velocity.x, moveSpeed);
+                }
+                if (PlayerInput.Held(Button.Down))
+                {
+                    state = PState.FenceMove;
+                    body.velocity = new Vector2(body.velocity.x, -moveSpeed);
+                }
+                if (!canFence)
+                {
+                    state = PState.Unassigned;
+                    body.gravityScale = originalGravityScale;
+                }
+            }
+
             if (_isGrounded &&
             ((PlayerInput.DidDoubleTap(Button.Left) && body.velocity.x < 0) ||
             (PlayerInput.DidDoubleTap(Button.Right) && body.velocity.x > 0)))
@@ -388,6 +463,8 @@ public class Player : Pawn
 
         if (currentHealth > 0)
             Animate();
+
+        lastState = state;
     }
 
     public void ApplyStopFriction(float multiplier)
@@ -422,6 +499,15 @@ public class Player : Pawn
 
     void SetStateFromHorizontal()
     {
+        if (climbMode)
+        {
+            Debug.Log("CLIMB MODE");
+            if (IsAttackState())
+            {
+                Debug.Log("ATTACK STATE");
+                state = canLadder ? PState.LadderIdle : PState.FenceIdle;
+            }
+        }
         if (body.velocity.x == 0)
         {
             state = PState.Idle;
@@ -640,6 +726,7 @@ public class Player : Pawn
 
     private void AttackInputs()
     {
+        if (climbMode) return;
         if (PlayerInput.Pressed(Button.B))
         {
             if (!PhysicsPaused && !inputAttackPaused)
@@ -931,6 +1018,16 @@ public class Player : Pawn
 
     private void OnTriggerEnter2D(Collider2D other)
     {
+        if (other.CompareTag("Ladder"))
+        {
+            canLadder = true;
+            ladderX = other.bounds.center.x;
+        }
+        if (other.CompareTag("Fence"))
+        {
+            canFence = true;
+        }
+
         if (other.CompareTag("Reset"))
         {
             this.gameObject.transform.position = checkpoint;
@@ -948,9 +1045,29 @@ public class Player : Pawn
 
     private void OnTriggerStay2D(Collider2D other)
     {
+        if (other.CompareTag("Ladder"))
+        {
+            canLadder = true;
+            ladderX = other.bounds.center.x;
+        }
+        if (other.CompareTag("Fence"))
+        {
+            canFence = true;
+        }
         if (other.gameObject.CompareTag("Door") && PlayerInput.Held(Button.Up) && CandleHandler.canUseDoor)
         {
             transform.position = new Vector3(199.5F, 100, transform.position.z);
+        }
+    }
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.CompareTag("Ladder"))
+        {
+            canLadder = false;
+        }
+        if (other.CompareTag("Fence"))
+        {
+            canFence = false;
         }
     }
 
