@@ -201,8 +201,19 @@ public class Player : Pawn
         animator.SetVisible(true);
     }
 
-    override protected void Update()
+    override protected void ActionUpdate()
     {
+        if (skitMode)
+        {
+            ApplyStopFriction(stopFriction);
+            state = PState.Idle;
+            body.gravityScale = originalGravityScale;
+            
+            Animate();
+            
+            return;
+        }
+
         if (!Game.gameStarted)  return;
         
         if (PlayerInput.Pressed(Button.Start))
@@ -212,10 +223,7 @@ public class Player : Pawn
             else
                 Game.Pause();
         }
-        if (Game.isPaused)  return;
-
-        base.Update();
-        
+        if (Game.isPaused)  return;        
 
 
         if (aimMode)
@@ -241,7 +249,6 @@ public class Player : Pawn
                 _isGrounded = false;
         }
         
-        //GMAN REMEMBER TO COMMENT THIS LATER
         if (_isGrounded && groundCheck.layerName == "TwoWayPlatform" && !wasGrounded)
         {
             float feetY = boxCollider.Bottom();
@@ -259,7 +266,7 @@ public class Player : Pawn
             
             if (state == PState.A_AtkDown)   // if is falling fast
             {
-                Game.VertShake(8);// shake screen
+                Game.VertShake(8);  // shake screen
                 DoPhysicsPause(.4F);
                 attackBoxes[PState.A_AtkDown].SetActive(false);
                 DoInputAttackPause(.4F);
