@@ -234,28 +234,12 @@ public class Game : MonoBehaviour
         Timer.Update();  // update all timer checks
         PlayerInput.Update();
 
-        if (!gameStarted && !transitiontoGame)
+        if (PlayerInput.Pressed(Button.Start))
         {
-            if (PlayerInput.Pressed(Button.Start))
-            {
-                StartCoroutine(GameGo());   
-                transitiontoGame = true;             
-            }
-            /*if (HUD.Instance)
-                HUD.Instance.texts["Main Text Layer"].enabled = Time.time % 1F > .5F;
-
-            string[] credit = new[]{
-                "2022 (c) Idea Guy Interactive",
-                "Audio & Design by Scotty Rich",
-                " Coded by Granville Jones Jr.",
-                "  Background Art by Emily Yi",
-                " Sprites by Daniel Hernandez",
-            };
-
-            if (HUD.Instance)
-                HUD.Instance.texts["Credits"].text = credit[(int)(Time.time / 3) % 5];*/
-
-            return;
+            if (Game.isPaused)
+                Game.Unpause();
+            else
+                Game.Pause();
         }
 
         if (isPaused)

@@ -17,9 +17,14 @@ public class SkitBeatData
     
     [XmlAttribute]
     public string characterID;
+    [XmlAttribute]
+    public string alias = null;
 
     [XmlAttribute]
     public int emote;
+
+    [XmlAttribute]
+    public bool emoteOnLeft = true;
 
     [XmlAttribute]
     public float readDelay = 1;
@@ -29,13 +34,18 @@ public class SkitBeatData
 
     [XmlAttribute]
     public bool skippable = true;
+    [XmlAttribute]
+    public bool waitForInput = true;
 
     // xml end
 
+    [XmlIgnore]
     public SkitCharacterData speakingCharacter;
 
+    [XmlIgnore]
     public bool complete = false;
 
+    [XmlIgnore]
     private string outputRichText = "";
 
     public IEnumerator Execute()
@@ -54,12 +64,12 @@ public class SkitBeatData
 
                     if (complete)
                     {
-                        SkitRunner.DialogueWrite(characterID, text);
+                        SkitRunner.DialogueWrite(this, text);
                         yield return null;
                     }
                     else
                     {
-                        SkitRunner.DialogueWrite(characterID, outputRichText);                    
+                        SkitRunner.DialogueWrite(this, outputRichText);                    
                         if (punctuationPause)
                         {
                             if (c < text.Length - 2 && text[c] == '.' && text[c+1] != '.')    // handle periods or ellipses

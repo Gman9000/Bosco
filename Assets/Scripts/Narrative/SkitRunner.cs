@@ -18,7 +18,8 @@ static public class SkitRunner
 
     static public void Init()
     {
-        GenerateTemplate();
+        GenerateSkitTemplate();
+        GenerateCharacterTemplate();
 
         ReadCharacterDataAll();
         ReadSkitDataAll();
@@ -31,9 +32,22 @@ static public class SkitRunner
     static public void ReadCharacterDataAll()
     {
         characters = new Dictionary<string, SkitCharacterData>();
+
+        DirectoryInfo info = new DirectoryInfo(Application.dataPath + "/Gamedata/Characters/");
+        FileInfo[] files = info.GetFiles("*.chr");
         
-        // todo: read all character data from xml        
-        // todo: put them all in a dictionary
+        foreach (FileInfo file in files)
+        {
+            FileStream fs = file.OpenRead();
+            XmlSerializer serializer = new XmlSerializer(typeof(SkitCharacterData));
+            SkitCharacterData characterData = serializer.Deserialize(fs) as SkitCharacterData;
+            fs.Close();
+
+            if (characters.ContainsKey(characterData.id))
+                characters.Remove(characterData.id);
+            characterData.LoadEmotes();
+            characters.Add(characterData.id, characterData);
+        }
     }
 
     static public void ReadSkitDataAll()
@@ -43,23 +57,33 @@ static public class SkitRunner
         DirectoryInfo info = new DirectoryInfo(Application.dataPath + "/Gamedata/Skits/");
         FileInfo[] files = info.GetFiles("*.skit");
 
-        string[] skitFilePaths = Directory.GetFiles(Application.dataPath + "/Gamedata/Skits/");
-        foreach (string skitFilePath in skitFilePaths)
+        foreach (FileInfo file in files)
         {
-            for (int i = 0; i < files.Length; i++)
-            {
-                FileStream fs = files[i].OpenRead();
-                XmlSerializer serializer = new XmlSerializer(typeof(SkitData));
-                SkitData skitData = serializer.Deserialize(fs) as SkitData;
-                fs.Close();
-                if (skits.ContainsKey(skitData.id))
-                    skits.Remove(skitData.id);
-                skits.Add(skitData.id, skitData);
-            }
-        }
+            FileStream fs = file.OpenRead();
+            XmlSerializer serializer = new XmlSerializer(typeof(SkitData));
+            SkitData skitData = serializer.Deserialize(fs) as SkitData;
+            fs.Close();
+            if (skits.ContainsKey(skitData.id))
+                skits.Remove(skitData.id);
+            skits.Add(skitData.id, skitData);
+        }        
     }
 
-    static public void GenerateTemplate()
+    static public void GenerateCharacterTemplate()
+    {
+        SkitCharacterData data = new SkitCharacterData();
+        data.id = "temp";
+        data.name = "Default Guy";
+        data.color = "#00CCEE";
+
+        string pth = Application.dataPath + "/Gamedata/Characters/Template.chr";
+        XmlSerializer serializer = new XmlSerializer(typeof(SkitCharacterData));
+        FileStream fs = new FileStream(pth, FileMode.Create);
+        serializer.Serialize(fs, data);
+        fs.Close();
+    }
+
+    static public void GenerateSkitTemplate()
     {
         SkitData data = new SkitData();
         data.id = "Template";
@@ -104,7 +128,7 @@ static public class SkitRunner
     }
 
     static public IEnumerator BeginSkit(string skitID)
-    {        
+    {
         currentSkit = skits[skitID];
         yield return currentSkit.ReadBeats();
         active = false;
@@ -112,13 +136,42 @@ static public class SkitRunner
         yield break;
     }
 
-    static public void DialogueWrite(string characterID, string richtext)
+    static public void DialogueWrite(SkitBeatData data, string richtext)
     {
+        string characterID = data.characterID;
         SkitCharacterData character = characters.ContainsKey(characterID) ? characters[characterID] : null;
-
+        
         string characterName = character != null ? character.name : characterID;
-        string characterColor = character != null ? character.color : "#FFCC00";
+        
+        if (data.alias != null && data.alias != "")
+            characterName = data.alias;
+        string characterColor = character != null ? character.color : "#00CCCC";
+
+        Debug.Log(currentSkit.cast.IndexOf(characterID));
+
+        SpriteRenderer ren = HUD.Instance.renderers["Character " + currentSkit.cast.IndexOf(characterID)];
+        // TODO: Prgramatically index the characters for the scene and anmiate their portraits
+        
+        ren.sprite = character.GetEmote(data.emote);
+        ren.enabled = true;
+
+        if (data.emoteOnLeft)
+        {
+            ren.flipX = false;
+            ren.transform.localPosition = new Vector3(-2, ren.transform.localPosition.y, ren.transform.localPosition.z);
+        }
+        else
+        {
+            ren.flipX = true;
+            ren.transform.localPosition = new Vector3(2, ren.transform.localPosition.y, ren.transform.localPosition.z);
+        }
 
         dialogueObject.text = "<color=" + characterColor + ">" + characterName + ":</color> \n" + richtext;
     }
+
+
+    /*IEnumerator MoveEmote(Transform t)
+    {
+        
+    }*/
 }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
 
@@ -10,11 +11,18 @@ public class SkitCharacterData
     [XmlAttribute]
     public string name;
     [XmlAttribute]
-    public string unknownAlias;
-    [XmlAttribute]
     public string id;
     [XmlAttribute]
     public string color;
+    public string resourcePath => "Characters/" + id + "/";
+    [XmlIgnore]
+    private Sprite[] emotes;
 
-    public string uniquePath => Application.dataPath + "/Gamedata/Characters/" + id + "/";
+    public void LoadEmotes()
+    {
+        emotes = Resources.LoadAll<Sprite>(resourcePath);
+    } 
+    public Sprite GetEmote(int emoteIndex) => emotes[emoteIndex];
+
+
 }

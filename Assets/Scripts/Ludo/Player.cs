@@ -215,14 +215,6 @@ public class Player : Pawn
         }
 
         if (!Game.gameStarted)  return;
-        
-        if (PlayerInput.Pressed(Button.Start))
-        {
-            if (Game.isPaused)
-                Game.Unpause();
-            else
-                Game.Pause();
-        }
         if (Game.isPaused)  return;        
 
 
@@ -315,7 +307,6 @@ public class Player : Pawn
                 if (canLadder)
                 {
                     state = PState.LadderIdle;
-                    Debug.Log("WE CAN LADDER");
                     if (lastState != PState.LadderIdle)
                     {
                         transform.position = new Vector3(ladderX, transform.position.y, transform.position.z);
@@ -324,7 +315,6 @@ public class Player : Pawn
                 }
                 else if (canFence)
                 {
-                    Debug.Log("WE CAN FENCE");
                     state = PState.FenceIdle;
                 }
             }
@@ -508,10 +498,8 @@ public class Player : Pawn
     {
         if (climbMode)
         {
-            Debug.Log("CLIMB MODE");
             if (IsAttackState())
             {
-                Debug.Log("ATTACK STATE");
                 state = canLadder ? PState.LadderIdle : PState.FenceIdle;
             }
         }

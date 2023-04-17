@@ -48,7 +48,7 @@ public class HUD : MonoBehaviour
     {
         if (PlayerInput.Pressed(Button.Select))
         {
-            PerformSkit("Template");
+            PerformSkit("not-a-template");
         }
 
         if (SkitRunner.active)
@@ -59,7 +59,7 @@ public class HUD : MonoBehaviour
 
             texts["Dialogue Text"].enabled = true;
 
-            if (PlayerInput.Pressed(Button.A) || PlayerInput.Pressed(Button.B) )      // skip dialogue
+            if (SkitRunner.currentSkit.currentBeat.waitForInput && (PlayerInput.Pressed(Button.A) || PlayerInput.Pressed(Button.B)))      // skip dialogue
                 SkitRunner.currentSkit.currentBeat.complete = true;
         }
         else
@@ -68,6 +68,10 @@ public class HUD : MonoBehaviour
 
             renderers["Dialogue Box"].enabled = false;
             renderers["Name Box"].enabled = false;
+            renderers["Character 0"].enabled = false;
+            renderers["Character 1"].enabled = false;
+            renderers["Character 2"].enabled = false;
+            renderers["Character 3"].enabled = false;
 
             texts["Dialogue Text"].enabled = false;
 
