@@ -4,7 +4,7 @@ using UnityEngine;
 using System.Xml;
 using System.Xml.Serialization;
 
-public enum SkitBeatType {Dialogue, Camera, PawnCall, ChoicePrompt}
+public enum SkitBeatType {Dialogue, EmoteOnly, Camera, PawnCall, ChoicePrompt}
 
 [XmlRoot("beat")]
 public class SkitBeatData
@@ -24,7 +24,7 @@ public class SkitBeatData
     public int emote;
 
     [XmlAttribute]
-    public bool emoteOnLeft = true;
+    public int emotePosition = -3; // -3 is leftmost, 0 is center, 3 is rightmost
 
     [XmlAttribute]
     public float readDelay = 1;
@@ -55,6 +55,8 @@ public class SkitBeatData
         switch (beatType)
         {
             case SkitBeatType.Dialogue:
+                SkitRunner.EmoteSet(characterID, emotePosition, emote);
+
                 for (int c = 0; c < text.Length; c++)
                 {
                     outputRichText = text.Substring(0, c+1);
@@ -85,8 +87,14 @@ public class SkitBeatData
                         yield return new WaitForSeconds(readDelay * Game.FRAME_TIME);
                     }
                 }
+
+
                 // ## END OF THIS DIALOGUE BOX ##
                 break;
+
+            case SkitBeatType.EmoteOnly:
+                SkitRunner.EmoteSet(characterID, emotePosition, emote);
+                break; 
 
             case SkitBeatType.Camera:
                 // TODO: interpolate camera to a target point

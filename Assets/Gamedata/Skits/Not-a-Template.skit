@@ -1,11 +1,13 @@
 <?xml version="1.0"?>
 <skit xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="not-a-template">
   <beats>
-    <SkitBeatData beatType="Dialogue" text="Dogs are cuter when they are babies." characterID="temp" emote="0" emoteOnLeft="true" readDelay="1" punctuationPause="true" skippable="true" />    
-    <SkitBeatData beatType="Dialogue" text="Do not dispute this scientific fact" characterID="temp" emote="0" emoteOnLeft="false" readDelay="1" punctuationPause="true" skippable="true" />    
-    <SkitBeatData beatType="Dialogue" text="Counter point to that. Huskies are children. Not matter what." characterID="gman" emote="0" emoteOnLeft="false" readDelay="1" punctuationPause="true" skippable="true" />    
-    <SkitBeatData beatType="Dialogue" text="They act like babies. Throw tantrums. Stamp on the ground when they don't get what they want." characterID="gman" emote="0" emoteOnLeft="false" readDelay="1" punctuationPause="true" skippable="true" />    
-    <SkitBeatData beatType="Dialogue" text="Oh. Didn't know that." characterID="temp" emote="0" emoteOnLeft="true" readDelay="1" punctuationPause="true" skippable="true" />    
-    <SkitBeatData beatType="Dialogue" text="Then, I guess huskies are the best dog." characterID="temp" emote="0" emoteOnLeft="true" readDelay="1" punctuationPause="true" skippable="true" />    
+    <SkitBeatData beatType="Dialogue" text="Dogs are cuter when they are babies." characterID="temp" emote="0" emotePosition="-3" readDelay="1" punctuationPause="true" skippable="true" />    
+    <SkitBeatData beatType="Dialogue" text="Do not dispute this scientific fact" characterID="temp" emote="0" emotePosition="3" readDelay="1" punctuationPause="true" skippable="true" />  
+    <SkitBeatData beatType="EmoteOnly" characterID="temp" emote="0" emotePosition="3" skippable="false" waitForInput="false"/>      
+    <SkitBeatData beatType="Dialogue" text="Counter point to that. Huskies are children. Not matter what." characterID="gman" emote="0" emotePosition="-3" readDelay="1" punctuationPause="true" skippable="true" />    
+    <SkitBeatData beatType="EmoteOnly" characterID="temp" emote="0" emotePosition="-3" skippable="false" waitForInput="false"/>  
+    <SkitBeatData beatType="Dialogue" text="They act like babies. Throw tantrums. Stamp on the ground when they don't get what they want." characterID="gman" emote="0" emotePosition="3" readDelay="1" punctuationPause="true" skippable="true" />    
+    <SkitBeatData beatType="Dialogue" text="Oh. Didn't know that." characterID="temp" emote="0" emotePosition="-1" readDelay="1" punctuationPause="true" skippable="true" />    
+    <SkitBeatData beatType="Dialogue" text="Then, I guess huskies are the best dog." characterID="temp" emote="0" emotePosition="-3" readDelay="1" punctuationPause="true" skippable="true" />    
   </beats>
 </skit>

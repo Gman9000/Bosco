@@ -136,6 +136,22 @@ static public class SkitRunner
         yield break;
     }
 
+    static public void EmoteSet(string characterID, int emotePosition, int emoteID)
+    {
+        SkitCharacterData character = characters.ContainsKey(characterID) ? characters[characterID] : null;
+
+        SpriteRenderer ren = HUD.Instance.renderers["Character " + currentSkit.cast.IndexOf(characterID)];
+        
+        ren.sprite = character.GetEmote(emoteID);
+        ren.enabled = true;
+
+        ren.flipX = emotePosition >= 0;
+        
+        float x = emotePosition == 0 ? 0 : Mathf.Sign(emotePosition) * 3F + emotePosition;
+
+        Game.Instance.StartCoroutine(MoveEmote(ren.transform, new Vector3(x, ren.transform.localPosition.y, ren.transform.localPosition.z), .1F));
+    }
+
     static public void DialogueWrite(SkitBeatData data, string richtext)
     {
         string characterID = data.characterID;
@@ -147,31 +163,23 @@ static public class SkitRunner
             characterName = data.alias;
         string characterColor = character != null ? character.color : "#00CCCC";
 
-        Debug.Log(currentSkit.cast.IndexOf(characterID));
-
-        SpriteRenderer ren = HUD.Instance.renderers["Character " + currentSkit.cast.IndexOf(characterID)];
-        // TODO: Prgramatically index the characters for the scene and anmiate their portraits
-        
-        ren.sprite = character.GetEmote(data.emote);
-        ren.enabled = true;
-
-        if (data.emoteOnLeft)
-        {
-            ren.flipX = false;
-            ren.transform.localPosition = new Vector3(-2, ren.transform.localPosition.y, ren.transform.localPosition.z);
-        }
-        else
-        {
-            ren.flipX = true;
-            ren.transform.localPosition = new Vector3(2, ren.transform.localPosition.y, ren.transform.localPosition.z);
-        }
-
         dialogueObject.text = "<color=" + characterColor + ">" + characterName + ":</color> \n" + richtext;
     }
 
 
-    /*IEnumerator MoveEmote(Transform t)
+    static public IEnumerator MoveEmote(Transform t, Vector3 moveTo, float speed)
     {
-        
-    }*/
+        float progress = 0;
+        Vector3 start = t.localPosition;
+        Vector3 difference = moveTo - start; 
+        while (progress < 1)
+        {
+            t.localPosition = start + difference * progress;
+            progress += speed;
+            yield return new WaitForSeconds(Game.FRAME_TIME);
+        }
+
+        t.localPosition = moveTo;
+        yield break;
+    }
 }

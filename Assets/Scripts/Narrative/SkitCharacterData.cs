@@ -22,6 +22,7 @@ public class SkitCharacterData
     {
         emotes = Resources.LoadAll<Sprite>(resourcePath);
     } 
+    
     public Sprite GetEmote(int emoteIndex) => emotes[emoteIndex];
 
 
