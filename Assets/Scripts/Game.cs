@@ -25,7 +25,6 @@ public class Game : MonoBehaviour
     |*  INSPECTOR VARIABLES  *|
     \*=======================*/
 
-    public bool doTitle = false;
 
     /*=================*\
     |*  STATIC FIELDS  *|
@@ -65,25 +64,15 @@ public class Game : MonoBehaviour
     }
 
     void Start()
-    {
+    {       
         Awake();
         litCandlesCount = 0;
         lives = 3;
         _unpausedRealtime = 0;
         Timer.AllTimersInit();
+        Pawn.skitMode = false;
 
-        if (doTitle)
-        {
-            gameStarted = false;
-            ShowTitle();
-            transitiontoGame = false;
-        }
-        else
-        {
-            gameStarted = true;
-            HUD.Instance.renderers["Bosco Sprite"].gameObject.SetActive(false);
-            HideTitle();
-        }
+        gameStarted = true;
 
         isPaused = false;
         _isFreezeFraming = false;
@@ -93,6 +82,7 @@ public class Game : MonoBehaviour
             scanlines[i] = new List<SpriteSimulator>();
 
         Time.timeScale = 1;
+        SkitRunner.Init();
     }
 
     public static void Reset()
@@ -115,26 +105,6 @@ public class Game : MonoBehaviour
         GUI.Label(new Rect(0, 0, 200, 100), "" + debugText, style);
     }
 
-    public void ShowTitle()
-    {
-        if (HUD.Instance)
-        {
-            HUD.Instance.renderers["Title"].enabled = true;
-            HUD.Write("\n\n\n\n\n\n\n     PRESS START!");
-        }
-    }
-
-    public void HideTitle()
-    {
-        if (HUD.Instance)
-        {
-            HUD.Instance.renderers["Title"].enabled = false;
-            HUD.Instance.texts["Credits"].gameObject.SetActive(false);
-            HUD.Instance.renderers["Bosco Sprite"].enabled = false;
-            HUD.Write(null);
-        }
-    }
-
     public static void Pause()
     {
         if (isPaused)   return;
@@ -154,13 +124,14 @@ public class Game : MonoBehaviour
         if (!isPaused)   return;
         isPaused = false;
         foreach (SpriteSimulator sim in simulatedSprites)
-        {
             sim.Flash(true);
-        }
 
         Time.timeScale = 1.0F;
         HUD.Write(null);
         SoundSystem.Unpause();
+
+        // temp
+        SkitRunner.active = false;
     }
 
     public static void FreezeFrame(float secondsToWait, System.Action onResume)
@@ -185,39 +156,16 @@ public class Game : MonoBehaviour
     {
         if (HUD.Instance)
         {
-            HUD.Instance.texts["Credits"].gameObject.SetActive(false);
-            HUD.Instance.texts["Main Text Layer"].text = "\n\n\n\n\n\n\n      LET'S GO!!";
-        
-
             for (int i = 0; i < 16; i++)
             {
-                HUD.Instance.texts["Main Text Layer"].enabled = !HUD.Instance.texts["Main Text Layer"].enabled;
                 yield return new WaitForSeconds(.044F);
-            }
-
-            HUD.Instance.texts["Main Text Layer"].enabled = false;
+            }           
         }
 
-        yield return new WaitForSeconds(.15F);
-
-
-        if (HUD.Instance)
-        {
-            HUD.Instance.renderers["Bosco Sprite"].GetComponentInChildren<SpriteAnimator>().Play(AnimMode.Looped, "run");
-            while (Mathf.Abs(HUD.Instance.renderers["Bosco Sprite"].transform.localPosition.x) < WIDTH * PIXEL * .75F)
-            {
-                HUD.Instance.renderers["Bosco Sprite"].transform.position += Vector3.right * PIXEL * 4;
-                yield return new WaitForFixedUpdate();
-            }
-
-            if (HUD.Instance)
-                HUD.Instance.renderers["Bosco Sprite"].gameObject.SetActive(false);
-        }
         yield return new WaitForSeconds(1);
 
         gameStarted = true;
         SoundSystem.PlayBgm(SoundSystem.Instance.defaultSong, SoundSystem.Instance.defaultSongLoopPoint, true);
-        HideTitle();
         yield break;
     }
 
@@ -227,7 +175,6 @@ public class Game : MonoBehaviour
         {
             SoundSystem.DoFade(.01F);
         }
-
 
         // scanline logic
         for (int i = 0; i < scanlines.Length; i++)
@@ -287,28 +234,12 @@ public class Game : MonoBehaviour
         Timer.Update();  // update all timer checks
         PlayerInput.Update();
 
-        if (!gameStarted && !transitiontoGame)
+        if (PlayerInput.Pressed(Button.Start))
         {
-            if (PlayerInput.Pressed(Button.Start))
-            {
-                StartCoroutine(GameGo());   
-                transitiontoGame = true;             
-            }
-            if (HUD.Instance)
-                HUD.Instance.texts["Main Text Layer"].enabled = Time.time % 1F > .5F;
-
-            string[] credit = new[]{
-                "2022 (c) Idea Guy Interactive",
-                "Audio & Design by Scotty Rich",
-                " Coded by Granville Jones Jr.",
-                "  Background Art by Emily Yi",
-                " Sprites by Daniel Hernandez",
-            };
-
-            if (HUD.Instance)
-                HUD.Instance.texts["Credits"].text = credit[(int)(Time.time / 3) % 5];
-
-            return;
+            if (Game.isPaused)
+                Game.Unpause();
+            else
+                Game.Pause();
         }
 
         if (isPaused)

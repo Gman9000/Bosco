@@ -8,7 +8,8 @@ public class HUD : MonoBehaviour
     [HideInInspector] public Dictionary<string, SpriteRenderer> renderers = new Dictionary<string, SpriteRenderer>();
     [HideInInspector] public Dictionary<string, TMPro.TMP_Text> texts = new Dictionary<string, TMPro.TMP_Text>();
 
-    bool flash = true;
+    private bool flash;
+    private Coroutine skitCoroutine;
 
     void Awake()
     {
@@ -28,76 +29,71 @@ public class HUD : MonoBehaviour
                 texts.Add(obj.name, txt);
             }
         }
-        renderers["candle 0"].gameObject.SetActive(false);
-        renderers["candle 1"].gameObject.SetActive(false);
-        renderers["candle 2"].gameObject.SetActive(false);
-        renderers["candle 3"].gameObject.SetActive(false);
         
         Write("");
     }
 
+    void Start()
+    {
+        flash = true;
+        skitCoroutine = null;
+    }
+
     void FixedUpdate()
     {
-        texts["Lives Text Layer"].text = "" + Game.lives;
 
-        renderers["hp 0"].gameObject.SetActive(false);
-        renderers["hp 1"].gameObject.SetActive(false);
-        renderers["hp 2"].gameObject.SetActive(false);
-
-        if (flash)
-        {
-            for (int i = 0; i < 4 && i < Game.litCandlesCount; i++)
-            {
-                renderers["candle " + i].gameObject.SetActive(true);
-            }
-
-
-            for (int i = 0; i < 3 && i < Player.Hp; i++)
-            {
-                renderers["hp " + i].gameObject.SetActive(true);
-            }
-        }
     }
 
     void Update()
     {
-        if (Game.gameStarted)
+        if (PlayerInput.Pressed(Button.Select))
         {
-            if (!Player.IsHurting || Game.isPaused)
-                Flash(!texts["Main Text Layer"].enabled, "Main Text Layer");
-            renderers["BG"].enabled = !Game.isPaused;
+            PerformSkit("not-a-template");
+        }
+
+        if (SkitRunner.active)
+        {
+            Pawn.skitMode = true;
+            renderers["Dialogue Box"].enabled = true;            
+            renderers["Name Box"].enabled = true; 
+
+            texts["Dialogue Text"].enabled = true;
+
+            if (SkitRunner.currentSkit.currentBeat.waitForInput && (PlayerInput.Pressed(Button.A) || PlayerInput.Pressed(Button.B)))      // skip dialogue
+                SkitRunner.currentSkit.currentBeat.complete = true;
         }
         else
-        {
-            Flash(false, "Main Text Layer", "Title", "Bosco Sprite", "Credits");
-            renderers["BG"].enabled = false;
+        { 
+            Pawn.skitMode = false;
+
+            renderers["Dialogue Box"].enabled = false;
+            renderers["Name Box"].enabled = false;
+            renderers["Character 0"].enabled = false;
+            renderers["Character 1"].enabled = false;
+            renderers["Character 2"].enabled = false;
+            renderers["Character 3"].enabled = false;
+
+            texts["Dialogue Text"].enabled = false;
+
+            if (skitCoroutine != null)
+            {
+                StopCoroutine(skitCoroutine);
+                skitCoroutine = null;
+            }
         }
     }
 
-    public void Flash(bool visible, params string[] exclude)
+    public static void PerformSkit(string skitName)
     {
-        if (flash == visible)   return;
-
-        List<string> exclusions = new List<string>(exclude);
-
-        exclusions.Add("BG");
-        exclusions.Add("Title"); //this animated title might cause problems so we are excluding it
-
-
-        flash = visible;
-        foreach (SpriteRenderer ren in renderers.Values)
-            if (!exclusions.Contains(ren.gameObject.name))
-                ren.enabled = visible;
-
-        foreach (TMPro.TMP_Text txt in texts.Values)
-            if (!exclusions.Contains(txt.gameObject.name))
-                txt.enabled = visible;
+        SkitRunner.active = true;
+        if (Instance.skitCoroutine == null)
+            Instance.skitCoroutine = Instance.StartCoroutine(SkitRunner.BeginSkit(skitName));
     }
 
     public static void Write(string str)
     {
         TMPro.TMP_Text txt = Instance.texts["Main Text Layer"];
         txt.text = str;
-        txt.enabled = str != null && str.Length > 0;            
+        txt.enabled = str != null && str.Length > 0;
     }
 }

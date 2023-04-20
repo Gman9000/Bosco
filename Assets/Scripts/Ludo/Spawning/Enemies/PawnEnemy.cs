@@ -129,14 +129,23 @@ public abstract class PawnEnemy : Pawn
         base.Start();
     }
 
-    override protected void Update()
+    override protected void ActionUpdate()
     {
         // PRE-UPDATE LOGIC
         transform.rotation = new Quaternion(0F, facingDirection > 0 ? 0 : 180F, transform.rotation.z, transform.rotation.w);
         visionBox.center = (Vector2)transform.position + Vector2.right * visionBoxOffset.x * facingDirection + Vector2.up * visionBoxOffset.y;     // update the center of the vision box to this pawn
 
         // UPDATE LOGIC
-        if (currentHealth <= 0)
+        if (Pawn.skitMode)
+        {
+            SetState(EState.None);
+            if (playerAwarenessTimer)
+                playerAwarenessTimer.Cancel();
+            playerWasInView = true;
+            body.velocity = Vector2.zero;
+            // tofo: handle skits
+        }
+        else if (currentHealth <= 0)
         {
             // NOTE: leave this block and conditional as-is until we're done writing the structure of this class
         }
@@ -205,7 +214,7 @@ public abstract class PawnEnemy : Pawn
         Debug.DrawLine(new Vector3(visionBox.x + visionBox.width, visionBox.y + visionBox.height), new Vector3(visionBox.x + visionBox.width, visionBox.y), Color.blue);
         Debug.DrawLine(new Vector3(visionBox.x + visionBox.width, visionBox.y + visionBox.height), new Vector3(visionBox.x, visionBox.y + visionBox.height), Color.blue);
 
-        base.Update();
+        base.ActionUpdate();
     }
 
     protected bool PrimaryStateCondition() => states.ContainsKey(EState.Primary) && (visionBox.Contains(Player.Position) || playerAwarenessTimer);
