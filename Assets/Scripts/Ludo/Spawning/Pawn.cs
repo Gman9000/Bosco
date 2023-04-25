@@ -5,14 +5,17 @@ using UnityEngine;
 public abstract class Pawn : MonoBehaviour
 {
     static public bool skitMode = false;
+    static public Dictionary<string, Pawn> Instances;
     protected Rect spawnerBounds;    
     public void SetBounds(Rect rect) => spawnerBounds = rect;
+    public string pawnID;
 
     protected List<Collider2D> hits;
     protected List<HitInfo> hitsGround;
     protected List<HitInfo> hitsCeiling;
     protected List<HitInfo> hitsLeft;
     protected List<HitInfo> hitsRight;
+    [HideInInspector]public SpriteAnimator animator;
     [HideInInspector]public Rigidbody2D body;
     [HideInInspector]public BoxCollider2D boxCollider;
     [HideInInspector]public List<string> collidableTags;
@@ -22,6 +25,7 @@ public abstract class Pawn : MonoBehaviour
         body = GetComponent<Rigidbody2D>();
         boxCollider = GetComponent<BoxCollider2D>();
         collidableTags = new List<string>();
+        animator = GetComponent<SpriteAnimator>();
     }
 
     public virtual void Start()
@@ -31,6 +35,8 @@ public abstract class Pawn : MonoBehaviour
         hitsCeiling = new List<HitInfo>();
         hitsLeft = new List<HitInfo>();
         hitsRight = new List<HitInfo>();
+
+        Instances.Add(pawnID, this);
     }
 
     private void Update()
@@ -45,6 +51,11 @@ public abstract class Pawn : MonoBehaviour
     protected virtual void ActionUpdate()
     {
 
+    }
+
+    void OnDestroy()
+    {
+        Instances.Remove(pawnID);
     }
 
     protected virtual void PhysicsPass()
@@ -105,6 +116,33 @@ public abstract class Pawn : MonoBehaviour
         return new HitInfo();
     }
 
+
+    public void CommandInSkit(string command, string[] parameters)
+    {
+        // todo: implemtation
+
+        switch (command)
+        {
+            case "animate":
+                AnimMode mode = AnimMode.None;
+
+                if (parameters[0] == "loop")
+                    mode = AnimMode.Looped;
+                if (parameters[0] == "hang")
+                    mode = AnimMode.Hang;
+                string animationName = parameters[1];
+
+                if (mode != AnimMode.None)
+                    animator.Play(mode, animationName);
+                else
+                    Debug.LogError("parsing error. no such AnimMode as \"" + parameters[0] + "\"");
+                break;
+
+            case "move":
+                // todo movement command logic
+                break;
+        }
+    }
 
     public HitInfo GroundCheck(params string[] tags) => HitCheck(hitsGround, new List<string>(tags));
     public HitInfo GroundCheck(List<string> tags) => HitCheck(hitsGround, tags);

@@ -108,8 +108,6 @@ public class Player : Pawn
     Coroutine attackSequenceCoroutine;
     public float deathTime;
 
-    [HideInInspector]public SpriteAnimator animator;
-
     private Vector3 checkpoint;
 
     public bool IsDownSlash => IsAtkActive(PState.A_AtkDown);
@@ -144,7 +142,6 @@ public class Player : Pawn
     override public void Awake()
     {
         base.Awake();
-        animator = GetComponent<SpriteAnimator>();
         collidableTags.Add("Ground");
         collidableTags.Add("Hidden");
         collidableTags.Add("TwoWayPlatform");

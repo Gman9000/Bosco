@@ -18,6 +18,8 @@ public class CameraController : MonoBehaviour
     Coroutine shakeCoroutine = null;
     Vector2 moveTo;
 
+    [HideInInspector] public Transform followObject;
+
     void Awake()
     {
         Instance = this;
@@ -54,29 +56,34 @@ public class CameraController : MonoBehaviour
         hud.transform.localPosition = Vector3.forward;
     }
 
+    public void SetTransformFollow(Transform t)
+    {
+        followObject = t;
+    }
+
 
     private void CalcMovePos()
     {
-        Vector2 playerPos = (Vector2)Player.Position + offset;
+        Vector2 followPos = (Vector2)followObject.transform.position + offset;
 
         followRect.center = transform.position;
 
-        if (playerPos.x > followRect.xMax)
+        if (followPos.x > followRect.xMax)
         {
-            moveTo += Vector2.right * (playerPos.x - followRect.xMax);
+            moveTo += Vector2.right * (followPos.x - followRect.xMax);
         }
-        else if (playerPos.x < followRect.xMin)
+        else if (followPos.x < followRect.xMin)
         {
-            moveTo += Vector2.right * (playerPos.x - followRect.xMin);
+            moveTo += Vector2.right * (followPos.x - followRect.xMin);
         }
 
-        if (playerPos.y > followRect.yMax)
+        if (followPos.y > followRect.yMax)
         {
-            moveTo += Vector2.up * (playerPos.y - followRect.yMax);
+            moveTo += Vector2.up * (followPos.y - followRect.yMax);
         }
-        else if (playerPos.y < followRect.yMin)
+        else if (followPos.y < followRect.yMin)
         {
-            moveTo += Vector2.up * (playerPos.y - followRect.yMin);
+            moveTo += Vector2.up * (followPos.y - followRect.yMin);
         }
 
         moveTo.x = Mathf.Round(moveTo.x / Game.PIXEL) * Game.PIXEL;
@@ -97,7 +104,6 @@ public class CameraController : MonoBehaviour
 
     IEnumerator ShakeSide(int pixels)
     {
-
         for (int i = pixels; i > 0; i--)
         {
             CalcMovePos();
@@ -119,9 +125,6 @@ public class CameraController : MonoBehaviour
     
     IEnumerator ShakeUp(int pixels)
     {
-
-        Transform playerSprite = Player.Instance.animator.Renderer.transform;
-
         for (int i = pixels; i > 0; i--)
         {
             CalcMovePos();
