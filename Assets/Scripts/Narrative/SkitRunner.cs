@@ -152,6 +152,18 @@ static public class SkitRunner
         Game.Instance.StartCoroutine(MoveEmote(ren.transform, new Vector3(x, ren.transform.localPosition.y, ren.transform.localPosition.z), .1F));
     }
 
+    static public void HighlightSpeaker(string speakerID)
+    {
+        foreach (string characterID in currentSkit.cast)
+        {
+            SpriteRenderer ren = HUD.Instance.renderers["Character " + currentSkit.cast.IndexOf(characterID)];
+            if (characterID == speakerID)
+                ren.color = Color.white;
+            else
+                ren.color = Color.gray;
+        }
+    }
+
     static public void DialogueWrite(SkitBeatData data, string richtext)
     {
         string characterID = data.characterID;

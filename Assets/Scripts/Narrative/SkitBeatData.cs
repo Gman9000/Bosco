@@ -56,6 +56,7 @@ public class SkitBeatData
         {
             case SkitBeatType.Dialogue:
                 SkitRunner.EmoteSet(characterID, emotePosition, emote);
+                SkitRunner.HighlightSpeaker(characterID);
 
                 for (int c = 0; c < text.Length; c++)
                 {
