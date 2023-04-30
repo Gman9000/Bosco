@@ -39,6 +39,7 @@ public class Player : Pawn
     public AudioClip sfx_hurt;
     public static Player Instance { get; protected set;}
     public float moveSpeed;
+    public float climbSpeed;
     public float runSpeed;
     public float startFriction = 1;
     public float stopFriction = 1;
@@ -323,12 +324,12 @@ public class Player : Pawn
                 if (PlayerInput.Held(Button.Up))
                 {
                     state = PState.LadderMove;
-                    body.velocity = new Vector2(0f, moveSpeed);
+                    body.velocity = new Vector2(0f, climbSpeed);
                 }
                 if (PlayerInput.Held(Button.Down))
                 {
                     state = PState.LadderMove;
-                    body.velocity = new Vector2(0f, -moveSpeed);
+                    body.velocity = new Vector2(0f, -climbSpeed);
                 }
                 if (!canLadder)
                 {
@@ -391,16 +392,24 @@ public class Player : Pawn
             }
             else if (PlayerInput.Held(Button.Left))
             {
-                MoveWithFriction(_isGrounded ? runMode ? -startFriction * 2 : -startFriction : -startFrictionAir);
+                if (climbMode && !canLadder)
+                    body.velocity = new Vector2(-climbSpeed, body.velocity.y);
+                else                    
+                    MoveWithFriction(_isGrounded ? runMode ? -startFriction * 2 : -startFriction : -startFrictionAir);
             }
             else if (PlayerInput.Held(Button.Right))
             {
-                MoveWithFriction(_isGrounded ? runMode ? startFriction * 2 : startFriction : startFrictionAir);
+                if (climbMode && !canLadder)
+                    body.velocity = new Vector2(climbSpeed, body.velocity.y);
+                else                    
+                    MoveWithFriction(_isGrounded ? runMode ? startFriction * 2 : startFriction : startFrictionAir);
             }
             else if (!IsAtkActive(PState.G_AtkTwist))    // add friction
             {
                 if (_isGrounded)
                     ApplyStopFriction(stopFriction);
+                else if (climbMode)
+                    body.velocity = new Vector2(0, body.velocity.y);
                 else
                     ApplyStopFriction(stopFrictionAir);
             }

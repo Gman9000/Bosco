@@ -71,6 +71,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 744f15115d8496b4f90d439335b7ce83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damage: 1
+  stunFactor: 1
   hitDirection: {x: -0.4, y: 0}
   relativeToFacingDir: 1
   ignoreY: 0
@@ -146,6 +148,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 744f15115d8496b4f90d439335b7ce83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damage: 1
+  stunFactor: 1
   hitDirection: {x: 0, y: 0}
   relativeToFacingDir: 0
   ignoreY: 1
@@ -207,6 +211,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91b26103df2732545a314e4616ff287f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pawnID: lisle
+  animator: {fileID: 0}
+  body: {fileID: 0}
+  boxCollider: {fileID: 0}
+  collidableTags: []
   sfx_swordSounds:
   - {fileID: 8300000, guid: e79b59bb6551e884caefdb07a0fb1783, type: 3}
   - {fileID: 8300000, guid: 193628398b5107047a548bacf40a36ac, type: 3}
@@ -214,8 +223,8 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 48dc82424e1caf043b42a22ae6390b30, type: 3}
   sfx_jump: {fileID: 8300000, guid: e080572334d19ca449b7a2ff0f791cd3, type: 3}
   sfx_hurt: {fileID: 8300000, guid: c737ec4897a09f040a4a78958d853fba, type: 3}
-  body: {fileID: 0}
   moveSpeed: 4.5
+  climbSpeed: 3.5
   runSpeed: 6.5
   startFriction: 0.05
   stopFriction: 0.04
@@ -223,7 +232,6 @@ MonoBehaviour:
   stopFrictionAir: 0.015
   maxFallSpeed: 11
   hurtDuration: 1.2
-  boxCollider2D: {fileID: 0}
   jumpSpeed: 8
   jumpTime: 0.3
   originalGravityScale: 5
@@ -248,7 +256,7 @@ MonoBehaviour:
   doubleTapWindow: 0.14
   maxHealth: 5
   deathTime: 0.8
-  animator: {fileID: 0}
+  hittingEnemyScript: {fileID: 0}
   onRockwall: 0
 --- !u!50 &2300325343495513333
 Rigidbody2D:
@@ -525,6 +533,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 744f15115d8496b4f90d439335b7ce83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damage: 1
+  stunFactor: 1
   hitDirection: {x: 1, y: 0}
   relativeToFacingDir: 0
   ignoreY: 0
@@ -601,6 +611,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 744f15115d8496b4f90d439335b7ce83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damage: 1
+  stunFactor: 1
   hitDirection: {x: 0, y: 1}
   relativeToFacingDir: 0
   ignoreY: 0
@@ -676,6 +688,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 744f15115d8496b4f90d439335b7ce83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damage: 1
+  stunFactor: 1
   hitDirection: {x: 0, y: -1}
   relativeToFacingDir: 0
   ignoreY: 0
@@ -1219,6 +1233,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 744f15115d8496b4f90d439335b7ce83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damage: 1
+  stunFactor: 1
   hitDirection: {x: 1, y: 0}
   relativeToFacingDir: 0
   ignoreY: 0

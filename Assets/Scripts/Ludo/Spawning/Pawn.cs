@@ -8,7 +8,7 @@ public abstract class Pawn : MonoBehaviour
     static public Dictionary<string, Pawn> Instances;
     protected Rect spawnerBounds;    
     public void SetBounds(Rect rect) => spawnerBounds = rect;
-    public string pawnID;
+    public string pawnID = "";
 
     protected List<Collider2D> hits;
     protected List<HitInfo> hitsGround;
@@ -36,7 +36,8 @@ public abstract class Pawn : MonoBehaviour
         hitsLeft = new List<HitInfo>();
         hitsRight = new List<HitInfo>();
 
-        Instances.Add(pawnID, this);
+        if (pawnID != "" && pawnID != null)
+            Instances.Add(pawnID, this);
     }
 
     private void Update()
@@ -44,7 +45,6 @@ public abstract class Pawn : MonoBehaviour
         if (Game.isPaused)  return;
 
         PhysicsPass();
-
         ActionUpdate();
     }
 

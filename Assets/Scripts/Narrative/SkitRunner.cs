@@ -133,6 +133,7 @@ static public class SkitRunner
         yield return currentSkit.ReadBeats();
         active = false;
 
+        CameraController.SetFollowPlayer();
         yield break;
     }
 
