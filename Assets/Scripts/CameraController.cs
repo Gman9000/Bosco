@@ -44,6 +44,7 @@ public class CameraController : MonoBehaviour
 
     void Update()
     {
+        Game.debugText = "camera " + transform.position.z;
         Vector2 point = Camera.main.ViewportToWorldPoint(Vector3.zero);
         viewRect = new Rect(point.x, point.y, Game.WIDTH_WORLD * 1.15F, Game.HEIGHT_WORLD * 1.15F);
 
@@ -54,9 +55,11 @@ public class CameraController : MonoBehaviour
             CalcMovePos();
             if (transform.position.x != moveTo.x || transform.position.y != moveTo.y)
             {
-                transform.position = (Vector3)moveTo + Vector3.back * 10;
+                transform.position = (Vector3)moveTo;
             }
         }
+
+        transform.position = new Vector3(transform.position.x, transform.position.y, -10);
     }
 
     void PreRender()

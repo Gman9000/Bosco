@@ -65,6 +65,8 @@ public class Player : Pawn
     //for jumping
     public float jumpSpeed;
     public float jumpTime;
+
+    public float earlyJumpWindow = Game.FRAME_TIME * 2;
     private float jumpTimeCountdown;
     private bool isJumping;
     public float originalGravityScale;
@@ -93,7 +95,9 @@ public class Player : Pawn
 
     public float doubleTapWindow = .1F;     // the time window in seconds for any double-tap input
 
+    private bool jumpInput;
 
+    private bool bypassCollisionDown;
     
     private float hitTimeStamp = 0;         // the time when the player attacked // needs to be redone to be modular and good-feeling and knockback logic etc
     private float comboTimeStamp = 0;       // the time when the player attacked
@@ -125,6 +129,8 @@ public class Player : Pawn
     private Timer invTimer;
     private bool isHurting;
     private Timer jumpTimer;
+    private Timer earlyJumpTimer;
+    private Timer fallthroughTimer;
 
     private bool runMode;
     public static bool aimMode => Instance.hittingEnemyScript != null;
@@ -152,6 +158,7 @@ public class Player : Pawn
     override public void Start()
     {
         base.Start();
+        jumpInput = false;
         lastState = PState.Unassigned;
         canLadder = false;
         canFence = false;
@@ -167,7 +174,7 @@ public class Player : Pawn
         onRockwall = false;
         animationOverride = null;
 
-        
+        bypassCollisionDown = false;
         boxCollider.enabled = true;
         body.gravityScale = originalGravityScale;
         body.velocity = Vector2.zero;
@@ -195,6 +202,10 @@ public class Player : Pawn
             jumpTimer.Cancel();
         if (stopRunningTimer)
             stopRunningTimer.Cancel();
+        if (earlyJumpTimer)
+            earlyJumpTimer.Cancel();
+        if (fallthroughTimer)
+            fallthroughTimer.Cancel();
 
         animator.SetVisible(true);
     }
@@ -219,22 +230,41 @@ public class Player : Pawn
         if (aimMode)
         {
             hittingEnemyScript.RedirectKnockback(PlayerInput.GetVectorDiagonal());
-        }
+        }       
 
-        
-
-        bool wasGrounded = _isGrounded;
-        //HitInfo groundCheck = boxCollider2D.IsGrounded(rayCastMagnitude, new[]{"Ground", "Hidden", "TwoWayPlatform"});
-        
+        bool wasGrounded = _isGrounded;        
         HitInfo groundCheck = GroundCheck(collidableTags);
         _isGrounded = groundCheck;
+
+        if (PlayerInput.Pressed(Button.A))
+        {
+            if (earlyJumpTimer)
+                earlyJumpTimer.Cancel();
+            else
+            {
+                jumpInput = true;
+                earlyJumpTimer = Timer.Set(earlyJumpWindow, () => jumpInput = false);
+            }
+        }
         
         if (groundCheck.layerName == "TwoWayPlatform")
         {
             if (body.velocity.y <= 0)
                 _isGrounded = true;
-            if (_isGrounded && PlayerInput.Held(Button.Down) && PlayerInput.Pressed(Button.A))    // make shift fallthrough
+            if (bypassCollisionDown)
                 _isGrounded = false;
+                
+            if (_isGrounded && PlayerInput.Held(Button.Down) && jumpInput)    // make shift fallthrough
+            {
+                _isGrounded = false;
+                
+                if (earlyJumpTimer)
+                    earlyJumpTimer.Cancel();
+                if (!fallthroughTimer)
+                    fallthroughTimer = Timer.Set(.5F, () => bypassCollisionDown = false);
+                bypassCollisionDown = true;
+                jumpInput = false;
+            }
             if (groundCheck.collider.tag == "Rockwall" && !wasGrounded && !TwoWayPlatform.rockwallCondition)
                 _isGrounded = false;
         }
@@ -308,7 +338,6 @@ public class Player : Pawn
                     if (lastState != PState.LadderIdle)
                     {
                         transform.position = new Vector3(ladderX, transform.position.y, transform.position.z);
-                        //body.MovePosition(new Vector2(ladderX, body.position.y));
                     }
                 }
                 else if (canFence)
@@ -346,12 +375,12 @@ public class Player : Pawn
                 if (PlayerInput.Held(Button.Up))
                 {
                     state = PState.FenceMove;
-                    body.velocity = new Vector2(body.velocity.x, moveSpeed);
+                    body.velocity = new Vector2(body.velocity.x, climbSpeed);
                 }
                 if (PlayerInput.Held(Button.Down))
                 {
                     state = PState.FenceMove;
-                    body.velocity = new Vector2(body.velocity.x, -moveSpeed);
+                    body.velocity = new Vector2(body.velocity.x, -climbSpeed);
                 }
                 if (!canFence)
                 {
@@ -417,9 +446,10 @@ public class Player : Pawn
             if (!PlayerInput.Held(Button.Down) && state == PState.Duck)
                 state = PState.Unassigned;
 
-            if (_isGrounded && PlayerInput.Pressed(Button.A))
+            if (_isGrounded && jumpInput)
             {
                 isJumping = true;
+                jumpInput = false;
                 body.velocity = new Vector2(body.velocity.x, jumpSpeed);
                 float startY = transform.position.y;
                 jumpTimer = Timer.Set(jumpTime, () =>
@@ -442,6 +472,9 @@ public class Player : Pawn
             if (PlayerInput.Released(Button.A))
             {
                 isJumping = false;
+                jumpInput = false;
+                if (earlyJumpTimer)
+                    earlyJumpTimer.Cancel();
             }
         }
 
@@ -573,7 +606,7 @@ public class Player : Pawn
         if (invTimer)
             animator.Renderer.color = animator.Renderer.color.a == 0 ? Color.white : new Color(0,0,0,0);
 
-        Game.debugText = "HP: " + Hp;
+        //Game.debugText = "HP: " + Hp;
     }
 
     override protected void OnCollisionStay2D(Collision2D other)
