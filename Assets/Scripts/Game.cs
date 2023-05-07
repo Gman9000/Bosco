@@ -59,6 +59,7 @@ public class Game : MonoBehaviour
         Instance = this;
         simulatedSprites = new List<SpriteSimulator>();
         transitiontoGame = false;
+        Pawn.Instances = new Dictionary<string, Pawn>();
         Timer.AllTimersInit();
         PlayerInput.Init();
     }

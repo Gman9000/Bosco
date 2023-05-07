@@ -16,15 +16,21 @@ public class SkitBeatData
     public string text;                                     // NOTE: Limit this to 3 lines per dialogue box
     
     [XmlAttribute]
-    public string characterID;
+    public string characterID;                              // character id string for denoting dialogue details and emotes
     [XmlAttribute]
-    public string alias = null;
+    public string pawnID;                                   // pawn id string for animations and camera positioning
 
     [XmlAttribute]
-    public int emote;
+    public string command;                                  // command string to be used to signal additional functionality and parameters
 
     [XmlAttribute]
-    public int emotePosition = -3; // -3 is leftmost, 0 is center, 3 is rightmost
+    public string alias = null;                             // overwrite the character's nametag to be different than the .chr file
+
+    [XmlAttribute]
+    public int emote;                                       // emote index for a particular character
+
+    [XmlAttribute]
+    public int emotePosition = -3;                          // -3 is leftmost, 0 is center, 3 is rightmost
 
     [XmlAttribute]
     public float readDelay = 1;
@@ -56,6 +62,7 @@ public class SkitBeatData
         {
             case SkitBeatType.Dialogue:
                 SkitRunner.EmoteSet(characterID, emotePosition, emote);
+                SkitRunner.HighlightSpeaker(characterID);
 
                 for (int c = 0; c < text.Length; c++)
                 {
@@ -97,7 +104,21 @@ public class SkitBeatData
                 break; 
 
             case SkitBeatType.Camera:
-                // TODO: interpolate camera to a target point
+                FollowType followType = FollowType.None;
+                switch (command.ToLower())
+                {
+                    case "lerp":
+                        followType = FollowType.Lerp;
+                        break;
+                    case "fixed":
+                        followType = FollowType.Fixed;
+                        break;
+                    case "linear":
+                        followType = FollowType.Linear;
+                        break;
+                }
+
+                CameraController.Instance.SetTransformFollow(Pawn.Instances[pawnID].transform, followType, .1F);
                 break;
 
             case SkitBeatType.PawnCall:

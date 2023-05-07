@@ -133,6 +133,7 @@ static public class SkitRunner
         yield return currentSkit.ReadBeats();
         active = false;
 
+        CameraController.SetFollowPlayer();
         yield break;
     }
 
@@ -150,6 +151,18 @@ static public class SkitRunner
         float x = emotePosition == 0 ? 0 : Mathf.Sign(emotePosition) * 3F + emotePosition;
 
         Game.Instance.StartCoroutine(MoveEmote(ren.transform, new Vector3(x, ren.transform.localPosition.y, ren.transform.localPosition.z), .1F));
+    }
+
+    static public void HighlightSpeaker(string speakerID)
+    {
+        foreach (string characterID in currentSkit.cast)
+        {
+            SpriteRenderer ren = HUD.Instance.renderers["Character " + currentSkit.cast.IndexOf(characterID)];
+            if (characterID == speakerID)
+                ren.color = Color.white;
+            else
+                ren.color = Color.gray;
+        }
     }
 
     static public void DialogueWrite(SkitBeatData data, string richtext)
