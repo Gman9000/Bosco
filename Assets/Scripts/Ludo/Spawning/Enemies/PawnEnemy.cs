@@ -56,6 +56,7 @@ public abstract class PawnEnemy : Pawn
     private bool _contactLeft;
     private bool _contactRight;
     private bool _contactUp;
+    private bool _contactSlope;
     public bool IsGrounded => _isGrounded;
 
     private bool playerWasInView;
@@ -63,8 +64,6 @@ public abstract class PawnEnemy : Pawn
     protected bool isStunned;
 
     protected bool frictionActive;
-
-    [HideInInspector]public int facingDirection;
 
     bool wasKnockingBack;
 
@@ -101,6 +100,7 @@ public abstract class PawnEnemy : Pawn
         _contactUp = false;
         _contactLeft = false;
         _contactRight = false;
+        _contactSlope = false;
 
         playerWasInView = false;
         wasKnockingBack = false;
@@ -132,7 +132,6 @@ public abstract class PawnEnemy : Pawn
     override protected void ActionUpdate()
     {
         // PRE-UPDATE LOGIC
-        transform.rotation = new Quaternion(0F, facingDirection > 0 ? 0 : 180F, transform.rotation.z, transform.rotation.w);
         visionBox.center = (Vector2)transform.position + Vector2.right * visionBoxOffset.x * facingDirection + Vector2.up * visionBoxOffset.y;     // update the center of the vision box to this pawn
 
         // UPDATE LOGIC
@@ -237,6 +236,7 @@ public abstract class PawnEnemy : Pawn
         HitInfo ceilingCheck = CeilingCheck(collidableTags);
         HitInfo leftCheck = LeftCheck(collidableTags);
         HitInfo rightCheck = RightCheck(collidableTags);
+        HitInfo slopeCheck = SlopeCheck(collidableTags);
 
         if (ledgeDetector)
             atLedge = IsGrounded && !ledgeDetector.IsGrounded(1, new[]{"Ground", "TwoWayPlatform", "Hidden"});
@@ -244,7 +244,8 @@ public abstract class PawnEnemy : Pawn
         _contactLeft = leftCheck;
         _contactRight = rightCheck;
         _contactUp = ceilingCheck;
-        _isGrounded = groundCheck;
+        _contactSlope = slopeCheck;
+        _isGrounded = groundCheck || slopeCheck;
 
         float vx = body.velocity.x;
         float vy = body.velocity.y;

@@ -44,7 +44,6 @@ public class CameraController : MonoBehaviour
 
     void Update()
     {
-        Game.debugText = "camera " + transform.position.z;
         Vector2 point = Camera.main.ViewportToWorldPoint(Vector3.zero);
         viewRect = new Rect(point.x, point.y, Game.WIDTH_WORLD * 1.15F, Game.HEIGHT_WORLD * 1.15F);
 

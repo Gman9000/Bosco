@@ -18,7 +18,7 @@ public class Player : Pawn
     public static bool IsHurting => Instance.isHurting;
     public static bool IsInvincible => Instance.invTimer;
     public static int Hp => Instance.currentHealth;
-    public static int FacingDirection => (int)Instance.transform.rotation.y == 0 ? 1 : -1;
+    public static int FacingDirection => (int)Instance.facingDirection;
     public static Vector3 Position => Instance.transform.position;
 
     public static readonly bool redirectAttacks = false;        // a variable that toggles the mechanic idea of trajectory redirection
@@ -119,6 +119,7 @@ public class Player : Pawn
 
     public bool isGrounded => _isGrounded;
     bool _isGrounded;
+    bool _isSloping;
     bool isHittingCeiling;
     bool isHittingRightWall;
     bool isHittingLeftWall;
@@ -232,9 +233,14 @@ public class Player : Pawn
             hittingEnemyScript.RedirectKnockback(PlayerInput.GetVectorDiagonal());
         }       
 
-        bool wasGrounded = _isGrounded;        
+        bool wasGrounded = _isGrounded;
+
         HitInfo groundCheck = GroundCheck(collidableTags);
-        _isGrounded = groundCheck;
+        HitInfo slopeCheck = SlopeCheck(collidableTags);
+
+        _isGrounded = groundCheck || slopeCheck;
+        _isSloping = slopeCheck;
+
 
         if (PlayerInput.Pressed(Button.A))
         {
@@ -282,6 +288,11 @@ public class Player : Pawn
 
         if (_isGrounded)
         {
+            if (_isSloping && groundCheck.tangent.x == 1)
+            {
+                body.velocity = new Vector2(moveSpeed * Mathf.Sign(body.velocity.x), 0);
+            }
+
             if (jumpTimer != null && jumpTimer.done) jumpTimer.Cancel();
             
             if (state == PState.A_AtkDown)   // if is falling fast
@@ -345,6 +356,7 @@ public class Player : Pawn
                     state = PState.FenceIdle;
                 }
             }
+            
             if (state == PState.LadderIdle || state == PState.LadderMove)
             {
                 body.gravityScale = 0f;
@@ -412,9 +424,79 @@ public class Player : Pawn
                 }
             }
 
+            Game.debugText = slopeCheck.tangent;
+
+            // SLOPE LOGIC //
+            if (slopeCheck)
+            {
+                if (!wasGrounded)
+                {
+                    body.velocity = new Vector2(body.velocity.x, 0);
+                    Vector2 contactPointSlope = slopeCheck.contact + slopeCheck.normal * boxCollider.edgeRadius;
+                    body.MovePosition(contactPointSlope);
+                }
+
+                body.gravityScale = 0;
+
+                if (slopeCheck.normal.x > 0)
+                {
+                    if (PlayerInput.Held(Button.Down))
+                    {
+                        body.gravityScale = originalGravityScale;
+                    }
+                    else if (PlayerInput.Held(Button.Right))
+                    {
+                        body.gravityScale = originalGravityScale * 4;
+                        body.velocity = new Vector2 (slopeCheck.tangent.x, slopeCheck.tangent.y) * body.velocity.magnitude * .9F;
+                    }
+                    else if (PlayerInput.Held(Button.Left))
+                    {
+                        body.gravityScale = 0;
+                        body.velocity = -new Vector2 (slopeCheck.tangent.x, slopeCheck.tangent.y) * body.velocity.magnitude;
+                    }
+                    else
+                    {
+                        ApplySlopeFriction(stopFriction, slopeCheck);
+                    }
+                }
+
+                if (slopeCheck.normal.x < 0)
+                {
+                    if (PlayerInput.Held(Button.Down))
+                    {
+                        body.gravityScale = originalGravityScale;
+                    }
+                    else if (PlayerInput.Held(Button.Left))
+                    {
+                        body.gravityScale = originalGravityScale * 4;
+                        body.velocity = -new Vector2 (slopeCheck.tangent.x, slopeCheck.tangent.y) * body.velocity.magnitude * .9F;
+                    }
+                    else if (PlayerInput.Held(Button.Right))
+                    {
+                        body.gravityScale = 0;
+                        body.velocity = new Vector2 (slopeCheck.tangent.x, slopeCheck.tangent.y) * body.velocity.magnitude;
+                    }
+                    else
+                    {
+                        ApplySlopeFriction(stopFriction, slopeCheck);
+                    }
+                }
+
+               float topSpeed = runMode ? runSpeed : moveSpeed;
+
+                topSpeed *= .8F;
+                
+                // speed limiting slope climbing only
+                if (body.velocity.magnitude > topSpeed)
+                    body.velocity = body.velocity.normalized * topSpeed;
+            }
+            else if (!_isGrounded)
+                body.gravityScale = originalGravityScale;
+
             if (PlayerInput.Held(Button.Down) && _isGrounded)
             {
-                ApplyStopFriction(stopFriction * .5F);
+                if (!slopeCheck)
+                    ApplySlopeFriction(stopFriction * .5F, slopeCheck);
 
                 if (state == PState.Idle || state == PState.Walk)
                     state = PState.Duck;
@@ -423,7 +505,7 @@ public class Player : Pawn
             {
                 if (climbMode && !canLadder)
                     body.velocity = new Vector2(-climbSpeed, body.velocity.y);
-                else                    
+                else
                     MoveWithFriction(_isGrounded ? runMode ? -startFriction * 2 : -startFriction : -startFrictionAir);
             }
             else if (PlayerInput.Held(Button.Right))
@@ -436,7 +518,11 @@ public class Player : Pawn
             else if (!IsAtkActive(PState.G_AtkTwist))    // add friction
             {
                 if (_isGrounded)
-                    ApplyStopFriction(stopFriction);
+                {
+                    if (!slopeCheck && wasGrounded && !isJumping)
+                        body.velocity = new Vector2(body.velocity.magnitude * Mathf.Sign(body.velocity.x), 0);
+                    ApplySlopeFriction(stopFriction, slopeCheck);
+                }
                 else if (climbMode)
                     body.velocity = new Vector2(0, body.velocity.y);
                 else
@@ -444,8 +530,10 @@ public class Player : Pawn
             }
 
             if (!PlayerInput.Held(Button.Down) && state == PState.Duck)
-                state = PState.Unassigned;
+                state = PState.Unassigned;            
 
+
+            // JUMP LOGIC //
             if (_isGrounded && jumpInput)
             {
                 isJumping = true;
@@ -513,6 +601,19 @@ public class Player : Pawn
             body.velocity = new Vector2(0, body.velocity.y);
     }
 
+    public void ApplySlopeFriction(float multiplier, HitInfo hit)
+    {
+        Vector2 tangent = hit ? hit.tangent : new Vector2(1, 0);
+
+        float newVelX = body.velocity.x;        
+        newVelX -= Mathf.Sign(newVelX) * multiplier * Game.relativeTime;
+        
+        if (Mathf.Sign(newVelX) == Mathf.Sign(body.velocity.x)) // checking the sign so the friction doesn't reverse movement direction
+            body.velocity = tangent * newVelX;
+        else
+            body.velocity = new Vector2(0, 0);
+    }
+
     public void MoveWithFriction(float multiplier)
     {
         body.velocity = new Vector2(body.velocity.x + multiplier * Game.relativeTime, body.velocity.y);
@@ -528,6 +629,34 @@ public class Player : Pawn
         else
         {
             if (body.velocity.x < -topSpeed)
+                body.velocity = new Vector2(-topSpeed, body.velocity.y);
+            transform.rotation = new Quaternion(0F, 180F, transform.rotation.z, transform.rotation.w);
+        }
+    }
+
+    public void MoveWithSlopeFriction(float multiplier, HitInfo hit)
+    {
+        float tangentAngle = hit ? Mathf.Atan2(-hit.tangent.y, hit.tangent.x) : 0;
+
+        float speed = body.velocity.magnitude + multiplier * Game.relativeTime;
+
+        Vector2 newVelocity = Vector2.zero;
+        newVelocity.x = Mathf.Cos(tangentAngle) * speed;
+        newVelocity.y = Mathf.Sin(tangentAngle) * speed;
+
+        body.velocity = newVelocity;
+
+        float topSpeed = runMode ? runSpeed : moveSpeed;
+        
+        if (multiplier > 0)
+        {
+            if (body.velocity.magnitude > topSpeed)
+                body.velocity = new Vector2(topSpeed, body.velocity.y);
+            transform.rotation = new Quaternion(0F, 0F, transform.rotation.z, transform.rotation.w);
+        }
+        else
+        {
+            if (body.velocity.magnitude < -topSpeed)
                 body.velocity = new Vector2(-topSpeed, body.velocity.y);
             transform.rotation = new Quaternion(0F, 180F, transform.rotation.z, transform.rotation.w);
         }

@@ -7,11 +7,15 @@ public struct HitInfo
     public string layerName;
     public Collider2D collider;
     public Vector2 contact;
+    public Vector2 normal;
+    public Vector2 tangent;
 
-    public HitInfo(Collider2D collider, Vector2 contact)
+    public HitInfo(Collider2D collider, Vector2 normal, Vector2 contact)
     {
         this.layerName = LayerMask.LayerToName(collider.gameObject.layer);
         this.collider = collider;
+        this.normal = normal;
+        this.tangent = new Vector2(normal.y, -normal.x);
         this.contact = contact;
     }
 
@@ -19,6 +23,8 @@ public struct HitInfo
     {
         this.layerName = layerName;
         this.collider = new Collider2D();
+        this.normal = new Vector2();
+        this.tangent = new Vector2();
         this.contact = new Vector2();
     }
 

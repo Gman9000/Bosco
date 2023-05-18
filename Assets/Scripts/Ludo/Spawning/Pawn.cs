@@ -9,12 +9,19 @@ public abstract class Pawn : MonoBehaviour
     protected Rect spawnerBounds;    
     public void SetBounds(Rect rect) => spawnerBounds = rect;
     public string pawnID = "";
+    public int facingDirection
+    {
+        get => (int)transform.rotation.y == 0 ? 1 : -1;
+        set => transform.rotation = new Quaternion(0F, value > 0 ? 0 : 180F, transform.rotation.z, transform.rotation.w);
+    }
 
     protected List<Collider2D> hits;
     protected List<HitInfo> hitsGround;
     protected List<HitInfo> hitsCeiling;
     protected List<HitInfo> hitsLeft;
     protected List<HitInfo> hitsRight;
+    protected List<HitInfo> hitsSlope;
+
     [HideInInspector]public SpriteAnimator animator;
     [HideInInspector]public Rigidbody2D body;
     [HideInInspector]public BoxCollider2D boxCollider;
@@ -35,6 +42,7 @@ public abstract class Pawn : MonoBehaviour
         hitsCeiling = new List<HitInfo>();
         hitsLeft = new List<HitInfo>();
         hitsRight = new List<HitInfo>();
+        hitsSlope = new List<HitInfo>();
 
         if (pawnID != "" && pawnID != null)
             Instances.Add(pawnID, this);
@@ -101,6 +109,30 @@ public abstract class Pawn : MonoBehaviour
                 hitsRight.RemoveAt(i);
             }
         }
+
+
+        // double check slope collision via raycast
+        Vector2 footPoint = new Vector2(facingDirection > 0 ? boxCollider.Left() : boxCollider.Right(), boxCollider.Bottom());
+        RaycastHit2D rayhit = Physics2D.Raycast(footPoint, Vector2.down, .5F);
+
+        if (rayhit.collider != null &&
+        collidableTags.Contains(rayhit.collider.tag) &&
+        rayhit.collider.tag != "TwoWayPlatform" &&
+        boxCollider.CheckHitSlope(rayhit.normal, rayhit.point) &&
+        !SlopeHitExists(rayhit.collider, rayhit.point))
+        {
+            hitsSlope.Add(new HitInfo(rayhit.collider, rayhit.normal, rayhit.point));
+        }
+
+        for (int i = hitsSlope.Count - 1; i >= 0; i--)
+        {
+            HitInfo hit = hitsSlope[i];
+
+            if (!boxCollider.CheckHitSlope(hit.normal, hit.contact))
+            {
+                hitsSlope.RemoveAt(i);
+            }
+        }
     }
 
     public HitInfo HitCheck(List<HitInfo> hitList, List<string> tagList)
@@ -156,11 +188,23 @@ public abstract class Pawn : MonoBehaviour
     public HitInfo RightCheck(params string[] tags) => HitCheck(hitsRight, new List<string>(tags));
     public HitInfo RightCheck(List<string> tags) => HitCheck(hitsRight, tags);
 
+    public HitInfo SlopeCheck(params string[] tags) => HitCheck(hitsSlope, new List<string>(tags));
+    public HitInfo SlopeCheck(List<string> tags) => HitCheck(hitsSlope, tags);
+
     private bool GroundHitExists(Collider2D collider, Vector2 contact)
     {
         foreach (HitInfo hit in hitsGround)
         {
             if (hit.collider == collider && boxCollider.CheckHitDown(contact))
+                return true;
+        }
+        return false;
+    }
+    private bool SlopeHitExists(Collider2D collider, Vector2 contact)
+    {
+        foreach (HitInfo hit in hitsSlope)
+        {
+            if (hit.collider == collider && boxCollider.CheckHitSlope(hit.normal, hit.contact))
                 return true;
         }
         return false;
@@ -202,29 +246,37 @@ public abstract class Pawn : MonoBehaviour
                 if (!hits.Contains(contact.collider))
                     hits.Add(contact.collider);
 
+                Vector2 point = contact.point;
+                Vector2 normal = contact.normal;
+
+                if (boxCollider.CheckHitSlope(normal, point) &&
+                !SlopeHitExists(other.collider, contact.point))
+                    hitsSlope.Add(new HitInfo(other.collider, contact.normal, contact.point));
+
+                
                 if (contact.point.y < transform.position.y &&
                 contact.point.x >= boxCollider.Left() &&
                 contact.point.x <= boxCollider.Right() &&
                 !GroundHitExists(other.collider, contact.point))
-                    hitsGround.Add(new HitInfo(other.collider, contact.point));
+                    hitsGround.Add(new HitInfo(other.collider, contact.normal, contact.point));
 
                 if (contact.point.y > transform.position.y &&
                 contact.point.x >= boxCollider.Left() &&
                 contact.point.x <= boxCollider.Right() &&
                 !CeilingHitExists(other.collider, contact.point))
-                    hitsCeiling.Add(new HitInfo(other.collider, contact.point));
+                    hitsCeiling.Add(new HitInfo(other.collider, contact.normal, contact.point));
 
                 if (contact.point.x < transform.position.x &&
                 contact.point.y >= boxCollider.Bottom() &&
                 contact.point.y <= boxCollider.Top() &&
                 !LeftHitExists(other.collider, contact.point))
-                    hitsLeft.Add(new HitInfo(other.collider, contact.point));
+                    hitsLeft.Add(new HitInfo(other.collider, contact.normal, contact.point));
 
                 if (contact.point.x > transform.position.x &&
                 contact.point.y >= boxCollider.Bottom() &&
                 contact.point.y <= boxCollider.Top() &&
                 !RightHitExists(other.collider, contact.point))
-                    hitsRight.Add(new HitInfo(other.collider, contact.point));                
+                    hitsRight.Add(new HitInfo(other.collider, contact.normal, contact.point));                
             }
         }
     }
