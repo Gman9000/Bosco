@@ -135,9 +135,7 @@ public abstract class Pawn : MonoBehaviour
             Vector2 footpoint = new Vector2(boxCollider.Center().x, boxCollider.Bottom());
             RaycastHit2D rayhit = Physics2D.Raycast(footpoint, Vector2.down, 2.0F);
             if (rayhit.collider != null && collidableTags.Contains(rayhit.collider.tag))
-            {
                 footingNormal = rayhit.normal;
-            }
         }
         else
             footingNormal = Vector2.zero;

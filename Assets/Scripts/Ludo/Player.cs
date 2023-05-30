@@ -554,19 +554,22 @@ public class Player : Pawn
 
     public void MoveWithFriction(float multiplier)
     {
-        body.velocity = new Vector2(body.velocity.x + multiplier * Game.relativeTime, body.velocity.y);
-
         float topSpeed = runMode ? runSpeed : moveSpeed;
+        bool alreadyFaster = Mathf.Abs(body.velocity.x) > topSpeed;
+        float lastVelocityX = body.velocity.x;
+
+        if (!alreadyFaster || Mathf.Sign(multiplier) != Mathf.Sign(lastVelocityX))  // if the object is not already at top speed, or is trying to change direction
+            body.velocity = new Vector2(body.velocity.x + multiplier * Game.relativeTime, body.velocity.y);     // move the object incrementally faster
         
         if (multiplier > 0)
         {
-            if (body.velocity.x > topSpeed)
+            if (body.velocity.x > topSpeed && !alreadyFaster)   // cap the horizontal speed of the object if isn't already faster
                 body.velocity = new Vector2(topSpeed, body.velocity.y);
             transform.rotation = new Quaternion(0F, 0F, transform.rotation.z, transform.rotation.w);
         }
         else
         {
-            if (body.velocity.x < -topSpeed)
+            if (body.velocity.x < -topSpeed)    // cap the horizontal speed of the object if isn't already faster
                 body.velocity = new Vector2(-topSpeed, body.velocity.y);
             transform.rotation = new Quaternion(0F, 180F, transform.rotation.z, transform.rotation.w);
         }
@@ -616,7 +619,6 @@ public class Player : Pawn
             {
                 if (!wasGrounded)   // replace the current velocity with a slope-conforming velocity if the object landed this frame
                     body.velocity = new Vector2(slopeCheck.tangent.x, slopeCheck.tangent.y) * body.velocity.magnitude;
-
 
                 if (PlayerInput.Held(Button.Down))
                 {
@@ -672,14 +674,18 @@ public class Player : Pawn
                     }
                 }
             }
+            // removed because I like the natural speed a little better right now
+            /*if (state != PState.Sliding)
+            {
 
-            /*float topSpeed = runMode ? runSpeed : moveSpeed;
+                float topSpeed = runMode ? runSpeed : moveSpeed;
 
-            topSpeed *= .8F;
-            
-            // speed limiting slope climbing only
-            if (body.velocity.magnitude > topSpeed)
-                body.velocity = body.velocity.normalized * topSpeed;*/
+                topSpeed *= .9F;
+                
+                // speed limiting slope climbing only
+                if (body.velocity.magnitude > topSpeed)
+                    body.velocity = body.velocity.normalized * topSpeed;
+            }*/
         }
         else
         {
