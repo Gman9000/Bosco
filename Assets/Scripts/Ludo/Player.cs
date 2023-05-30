@@ -5,7 +5,7 @@ using UnityEngine;
 
 public enum PState {Unassigned, 
     Idle, Walk, Run, Duck,
-Jump, Fall, 
+Jump, Fall, Sliding,
 G_AtkSide1, G_AtkSide2, G_AtkTwist, G_AtkUp, G_AtkLow,
 A_AtkUp, A_AtkSide, A_AtkDown, A_AtkNeutral,
 G_Rockclimb, G_RockclimbShimmy,
@@ -234,6 +234,7 @@ public class Player : Pawn
         }       
 
         bool wasGrounded = _isGrounded;
+        bool wasSloping = _isSloping;
 
         HitInfo groundCheck = GroundCheck(collidableTags);
         HitInfo slopeCheck = SlopeCheck(collidableTags);
@@ -427,71 +428,9 @@ public class Player : Pawn
             Game.debugText = slopeCheck.tangent;
 
             // SLOPE LOGIC //
-            if (slopeCheck)
-            {
-                if (!wasGrounded)
-                {
-                    body.velocity = new Vector2(body.velocity.x, 0);
-                    Vector2 contactPointSlope = slopeCheck.contact + slopeCheck.normal * boxCollider.edgeRadius;
-                    body.MovePosition(contactPointSlope);
-                }
+            SlopeLogic(wasGrounded, wasSloping, slopeCheck);
 
-                body.gravityScale = 0;
-
-                if (slopeCheck.normal.x > 0)
-                {
-                    if (PlayerInput.Held(Button.Down))
-                    {
-                        body.gravityScale = originalGravityScale;
-                    }
-                    else if (PlayerInput.Held(Button.Right))
-                    {
-                        body.gravityScale = originalGravityScale * 4;
-                        body.velocity = new Vector2 (slopeCheck.tangent.x, slopeCheck.tangent.y) * body.velocity.magnitude * .9F;
-                    }
-                    else if (PlayerInput.Held(Button.Left))
-                    {
-                        body.gravityScale = 0;
-                        body.velocity = -new Vector2 (slopeCheck.tangent.x, slopeCheck.tangent.y) * body.velocity.magnitude;
-                    }
-                    else
-                    {
-                        ApplySlopeFriction(stopFriction, slopeCheck);
-                    }
-                }
-
-                if (slopeCheck.normal.x < 0)
-                {
-                    if (PlayerInput.Held(Button.Down))
-                    {
-                        body.gravityScale = originalGravityScale;
-                    }
-                    else if (PlayerInput.Held(Button.Left))
-                    {
-                        body.gravityScale = originalGravityScale * 4;
-                        body.velocity = -new Vector2 (slopeCheck.tangent.x, slopeCheck.tangent.y) * body.velocity.magnitude * .9F;
-                    }
-                    else if (PlayerInput.Held(Button.Right))
-                    {
-                        body.gravityScale = 0;
-                        body.velocity = new Vector2 (slopeCheck.tangent.x, slopeCheck.tangent.y) * body.velocity.magnitude;
-                    }
-                    else
-                    {
-                        ApplySlopeFriction(stopFriction, slopeCheck);
-                    }
-                }
-
-               float topSpeed = runMode ? runSpeed : moveSpeed;
-
-                topSpeed *= .8F;
-                
-                // speed limiting slope climbing only
-                if (body.velocity.magnitude > topSpeed)
-                    body.velocity = body.velocity.normalized * topSpeed;
-            }
-            else if (!_isGrounded)
-                body.gravityScale = originalGravityScale;
+            
 
             if (PlayerInput.Held(Button.Down) && _isGrounded)
             {
@@ -530,8 +469,7 @@ public class Player : Pawn
             }
 
             if (!PlayerInput.Held(Button.Down) && state == PState.Duck)
-                state = PState.Unassigned;            
-
+                state = PState.Unassigned;
 
             // JUMP LOGIC //
             if (_isGrounded && jumpInput)
@@ -662,6 +600,90 @@ public class Player : Pawn
         }
     }
 
+    void SlopeLogic(bool wasGrounded, bool wasSloping, HitInfo slopeCheck)
+    {
+        if (slopeCheck)
+        {
+            if (!wasGrounded)
+            {
+                body.velocity = new Vector2(0, body.velocity.y);
+                Vector2 contactPointSlope = slopeCheck.contact + slopeCheck.normal * boxCollider.edgeRadius;
+                body.MovePosition(contactPointSlope);
+            }
+
+            body.gravityScale = 0;
+
+            if (slopeCheck.normal.x > 0)
+            {
+                if (PlayerInput.Held(Button.Down))
+                {
+                    body.gravityScale = originalGravityScale;
+                    state = PState.Sliding;
+                }
+                else 
+                {
+                    state = PState.Unassigned;
+                    if (PlayerInput.Held(Button.Right))
+                    {
+                        body.gravityScale = originalGravityScale * 4;
+                        body.velocity = new Vector2 (slopeCheck.tangent.x, slopeCheck.tangent.y) * body.velocity.magnitude * .9F;
+                    }
+                    else if (PlayerInput.Held(Button.Left))
+                    {
+                        body.gravityScale = 0;
+                        body.velocity = -new Vector2(slopeCheck.tangent.x, slopeCheck.tangent.y) * body.velocity.magnitude;
+                    }
+                    else
+                    {
+                        ApplySlopeFriction(stopFriction, slopeCheck);
+                    }
+                }
+            }
+
+            if (slopeCheck.normal.x < 0)
+            {
+                if (PlayerInput.Held(Button.Down))
+                {
+                    body.gravityScale = originalGravityScale;
+                    state = PState.Sliding;
+                }
+                else 
+                {
+                    state = PState.Unassigned;
+                    if (PlayerInput.Held(Button.Left))
+                    {
+                        body.gravityScale = originalGravityScale * 4;
+                        body.velocity = -new Vector2 (slopeCheck.tangent.x, slopeCheck.tangent.y) * body.velocity.magnitude * .9F;
+                    }
+                    else if (PlayerInput.Held(Button.Right))
+                    {
+                        body.gravityScale = 0;
+                        body.velocity = new Vector2 (slopeCheck.tangent.x, slopeCheck.tangent.y) * body.velocity.magnitude;
+                    }
+                    else
+                    {
+                        ApplySlopeFriction(stopFriction, slopeCheck);
+                    }
+                }
+            }
+
+            /*float topSpeed = runMode ? runSpeed : moveSpeed;
+
+            topSpeed *= .8F;
+            
+            // speed limiting slope climbing only
+            if (body.velocity.magnitude > topSpeed)
+                body.velocity = body.velocity.normalized * topSpeed;*/
+        }
+        else
+        {
+            if (wasSloping && state == PState.Sliding)
+                state = PState.Unassigned;
+            if (!_isGrounded)
+                body.gravityScale = originalGravityScale;
+        }
+    }
+
     void SetStateFromHorizontal()
     {
         if (climbMode)
@@ -779,6 +801,7 @@ public class Player : Pawn
                 animator.Play(AnimMode.Hang, "jump");
                 break;
             case PState.Fall:
+            case PState.Sliding:
                 animator.Play(AnimMode.Hang, "fall");
                 break;
                 
