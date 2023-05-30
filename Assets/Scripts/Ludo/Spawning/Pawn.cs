@@ -22,6 +22,9 @@ public abstract class Pawn : MonoBehaviour
     protected List<HitInfo> hitsRight;
     protected List<HitInfo> hitsSlope;
 
+    protected Vector2 footingNormal;
+    protected Vector2 footingTangent => new Vector2(footingNormal.y, -footingNormal.x);
+
     [HideInInspector]public SpriteAnimator animator;
     [HideInInspector]public Rigidbody2D body;
     [HideInInspector]public BoxCollider2D boxCollider;
@@ -43,6 +46,8 @@ public abstract class Pawn : MonoBehaviour
         hitsLeft = new List<HitInfo>();
         hitsRight = new List<HitInfo>();
         hitsSlope = new List<HitInfo>();
+
+        footingNormal = new Vector2();
 
         if (pawnID != "" && pawnID != null)
             Instances.Add(pawnID, this);
@@ -111,6 +116,7 @@ public abstract class Pawn : MonoBehaviour
         }
 
 
+        /*
         // double check slope collision via raycast
         Vector2 footPoint = new Vector2(facingDirection > 0 ? boxCollider.Left() : boxCollider.Right(), boxCollider.Bottom());
         RaycastHit2D rayhit = Physics2D.Raycast(footPoint, Vector2.down, .5F);
@@ -122,7 +128,19 @@ public abstract class Pawn : MonoBehaviour
         !SlopeHitExists(rayhit.collider, rayhit.point))
         {
             hitsSlope.Add(new HitInfo(rayhit.collider, rayhit.normal, rayhit.point));
+        }*/
+
+        if (hitsGround.Count > 0 || hitsSlope.Count > 0)
+        {
+            Vector2 footpoint = new Vector2(boxCollider.Center().x, boxCollider.Bottom());
+            RaycastHit2D rayhit = Physics2D.Raycast(footpoint, Vector2.down, 2.0F);
+            if (rayhit.collider != null && collidableTags.Contains(rayhit.collider.tag))
+            {
+                footingNormal = rayhit.normal;
+            }
         }
+        else
+            footingNormal = Vector2.zero;
 
         for (int i = hitsSlope.Count - 1; i >= 0; i--)
         {

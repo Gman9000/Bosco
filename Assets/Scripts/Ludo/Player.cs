@@ -606,7 +606,6 @@ public class Player : Pawn
         {
             if (!wasGrounded)
             {
-                body.velocity = new Vector2(0, body.velocity.y);
                 Vector2 contactPointSlope = slopeCheck.contact + slopeCheck.normal * boxCollider.edgeRadius;
                 body.MovePosition(contactPointSlope);
             }
@@ -615,6 +614,10 @@ public class Player : Pawn
 
             if (slopeCheck.normal.x > 0)
             {
+                if (!wasGrounded)   // replace the current velocity with a slope-conforming velocity if the object landed this frame
+                    body.velocity = new Vector2(slopeCheck.tangent.x, slopeCheck.tangent.y) * body.velocity.magnitude;
+
+
                 if (PlayerInput.Held(Button.Down))
                 {
                     body.gravityScale = originalGravityScale;
@@ -642,6 +645,9 @@ public class Player : Pawn
 
             if (slopeCheck.normal.x < 0)
             {
+                if (!wasGrounded)   // replace the current velocity with a slope-conforming velocity if the object landed this frame
+                    body.velocity = -new Vector2(slopeCheck.tangent.x, slopeCheck.tangent.y) * body.velocity.magnitude;
+
                 if (PlayerInput.Held(Button.Down))
                 {
                     body.gravityScale = originalGravityScale;
