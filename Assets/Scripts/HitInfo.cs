@@ -5,16 +5,21 @@ using UnityEngine;
 public struct HitInfo
 {
     public string layerName;
-    public Collider2D collider;
-    public Vector2 contact;
-    public Vector2 normal;
-    public Vector2 tangent;
+    public readonly Collider2D collider;
+    public readonly Vector2 contact;
+    public readonly Vector2 normal;
+    public readonly Vector2 tangent;
 
     public HitInfo(Collider2D collider, Vector2 normal, Vector2 contact)
     {
         this.layerName = LayerMask.LayerToName(collider.gameObject.layer);
         this.collider = collider;
         this.normal = normal;
+        
+        this.normal.x = Mathf.Round(normal.x * 10.0F) / 10.0F;
+        this.normal.y = Mathf.Round(normal.y * 10.0F) / 10.0F;
+
+
         this.tangent = new Vector2(normal.y, -normal.x);
         this.contact = contact;
     }

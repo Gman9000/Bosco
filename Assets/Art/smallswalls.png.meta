@@ -450,11 +450,7 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-      physicsShape:
-      - - {x: -4, y: -4}
-        - {x: 0, y: 0}
-        - {x: 4, y: 4}
-        - {x: 4, y: -4}
+      physicsShape: []
       tessellationDetail: 0
       bones: []
       spriteID: 4b9da7ef79c9cf950800000000000000
@@ -475,7 +471,11 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-      physicsShape: []
+      physicsShape:
+      - - {x: -4, y: -4}
+        - {x: 0, y: 0}
+        - {x: 4, y: 4}
+        - {x: 4, y: -4}
       tessellationDetail: 0
       bones: []
       spriteID: 0dce4ac23fa2785b0800000000000000
@@ -706,7 +706,11 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-      physicsShape: []
+      physicsShape:
+      - - {x: -4, y: -4}
+        - {x: -4, y: 4}
+        - {x: 0, y: 0}
+        - {x: 4, y: -4}
       tessellationDetail: 0
       bones: []
       spriteID: 1b048264c00f56030800000000000000
@@ -727,11 +731,7 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-      physicsShape:
-      - - {x: -4, y: -4}
-        - {x: -4, y: 4}
-        - {x: 4, y: -4}
-        - {x: -4, y: -4}
+      physicsShape: []
       tessellationDetail: 0
       bones: []
       spriteID: 2d2cb742bfc0992b0800000000000000
@@ -954,15 +954,19 @@ TextureImporter:
       name: smallswalls_32
       rect:
         serializedVersion: 2
-        x: 1
-        y: 46
+        x: 73
+        y: 55
         width: 8
         height: 8
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-      physicsShape: []
+      physicsShape:
+      - - {x: -4, y: -4}
+        - {x: -4, y: 4}
+        - {x: 4, y: 0}
+        - {x: 4, y: -4}
       tessellationDetail: 0
       bones: []
       spriteID: 33a20b1f680fa5ca0800000000000000
@@ -975,15 +979,19 @@ TextureImporter:
       name: smallswalls_33
       rect:
         serializedVersion: 2
-        x: 10
-        y: 46
+        x: 82
+        y: 55
         width: 8
         height: 8
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-      physicsShape: []
+      physicsShape:
+      - - {x: -4, y: -4}
+        - {x: -4, y: 0}
+        - {x: 4, y: -4}
+        - {x: 4, y: -4}
       tessellationDetail: 0
       bones: []
       spriteID: 9d6e365408f0f5640800000000000000
@@ -996,8 +1004,8 @@ TextureImporter:
       name: smallswalls_34
       rect:
         serializedVersion: 2
-        x: 19
-        y: 46
+        x: 91
+        y: 55
         width: 8
         height: 8
       alignment: 0
@@ -1017,8 +1025,8 @@ TextureImporter:
       name: smallswalls_35
       rect:
         serializedVersion: 2
-        x: 28
-        y: 46
+        x: 100
+        y: 55
         width: 8
         height: 8
       alignment: 0
@@ -1038,7 +1046,7 @@ TextureImporter:
       name: smallswalls_36
       rect:
         serializedVersion: 2
-        x: 37
+        x: 1
         y: 46
         width: 8
         height: 8
@@ -1059,7 +1067,7 @@ TextureImporter:
       name: smallswalls_37
       rect:
         serializedVersion: 2
-        x: 46
+        x: 10
         y: 46
         width: 8
         height: 8
@@ -1080,7 +1088,7 @@ TextureImporter:
       name: smallswalls_38
       rect:
         serializedVersion: 2
-        x: 55
+        x: 19
         y: 46
         width: 8
         height: 8
@@ -1101,7 +1109,7 @@ TextureImporter:
       name: smallswalls_39
       rect:
         serializedVersion: 2
-        x: 64
+        x: 28
         y: 46
         width: 8
         height: 8
@@ -1122,8 +1130,8 @@ TextureImporter:
       name: smallswalls_40
       rect:
         serializedVersion: 2
-        x: 1
-        y: 37
+        x: 37
+        y: 46
         width: 8
         height: 8
       alignment: 0
@@ -1143,8 +1151,8 @@ TextureImporter:
       name: smallswalls_41
       rect:
         serializedVersion: 2
-        x: 10
-        y: 37
+        x: 46
+        y: 46
         width: 8
         height: 8
       alignment: 0
@@ -1164,8 +1172,8 @@ TextureImporter:
       name: smallswalls_42
       rect:
         serializedVersion: 2
-        x: 19
-        y: 37
+        x: 55
+        y: 46
         width: 8
         height: 8
       alignment: 0
@@ -1185,8 +1193,8 @@ TextureImporter:
       name: smallswalls_43
       rect:
         serializedVersion: 2
-        x: 28
-        y: 37
+        x: 64
+        y: 46
         width: 8
         height: 8
       alignment: 0
@@ -1206,8 +1214,8 @@ TextureImporter:
       name: smallswalls_44
       rect:
         serializedVersion: 2
-        x: 37
-        y: 37
+        x: 73
+        y: 46
         width: 8
         height: 8
       alignment: 0
@@ -1227,8 +1235,8 @@ TextureImporter:
       name: smallswalls_45
       rect:
         serializedVersion: 2
-        x: 46
-        y: 37
+        x: 82
+        y: 46
         width: 8
         height: 8
       alignment: 0
@@ -1248,15 +1256,19 @@ TextureImporter:
       name: smallswalls_46
       rect:
         serializedVersion: 2
-        x: 55
-        y: 37
+        x: 91
+        y: 46
         width: 8
         height: 8
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-      physicsShape: []
+      physicsShape:
+      - - {x: -4, y: -4}
+        - {x: -4, y: -4}
+        - {x: 4, y: 0}
+        - {x: 4, y: -4}
       tessellationDetail: 0
       bones: []
       spriteID: 50ad075f500ab3fe0800000000000000
@@ -1269,15 +1281,19 @@ TextureImporter:
       name: smallswalls_47
       rect:
         serializedVersion: 2
-        x: 64
-        y: 37
+        x: 100
+        y: 46
         width: 8
         height: 8
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-      physicsShape: []
+      physicsShape:
+      - - {x: -4, y: -4}
+        - {x: -4, y: 0}
+        - {x: 4, y: 4}
+        - {x: 4, y: -4}
       tessellationDetail: 0
       bones: []
       spriteID: 6a41ee9eccb96f1d0800000000000000
@@ -1291,7 +1307,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 1
-        y: 28
+        y: 37
         width: 8
         height: 8
       alignment: 0
@@ -1312,7 +1328,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 10
-        y: 28
+        y: 37
         width: 8
         height: 8
       alignment: 0
@@ -1333,7 +1349,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 19
-        y: 28
+        y: 37
         width: 8
         height: 8
       alignment: 0
@@ -1354,7 +1370,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 28
-        y: 28
+        y: 37
         width: 8
         height: 8
       alignment: 0
@@ -1366,6 +1382,195 @@ TextureImporter:
       bones: []
       spriteID: 42f0c58057d847910800000000000000
       internalID: 1834246482037575460
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: smallswalls_52
+      rect:
+        serializedVersion: 2
+        x: 37
+        y: 37
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d288dec85fdef7e80800000000000000
+      internalID: -8178556759394383827
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: smallswalls_53
+      rect:
+        serializedVersion: 2
+        x: 46
+        y: 37
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 41e4b7b4bca98e890800000000000000
+      internalID: -7428517387412222444
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: smallswalls_54
+      rect:
+        serializedVersion: 2
+        x: 55
+        y: 37
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8ea66b28b6468e360800000000000000
+      internalID: 7199114417269009128
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: smallswalls_55
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 37
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b4b0fb17a2e99a7b0800000000000000
+      internalID: -5212461188570477749
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: smallswalls_56
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 28
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 74b04bd5ab5fa95a0800000000000000
+      internalID: -6513623730253198521
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: smallswalls_57
+      rect:
+        serializedVersion: 2
+        x: 10
+        y: 28
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: afd01336426f9b830800000000000000
+      internalID: 4087568772958850554
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: smallswalls_58
+      rect:
+        serializedVersion: 2
+        x: 19
+        y: 28
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 01a61c456a85e9ae0800000000000000
+      internalID: -1540696551104353776
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: smallswalls_59
+      rect:
+        serializedVersion: 2
+        x: 28
+        y: 28
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7505429ece384aa90800000000000000
+      internalID: -7303567642141110185
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: smallswalls_60
+      rect:
+        serializedVersion: 2
+        x: 91
+        y: 19
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 927a07e75e7cff020800000000000000
+      internalID: 2377838916757661481
       vertices: []
       indices: 
       edges: []

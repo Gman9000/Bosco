@@ -77,6 +77,8 @@ public class Player : Pawn
     private bool inputMovePaused = false;
     private bool inputAttackPaused = false;
 
+    private HitInfo activeFloorHit;
+
     public static bool IsMovesetLocked(PState move) => _movesetLocks.Contains(move);
     private static List<PState> _movesetLocks = new List<PState>() {
         PState.G_AtkSide2,
@@ -133,6 +135,8 @@ public class Player : Pawn
     private Timer earlyJumpTimer;
     private Timer fallthroughTimer;
 
+    private bool slopeDropPrep;
+
     private bool runMode;
     public static bool aimMode => Instance.hittingEnemyScript != null;
     [HideInInspector]public PawnEnemy hittingEnemyScript;
@@ -175,6 +179,8 @@ public class Player : Pawn
         onRockwall = false;
         animationOverride = null;
 
+        slopeDropPrep = false;
+
         bypassCollisionDown = false;
         boxCollider.enabled = true;
         body.gravityScale = originalGravityScale;
@@ -185,6 +191,8 @@ public class Player : Pawn
         animator.PlayDefault();
 
         body.constraints = RigidbodyConstraints2D.FreezeRotation;
+
+        activeFloorHit = new HitInfo();
 
         StopAllCoroutines();
 
@@ -236,11 +244,30 @@ public class Player : Pawn
         bool wasGrounded = _isGrounded;
         bool wasSloping = _isSloping;
 
-        HitInfo groundCheck = GroundCheck(collidableTags);
-        HitInfo slopeCheck = SlopeCheck(collidableTags);
+        HitInfo groundHit = GroundCheck(collidableTags);
+        HitInfo slopeHit = SlopeCheck(collidableTags);
 
-        _isGrounded = groundCheck || slopeCheck;
-        _isSloping = slopeCheck;
+        activeFloorHit = slopeHit ? slopeHit : groundHit;
+
+        _isGrounded = activeFloorHit;
+        _isSloping = slopeHit;
+
+        // if prepped for the slope drop edge case (to conform to the slope when going from a slope of 0 to a negative slope)
+        if (slopeDropPrep)
+        {
+            // if the player is no longer grounded AND it's time to slope drop
+            if (wasGrounded && !_isGrounded && nearestGroundHit)
+            {
+                // snap to the nearest downward ground
+                Vector2 contactPointWee = nearestGroundHit.contact + nearestGroundHit.normal * boxCollider.edgeRadius;
+                body.MovePosition(contactPointWee);
+                Debug.Log(" bingo");
+                slopeHit = activeFloorHit = nearestGroundHit;
+                _isGrounded = true;
+                _isSloping = true;
+                slopeDropPrep = false;
+            }
+        }
 
 
         if (PlayerInput.Pressed(Button.A))
@@ -254,7 +281,7 @@ public class Player : Pawn
             }
         }
         
-        if (groundCheck.layerName == "TwoWayPlatform")
+        if (groundHit.layerName == "TwoWayPlatform")
         {
             if (body.velocity.y <= 0)
                 _isGrounded = true;
@@ -272,14 +299,14 @@ public class Player : Pawn
                 bypassCollisionDown = true;
                 jumpInput = false;
             }
-            if (groundCheck.collider.tag == "Rockwall" && !wasGrounded && !TwoWayPlatform.rockwallCondition)
+            if (groundHit.collider.tag == "Rockwall" && !wasGrounded && !TwoWayPlatform.rockwallCondition)
                 _isGrounded = false;
         }
         
-        if (_isGrounded && groundCheck.layerName == "TwoWayPlatform" && !wasGrounded)
+        if (_isGrounded && groundHit.layerName == "TwoWayPlatform" && !wasGrounded)
         {
             float feetY = boxCollider.Bottom();
-            float surfaceY = groundCheck.collider.bounds.Top();
+            float surfaceY = groundHit.collider.bounds.Top();
                 if (surfaceY > feetY) _isGrounded = false;
         }
 
@@ -287,9 +314,11 @@ public class Player : Pawn
         isHittingRightWall = RightCheck(collidableTags);
         isHittingLeftWall = LeftCheck(collidableTags);
 
+        Game.debugText = _isSloping ? "slopy" : "nopey";
+
         if (_isGrounded)
         {
-            if (_isSloping && groundCheck.tangent.x == 1)
+            if (_isSloping && groundHit.tangent.x == 1)
             {
                 body.velocity = new Vector2(moveSpeed * Mathf.Sign(body.velocity.x), 0);
             }
@@ -425,17 +454,16 @@ public class Player : Pawn
                 }
             }
 
-            Game.debugText = slopeCheck.tangent;
+            //Game.debugText =  lastActiveFloorHit ? "" + lastActiveFloorHit.normal : "";
 
             // SLOPE LOGIC //
-            SlopeLogic(wasGrounded, wasSloping, slopeCheck);
+            SlopeLogic(wasGrounded, wasSloping, slopeHit);
 
-            
-
+            // CORE MOVEMENT LOGIC //
             if (PlayerInput.Held(Button.Down) && _isGrounded)
             {
-                if (!slopeCheck)
-                    ApplySlopeFriction(stopFriction * .5F, slopeCheck);
+                if (!slopeHit)
+                    ApplySlopeFriction(stopFriction * .5F, slopeHit);
 
                 if (state == PState.Idle || state == PState.Walk)
                     state = PState.Duck;
@@ -458,9 +486,9 @@ public class Player : Pawn
             {
                 if (_isGrounded)
                 {
-                    if (!slopeCheck && wasGrounded && !isJumping)
+                    if (!slopeHit && wasGrounded && !isJumping)
                         body.velocity = new Vector2(body.velocity.magnitude * Mathf.Sign(body.velocity.x), 0);
-                    ApplySlopeFriction(stopFriction, slopeCheck);
+                    ApplySlopeFriction(stopFriction, slopeHit);
                 }
                 else if (climbMode)
                     body.velocity = new Vector2(0, body.velocity.y);
@@ -502,6 +530,38 @@ public class Player : Pawn
                 if (earlyJumpTimer)
                     earlyJumpTimer.Cancel();
             }
+        }
+
+        // MOVEMENT EDGE CASING //
+
+        // > SLOPE CORNERS
+        
+        if (footingHit && groundHit)
+        {
+            if (footingHit.normal.y < activeFloorHit.normal.y && Mathf.Sign(body.velocity.x) == Mathf.Sign(footingHit.normal.x))
+            {
+                if (body.velocity.x != 0)
+                {
+                    // prep the slope drop snap
+                    slopeDropPrep = true;
+                    //Game.debugText = "drop snap prep";
+                }
+                else
+                {
+                    // do not delete slope drop prep if movement has stopped
+                }
+                //body.velocity = footingHit.tangent * multiplier * Game.relativeTime;
+            }
+            else
+            {
+                slopeDropPrep = false;
+                //Game.debugText = "";
+            }
+        }
+        else
+        {
+            slopeDropPrep = false;
+            //Game.debugText = "";
         }
 
         if (onRockwall && body.velocity.x != 0)
@@ -558,8 +618,13 @@ public class Player : Pawn
         bool alreadyFaster = Mathf.Abs(body.velocity.x) > topSpeed;
         float lastVelocityX = body.velocity.x;
 
+        Vector2 nextMovementVector = Vector2.right * multiplier * Game.relativeTime;
+
         if (!alreadyFaster || Mathf.Sign(multiplier) != Mathf.Sign(lastVelocityX))  // if the object is not already at top speed, or is trying to change direction
-            body.velocity = new Vector2(body.velocity.x + multiplier * Game.relativeTime, body.velocity.y);     // move the object incrementally faster
+        {
+            body.velocity += nextMovementVector;     // move the object incrementally faster
+        }
+        
         
         if (multiplier > 0)
         {
@@ -573,38 +638,11 @@ public class Player : Pawn
                 body.velocity = new Vector2(-topSpeed, body.velocity.y);
             transform.rotation = new Quaternion(0F, 180F, transform.rotation.z, transform.rotation.w);
         }
-    }
-
-    public void MoveWithSlopeFriction(float multiplier, HitInfo hit)
-    {
-        float tangentAngle = hit ? Mathf.Atan2(-hit.tangent.y, hit.tangent.x) : 0;
-
-        float speed = body.velocity.magnitude + multiplier * Game.relativeTime;
-
-        Vector2 newVelocity = Vector2.zero;
-        newVelocity.x = Mathf.Cos(tangentAngle) * speed;
-        newVelocity.y = Mathf.Sin(tangentAngle) * speed;
-
-        body.velocity = newVelocity;
-
-        float topSpeed = runMode ? runSpeed : moveSpeed;
-        
-        if (multiplier > 0)
-        {
-            if (body.velocity.magnitude > topSpeed)
-                body.velocity = new Vector2(topSpeed, body.velocity.y);
-            transform.rotation = new Quaternion(0F, 0F, transform.rotation.z, transform.rotation.w);
-        }
-        else
-        {
-            if (body.velocity.magnitude < -topSpeed)
-                body.velocity = new Vector2(-topSpeed, body.velocity.y);
-            transform.rotation = new Quaternion(0F, 180F, transform.rotation.z, transform.rotation.w);
-        }
-    }
+    }   
 
     void SlopeLogic(bool wasGrounded, bool wasSloping, HitInfo slopeCheck)
     {
+        return;
         if (slopeCheck)
         {
             if (!wasGrounded)
@@ -617,7 +655,7 @@ public class Player : Pawn
 
             if (slopeCheck.normal.x > 0)
             {
-                if (!wasGrounded)   // replace the current velocity with a slope-conforming velocity if the object landed this frame
+                if (!wasGrounded && !PlayerInput.Held(Button.Left) && !PlayerInput.Held(Button.Right))   // replace the current velocity with a slope-conforming velocity if the object landed this frame
                     body.velocity = new Vector2(slopeCheck.tangent.x, slopeCheck.tangent.y) * body.velocity.magnitude;
 
                 if (PlayerInput.Held(Button.Down))
@@ -633,12 +671,7 @@ public class Player : Pawn
                         body.gravityScale = originalGravityScale * 4;
                         body.velocity = new Vector2 (slopeCheck.tangent.x, slopeCheck.tangent.y) * body.velocity.magnitude * .9F;
                     }
-                    else if (PlayerInput.Held(Button.Left))
-                    {
-                        body.gravityScale = 0;
-                        body.velocity = -new Vector2(slopeCheck.tangent.x, slopeCheck.tangent.y) * body.velocity.magnitude;
-                    }
-                    else
+                    else if (!PlayerInput.Held(Button.Left))
                     {
                         ApplySlopeFriction(stopFriction, slopeCheck);
                     }
@@ -663,12 +696,7 @@ public class Player : Pawn
                         body.gravityScale = originalGravityScale * 4;
                         body.velocity = -new Vector2 (slopeCheck.tangent.x, slopeCheck.tangent.y) * body.velocity.magnitude * .9F;
                     }
-                    else if (PlayerInput.Held(Button.Right))
-                    {
-                        body.gravityScale = 0;
-                        body.velocity = new Vector2 (slopeCheck.tangent.x, slopeCheck.tangent.y) * body.velocity.magnitude;
-                    }
-                    else
+                    else if (!PlayerInput.Held(Button.Right))
                     {
                         ApplySlopeFriction(stopFriction, slopeCheck);
                     }
