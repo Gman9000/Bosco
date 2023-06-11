@@ -9,7 +9,9 @@ public class Game : MonoBehaviour
     |*  CONSTANTS  *|
     \*=============*/
     
-    public const float PIXEL = 1.0F / 16.0F;    
+    public const float PIXEL = 1.0F / 16.0F;
+    public const float TILE = PIXEL * 8.0F;
+    public const float HALF_TILE_SIZE = TILE * .5F;
     public const float WIDTH = 256.0F;
     public const float HEIGHT = 144.0F;
     public const float WIDTH_WORLD = WIDTH * PIXEL;
